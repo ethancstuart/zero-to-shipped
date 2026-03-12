@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# content build artifacts (committed for Vercel — regenerate with: npm run sync-content)
+# src/content/modules/
+content-source
