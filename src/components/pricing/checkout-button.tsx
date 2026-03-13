@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
 
 export function CheckoutButton({
   tier,
@@ -24,7 +25,9 @@ export function CheckoutButton({
     } = await supabase.auth.getUser();
 
     if (!user) {
+      toast.error("Please sign in first to purchase.");
       router.push("/");
+      setLoading(false);
       return;
     }
 
@@ -38,8 +41,12 @@ export function CheckoutButton({
 
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        toast.error(data.error || "Something went wrong. Please try again.");
+        setLoading(false);
       }
     } catch {
+      toast.error("Something went wrong. Please try again.");
       setLoading(false);
     }
   };
