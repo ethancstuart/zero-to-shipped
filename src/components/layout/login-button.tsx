@@ -6,13 +6,24 @@ import { LogIn } from "lucide-react";
 
 export function LoginButton() {
   const handleGoogleLogin = async () => {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        console.error("OAuth error:", error.message);
+        alert(`Sign in failed: ${error.message}`);
+      } else if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (e) {
+      console.error("Login error:", e);
+      alert("Sign in failed. Check console for details.");
+    }
   };
 
   return (
@@ -25,13 +36,24 @@ export function LoginButton() {
 
 export function LoginButtonOutline() {
   const handleGoogleLogin = async () => {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        console.error("OAuth error:", error.message);
+        alert(`Sign in failed: ${error.message}`);
+      } else if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (e) {
+      console.error("Login error:", e);
+      alert("Sign in failed. Check console for details.");
+    }
   };
 
   return (
