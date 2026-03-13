@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export const metadata = { title: "Cheat Sheets" };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -90,9 +91,11 @@ export function AppSidebar({ profile }: { profile: Profile }) {
       <div className="border-t border-border p-4">
         <div className="mb-2 flex items-center gap-3">
           {profile.avatar_url ? (
-            <img
+            <Image
               src={profile.avatar_url}
               alt=""
+              width={32}
+              height={32}
               className="size-8 rounded-full"
             />
           ) : (

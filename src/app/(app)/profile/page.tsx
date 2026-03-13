@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import { ProfileForm } from "@/components/profile/profile-form";
 import { BADGES, getBadgeBySlug, getXPProgress } from "@/lib/gamification/constants";
 import type { Profile, Badge } from "@/types";
@@ -30,9 +31,11 @@ export default async function ProfilePage() {
       <div className="rounded-xl border border-border bg-card p-6">
         <div className="flex items-center gap-4">
           {profile.avatar_url ? (
-            <img
+            <Image
               src={profile.avatar_url}
               alt=""
+              width={64}
+              height={64}
               className="size-16 rounded-full"
             />
           ) : (

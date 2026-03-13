@@ -15,19 +15,17 @@ export default function ModuleReaderLoading() {
       <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
         {/* Content */}
         <div className="space-y-4">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {["w-full", "w-5/6", "w-4/5", "w-full", "w-3/4", "w-5/6", "w-full", "w-4/5"].map((w, i) => (
             <Skeleton
               key={i}
-              className="h-4 w-full"
-              style={{ width: `${70 + Math.random() * 30}%` }}
+              className={`h-4 ${w}`}
             />
           ))}
           <Skeleton className="mt-6 h-32 w-full rounded-lg" />
-          {Array.from({ length: 6 }).map((_, i) => (
+          {["w-full", "w-3/4", "w-full", "w-5/6", "w-4/5", "w-full"].map((w, i) => (
             <Skeleton
               key={`p2-${i}`}
-              className="h-4 w-full"
-              style={{ width: `${60 + Math.random() * 40}%` }}
+              className={`h-4 ${w}`}
             />
           ))}
         </div>

@@ -4,6 +4,7 @@ import { MODULE_METADATA } from "@/lib/content/modules";
 import { getXPProgress, getBadgeBySlug, BADGES } from "@/lib/gamification/constants";
 import { ROLE_LABELS, siteConfig } from "@/lib/constants";
 import { ShareButtons } from "@/components/profile/share-buttons";
+import Image from "next/image";
 import type { Profile, ModuleProgress, Badge } from "@/types";
 import type { Metadata } from "next";
 
@@ -66,9 +67,11 @@ export default async function PublicProfilePage({ params }: Props) {
         {/* Profile Header */}
         <div className="text-center">
           {typedProfile.avatar_url ? (
-            <img
+            <Image
               src={typedProfile.avatar_url}
               alt=""
+              width={80}
+              height={80}
               className="mx-auto mb-4 size-20 rounded-full"
             />
           ) : (

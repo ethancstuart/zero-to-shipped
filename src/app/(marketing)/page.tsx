@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/layout/login-button";
 import { MODULE_METADATA } from "@/lib/content/modules";
-import { ROLE_LABELS, TIER_LABELS } from "@/lib/constants";
+import { ROLE_LABELS, TIER_LABELS, siteConfig } from "@/lib/constants";
 import type { RoleTrack, ModuleTier } from "@/types";
 
 const ROLE_ICONS: Record<RoleTrack, React.ReactNode> = {
@@ -39,7 +39,7 @@ const jsonLd = {
   provider: {
     "@type": "Organization",
     name: "Zero to Shipped",
-    url: "https://zerotoship.dev",
+    url: siteConfig.url,
   },
   numberOfCredits: 16,
   educationalLevel: "Beginner to Advanced",
