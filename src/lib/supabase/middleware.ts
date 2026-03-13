@@ -2,12 +2,18 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  // Skip if env vars aren't configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -22,23 +28,26 @@ export async function updateSession(request: NextRequest) {
           );
         },
       },
+    });
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // Public routes that don't require auth
+    const publicRoutes = ["/", "/auth/callback"];
+    const isPublicRoute =
+      publicRoutes.some((route) => request.nextUrl.pathname === route) ||
+      request.nextUrl.pathname.startsWith("/u/");
+
+    if (!user && !isPublicRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
     }
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Public routes that don't require auth
-  const publicRoutes = ["/", "/auth/callback"];
-  const isPublicRoute =
-    publicRoutes.some((route) => request.nextUrl.pathname === route) ||
-    request.nextUrl.pathname.startsWith("/u/");
-
-  if (!user && !isPublicRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+  } catch (e) {
+    // If Supabase fails, allow the request through
+    console.error("Middleware error:", e);
   }
 
   return supabaseResponse;
