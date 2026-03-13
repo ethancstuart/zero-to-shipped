@@ -9,7 +9,9 @@ import { ModuleContent } from "@/components/modules/module-content";
 import { Button } from "@/components/ui/button";
 import { ToolSetupBanner } from "@/components/modules/tool-setup-banner";
 import { CapstoneSuggestions } from "@/components/modules/capstone-suggestions";
-import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack } from "@/types";
+import { canAccessModule } from "@/lib/content/tiers";
+import { PremiumGate } from "@/components/modules/premium-gate";
+import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack, SubscriptionTier } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,8 +35,8 @@ export default async function ModuleReaderPage({ params }: Props) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [profileRes, progressRes, checkpointsRes] = await Promise.all([
-    supabase.from("profiles").select("tool_preference, role_track").eq("id", user.id).single(),
+  const [profileRes, progressRes, checkpointsRes, allProgressRes] = await Promise.all([
+    supabase.from("profiles").select("tool_preference, role_track, subscription_tier").eq("id", user.id).single(),
     supabase
       .from("module_progress")
       .select("*")
@@ -47,12 +49,18 @@ export default async function ModuleReaderPage({ params }: Props) {
       .eq("user_id", user.id)
       .eq("module_number", mod.number)
       .eq("completed", true),
+    supabase
+      .from("module_progress")
+      .select("module_number")
+      .eq("user_id", user.id)
+      .eq("status", "completed"),
   ]);
 
-  const profile = profileRes.data as Pick<Profile, "tool_preference" | "role_track">;
+  const profile = profileRes.data as Pick<Profile, "tool_preference" | "role_track" | "subscription_tier">;
   const moduleProgress = progressRes.data as ModuleProgress | null;
   const completedCheckpoints = (checkpointsRes.data ?? []) as CheckpointProgress[];
   const completedIndexes = completedCheckpoints.map((c) => c.checkpoint_index);
+  const totalCompletedModules = allProgressRes.data?.length ?? 0;
 
   // Check if module is accessible
   if (moduleProgress?.status === "locked") {
@@ -77,6 +85,20 @@ export default async function ModuleReaderPage({ params }: Props) {
         <Button variant="outline" render={<Link href="/modules" />}>
           Back to Modules
         </Button>
+      </div>
+    );
+  }
+
+  // Check premium access
+  const subscriptionTier = (profile.subscription_tier ?? "free") as SubscriptionTier;
+  if (!canAccessModule(mod.number, subscriptionTier)) {
+    return (
+      <div className="mx-auto max-w-4xl py-10">
+        <PremiumGate
+          moduleTitle={mod.title}
+          moduleNumber={mod.number}
+          description={mod.description}
+        />
       </div>
     );
   }
@@ -129,7 +151,7 @@ export default async function ModuleReaderPage({ params }: Props) {
           <ModuleContent moduleNumber={mod.number} />
           {mod.number === 16 && (
             <div className="mt-8 not-prose">
-              <CapstoneSuggestions roleTrack={profile.role_track as RoleTrack | null} />
+              <CapstoneSuggestions roleTrack={profile.role_track as RoleTrack | null} isPremium={subscriptionTier === "premium"} />
             </div>
           )}
         </div>
@@ -138,8 +160,10 @@ export default async function ModuleReaderPage({ params }: Props) {
         <div className="space-y-6">
           <CheckpointList
             moduleNumber={mod.number}
+            moduleTitle={mod.title}
             checkpoints={mod.checkpoints}
             completedIndexes={completedIndexes}
+            totalCompletedModules={totalCompletedModules}
           />
 
           {/* Navigation */}

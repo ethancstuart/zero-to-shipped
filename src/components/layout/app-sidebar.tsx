@@ -12,6 +12,9 @@ import {
   Award,
   Rocket,
   LogOut,
+  Trophy,
+  Route,
+  ClipboardList,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -22,8 +25,11 @@ import { getXPProgress } from "@/lib/gamification/constants";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/modules", label: "Modules", icon: BookOpen },
+  { href: "/learning-path", label: "Learning Path", icon: Route },
   { href: "/skill-tree", label: "Skill Tree", icon: GitBranch },
   { href: "/cheat-sheets", label: "Cheat Sheets", icon: FileText },
+  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+  { href: "/build-log", label: "Build Log", icon: ClipboardList },
   { href: "/profile", label: "Profile", icon: User },
   { href: "/certificate", label: "Certificate", icon: Award },
 ];
@@ -44,6 +50,11 @@ export function AppSidebar({ profile }: { profile: Profile }) {
       <div className="flex h-16 items-center gap-2 border-b border-border px-6">
         <Rocket className="size-5 text-primary" />
         <span className="font-bold">Zero to Shipped</span>
+        {profile.subscription_tier === "premium" && (
+          <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+            Premium
+          </span>
+        )}
       </div>
 
       {/* XP Bar */}

@@ -159,8 +159,10 @@ create trigger profiles_updated_at
 -- ALTER TABLE public.waitlist ENABLE ROW LEVEL SECURITY;
 -- CREATE POLICY "Anyone can join waitlist" ON public.waitlist FOR INSERT WITH CHECK (true);
 
--- Migration: Subscription tier
--- Run manually: ALTER TABLE profiles ADD COLUMN subscription_tier text NOT NULL DEFAULT 'free' CHECK (subscription_tier IN ('free', 'premium'));
+-- Migration: Subscription tier + Stripe fields
+-- Run manually:
+-- ALTER TABLE profiles ADD COLUMN subscription_tier text NOT NULL DEFAULT 'free' CHECK (subscription_tier IN ('free', 'premium'));
+-- ALTER TABLE profiles ADD COLUMN stripe_customer_id text;
 
 -- Streak calculation RPC
 create or replace function public.update_streak(p_user_id uuid)

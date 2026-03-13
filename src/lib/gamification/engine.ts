@@ -13,6 +13,7 @@ class ResultCollector {
   newLevel: string | null = null;
   badgesEarned: CheckpointResult["badgesEarned"] = [];
   streakMilestone: number | null = null;
+  moduleCompleted: number | null = null;
 
   toResult(): CheckpointResult {
     return {
@@ -22,6 +23,7 @@ class ResultCollector {
       previousLevel: this.previousLevel,
       badgesEarned: this.badgesEarned,
       streakMilestone: this.streakMilestone,
+      moduleCompleted: this.moduleCompleted,
     };
   }
 }
@@ -224,6 +226,7 @@ async function handleModuleComplete(
   const supabase = await createClient();
 
   // Mark module completed
+  collector.moduleCompleted = moduleNumber;
   await supabase
     .from("module_progress")
     .update({

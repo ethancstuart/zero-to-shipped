@@ -44,7 +44,14 @@ export default async function ProfilePage() {
             </div>
           )}
           <div>
-            <h2 className="text-lg font-bold">{profile.display_name}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-bold">{profile.display_name}</h2>
+              {profile.subscription_tier === "premium" && (
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                  Premium
+                </span>
+              )}
+            </div>
             <p className="text-sm text-muted-foreground">
               Level {current.level}: {current.title} &middot; {profile.xp} XP
               &middot; {profile.current_streak}d streak

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CheckoutButton } from "@/components/pricing/checkout-button";
 
 interface PremiumGateProps {
   moduleTitle: string;
@@ -34,15 +35,15 @@ export function PremiumGate({
           <h2 className="mb-2 text-xl font-bold">Premium Content</h2>
           <p className="mb-6 text-muted-foreground">
             Module {moduleNumber}: {moduleTitle} is part of the premium
-            curriculum. Join the waitlist to get access when it launches.
+            curriculum. Unlock all 16 modules with Full Access.
           </p>
-          <div className="flex items-center justify-center gap-3">
-            <Button render={<Link href="/pricing" />}>
-              View Pricing
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-full max-w-xs">
+              <CheckoutButton tier="full_access" label="Get Full Access — $149" />
+            </div>
+            <Button variant="outline" render={<Link href="/pricing" />}>
+              Compare Plans
               <ArrowRight className="ml-1 size-4" />
-            </Button>
-            <Button variant="outline" render={<Link href="/modules" />}>
-              Back to Modules
             </Button>
           </div>
         </div>

@@ -14,6 +14,9 @@ import {
   Award,
   Rocket,
   Flame,
+  Trophy,
+  Route,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
@@ -23,8 +26,11 @@ import { getXPProgress } from "@/lib/gamification/constants";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/modules", label: "Modules", icon: BookOpen },
+  { href: "/learning-path", label: "Learning Path", icon: Route },
   { href: "/skill-tree", label: "Skill Tree", icon: GitBranch },
   { href: "/cheat-sheets", label: "Cheat Sheets", icon: FileText },
+  { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+  { href: "/build-log", label: "Build Log", icon: ClipboardList },
   { href: "/profile", label: "Profile", icon: User },
   { href: "/certificate", label: "Certificate", icon: Award },
 ];

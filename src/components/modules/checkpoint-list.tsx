@@ -7,17 +7,22 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { XPPopup } from "@/components/gamification/xp-popup";
 import { showRewardToasts } from "@/components/gamification/reward-toasts";
+import { ModuleCompleteShare } from "@/components/modules/module-complete-share";
 
 interface CheckpointListProps {
   moduleNumber: number;
+  moduleTitle: string;
   checkpoints: string[];
   completedIndexes: number[];
+  totalCompletedModules: number;
 }
 
 export function CheckpointList({
   moduleNumber,
+  moduleTitle,
   checkpoints,
   completedIndexes,
+  totalCompletedModules,
 }: CheckpointListProps) {
   const [optimisticCompleted, addOptimistic] = useOptimistic(
     completedIndexes,
@@ -30,6 +35,7 @@ export function CheckpointList({
   );
   const [isPending, startTransition] = useTransition();
   const [xpTrigger, setXpTrigger] = useState(0);
+  const [showShareModal, setShowShareModal] = useState<number | null>(null);
 
   const handleToggle = (index: number) => {
     const willComplete = !optimisticCompleted.includes(index);
@@ -41,6 +47,9 @@ export function CheckpointList({
         if (willComplete && result) {
           setXpTrigger((t) => t + 1);
           showRewardToasts(result);
+          if (result.moduleCompleted) {
+            setShowShareModal(result.moduleCompleted);
+          }
         }
       } catch {
         toast.error("Failed to update checkpoint");
@@ -99,6 +108,13 @@ export function CheckpointList({
           );
         })}
       </div>
+      {showShareModal && (
+        <ModuleCompleteShare
+          moduleNumber={showShareModal}
+          moduleTitle={moduleTitle}
+          completedCount={totalCompletedModules + 1}
+        />
+      )}
     </div>
   );
 }

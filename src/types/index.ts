@@ -9,6 +9,8 @@ export type XPEventType =
   | "streak_bonus"
   | "badge_earned";
 
+export type SubscriptionTier = "free" | "premium";
+
 export interface Profile {
   id: string;
   display_name: string | null;
@@ -21,6 +23,8 @@ export interface Profile {
   longest_streak: number;
   last_activity_date: string | null;
   public_profile: boolean;
+  subscription_tier: SubscriptionTier;
+  stripe_customer_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -98,4 +102,5 @@ export interface CheckpointResult {
   previousLevel: string | null;
   badgesEarned: { slug: string; name: string; description: string; icon: string }[];
   streakMilestone: number | null;
+  moduleCompleted: number | null;
 }

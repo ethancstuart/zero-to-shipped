@@ -98,6 +98,22 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* Upgrade CTA for free users */}
+      {profile.subscription_tier !== "premium" && (
+        <div className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/5 p-4">
+          <div>
+            <p className="font-medium">Unlock the full curriculum</p>
+            <p className="text-sm text-muted-foreground">
+              Get access to all 16 modules, capstone templates, and certificates.
+            </p>
+          </div>
+          <Button render={<Link href="/pricing" />}>
+            Upgrade
+            <ArrowRight className="ml-1 size-4" />
+          </Button>
+        </div>
+      )}
+
       {/* Main Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Next Module */}
