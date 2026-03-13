@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { LoginButton } from "@/components/layout/login-button";
 import { CheckoutButton } from "@/components/pricing/checkout-button";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Pricing" };
 
@@ -28,7 +29,14 @@ const EXTRAS_FEATURES = [
   "Priority content updates",
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const isLoggedIn = !!user;
+
   return (
     <div className="py-20">
       <div className="mx-auto max-w-5xl px-4">
@@ -53,7 +61,13 @@ export default function PricingPage() {
               <span className="text-4xl font-bold">$0</span>
               <span className="text-muted-foreground"> forever</span>
             </p>
-            <LoginButton />
+            {isLoggedIn ? (
+              <div className="w-full rounded-lg border border-border bg-muted px-4 py-2 text-center text-sm font-medium text-muted-foreground">
+                Current Plan
+              </div>
+            ) : (
+              <LoginButton />
+            )}
             <ul className="mt-6 space-y-3">
               {FREE_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
@@ -79,10 +93,11 @@ export default function PricingPage() {
               <span className="text-4xl font-bold">$149</span>
               <span className="text-muted-foreground"> /one-time</span>
             </p>
-            <CheckoutButton
-              tier="full_access"
-              label="Get Full Access"
-            />
+            {isLoggedIn ? (
+              <CheckoutButton tier="full_access" label="Get Full Access" />
+            ) : (
+              <LoginButton />
+            )}
             <ul className="mt-6 space-y-3">
               {FULL_ACCESS_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
@@ -103,10 +118,11 @@ export default function PricingPage() {
               <span className="text-4xl font-bold">$249</span>
               <span className="text-muted-foreground"> /one-time</span>
             </p>
-            <CheckoutButton
-              tier="extras"
-              label="Get Full Access + Extras"
-            />
+            {isLoggedIn ? (
+              <CheckoutButton tier="extras" label="Get Full Access + Extras" />
+            ) : (
+              <LoginButton />
+            )}
             <ul className="mt-6 space-y-3">
               {EXTRAS_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
