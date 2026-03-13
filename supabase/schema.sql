@@ -145,6 +145,24 @@ create trigger profiles_updated_at
   for each row execute function public.handle_updated_at();
 
 -- Streak calculation RPC
+-- Migration: Username column for public profiles
+-- Run manually: ALTER TABLE profiles ADD COLUMN username text UNIQUE;
+-- CREATE INDEX idx_profiles_username ON profiles(username);
+
+-- Migration: Waitlist table for premium launch
+-- Run manually:
+-- CREATE TABLE public.waitlist (
+--   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+--   email text NOT NULL UNIQUE,
+--   created_at timestamptz NOT NULL DEFAULT now()
+-- );
+-- ALTER TABLE public.waitlist ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Anyone can join waitlist" ON public.waitlist FOR INSERT WITH CHECK (true);
+
+-- Migration: Subscription tier
+-- Run manually: ALTER TABLE profiles ADD COLUMN subscription_tier text NOT NULL DEFAULT 'free' CHECK (subscription_tier IN ('free', 'premium'));
+
+-- Streak calculation RPC
 create or replace function public.update_streak(p_user_id uuid)
 returns void as $$
 declare

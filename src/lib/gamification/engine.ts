@@ -1,19 +1,40 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { XP, getLevelForXP, BADGES } from "./constants";
+import { XP, getLevelForXP, getBadgeBySlug } from "./constants";
 import { MODULE_METADATA, getModulesByTier } from "@/lib/content/modules";
-import type { ModuleProgress, CheckpointProgress, Badge, Profile } from "@/types";
+import type { ModuleProgress, CheckpointResult } from "@/types";
+
+// Internal collector that accumulates awards during a checkpoint flow
+class ResultCollector {
+  xpAwarded = 0;
+  totalXP = 0;
+  previousLevel: string | null = null;
+  newLevel: string | null = null;
+  badgesEarned: CheckpointResult["badgesEarned"] = [];
+  streakMilestone: number | null = null;
+
+  toResult(): CheckpointResult {
+    return {
+      xpAwarded: this.xpAwarded,
+      totalXP: this.totalXP,
+      newLevel: this.newLevel,
+      previousLevel: this.previousLevel,
+      badgesEarned: this.badgesEarned,
+      streakMilestone: this.streakMilestone,
+    };
+  }
+}
 
 async function awardXP(
   userId: string,
   eventType: string,
   xpAmount: number,
-  metadata: Record<string, unknown> = {}
+  metadata: Record<string, unknown> = {},
+  collector?: ResultCollector
 ) {
   const supabase = await createClient();
 
-  // Log XP event
   await supabase.from("xp_events").insert({
     user_id: userId,
     event_type: eventType,
@@ -21,25 +42,39 @@ async function awardXP(
     metadata,
   });
 
-  // Update total XP and level
   const { data: profile } = await supabase
     .from("profiles")
-    .select("xp")
+    .select("xp, level")
     .eq("id", userId)
     .single();
 
-  const newXP = (profile?.xp ?? 0) + xpAmount;
-  const newLevel = getLevelForXP(newXP);
+  const oldXP = profile?.xp ?? 0;
+  const oldLevel = profile?.level ?? "Novice";
+  const newXP = oldXP + xpAmount;
+  const newLevelDef = getLevelForXP(newXP);
 
   await supabase
     .from("profiles")
-    .update({ xp: newXP, level: newLevel.title })
+    .update({ xp: newXP, level: newLevelDef.title })
     .eq("id", userId);
+
+  if (collector) {
+    collector.xpAwarded += xpAmount;
+    collector.totalXP = newXP;
+    if (newLevelDef.title !== oldLevel) {
+      collector.previousLevel = oldLevel;
+      collector.newLevel = newLevelDef.title;
+    }
+  }
 
   return newXP;
 }
 
-async function tryAwardBadge(userId: string, badgeSlug: string): Promise<boolean> {
+async function tryAwardBadge(
+  userId: string,
+  badgeSlug: string,
+  collector?: ResultCollector
+): Promise<boolean> {
   const supabase = await createClient();
 
   const { error } = await supabase.from("badges").insert({
@@ -47,10 +82,19 @@ async function tryAwardBadge(userId: string, badgeSlug: string): Promise<boolean
     badge_slug: badgeSlug,
   });
 
-  if (error) return false; // Already has badge (unique constraint)
+  if (error) return false;
 
-  // Award badge XP
-  await awardXP(userId, "badge_earned", 25, { badge_slug: badgeSlug });
+  const def = getBadgeBySlug(badgeSlug);
+  if (def && collector) {
+    collector.badgesEarned.push({
+      slug: def.slug,
+      name: def.name,
+      description: def.description,
+      icon: def.icon,
+    });
+  }
+
+  await awardXP(userId, "badge_earned", 25, { badge_slug: badgeSlug }, collector);
   return true;
 }
 
@@ -58,8 +102,9 @@ export async function handleCheckpointComplete(
   userId: string,
   moduleNumber: number,
   checkpointIndex: number
-) {
+): Promise<CheckpointResult> {
   const supabase = await createClient();
+  const collector = new ResultCollector();
 
   // Upsert checkpoint
   await supabase.from("checkpoint_progress").upsert(
@@ -77,22 +122,22 @@ export async function handleCheckpointComplete(
   await awardXP(userId, "checkpoint", XP.CHECKPOINT, {
     module_number: moduleNumber,
     checkpoint_index: checkpointIndex,
-  });
+  }, collector);
 
   // Update streak
   await supabase.rpc("update_streak", { p_user_id: userId });
 
   // Check for first checkpoint badge
-  await tryAwardBadge(userId, "first-checkpoint");
+  await tryAwardBadge(userId, "first-checkpoint", collector);
 
   // Check time-based badges
   const hour = new Date().getHours();
-  if (hour >= 22 || hour < 5) await tryAwardBadge(userId, "night-owl");
-  if (hour >= 5 && hour < 7) await tryAwardBadge(userId, "early-bird");
+  if (hour >= 22 || hour < 5) await tryAwardBadge(userId, "night-owl", collector);
+  if (hour >= 5 && hour < 7) await tryAwardBadge(userId, "early-bird", collector);
   const day = new Date().getDay();
-  if (day === 0 || day === 6) await tryAwardBadge(userId, "weekend-warrior");
+  if (day === 0 || day === 6) await tryAwardBadge(userId, "weekend-warrior", collector);
 
-  // Check streak badges
+  // Check streak badges + milestones
   const { data: profile } = await supabase
     .from("profiles")
     .select("current_streak")
@@ -100,10 +145,13 @@ export async function handleCheckpointComplete(
     .single();
 
   if (profile) {
-    if (profile.current_streak >= 3) await tryAwardBadge(userId, "streak-3");
+    if (profile.current_streak >= 3) {
+      const earned = await tryAwardBadge(userId, "streak-3", collector);
+      if (earned && !collector.streakMilestone) collector.streakMilestone = 3;
+    }
     if (profile.current_streak >= 7) {
-      await tryAwardBadge(userId, "streak-7");
-      // Streak 7 milestone XP
+      const earned = await tryAwardBadge(userId, "streak-7", collector);
+      if (earned && !collector.streakMilestone) collector.streakMilestone = 7;
       const { data: existing } = await supabase
         .from("xp_events")
         .select("id")
@@ -112,11 +160,12 @@ export async function handleCheckpointComplete(
         .eq("metadata->>milestone", "7")
         .maybeSingle();
       if (!existing) {
-        await awardXP(userId, "streak_bonus", XP.STREAK_7, { milestone: 7 });
+        await awardXP(userId, "streak_bonus", XP.STREAK_7, { milestone: 7 }, collector);
       }
     }
     if (profile.current_streak >= 30) {
-      await tryAwardBadge(userId, "streak-30");
+      const earned = await tryAwardBadge(userId, "streak-30", collector);
+      if (earned && !collector.streakMilestone) collector.streakMilestone = 30;
       const { data: existing } = await supabase
         .from("xp_events")
         .select("id")
@@ -125,25 +174,27 @@ export async function handleCheckpointComplete(
         .eq("metadata->>milestone", "30")
         .maybeSingle();
       if (!existing) {
-        await awardXP(userId, "streak_bonus", XP.STREAK_30, { milestone: 30 });
+        await awardXP(userId, "streak_bonus", XP.STREAK_30, { milestone: 30 }, collector);
       }
     }
   }
 
   // Check if all module checkpoints are completed
   const mod = MODULE_METADATA.find((m) => m.number === moduleNumber);
-  if (!mod) return;
+  if (mod) {
+    const { data: checkpoints } = await supabase
+      .from("checkpoint_progress")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("module_number", moduleNumber)
+      .eq("completed", true);
 
-  const { data: checkpoints } = await supabase
-    .from("checkpoint_progress")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("module_number", moduleNumber)
-    .eq("completed", true);
-
-  if (checkpoints && checkpoints.length >= mod.checkpoints.length) {
-    await handleModuleComplete(userId, moduleNumber);
+    if (checkpoints && checkpoints.length >= mod.checkpoints.length) {
+      await handleModuleComplete(userId, moduleNumber, collector);
+    }
   }
+
+  return collector.toResult();
 }
 
 export async function handleCheckpointUncomplete(
@@ -165,7 +216,11 @@ export async function handleCheckpointUncomplete(
   );
 }
 
-async function handleModuleComplete(userId: string, moduleNumber: number) {
+async function handleModuleComplete(
+  userId: string,
+  moduleNumber: number,
+  collector: ResultCollector
+) {
   const supabase = await createClient();
 
   // Mark module completed
@@ -184,10 +239,11 @@ async function handleModuleComplete(userId: string, moduleNumber: number) {
     userId,
     isCapstone ? "capstone" : "module_complete",
     isCapstone ? XP.CAPSTONE : XP.MODULE_COMPLETE,
-    { module_number: moduleNumber }
+    { module_number: moduleNumber },
+    collector
   );
 
-  if (isCapstone) await tryAwardBadge(userId, "capstone-shipped");
+  if (isCapstone) await tryAwardBadge(userId, "capstone-shipped", collector);
 
   // Unlock modules whose prerequisites are now met
   const { data: allProgress } = await supabase
@@ -218,32 +274,32 @@ async function handleModuleComplete(userId: string, moduleNumber: number) {
   // Check tier completion badges
   const foundationModules = getModulesByTier("foundations").map((m) => m.number);
   if (foundationModules.every((n) => completed.includes(n))) {
-    const earned = await tryAwardBadge(userId, "foundations-complete");
-    if (earned) await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "foundations" });
+    const earned = await tryAwardBadge(userId, "foundations-complete", collector);
+    if (earned) await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "foundations" }, collector);
   }
 
   const intermediateModules = getModulesByTier("intermediate").map((m) => m.number);
   const completedIntermediate = intermediateModules.filter((n) => completed.includes(n));
   if (completedIntermediate.length >= 3) {
-    await tryAwardBadge(userId, "intermediate-explorer");
+    await tryAwardBadge(userId, "intermediate-explorer", collector);
   }
 
   const advancedModules = getModulesByTier("advanced").map((m) => m.number);
   const completedAdvanced = advancedModules.filter((n) => completed.includes(n));
   if (completedAdvanced.length >= 2) {
-    await tryAwardBadge(userId, "advanced-achiever");
+    await tryAwardBadge(userId, "advanced-achiever", collector);
   }
 
   if (intermediateModules.every((n) => completed.includes(n))) {
-    await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "intermediate" });
+    await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "intermediate" }, collector);
   }
   if (advancedModules.every((n) => completed.includes(n))) {
-    await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "advanced" });
+    await awardXP(userId, "tier_complete", XP.TIER_COMPLETE, { tier: "advanced" }, collector);
   }
 
   // Completionist
   if (completed.length === 16) {
-    await tryAwardBadge(userId, "completionist");
+    await tryAwardBadge(userId, "completionist", collector);
   }
 
   // Speed runner check
@@ -259,7 +315,7 @@ async function handleModuleComplete(userId: string, moduleNumber: number) {
       const diff =
         new Date(mp.completed_at).getTime() - new Date(mp.started_at).getTime();
       if (diff < 24 * 60 * 60 * 1000) {
-        await tryAwardBadge(userId, "speed-runner");
+        await tryAwardBadge(userId, "speed-runner", collector);
       }
     }
   }

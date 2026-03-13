@@ -6,12 +6,13 @@ import {
   handleCheckpointUncomplete,
 } from "@/lib/gamification/engine";
 import { revalidatePath } from "next/cache";
+import type { CheckpointResult } from "@/types";
 
 export async function toggleCheckpoint(
   moduleNumber: number,
   checkpointIndex: number,
   completed: boolean
-) {
+): Promise<CheckpointResult | null> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -26,14 +27,18 @@ export async function toggleCheckpoint(
     .eq("module_number", moduleNumber)
     .eq("status", "available");
 
+  let result: CheckpointResult | null = null;
+
   if (completed) {
-    await handleCheckpointComplete(user.id, moduleNumber, checkpointIndex);
+    result = await handleCheckpointComplete(user.id, moduleNumber, checkpointIndex);
   } else {
     await handleCheckpointUncomplete(user.id, moduleNumber, checkpointIndex);
   }
 
   revalidatePath(`/modules`);
   revalidatePath(`/dashboard`);
+
+  return result;
 }
 
 export async function updateToolPreference(tool: "claude-code" | "cursor") {

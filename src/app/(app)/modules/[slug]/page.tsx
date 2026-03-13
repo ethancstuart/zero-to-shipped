@@ -7,7 +7,9 @@ import { CheckpointList } from "@/components/modules/checkpoint-list";
 import { ToolToggle } from "@/components/modules/tool-toggle";
 import { ModuleContent } from "@/components/modules/module-content";
 import { Button } from "@/components/ui/button";
-import type { ModuleProgress, CheckpointProgress, Profile } from "@/types";
+import { ToolSetupBanner } from "@/components/modules/tool-setup-banner";
+import { CapstoneSuggestions } from "@/components/modules/capstone-suggestions";
+import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -32,7 +34,7 @@ export default async function ModuleReaderPage({ params }: Props) {
   if (!user) redirect("/");
 
   const [profileRes, progressRes, checkpointsRes] = await Promise.all([
-    supabase.from("profiles").select("tool_preference").eq("id", user.id).single(),
+    supabase.from("profiles").select("tool_preference, role_track").eq("id", user.id).single(),
     supabase
       .from("module_progress")
       .select("*")
@@ -47,7 +49,7 @@ export default async function ModuleReaderPage({ params }: Props) {
       .eq("completed", true),
   ]);
 
-  const profile = profileRes.data as Pick<Profile, "tool_preference">;
+  const profile = profileRes.data as Pick<Profile, "tool_preference" | "role_track">;
   const moduleProgress = progressRes.data as ModuleProgress | null;
   const completedCheckpoints = (checkpointsRes.data ?? []) as CheckpointProgress[];
   const completedIndexes = completedCheckpoints.map((c) => c.checkpoint_index);
@@ -114,6 +116,9 @@ export default async function ModuleReaderPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Tool Setup Banner for Module 5+ */}
+      {mod.number >= 5 && <ToolSetupBanner toolPreference={profile.tool_preference} />}
+
       {/* Content + Sidebar */}
       <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
         {/* Module Content */}
@@ -122,6 +127,11 @@ export default async function ModuleReaderPage({ params }: Props) {
           className="prose prose-sm max-w-none dark:prose-invert"
         >
           <ModuleContent moduleNumber={mod.number} />
+          {mod.number === 16 && (
+            <div className="mt-8 not-prose">
+              <CapstoneSuggestions roleTrack={profile.role_track as RoleTrack | null} />
+            </div>
+          )}
         </div>
 
         {/* Sidebar */}

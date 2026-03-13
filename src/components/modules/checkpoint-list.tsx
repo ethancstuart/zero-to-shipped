@@ -1,10 +1,12 @@
 "use client";
 
-import { useOptimistic, useTransition } from "react";
+import { useOptimistic, useTransition, useState } from "react";
 import { CheckCircle2, Circle } from "lucide-react";
 import { toggleCheckpoint } from "@/app/(app)/modules/[slug]/actions";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { XPPopup } from "@/components/gamification/xp-popup";
+import { showRewardToasts } from "@/components/gamification/reward-toasts";
 
 interface CheckpointListProps {
   moduleNumber: number;
@@ -27,6 +29,7 @@ export function CheckpointList({
     }
   );
   const [isPending, startTransition] = useTransition();
+  const [xpTrigger, setXpTrigger] = useState(0);
 
   const handleToggle = (index: number) => {
     const willComplete = !optimisticCompleted.includes(index);
@@ -34,9 +37,10 @@ export function CheckpointList({
     startTransition(async () => {
       addOptimistic(index);
       try {
-        await toggleCheckpoint(moduleNumber, index, willComplete);
-        if (willComplete) {
-          toast.success("Checkpoint completed! +10 XP");
+        const result = await toggleCheckpoint(moduleNumber, index, willComplete);
+        if (willComplete && result) {
+          setXpTrigger((t) => t + 1);
+          showRewardToasts(result);
         }
       } catch {
         toast.error("Failed to update checkpoint");
@@ -50,14 +54,17 @@ export function CheckpointList({
     totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div className="relative rounded-xl border border-border bg-card p-6">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-semibold">
           Checkpoints ({completedCount}/{totalCount})
         </h2>
-        <span className="text-sm text-muted-foreground">
-          {progressPercent}%
-        </span>
+        <div className="relative">
+          <span className="text-sm text-muted-foreground">
+            {progressPercent}%
+          </span>
+          <XPPopup xp={10} trigger={xpTrigger} />
+        </div>
       </div>
       <div className="mb-4 h-2 overflow-hidden rounded-full bg-muted">
         <div

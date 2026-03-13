@@ -30,11 +30,36 @@ const ROLE_DESCRIPTIONS: Record<RoleTrack, string> = {
   bi: "Create self-service query builders, data catalogs, and automated report suites.",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Zero to Shipped",
+  description:
+    "A gamified learning platform teaching PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools.",
+  provider: {
+    "@type": "Organization",
+    name: "Zero to Shipped",
+    url: "https://zerotoship.dev",
+  },
+  numberOfCredits: 16,
+  educationalLevel: "Beginner to Advanced",
+  isAccessibleForFree: true,
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    courseMode: "Online",
+    courseWorkload: "PT70H",
+  },
+};
+
 export default function LandingPage() {
   const tiers: ModuleTier[] = ["foundations", "intermediate", "advanced", "capstone"];
 
   return (
     <div className="relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden py-24 sm:py-32">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background" />

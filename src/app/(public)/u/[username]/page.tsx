@@ -2,16 +2,31 @@ import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { getXPProgress, getBadgeBySlug, BADGES } from "@/lib/gamification/constants";
-import { ROLE_LABELS } from "@/lib/constants";
+import { ROLE_LABELS, siteConfig } from "@/lib/constants";
+import { ShareButtons } from "@/components/profile/share-buttons";
 import type { Profile, ModuleProgress, Badge } from "@/types";
+import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ username: string }>;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
-  return { title: `${decodeURIComponent(username)}'s Profile` };
+  const decoded = decodeURIComponent(username);
+  const ogUrl = `${siteConfig.url}/api/og?name=${encodeURIComponent(decoded)}`;
+  return {
+    title: `${decoded}'s Profile`,
+    openGraph: {
+      title: `${decoded} — Zero to Shipped`,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${decoded} — Zero to Shipped`,
+      images: [ogUrl],
+    },
+  };
 }
 
 export default async function PublicProfilePage({ params }: Props) {
@@ -153,6 +168,14 @@ export default async function PublicProfilePage({ params }: Props) {
             </div>
           </div>
         )}
+
+        {/* Share */}
+        <div className="flex justify-center">
+          <ShareButtons
+            url={`${siteConfig.url}/u/${encodeURIComponent(username)}`}
+            title={`Check out ${typedProfile.display_name}'s progress on Zero to Shipped!`}
+          />
+        </div>
 
         <p className="text-center text-xs text-muted-foreground">
           Powered by Zero to Shipped

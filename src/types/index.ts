@@ -90,3 +90,12 @@ export interface LevelDefinition {
   title: string;
   xpRequired: number;
 }
+
+export interface CheckpointResult {
+  xpAwarded: number;
+  totalXP: number;
+  newLevel: string | null;
+  previousLevel: string | null;
+  badgesEarned: { slug: string; name: string; description: string; icon: string }[];
+  streakMilestone: number | null;
+}

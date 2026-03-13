@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { Award, Download, Lock } from "lucide-react";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { CertificateDownload } from "@/components/profile/certificate-download";
+import { ShareButtons } from "@/components/profile/share-buttons";
+import { siteConfig } from "@/lib/constants";
 import type { Profile, ModuleProgress } from "@/types";
 
 export const metadata = { title: "Certificate" };
@@ -78,6 +80,16 @@ export default async function CertificatePage() {
         name={profile.display_name ?? "Learner"}
         date={capstoneComplete.completed_at ?? new Date().toISOString()}
       />
+
+      {/* Share */}
+      {profile.public_profile && (
+        <div className="mt-6 flex justify-center">
+          <ShareButtons
+            url={`${siteConfig.url}/u/${encodeURIComponent(profile.display_name ?? "")}`}
+            title={`I just completed Zero to Shipped! 🚀 All 16 modules done.`}
+          />
+        </div>
+      )}
     </div>
   );
 }
