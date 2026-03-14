@@ -35,13 +35,24 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     // Public routes that don't require auth
-    const publicRoutes = ["/", "/auth/callback", "/pricing", "/waitlist"];
+    const publicRoutes = ["/", "/auth/callback", "/pricing", "/waitlist", "/leaderboard"];
     const isPublicRoute =
       publicRoutes.some((route) => request.nextUrl.pathname === route) ||
       request.nextUrl.pathname.startsWith("/u/") ||
       request.nextUrl.pathname.startsWith("/purchase/") ||
       request.nextUrl.pathname.startsWith("/verify/") ||
       request.nextUrl.pathname.startsWith("/api/");
+
+    // Capture referral code from URL into a cookie
+    const refCode = request.nextUrl.searchParams.get("ref");
+    if (refCode && !request.cookies.get("zts_ref")) {
+      supabaseResponse.cookies.set("zts_ref", refCode, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+        httpOnly: true,
+        sameSite: "lax",
+      });
+    }
 
     if (!user && !isPublicRoute) {
       const url = request.nextUrl.clone();

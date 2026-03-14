@@ -32,10 +32,10 @@ export function PremiumGate({
       <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-md text-center">
           <Lock className="mx-auto mb-4 size-12 text-muted-foreground/40" />
-          <h2 className="mb-2 text-xl font-bold">Premium Content</h2>
+          <h2 className="mb-2 text-xl font-bold">You&apos;ve learned the foundations</h2>
           <p className="mb-6 text-muted-foreground">
-            Module {moduleNumber}: {moduleTitle} is part of the premium
-            curriculum. Unlock all 16 modules with Full Access.
+            Upgrade to build your capstone and earn your certificate.
+            Module {moduleNumber}: {moduleTitle} is part of the premium curriculum.
           </p>
           <div className="flex flex-col items-center gap-3">
             <div className="w-full max-w-xs">

@@ -133,6 +133,45 @@ export default async function PricingPage() {
             </ul>
           </div>
         </div>
+
+        {/* Easy to Expense */}
+        <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center">
+          <h2 className="mb-2 text-xl font-bold">Easy to expense</h2>
+          <p className="mx-auto max-w-lg text-muted-foreground">
+            $149 is under most L&amp;D approval thresholds. We&apos;ll send you
+            a receipt you can submit to your company.
+          </p>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-12 space-y-6">
+          <h2 className="text-center text-2xl font-bold">FAQ</h2>
+          <div className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">What do I get with Full Access?</h3>
+              <p className="text-sm text-muted-foreground">
+                All 16 modules, a capstone project, certificate of completion,
+                public profile, and leaderboard access. Everything you need to
+                go from zero to shipped.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">Is this &quot;learn to code&quot;?</h3>
+              <p className="text-sm text-muted-foreground">
+                No. This is &quot;learn to ship.&quot; You&apos;ll use AI coding
+                tools to build real products in your actual role — PM, BA,
+                Project Manager, or BI Engineer.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">Who built this?</h3>
+              <p className="text-sm text-muted-foreground">
+                Built by a product leader who uses AI tools daily to ship at
+                scale. Every module is based on real workflows, not theory.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

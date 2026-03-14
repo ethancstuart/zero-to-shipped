@@ -15,6 +15,9 @@ export function Footer() {
             <Link href="/waitlist" className="hover:text-foreground">
               Waitlist
             </Link>
+            <Link href="/leaderboard" className="hover:text-foreground">
+              Leaderboard
+            </Link>
           </nav>
         </div>
       </div>

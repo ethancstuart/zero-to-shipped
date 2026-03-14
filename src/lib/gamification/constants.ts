@@ -9,6 +9,7 @@ export const XP = {
   DAILY_STREAK: 5,
   STREAK_7: 25,
   STREAK_30: 100,
+  REFERRAL_BONUS: 100,
 } as const;
 
 // Levels
@@ -173,6 +174,13 @@ export const BADGES: BadgeDefinition[] = [
     name: "Weekend Warrior",
     description: "Complete a checkpoint on Saturday or Sunday",
     icon: "🗓️",
+    category: "special",
+  },
+  {
+    slug: "referral-champion",
+    name: "Referral Champion",
+    description: "Referred 3 friends who completed Module 1",
+    icon: "🤝",
     category: "special",
   },
 ];

@@ -5,6 +5,7 @@ import {
   Trophy,
   ArrowRight,
   Clock,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -114,6 +115,26 @@ export default async function DashboardPage() {
         </div>
       )}
 
+      {/* Share & Earn */}
+      {profile.referral_code && (
+        <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+          <div className="flex items-center gap-3">
+            <Users className="size-5 text-primary" />
+            <div>
+              <p className="font-medium">Share &amp; Earn</p>
+              <p className="text-sm text-muted-foreground">
+                Invite a friend &mdash; you both earn 100 XP when they complete Module 1
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <code className="rounded bg-muted px-2 py-1 text-xs">
+              zerotoship.app?ref={profile.referral_code}
+            </code>
+          </div>
+        </div>
+      )}
+
       {/* Main Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Next Module */}
@@ -136,6 +157,9 @@ export default async function DashboardPage() {
                   </div>
                 </div>
               </div>
+              <p className="text-xs text-muted-foreground">
+                You&apos;re {16 - completedModules.length} modules from your capstone project
+              </p>
               <Button
                 size="sm"
                 render={<Link href={`/modules/${nextModuleMeta.slug}`} />}

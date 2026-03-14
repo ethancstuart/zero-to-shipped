@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Target, BarChart3, Users, Zap, Terminal, MousePointer } from "lucide-react";
+import { Target, BarChart3, Users, Zap, Terminal, MousePointer, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { ROLE_LABELS, TOOL_LABELS } from "@/lib/constants";
@@ -44,8 +44,31 @@ const TOOLS: { value: ToolPreference; icon: React.ReactNode; description: string
   },
 ];
 
+const ROLE_OUTCOMES: Record<RoleTrack, string[]> = {
+  pm: [
+    "Ship a prototype dashboard for stakeholder reviews",
+    "Build an internal tool that replaces a manual workflow",
+    "Create a product spec generator with AI",
+  ],
+  pjm: [
+    "Build a project status tracker your team can use",
+    "Automate reporting with a custom dashboard",
+    "Create a project health dashboard with live data",
+  ],
+  ba: [
+    "Build a data dictionary tool for your team",
+    "Create a requirements tracker with validation",
+    "Ship a process flow app that documents workflows",
+  ],
+  bi: [
+    "Build a self-service query tool for analysts",
+    "Create a data catalog your team can search",
+    "Ship an automated report suite with scheduling",
+  ],
+};
+
 export function RoleOnboarding() {
-  const [step, setStep] = useState<"role" | "tool">("role");
+  const [step, setStep] = useState<"role" | "tool" | "outcomes">("role");
   const [selectedRole, setSelectedRole] = useState<RoleTrack | null>(null);
   const [selectedTool, setSelectedTool] = useState<ToolPreference | null>(null);
   const [saving, setSaving] = useState(false);
@@ -53,6 +76,10 @@ export function RoleOnboarding() {
 
   const handleContinueRole = () => {
     if (selectedRole) setStep("tool");
+  };
+
+  const handleContinueTool = () => {
+    setStep("outcomes");
   };
 
   const handleSave = async () => {
@@ -116,7 +143,7 @@ export function RoleOnboarding() {
               </Button>
             </div>
           </>
-        ) : (
+        ) : step === "tool" ? (
           <>
             <h1 className="mb-2 text-center text-2xl font-bold">
               Pick your AI tool
@@ -153,16 +180,52 @@ export function RoleOnboarding() {
                 Back
               </Button>
               <Button
-                onClick={handleSave}
-                disabled={saving}
+                onClick={handleContinueTool}
                 size="lg"
               >
-                {saving ? "Saving..." : "Get Started"}
+                Continue
               </Button>
             </div>
             <p className="mt-3 text-center text-xs text-muted-foreground">
               You can change both in your profile settings later.
             </p>
+          </>
+        ) : (
+          <>
+            <h1 className="mb-2 text-center text-2xl font-bold">
+              Here&apos;s what you&apos;ll build
+            </h1>
+            <p className="mb-8 text-center text-muted-foreground">
+              As a {selectedRole ? ROLE_LABELS[selectedRole] : "builder"}, your
+              curriculum is tailored to these outcomes:
+            </p>
+            <div className="space-y-3">
+              {selectedRole &&
+                ROLE_OUTCOMES[selectedRole].map((outcome, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 rounded-xl border border-border bg-card p-5"
+                  >
+                    <Rocket className="mt-0.5 size-5 shrink-0 text-primary" />
+                    <p className="font-medium">{outcome}</p>
+                  </div>
+                ))}
+            </div>
+            <div className="mt-8 flex items-center justify-center gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setStep("tool")}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                size="lg"
+              >
+                {saving ? "Saving..." : "Let's start building"}
+              </Button>
+            </div>
           </>
         )}
       </div>

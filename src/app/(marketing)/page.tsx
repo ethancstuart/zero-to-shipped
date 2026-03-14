@@ -66,7 +66,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-4 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
             <Rocket className="size-4" />
-            Free course &middot; 16 modules &middot; ~70 hours
+            Start free &middot; 16 modules &middot; Ship something real
           </div>
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
             Build with AI.

@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { XP, getLevelForXP, getBadgeBySlug } from "./constants";
+import { XP, getLevelForXP, getBadgeBySlug, BADGES } from "./constants";
 import { MODULE_METADATA, getModulesByTier } from "@/lib/content/modules";
 import type { ModuleProgress, CheckpointResult } from "@/types";
 
@@ -303,6 +303,48 @@ async function handleModuleComplete(
   // Completionist
   if (completed.length === 16) {
     await tryAwardBadge(userId, "completionist", collector);
+  }
+
+  // Referral XP award on Module 1 completion
+  if (moduleNumber === 1) {
+    const { data: userProfile } = await supabase
+      .from("profiles")
+      .select("referred_by")
+      .eq("id", userId)
+      .single();
+
+    if (userProfile?.referred_by) {
+      // Check if referral bonus was already awarded
+      const { data: existingBonus } = await supabase
+        .from("xp_events")
+        .select("id")
+        .eq("user_id", userId)
+        .eq("event_type", "referral_bonus")
+        .maybeSingle();
+
+      if (!existingBonus) {
+        // Award 100 XP to referred user
+        await awardXP(userId, "referral_bonus", XP.REFERRAL_BONUS, {
+          referrer_id: userProfile.referred_by,
+        }, collector);
+
+        // Award 100 XP to referrer
+        await awardXP(userProfile.referred_by, "referral_reward", XP.REFERRAL_BONUS, {
+          referred_user_id: userId,
+        });
+
+        // Check if referrer qualifies for referral-champion badge (3 referrals)
+        const { count } = await supabase
+          .from("xp_events")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", userProfile.referred_by)
+          .eq("event_type", "referral_reward");
+
+        if (count && count >= 3) {
+          await tryAwardBadge(userProfile.referred_by, "referral-champion");
+        }
+      }
+    }
   }
 
   // Speed runner check

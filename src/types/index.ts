@@ -7,7 +7,9 @@ export type XPEventType =
   | "tier_complete"
   | "capstone"
   | "streak_bonus"
-  | "badge_earned";
+  | "badge_earned"
+  | "referral_bonus"
+  | "referral_reward";
 
 export type SubscriptionTier = "free" | "premium";
 
@@ -25,6 +27,9 @@ export interface Profile {
   public_profile: boolean;
   subscription_tier: SubscriptionTier;
   stripe_customer_id: string | null;
+  referral_code: string | null;
+  referred_by: string | null;
+  nurture_emails_sent: number[];
   created_at: string;
   updated_at: string;
 }
