@@ -1,9 +1,28 @@
 import { ImageResponse } from "next/og";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
+// Simple edge-compatible rate limiter (in-memory per isolate)
+const ogStore = new Map<string, { count: number; resetAt: number }>();
+function checkOgRate(ip: string): boolean {
+  const now = Date.now();
+  const entry = ogStore.get(ip);
+  if (!entry || now > entry.resetAt) {
+    ogStore.set(ip, { count: 1, resetAt: now + 60_000 });
+    return true;
+  }
+  if (entry.count >= 20) return false;
+  entry.count++;
+  return true;
+}
+
 export async function GET(request: NextRequest) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (!checkOgRate(ip)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": "60" } });
+  }
+
   const { searchParams } = request.nextUrl;
   const template = searchParams.get("template") ?? "profile";
 

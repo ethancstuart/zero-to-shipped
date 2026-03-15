@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { XP, getLevelForXP, getBadgeBySlug, BADGES } from "./constants";
+import { XP, getBadgeBySlug } from "./constants";
 import { MODULE_METADATA, getModulesByTier } from "@/lib/content/modules";
 import type { ModuleProgress, CheckpointResult } from "@/types";
 
@@ -44,28 +44,23 @@ async function awardXP(
     metadata,
   });
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("xp, level")
-    .eq("id", userId)
-    .single();
+  // Atomic increment via RPC to prevent race conditions
+  const { data: result } = await supabase.rpc("increment_xp", {
+    p_user_id: userId,
+    p_amount: xpAmount,
+  });
 
-  const oldXP = profile?.xp ?? 0;
-  const oldLevel = profile?.level ?? "Novice";
-  const newXP = oldXP + xpAmount;
-  const newLevelDef = getLevelForXP(newXP);
-
-  await supabase
-    .from("profiles")
-    .update({ xp: newXP, level: newLevelDef.title })
-    .eq("id", userId);
+  const row = result?.[0];
+  const newXP = row?.new_xp ?? xpAmount;
+  const oldLevel = row?.old_level ?? "Novice";
+  const newLevel = row?.new_level ?? "Novice";
 
   if (collector) {
     collector.xpAwarded += xpAmount;
     collector.totalXP = newXP;
-    if (newLevelDef.title !== oldLevel) {
+    if (newLevel !== oldLevel) {
       collector.previousLevel = oldLevel;
-      collector.newLevel = newLevelDef.title;
+      collector.newLevel = newLevel;
     }
   }
 
@@ -120,11 +115,22 @@ export async function handleCheckpointComplete(
     { onConflict: "user_id,module_number,checkpoint_index" }
   );
 
-  // Award checkpoint XP
-  await awardXP(userId, "checkpoint", XP.CHECKPOINT, {
-    module_number: moduleNumber,
-    checkpoint_index: checkpointIndex,
-  }, collector);
+  // Award checkpoint XP (idempotent — skip if already awarded for this checkpoint)
+  const { data: existingCheckpointXP } = await supabase
+    .from("xp_events")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("event_type", "checkpoint")
+    .eq("metadata->>module_number", String(moduleNumber))
+    .eq("metadata->>checkpoint_index", String(checkpointIndex))
+    .maybeSingle();
+
+  if (!existingCheckpointXP) {
+    await awardXP(userId, "checkpoint", XP.CHECKPOINT, {
+      module_number: moduleNumber,
+      checkpoint_index: checkpointIndex,
+    }, collector);
+  }
 
   // Update streak
   await supabase.rpc("update_streak", { p_user_id: userId });

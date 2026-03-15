@@ -16,7 +16,7 @@ export async function GET(request: Request) {
       const cookieStore = await cookies();
       const refCode = cookieStore.get("zts_ref")?.value;
 
-      if (refCode && data.user) {
+      if (refCode && /^[a-f0-9]{8}$/.test(refCode) && data.user) {
         try {
           const serviceClient = createServiceClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -50,6 +50,11 @@ export async function GET(request: Request) {
 
       return NextResponse.redirect(`${origin}${next}`);
     }
+
+    // Signal signup event via query param — client-side analytics will pick it up
+    const redirectUrl = new URL(`${origin}${next}`);
+    redirectUrl.searchParams.set("event", "signup");
+    return NextResponse.redirect(redirectUrl.toString());
   }
 
   return NextResponse.redirect(`${origin}/?error=auth`);

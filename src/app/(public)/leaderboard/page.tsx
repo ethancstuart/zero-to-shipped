@@ -133,7 +133,13 @@ export default async function LeaderboardPage({
                   }`}
                 >
                   <div className="w-8 text-center text-sm font-bold text-muted-foreground">
-                    {rank <= 3 ? ["🥇", "🥈", "🥉"][rank - 1] : `#${rank}`}
+                    {rank <= 3 ? (
+                      <span role="img" aria-label={`${["1st", "2nd", "3rd"][rank - 1]} place`}>
+                        {["🥇", "🥈", "🥉"][rank - 1]}
+                      </span>
+                    ) : (
+                      `#${rank}`
+                    )}
                   </div>
                   <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                     {leader.display_name?.[0]?.toUpperCase() ?? "?"}

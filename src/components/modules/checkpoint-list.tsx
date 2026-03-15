@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic, useTransition, useState } from "react";
+import { useOptimistic, useTransition, useState, useRef } from "react";
 import { CheckCircle2, Circle } from "lucide-react";
 import { toggleCheckpoint } from "@/app/(app)/modules/[slug]/actions";
 import { cn } from "@/lib/utils";
@@ -36,8 +36,11 @@ export function CheckpointList({
   const [isPending, startTransition] = useTransition();
   const [xpTrigger, setXpTrigger] = useState(0);
   const [showShareModal, setShowShareModal] = useState<number | null>(null);
+  const togglingRef = useRef(false);
 
   const handleToggle = (index: number) => {
+    if (togglingRef.current) return;
+    togglingRef.current = true;
     const willComplete = !optimisticCompleted.includes(index);
 
     startTransition(async () => {
@@ -53,6 +56,8 @@ export function CheckpointList({
         }
       } catch {
         toast.error("Failed to update checkpoint");
+      } finally {
+        togglingRef.current = false;
       }
     });
   };
@@ -81,12 +86,14 @@ export function CheckpointList({
           style={{ width: `${progressPercent}%` }}
         />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2" role="group" aria-label="Module checkpoints">
         {checkpoints.map((checkpoint, index) => {
           const isCompleted = optimisticCompleted.includes(index);
           return (
             <button
               key={index}
+              role="checkbox"
+              aria-checked={isCompleted}
               onClick={() => handleToggle(index)}
               disabled={isPending}
               className={cn(

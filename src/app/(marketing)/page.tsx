@@ -51,7 +51,12 @@ const jsonLd = {
   },
 };
 
-export default function LandingPage() {
+export default async function LandingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   const tiers: ModuleTier[] = ["foundations", "intermediate", "advanced", "capstone"];
 
   return (
@@ -64,6 +69,11 @@ export default function LandingPage() {
       <section className="relative overflow-hidden py-24 sm:py-32">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background" />
         <div className="mx-auto max-w-4xl px-4 text-center">
+          {error === "auth" && (
+            <div className="mb-6 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              Sign in failed. Please try again.
+            </div>
+          )}
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
             <Rocket className="size-4" />
             Start free &middot; 16 modules &middot; Ship something real

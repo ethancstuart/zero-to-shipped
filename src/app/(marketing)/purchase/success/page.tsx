@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getStripe } from "@/lib/stripe";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Rocket } from "lucide-react";
@@ -17,11 +18,22 @@ export default async function PurchaseSuccessPage({
   const { session_id } = await searchParams;
   if (!session_id) redirect("/pricing");
 
+  // Verify payment directly with Stripe to avoid webhook race condition
+  let isPaid = false;
+  try {
+    const session = await getStripe().checkout.sessions.retrieve(session_id);
+    isPaid = session.payment_status === "paid";
+  } catch {
+    // Invalid session_id — fall through to profile check
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
+
+  if (!isPaid) redirect("/pricing");
 
   const { data: profile } = await supabase
     .from("profiles")

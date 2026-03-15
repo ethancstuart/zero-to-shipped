@@ -8,7 +8,7 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Zero to Shipped
           </p>
-          <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+          <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <Link href="/pricing" className="hover:text-foreground">
               Pricing
             </Link>
@@ -18,6 +18,18 @@ export function Footer() {
             <Link href="/leaderboard" className="hover:text-foreground">
               Leaderboard
             </Link>
+            <Link href="/privacy" className="hover:text-foreground">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-foreground">
+              Terms
+            </Link>
+            <a
+              href="mailto:hello@zerotoship.app"
+              className="hover:text-foreground"
+            >
+              Contact
+            </a>
           </nav>
         </div>
       </div>

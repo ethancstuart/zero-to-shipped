@@ -122,6 +122,9 @@
   * {
     @apply border-border outline-ring/50;
   }
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
   body {
     @apply bg-background text-foreground;
   }
@@ -171,5 +174,11 @@ html.dark .shiki .light {
   display: none;
 }
 [data-tool-active="cursor"] [data-tool="cursor"] {
+  display: block;
+}
+[data-tool="claude-code"] {
+  display: none;
+}
+[data-tool-active="claude-code"] [data-tool="claude-code"] {
   display: block;
 }

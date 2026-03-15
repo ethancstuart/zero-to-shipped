@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
+import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
+
+const limiter = rateLimit({ limit: 5, windowMs: 60_000 });
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +15,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    const { success } = limiter.check(`checkout:${user.id}`);
+    if (!success) return rateLimitResponse(60_000);
 
     const { tier } = await request.json();
 
@@ -39,6 +45,7 @@ export async function POST(request: NextRequest) {
       cancel_url: `${request.nextUrl.origin}/pricing`,
     });
 
+    // Analytics: checkout_start tracked client-side when redirect happens
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error("Checkout error:", err);

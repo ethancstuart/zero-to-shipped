@@ -5,6 +5,7 @@ import {
   handleCheckpointComplete,
   handleCheckpointUncomplete,
 } from "@/lib/gamification/engine";
+import { MODULE_METADATA } from "@/lib/content/modules";
 import { revalidatePath } from "next/cache";
 import type { CheckpointResult } from "@/types";
 
@@ -35,8 +36,13 @@ export async function toggleCheckpoint(
     await handleCheckpointUncomplete(user.id, moduleNumber, checkpointIndex);
   }
 
-  revalidatePath(`/modules`);
-  revalidatePath(`/dashboard`);
+  const mod = MODULE_METADATA.find((m) => m.number === moduleNumber);
+  const slug = mod?.slug;
+  if (slug) {
+    revalidatePath(`/modules/${slug}`, "page");
+  }
+  revalidatePath(`/modules`, "page");
+  revalidatePath(`/dashboard`, "page");
 
   return result;
 }

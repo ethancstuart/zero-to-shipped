@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { getXPProgress, getBadgeBySlug, BADGES } from "@/lib/gamification/constants";
@@ -34,7 +35,7 @@ export default async function PublicProfilePage({ params }: Props) {
   const { username } = await params;
   const decodedName = decodeURIComponent(username);
 
-  const supabase = createAdminClient();
+  const supabase = await createClient();
 
   // Find public profile by display name
   const { data: profile } = await supabase
@@ -48,12 +49,14 @@ export default async function PublicProfilePage({ params }: Props) {
 
   const typedProfile = profile as Profile;
 
+  // Use admin client for progress/badges (no public RLS on these tables)
+  const adminClient = createAdminClient();
   const [progressRes, badgesRes] = await Promise.all([
-    supabase
+    adminClient
       .from("module_progress")
       .select("*")
       .eq("user_id", typedProfile.id),
-    supabase.from("badges").select("*").eq("user_id", typedProfile.id),
+    adminClient.from("badges").select("*").eq("user_id", typedProfile.id),
   ]);
 
   const progress = (progressRes.data ?? []) as ModuleProgress[];

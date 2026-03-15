@@ -11,6 +11,13 @@ export function ProfileForm({ profile }: { profile: Profile }) {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (formData: FormData) => {
+    const newRole = formData.get("role_track") as string;
+    if (profile.role_track && newRole !== profile.role_track) {
+      if (!confirm("Changing your role will update your recommended modules. Continue?")) {
+        return;
+      }
+    }
+
     startTransition(async () => {
       await updateProfile(formData);
       toast.success("Profile updated");

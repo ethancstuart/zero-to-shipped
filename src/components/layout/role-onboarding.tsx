@@ -67,6 +67,27 @@ const ROLE_OUTCOMES: Record<RoleTrack, string[]> = {
   ],
 };
 
+const STEPS = ["role", "tool", "outcomes"] as const;
+
+function StepIndicator({ current }: { current: typeof STEPS[number] }) {
+  const currentIndex = STEPS.indexOf(current);
+  return (
+    <div className="mb-6 flex items-center justify-center gap-2">
+      {STEPS.map((_, i) => (
+        <div
+          key={i}
+          className={`size-2 rounded-full transition-colors ${
+            i <= currentIndex ? "bg-primary" : "bg-muted"
+          }`}
+        />
+      ))}
+      <span className="ml-2 text-xs text-muted-foreground">
+        Step {currentIndex + 1} of {STEPS.length}
+      </span>
+    </div>
+  );
+}
+
 export function RoleOnboarding() {
   const [step, setStep] = useState<"role" | "tool" | "outcomes">("role");
   const [selectedRole, setSelectedRole] = useState<RoleTrack | null>(null);
@@ -106,6 +127,7 @@ export function RoleOnboarding() {
       <div className="w-full max-w-2xl">
         {step === "role" ? (
           <>
+            <StepIndicator current="role" />
             <h1 className="mb-2 text-center text-2xl font-bold">
               Welcome to Zero to Shipped!
             </h1>
@@ -145,6 +167,7 @@ export function RoleOnboarding() {
           </>
         ) : step === "tool" ? (
           <>
+            <StepIndicator current="tool" />
             <h1 className="mb-2 text-center text-2xl font-bold">
               Pick your AI tool
             </h1>
@@ -192,6 +215,7 @@ export function RoleOnboarding() {
           </>
         ) : (
           <>
+            <StepIndicator current="outcomes" />
             <h1 className="mb-2 text-center text-2xl font-bold">
               Here&apos;s what you&apos;ll build
             </h1>

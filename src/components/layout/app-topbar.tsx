@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,13 +12,14 @@ import {
   FileText,
   User,
   Award,
-  Rocket,
   Flame,
   Trophy,
   Route,
   ClipboardList,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "./theme-toggle";
 import type { Profile } from "@/types";
 import { getXPProgress } from "@/lib/gamification/constants";
@@ -39,6 +40,23 @@ export function AppTopbar({ profile }: { profile: Profile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { current } = getXPProgress(profile.xp);
+
+  const closeMobile = useCallback(() => setMobileOpen(false), []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMobile();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [mobileOpen, closeMobile]);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  };
 
   return (
     <>
@@ -74,16 +92,23 @@ export function AppTopbar({ profile }: { profile: Profile }) {
       </header>
 
       {/* Mobile nav */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-background pt-14 lg:hidden">
-          <nav className="space-y-1 p-4">
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-background pt-14 transition-all duration-200 lg:hidden",
+          mobileOpen
+            ? "pointer-events-auto opacity-100 translate-y-0"
+            : "pointer-events-none opacity-0 -translate-y-2"
+        )}
+      >
+        <nav className="flex h-full flex-col p-4">
+          <div className="space-y-1">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={closeMobile}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-3 text-base font-medium transition-colors",
                     isActive
@@ -96,9 +121,18 @@ export function AppTopbar({ profile }: { profile: Profile }) {
                 </Link>
               );
             })}
-          </nav>
-        </div>
-      )}
+          </div>
+          <div className="mt-auto border-t border-border pt-4">
+            <button
+              onClick={handleSignOut}
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted"
+            >
+              <LogOut className="size-5" />
+              Sign Out
+            </button>
+          </div>
+        </nav>
+      </div>
     </>
   );
 }
