@@ -20,12 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${decoded}'s Profile`,
     openGraph: {
-      title: `${decoded} — Zero to Shipped`,
+      title: `${decoded} — Zero to Ship`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${decoded} — Zero to Shipped`,
+      title: `${decoded} — Zero to Ship`,
       images: [ogUrl],
     },
   };
@@ -179,12 +179,12 @@ export default async function PublicProfilePage({ params }: Props) {
         <div className="flex justify-center">
           <ShareButtons
             url={`${siteConfig.url}/u/${encodeURIComponent(username)}`}
-            title={`Check out ${typedProfile.display_name}'s progress on Zero to Shipped!`}
+            title={`Check out ${typedProfile.display_name}'s progress on Zero to Ship!`}
           />
         </div>
 
         <p className="text-center text-xs text-muted-foreground">
-          Powered by Zero to Shipped
+          Powered by Zero to Ship
         </p>
       </div>
     </div>

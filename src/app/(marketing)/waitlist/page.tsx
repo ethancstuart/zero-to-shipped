@@ -2,7 +2,7 @@ import { WaitlistForm } from "./waitlist-form";
 
 export const metadata = {
   title: "Join the Waitlist",
-  description: "Be the first to know when Zero to Shipped Premium launches.",
+  description: "Be the first to know when Zero to Ship Premium launches.",
 };
 
 export default function WaitlistPage() {

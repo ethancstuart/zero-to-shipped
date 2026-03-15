@@ -1,4 +1,4 @@
-# Zero to Shipped
+# Zero to Ship
 
 [![Built with Claude Code](https://img.shields.io/badge/built%20with-Claude%20Code-blueviolet.svg)](https://claude.ai/claude-code)
 

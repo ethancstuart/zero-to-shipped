@@ -129,7 +129,7 @@ export function RoleOnboarding() {
           <>
             <StepIndicator current="role" />
             <h1 className="mb-2 text-center text-2xl font-bold">
-              Welcome to Zero to Shipped!
+              Welcome to Zero to Ship!
             </h1>
             <p className="mb-8 text-center text-muted-foreground">
               Choose your role to get personalized module recommendations.

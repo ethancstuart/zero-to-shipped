@@ -1,4 +1,4 @@
-# Zero to Shipped — AI Coding Course Platform
+# Zero to Ship — AI Coding Course Platform
 
 ## Project Overview
 Course platform teaching non-engineers to build real software with AI coding tools. 16-module curriculum from setup to capstone. Gamified learning with XP, streaks, skill trees, and certificates. Freemium model with premium gating. Built with Claude Code.

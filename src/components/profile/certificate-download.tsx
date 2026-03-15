@@ -78,13 +78,13 @@ export function CertificateDownload({ name, date }: CertificateDownloadProps) {
         <Page size="A4" orientation="landscape" style={styles.page}>
           <View style={styles.border}>
             <Text style={styles.header}>Certificate of Completion</Text>
-            <Text style={styles.title}>Zero to Shipped</Text>
+            <Text style={styles.title}>Zero to Ship</Text>
             <Text style={styles.subtitle}>
               Build with AI, No Engineering Degree Required
             </Text>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.description}>
-              has successfully completed all 16 modules of the Zero to Shipped
+              has successfully completed all 16 modules of the Zero to Ship
               curriculum, including the capstone project.
             </Text>
             <Text style={styles.date}>{formattedDate}</Text>

@@ -12,7 +12,7 @@ const NURTURE_SCHEDULE: {
     subject: "How's Module 1 going?",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>You signed up for Zero to Shipped a few days ago — nice move.</p>
+      <p>You signed up for Zero to Ship a few days ago — nice move.</p>
       <p>If you haven't started yet, Module 1 takes about 3 hours and you'll have your first build by the end. Plus, completing checkpoints every day earns you streak bonuses.</p>
       <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Continue Learning</a></p>
     `,
@@ -22,7 +22,7 @@ const NURTURE_SCHEDULE: {
     subject: "Here's what builders are shipping",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>Builders on Zero to Shipped are creating dashboards, internal tools, automated reports, and more — all without engineering backgrounds.</p>
+      <p>Builders on Zero to Ship are creating dashboards, internal tools, automated reports, and more — all without engineering backgrounds.</p>
       <p>The premium modules (6–16) are where things get real: interactive tools, data products, automations, and your capstone project.</p>
       <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">See What You'll Build</a></p>
     `,
@@ -42,7 +42,7 @@ const NURTURE_SCHEDULE: {
     subject: "Your modules are waiting",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>Just a friendly nudge — your Zero to Shipped modules are still waiting for you.</p>
+      <p>Just a friendly nudge — your Zero to Ship modules are still waiting for you.</p>
       <p>At $79, Full Access is under most L&D approval thresholds. We'll send you a receipt you can expense.</p>
       <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Full Access</a></p>
       <p style="color: #666; font-size: 14px;">This is the last email in this series. You can always come back when you're ready.</p>
@@ -102,13 +102,13 @@ export async function GET(request: NextRequest) {
 
         try {
           await resend.emails.send({
-            from: "Zero to Shipped <hello@zerotoship.app>",
+            from: "Zero to Ship <hello@zerotoship.app>",
             to: authUser.user.email,
             subject: email.subject,
             html: `
               <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
                 ${email.body(name, progressPct)}
-                <p style="color: #666; font-size: 14px;">— Zero to Shipped</p>
+                <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
               </div>
             `,
           });

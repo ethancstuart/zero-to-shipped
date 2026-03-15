@@ -38,16 +38,16 @@ export async function GET(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: "Zero to Shipped <hello@zerotoship.app>",
+        from: "Zero to Ship <hello@zerotoship.app>",
         to: authUser.user.email,
         subject: `Don't lose your ${user.current_streak}-day streak!`,
         html: `
           <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
             <p>Hey ${user.display_name?.split(" ")[0] ?? "there"},</p>
-            <p>You've got a <strong>${user.current_streak}-day streak</strong> on Zero to Shipped — don't let it slip!</p>
+            <p>You've got a <strong>${user.current_streak}-day streak</strong> on Zero to Ship — don't let it slip!</p>
             <p>Even one checkpoint keeps the streak alive.</p>
             <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Continue Learning</a></p>
-            <p style="color: #666; font-size: 14px;">— Zero to Shipped</p>
+            <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
           </div>
         `,
       });

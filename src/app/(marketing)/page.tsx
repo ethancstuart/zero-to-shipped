@@ -33,12 +33,12 @@ const ROLE_DESCRIPTIONS: Record<RoleTrack, string> = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "Zero to Shipped",
+  name: "Zero to Ship",
   description:
     "A gamified learning platform teaching PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools.",
   provider: {
     "@type": "Organization",
-    name: "Zero to Shipped",
+    name: "Zero to Ship",
     url: siteConfig.url,
   },
   numberOfCredits: 16,

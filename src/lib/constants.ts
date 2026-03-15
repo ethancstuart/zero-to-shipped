@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Zero to Shipped",
-  title: "Zero to Shipped — Build with AI, No Engineering Degree Required",
+  name: "Zero to Ship",
+  title: "Zero to Ship — Build with AI, No Engineering Degree Required",
   description:
     "A gamified learning platform teaching PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools.",
   url: "https://zerotoship.app",

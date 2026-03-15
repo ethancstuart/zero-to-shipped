@@ -49,7 +49,7 @@ export function AppSidebar({ profile }: { profile: Profile }) {
       {/* Logo */}
       <div className="flex h-16 items-center gap-2 border-b border-border px-6">
         <Rocket className="size-5 text-primary" />
-        <span className="font-bold">Zero to Shipped</span>
+        <span className="font-bold">Zero to Ship</span>
         {profile.subscription_tier === "premium" && (
           <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
             Premium

@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Terms of Service",
-  description: "Terms and conditions for using Zero to Shipped.",
+  description: "Terms and conditions for using Zero to Ship.",
 };
 
 export default function TermsPage() {
@@ -14,7 +14,7 @@ export default function TermsPage() {
       <div className="space-y-8 text-muted-foreground [&_h2]:mb-3 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-foreground [&_p]:leading-relaxed">
         <section>
           <h2>Account Terms</h2>
-          <p>You must sign in with a valid Google account to use Zero to Shipped. You are responsible for maintaining the security of your account. You must be at least 16 years old to use this service.</p>
+          <p>You must sign in with a valid Google account to use Zero to Ship. You are responsible for maintaining the security of your account. You must be at least 16 years old to use this service.</p>
         </section>
 
         <section>
@@ -29,7 +29,7 @@ export default function TermsPage() {
 
         <section>
           <h2>Content & Intellectual Property</h2>
-          <p>All course content, including modules, code examples, and materials, is owned by Zero to Shipped. Your purchase grants you a personal, non-transferable license to access the content. You may not redistribute, resell, or share your account access.</p>
+          <p>All course content, including modules, code examples, and materials, is owned by Zero to Ship. Your purchase grants you a personal, non-transferable license to access the content. You may not redistribute, resell, or share your account access.</p>
         </section>
 
         <section>
@@ -49,7 +49,7 @@ export default function TermsPage() {
 
         <section>
           <h2>Limitation of Liability</h2>
-          <p>Zero to Shipped is an educational platform. We provide learning materials as-is and make no guarantees about specific outcomes. Our liability is limited to the amount you paid for the service.</p>
+          <p>Zero to Ship is an educational platform. We provide learning materials as-is and make no guarantees about specific outcomes. Our liability is limited to the amount you paid for the service.</p>
         </section>
 
         <section>

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props) {
 
   if (!profile) return { title: "Certificate Not Found" };
   return {
-    title: `${(profile as Pick<Profile, "display_name">).display_name} — Zero to Shipped Certificate`,
+    title: `${(profile as Pick<Profile, "display_name">).display_name} — Zero to Ship Certificate`,
   };
 }
 
@@ -62,7 +62,7 @@ export default async function VerifyPage({ params }: Props) {
       <div className="mx-auto max-w-2xl px-4 py-20">
         <div className="mb-8 text-center">
           <p className="mb-2 text-sm font-medium uppercase tracking-wider text-primary">
-            Zero to Shipped
+            Zero to Ship
           </p>
           <h1 className="text-3xl font-bold">Certificate Verification</h1>
         </div>
@@ -117,7 +117,7 @@ export default async function VerifyPage({ params }: Props) {
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          Verified by Zero to Shipped · User ID: {id.slice(0, 8)}...
+          Verified by Zero to Ship · User ID: {id.slice(0, 8)}...
         </p>
       </div>
     </div>

@@ -21,7 +21,7 @@ export function ModuleCompleteShare({
   if (!open) return null;
 
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/api/og?template=module-complete&title=${encodeURIComponent(moduleTitle)}&number=${moduleNumber}&completed=${completedCount}`;
-  const shareTitle = `I just completed Module ${moduleNumber}: ${moduleTitle} on Zero to Shipped! ${completedCount}/16 done.`;
+  const shareTitle = `I just completed Module ${moduleNumber}: ${moduleTitle} on Zero to Ship! ${completedCount}/16 done.`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">

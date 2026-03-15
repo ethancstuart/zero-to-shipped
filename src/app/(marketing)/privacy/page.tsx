@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Privacy Policy",
-  description: "How Zero to Shipped collects, uses, and protects your data.",
+  description: "How Zero to Ship collects, uses, and protects your data.",
 };
 
 export default function PrivacyPage() {

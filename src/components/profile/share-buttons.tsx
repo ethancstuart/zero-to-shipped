@@ -15,7 +15,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
 
   const twitterText = encodeURIComponent(
-    `${title}\n\nBuilt with Zero to Shipped — learn to build with AI, no engineering degree required.`
+    `${title}\n\nBuilt with Zero to Ship — learn to build with AI, no engineering degree required.`
   );
   const twitterUrl = `https://twitter.com/intent/tweet?text=${twitterText}&url=${encodeURIComponent(url)}`;
 

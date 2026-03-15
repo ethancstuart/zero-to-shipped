@@ -82,7 +82,7 @@ export function BuildLogPDF({
             <View style={styles.header}>
               <Text style={styles.title}>{displayName}</Text>
               <Text style={styles.subtitle}>
-                Zero to Shipped Build Log
+                Zero to Ship Build Log
                 {roleTrack ? ` · ${ROLE_LABELS[roleTrack]} Track` : ""}
               </Text>
             </View>
