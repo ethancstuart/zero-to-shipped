@@ -34,7 +34,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>You're ${progressPct}% through the foundations. The first 5 modules give you the building blocks — the next 11 modules are where you ship real things.</p>
       <p>Upgrade to Full Access to unlock your capstone project, earn your certificate, and get on the leaderboard.</p>
-      <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Upgrade — $149</a></p>
+      <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Upgrade — $79</a></p>
     `,
   },
   {
@@ -43,7 +43,7 @@ const NURTURE_SCHEDULE: {
     body: (name) => `
       <p>Hey ${name},</p>
       <p>Just a friendly nudge — your Zero to Shipped modules are still waiting for you.</p>
-      <p>At $149, Full Access is under most L&D approval thresholds. We'll send you a receipt you can expense.</p>
+      <p>At $79, Full Access is under most L&D approval thresholds. We'll send you a receipt you can expense.</p>
       <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Full Access</a></p>
       <p style="color: #666; font-size: 14px;">This is the last email in this series. You can always come back when you're ready.</p>
     `,

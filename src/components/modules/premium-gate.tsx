@@ -39,8 +39,11 @@ export function PremiumGate({
           </p>
           <div className="flex flex-col items-center gap-3">
             <div className="w-full max-w-xs">
-              <CheckoutButton tier="full_access" label="Get Full Access — $149" />
+              <CheckoutButton tier="full_access" label="Get Full Access — $79" />
             </div>
+            <p className="text-sm font-medium text-green-500">
+              Founding member price: $49
+            </p>
             <Button variant="outline" render={<Link href="/pricing" />}>
               Compare Plans
               <ArrowRight className="ml-1 size-4" />

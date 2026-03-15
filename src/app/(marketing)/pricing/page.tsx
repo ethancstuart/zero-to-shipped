@@ -22,12 +22,6 @@ const FULL_ACCESS_FEATURES = [
   "Public profile with sharing",
 ];
 
-const EXTRAS_FEATURES = [
-  "Everything in Full Access",
-  "Premium cheat sheets",
-  "Prompt library",
-  "Priority content updates",
-];
 
 export default async function PricingPage() {
   const supabase = await createClient();
@@ -50,7 +44,7 @@ export default async function PricingPage() {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
           {/* Free Tier */}
           <div className="rounded-xl border border-border bg-card p-8">
             <h2 className="mb-1 text-xl font-bold">Free</h2>
@@ -89,9 +83,14 @@ export default async function PricingPage() {
             <p className="mb-6 text-sm text-muted-foreground">
               Full curriculum with advanced modules and capstone.
             </p>
-            <p className="mb-6">
-              <span className="text-4xl font-bold">$149</span>
+            <p className="mb-1">
+              <span className="text-4xl font-bold">$79</span>
               <span className="text-muted-foreground"> /one-time</span>
+            </p>
+            <p className="mb-6">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-500">
+                🎉 First 100 students: $49
+              </span>
             </p>
             {isLoggedIn ? (
               <CheckoutButton tier="full_access" label="Get Full Access" />
@@ -107,38 +106,13 @@ export default async function PricingPage() {
               ))}
             </ul>
           </div>
-
-          {/* Full Access + Extras */}
-          <div className="rounded-xl border border-border bg-card p-8">
-            <h2 className="mb-1 text-xl font-bold">Full Access + Extras</h2>
-            <p className="mb-6 text-sm text-muted-foreground">
-              Everything plus premium resources and priority updates.
-            </p>
-            <p className="mb-6">
-              <span className="text-4xl font-bold">$249</span>
-              <span className="text-muted-foreground"> /one-time</span>
-            </p>
-            {isLoggedIn ? (
-              <CheckoutButton tier="extras" label="Get Full Access + Extras" />
-            ) : (
-              <LoginButton />
-            )}
-            <ul className="mt-6 space-y-3">
-              {EXTRAS_FEATURES.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm">
-                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         {/* Easy to Expense */}
         <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center">
           <h2 className="mb-2 text-xl font-bold">Easy to expense</h2>
           <p className="mx-auto max-w-lg text-muted-foreground">
-            $149 is under most L&amp;D approval thresholds. We&apos;ll send you
+            $79 is under most L&amp;D approval thresholds. We&apos;ll send you
             a receipt you can submit to your company.
           </p>
         </div>
