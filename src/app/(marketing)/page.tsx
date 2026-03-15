@@ -74,9 +74,9 @@ export default async function LandingPage({
               Sign in failed. Please try again.
             </div>
           )}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-500">
             <Rocket className="size-4" />
-            Start free &middot; 16 modules &middot; Ship something real
+            Founding member pricing: $49 (first 100 students)
           </div>
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
             Build with AI.
@@ -218,10 +218,22 @@ export default async function LandingPage({
       <section className="border-t border-border py-20">
         <div className="mx-auto max-w-2xl px-4 text-center">
           <h2 className="mb-4 text-3xl font-bold">Ready to start building?</h2>
-          <p className="mb-8 text-muted-foreground">
-            Join for free. Pick your role. Start shipping.
+          <p className="mb-4 text-muted-foreground">
+            5 modules free. Full access: $79 one-time.
           </p>
-          <LoginButton />
+          <p className="mb-8 text-sm font-medium text-green-500">
+            First 100 students get founding member pricing: $49
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <LoginButton />
+            <Button
+              variant="outline"
+              render={<Link href="/pricing" />}
+            >
+              See Pricing
+              <ArrowRight className="ml-2 size-4" />
+            </Button>
+          </div>
         </div>
       </section>
     </div>
