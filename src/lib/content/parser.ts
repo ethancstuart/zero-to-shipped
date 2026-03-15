@@ -3,9 +3,30 @@ import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import { createHighlighter } from "shiki";
 import type { Highlighter } from "shiki";
+
+// Permissive schema that allows content elements but strips XSS vectors
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    code: [...(defaultSchema.attributes?.code ?? []), "className"],
+    span: [...(defaultSchema.attributes?.span ?? []), "className", "style"],
+    pre: [...(defaultSchema.attributes?.pre ?? []), "className", "style"],
+    div: [...(defaultSchema.attributes?.div ?? []), "className", "style", "data-tool"],
+    "*": [...(defaultSchema.attributes?.["*"] ?? []), "className"],
+  },
+  tagNames: [
+    ...(defaultSchema.tagNames ?? []),
+    "details",
+    "summary",
+    "div",
+    "span",
+  ],
+};
 
 let highlighterPromise: Promise<Highlighter> | null = null;
 
@@ -38,6 +59,7 @@ export async function parseMarkdownToHtml(markdown: string): Promise<string> {
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeSanitize, sanitizeSchema)
     .use(rehypeStringify)
     .process(markdown);
 
@@ -62,6 +84,20 @@ export async function parseMarkdownToHtml(markdown: string): Promise<string> {
     }
   });
 
+  html = wrapToolContent(html);
+
+  return html;
+}
+
+function wrapToolContent(html: string): string {
+  html = html.replace(
+    /<blockquote>\s*<p>\s*<strong>In Cursor(?::?)<\/strong>((?:(?!<blockquote>)[\s\S])*?)<\/blockquote>/gi,
+    '<div data-tool="cursor"><blockquote><p><strong>In Cursor:</strong>$1</blockquote></div>'
+  );
+  html = html.replace(
+    /<blockquote>\s*<p>\s*<strong>In Claude Code(?::?)<\/strong>((?:(?!<blockquote>)[\s\S])*?)<\/blockquote>/gi,
+    '<div data-tool="claude-code"><blockquote><p><strong>In Claude Code:</strong>$1</blockquote></div>'
+  );
   return html;
 }
 

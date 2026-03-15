@@ -9,12 +9,37 @@
 
 import { readdir, readFile, writeFile, mkdir } from "fs/promises";
 import { join } from "path";
+import { createHighlighter } from "shiki";
+import type { Highlighter } from "shiki";
 
 const CONTENT_SOURCE = join(process.cwd(), "content-source");
 const OUTPUT_DIR = join(process.cwd(), "src/content/modules");
 
 // Module file pattern: 01-setup-and-first-build.md
 const MODULE_PATTERN = /^(\d{2})-(.+)\.md$/;
+
+let highlighterInstance: Highlighter | null = null;
+
+async function getHighlighter(): Promise<Highlighter> {
+  if (!highlighterInstance) {
+    highlighterInstance = await createHighlighter({
+      themes: ["github-dark", "github-light"],
+      langs: [
+        "javascript",
+        "typescript",
+        "python",
+        "bash",
+        "json",
+        "html",
+        "css",
+        "sql",
+        "markdown",
+        "yaml",
+      ],
+    });
+  }
+  return highlighterInstance;
+}
 
 async function parseMarkdownToHtml(markdown: string): Promise<string> {
   const { unified } = await import("unified");
@@ -35,13 +60,38 @@ async function parseMarkdownToHtml(markdown: string): Promise<string> {
   return String(result);
 }
 
-function wrapCursorContent(html: string): string {
-  // Wrap Cursor-specific callouts with data-tool="cursor"
-  // Look for content mentioning "Cursor" in tips, notes, or blockquotes
-  return html.replace(
-    /(<blockquote>[\s\S]*?(?:In Cursor|Cursor tip|Cursor-specific|Using Cursor)[\s\S]*?<\/blockquote>)/gi,
-    '<div data-tool="cursor">$1</div>'
+function highlightCodeBlocks(html: string, highlighter: Highlighter): string {
+  const codeBlockRegex =
+    /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g;
+  return html.replace(codeBlockRegex, (_, lang, code) => {
+    const decoded = code
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"');
+    try {
+      return highlighter.codeToHtml(decoded, {
+        lang,
+        themes: { dark: "github-dark", light: "github-light" },
+      });
+    } catch {
+      return `<pre><code>${code}</code></pre>`;
+    }
+  });
+}
+
+function wrapToolContent(html: string): string {
+  // Wrap blockquotes that start with "In Cursor" / "In Claude Code"
+  // Uses tempered greedy token to prevent crossing blockquote boundaries
+  html = html.replace(
+    /<blockquote>\s*<p>\s*<strong>In Cursor(?::?)<\/strong>((?:(?!<blockquote>)[\s\S])*?)<\/blockquote>/gi,
+    '<div data-tool="cursor"><blockquote><p><strong>In Cursor:</strong>$1</blockquote></div>'
   );
+  html = html.replace(
+    /<blockquote>\s*<p>\s*<strong>In Claude Code(?::?)<\/strong>((?:(?!<blockquote>)[\s\S])*?)<\/blockquote>/gi,
+    '<div data-tool="claude-code"><blockquote><p><strong>In Claude Code:</strong>$1</blockquote></div>'
+  );
+  return html;
 }
 
 async function main() {
@@ -86,8 +136,10 @@ async function main() {
     const hoursMatch = markdown.match(/(\d+[-–]\d+)\s*hours/i);
 
     // Parse to HTML
+    const highlighter = await getHighlighter();
     let html = await parseMarkdownToHtml(markdown);
-    html = wrapCursorContent(html);
+    html = highlightCodeBlocks(html, highlighter);
+    html = wrapToolContent(html);
 
     const output = {
       number: moduleNumber,

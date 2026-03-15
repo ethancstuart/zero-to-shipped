@@ -49,6 +49,11 @@ const CHEAT_SHEETS = [
     description: "Common issues and solutions when building with AI tools.",
     slug: "troubleshooting",
   },
+  {
+    title: "Claude Code Skills",
+    description: "Commands, workflows, and tips for building with Claude Code CLI.",
+    slug: "claude-code-skills",
+  },
 ];
 
 export default function CheatSheetsPage() {
@@ -64,16 +69,19 @@ export default function CheatSheetsPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {CHEAT_SHEETS.map((sheet) => (
-          <div
+          <Link
             key={sheet.slug}
+            href={`/cheat-sheets/${sheet.slug}`}
             className="group rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/30"
           >
             <FileText className="mb-3 size-6 text-primary" />
-            <h3 className="mb-1 font-medium">{sheet.title}</h3>
+            <h3 className="mb-1 font-medium group-hover:text-primary">
+              {sheet.title}
+            </h3>
             <p className="text-sm text-muted-foreground">
               {sheet.description}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
