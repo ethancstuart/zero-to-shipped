@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/layout/login-button";
+import { WaitlistForm } from "@/app/(marketing)/waitlist/waitlist-form";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { ROLE_LABELS, TIER_LABELS, siteConfig } from "@/lib/constants";
 import type { RoleTrack, ModuleTier } from "@/types";
@@ -79,16 +80,20 @@ export default async function LandingPage({
             Founding member pricing: $49 (first 100 students)
           </div>
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
-            Build with AI.
+            Stop learning.
             <br />
-            <span className="text-primary">No engineering degree required.</span>
+            <span className="text-primary">Start shipping.</span>
           </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-            A gamified learning platform for PMs, Project Managers, Business
-            Analysts, and BI Engineers who want to build real products with AI
-            coding tools — from zero to shipped.
+          <p className="mx-auto mb-4 max-w-2xl text-lg text-muted-foreground">
+            Build with AI — no engineering degree required. A gamified learning
+            platform for PMs, Project Managers, Business Analysts, and BI
+            Engineers who want to build real products with AI coding tools.
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <p className="mx-auto mb-8 max-w-2xl text-sm text-muted-foreground/70">
+            Built by Ethan Stuart — Senior Manager, Data &amp; AI Products at
+            Disney Studio Technology
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <LoginButton />
             <Button
               variant="outline"
@@ -97,6 +102,12 @@ export default async function LandingPage({
               View Curriculum
               <ArrowRight className="ml-2 size-4" />
             </Button>
+          </div>
+          <div className="mx-auto mt-8 max-w-sm">
+            <p className="mb-3 text-sm text-muted-foreground">
+              Not ready to sign in? Get notified when we launch:
+            </p>
+            <WaitlistForm />
           </div>
         </div>
       </section>
@@ -224,7 +235,7 @@ export default async function LandingPage({
           <p className="mb-8 text-sm font-medium text-green-500">
             First 100 students get founding member pricing: $49
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <LoginButton />
             <Button
               variant="outline"
