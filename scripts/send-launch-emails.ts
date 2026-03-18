@@ -25,24 +25,24 @@ const SITE_URL = "https://zerotoship.app";
 
 const TEMPLATES = {
   announcement: {
-    subject: "Zero to Shipped just launched — your spot is ready",
+    subject: "Zero to Ship just launched — your spot is ready",
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
         <h1 style="font-size: 24px;">It's live.</h1>
-        <p>Zero to Shipped is officially open. You signed up for the waitlist, so you're hearing about it first.</p>
-        <p>The full curriculum — 16 modules, capstone projects, certificates, and more — is now available with Full Access starting at <strong>$149</strong>.</p>
+        <p>Zero to Ship is officially open. You signed up for the waitlist, so you're hearing about it first.</p>
+        <p>The full curriculum — 16 modules, capstone projects, certificates, and more — is now available with Full Access starting at <strong>$79</strong> (founding members: <strong>$49</strong>).</p>
         <p><a href="${SITE_URL}/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">See Pricing & Enroll</a></p>
         <p style="color: #666; font-size: 14px;">The first 5 modules are always free. Start there if you want to try before you buy.</p>
-        <p>— Zero to Shipped</p>
+        <p>— Zero to Ship</p>
       </div>
     `,
   },
   reminder: {
-    subject: "48 hours left — Zero to Shipped early access",
+    subject: "48 hours left — Zero to Ship early access",
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
         <h1 style="font-size: 24px;">Quick reminder</h1>
-        <p>Zero to Shipped launched earlier this week. If you haven't had a chance to check it out yet, here's what you get with Full Access:</p>
+        <p>Zero to Ship launched earlier this week. If you haven't had a chance to check it out yet, here's what you get with Full Access:</p>
         <ul>
           <li>16 hands-on modules from foundations to capstone</li>
           <li>Role-specific learning paths (PM, PjM, BA, BI)</li>
@@ -50,19 +50,19 @@ const TEMPLATES = {
           <li>Certificate of completion</li>
         </ul>
         <p><a href="${SITE_URL}/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Full Access</a></p>
-        <p>— Zero to Shipped</p>
+        <p>— Zero to Ship</p>
       </div>
     `,
   },
   final: {
-    subject: "Last call — Zero to Shipped",
+    subject: "Last call — Zero to Ship",
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
         <h1 style="font-size: 24px;">Final reminder</h1>
-        <p>This is the last email about the launch. If Zero to Shipped isn't for you, no worries at all.</p>
+        <p>This is the last email about the launch. If Zero to Ship isn't for you, no worries at all.</p>
         <p>But if you've been meaning to check it out — the free tier has 5 full modules you can start right now, no credit card needed.</p>
         <p><a href="${SITE_URL}/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">See Pricing</a></p>
-        <p>— Zero to Shipped</p>
+        <p>— Zero to Ship</p>
       </div>
     `,
   },
@@ -97,7 +97,7 @@ async function main() {
   for (const { email } of waitlist) {
     try {
       await resend.emails.send({
-        from: "Zero to Shipped <launch@zerotoship.app>",
+        from: "Zero to Ship <launch@zerotoship.app>",
         to: email,
         subject: template.subject,
         html: template.html,
