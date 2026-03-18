@@ -16,11 +16,19 @@ export default async function SkillTreePage() {
 
   const { data } = await supabase
     .from("module_progress")
-    .select("*")
+    .select("module_number, status")
     .eq("user_id", user.id);
 
   const progress = (data ?? []) as ModuleProgress[];
   const statusMap = new Map(progress.map((p) => [p.module_number, p.status]));
+
+  // Trim module data to only what the client component needs (~2KB vs ~12KB)
+  const treeModules = MODULE_METADATA.map((m) => ({
+    number: m.number,
+    slug: m.slug,
+    title: m.title,
+    prerequisites: m.prerequisites,
+  }));
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -52,7 +60,7 @@ export default async function SkillTreePage() {
         </div>
       </div>
 
-      <SkillTreeGraph statusMap={Object.fromEntries(statusMap)} />
+      <SkillTreeGraph modules={treeModules} statusMap={Object.fromEntries(statusMap)} />
     </div>
   );
 }

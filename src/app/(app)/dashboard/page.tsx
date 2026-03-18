@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getProfile } from "@/lib/supabase/cached-queries";
 import { redirect } from "next/navigation";
 import {
   Flame,
@@ -26,19 +27,19 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  const [profileRes, progressRes, badgesRes, eventsRes] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user.id).single(),
-    supabase.from("module_progress").select("*").eq("user_id", user.id),
-    supabase.from("badges").select("*").eq("user_id", user.id),
+  const [profile, progressRes, badgesRes, eventsRes] = await Promise.all([
+    getProfile(user.id),
+    supabase.from("module_progress").select("module_number, status").eq("user_id", user.id),
+    supabase.from("badges").select("id, badge_slug").eq("user_id", user.id),
     supabase
       .from("xp_events")
-      .select("*")
+      .select("event_type, xp_amount, metadata, created_at")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(20),
   ]);
 
-  const profile = profileRes.data as Profile;
+  if (!profile) redirect("/");
   const progress = (progressRes.data ?? []) as ModuleProgress[];
   const badges = (badgesRes.data ?? []) as Badge[];
   const events = (eventsRes.data ?? []) as XPEvent[];

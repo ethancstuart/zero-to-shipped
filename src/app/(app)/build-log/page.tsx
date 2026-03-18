@@ -24,10 +24,10 @@ export default async function BuildLogPage() {
   if (!user) redirect("/");
 
   const [profileRes, progressRes] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user.id).single(),
+    supabase.from("profiles").select("subscription_tier, display_name, role_track, xp, level").eq("id", user.id).single(),
     supabase
       .from("module_progress")
-      .select("*")
+      .select("module_number, completed_at")
       .eq("user_id", user.id)
       .eq("status", "completed")
       .order("completed_at", { ascending: true }),

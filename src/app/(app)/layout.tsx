@@ -1,9 +1,14 @@
 import { redirect } from "next/navigation";
+import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase/server";
+import { getProfile } from "@/lib/supabase/cached-queries";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { AppTopbar } from "@/components/layout/app-topbar";
-import { RoleOnboarding } from "@/components/layout/role-onboarding";
 import type { Profile } from "@/types";
+
+const RoleOnboarding = dynamic(
+  () => import("@/components/layout/role-onboarding").then(m => m.RoleOnboarding)
+);
 
 export default async function AppLayout({
   children,
@@ -19,11 +24,7 @@ export default async function AppLayout({
     redirect("/");
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+  const profile = await getProfile(user.id);
 
   if (!profile) {
     redirect("/");

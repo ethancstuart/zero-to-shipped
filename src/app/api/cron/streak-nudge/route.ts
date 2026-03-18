@@ -14,6 +14,22 @@ export async function GET(request: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  // Acquire lock to prevent duplicate runs from concurrent instances
+  const lockExpiry = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // 5 min
+  const { data: lock } = await supabase
+    .from("cron_locks")
+    .upsert(
+      { lock_name: "streak-nudge", acquired_at: new Date().toISOString(), expires_at: lockExpiry },
+      { onConflict: "lock_name" }
+    )
+    .select("lock_name")
+    .single();
+
+  // If upsert returned nothing, another instance holds a valid lock
+  if (!lock) {
+    return NextResponse.json({ skipped: "lock held by another instance" });
+  }
+
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   // Find users with streaks who haven't been active in 3+ days
@@ -27,19 +43,28 @@ export async function GET(request: NextRequest) {
     .lt("last_activity_date", threeDaysAgo.toISOString().split("T")[0]);
 
   if (!users || users.length === 0) {
+    await supabase.from("cron_locks").delete().eq("lock_name", "streak-nudge");
     return NextResponse.json({ nudged: 0 });
   }
 
-  // Get emails from auth.users via admin API
+  // Batch fetch all emails upfront instead of N+1 getUserById calls
+  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+  const emailMap = new Map<string, string>();
+  if (authData?.users) {
+    for (const u of authData.users) {
+      if (u.email) emailMap.set(u.id, u.email);
+    }
+  }
+
   let nudged = 0;
   for (const user of users) {
-    const { data: authUser } = await supabase.auth.admin.getUserById(user.id);
-    if (!authUser?.user?.email) continue;
+    const email = emailMap.get(user.id);
+    if (!email) continue;
 
     try {
       await resend.emails.send({
         from: "Zero to Ship <hello@zerotoship.app>",
-        to: authUser.user.email,
+        to: email,
         subject: `Don't lose your ${user.current_streak}-day streak!`,
         html: `
           <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
@@ -56,6 +81,9 @@ export async function GET(request: NextRequest) {
       // Skip failed sends
     }
   }
+
+  // Release lock
+  await supabase.from("cron_locks").delete().eq("lock_name", "streak-nudge");
 
   return NextResponse.json({ nudged });
 }

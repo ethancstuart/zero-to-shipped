@@ -61,6 +61,21 @@ export async function GET(request: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  // Acquire lock to prevent duplicate runs from concurrent instances
+  const lockExpiry = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+  const { data: lock } = await supabase
+    .from("cron_locks")
+    .upsert(
+      { lock_name: "free-user-nurture", acquired_at: new Date().toISOString(), expires_at: lockExpiry },
+      { onConflict: "lock_name" }
+    )
+    .select("lock_name")
+    .single();
+
+  if (!lock) {
+    return NextResponse.json({ skipped: "lock held by another instance" });
+  }
+
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   // Get all free users
@@ -70,18 +85,44 @@ export async function GET(request: NextRequest) {
     .eq("subscription_tier", "free");
 
   if (!freeUsers || freeUsers.length === 0) {
+    await supabase.from("cron_locks").delete().eq("lock_name", "free-user-nurture");
     return NextResponse.json({ sent: 0 });
+  }
+
+  // Batch fetch all auth users upfront (emails + created_at) instead of N+1
+  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+  const authMap = new Map<string, { email: string; created_at: string }>();
+  if (authData?.users) {
+    for (const u of authData.users) {
+      if (u.email && u.created_at) {
+        authMap.set(u.id, { email: u.email, created_at: u.created_at });
+      }
+    }
+  }
+
+  // Batch fetch completed module counts for all free users
+  const userIds = freeUsers.map((u) => u.id);
+  const { data: progressData } = await supabase
+    .from("module_progress")
+    .select("user_id")
+    .in("user_id", userIds)
+    .eq("status", "completed");
+
+  const completedCounts = new Map<string, number>();
+  if (progressData) {
+    for (const row of progressData) {
+      completedCounts.set(row.user_id, (completedCounts.get(row.user_id) ?? 0) + 1);
+    }
   }
 
   let sent = 0;
 
   for (const user of freeUsers) {
-    // Get auth user for email and created_at
-    const { data: authUser } = await supabase.auth.admin.getUserById(user.id);
-    if (!authUser?.user?.email || !authUser.user.created_at) continue;
+    const auth = authMap.get(user.id);
+    if (!auth) continue;
 
     const daysSinceSignup = Math.floor(
-      (Date.now() - new Date(authUser.user.created_at).getTime()) /
+      (Date.now() - new Date(auth.created_at).getTime()) /
         (1000 * 60 * 60 * 24)
     );
 
@@ -90,20 +131,13 @@ export async function GET(request: NextRequest) {
     // Find the right email for this user
     for (const email of NURTURE_SCHEDULE) {
       if (daysSinceSignup >= email.day && !alreadySent.includes(email.day)) {
-        // Calculate progress percentage for personalization
-        const { count } = await supabase
-          .from("module_progress")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id)
-          .eq("status", "completed");
-
-        const progressPct = Math.round(((count ?? 0) / 5) * 100);
+        const progressPct = Math.round(((completedCounts.get(user.id) ?? 0) / 5) * 100);
         const name = user.display_name?.split(" ")[0] ?? "there";
 
         try {
           await resend.emails.send({
             from: "Zero to Ship <hello@zerotoship.app>",
-            to: authUser.user.email,
+            to: auth.email,
             subject: email.subject,
             html: `
               <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
@@ -131,6 +165,9 @@ export async function GET(request: NextRequest) {
       }
     }
   }
+
+  // Release lock
+  await supabase.from("cron_locks").delete().eq("lock_name", "free-user-nurture");
 
   return NextResponse.json({ sent });
 }

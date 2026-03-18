@@ -25,7 +25,7 @@ export default async function LearningPathPage() {
 
   const [profileRes, progressRes] = await Promise.all([
     supabase.from("profiles").select("role_track, subscription_tier").eq("id", user.id).single(),
-    supabase.from("module_progress").select("*").eq("user_id", user.id),
+    supabase.from("module_progress").select("module_number, status").eq("user_id", user.id),
   ]);
 
   const profile = profileRes.data as Pick<Profile, "role_track" | "subscription_tier">;

@@ -17,8 +17,8 @@ export default async function CertificatePage() {
   if (!user) redirect("/");
 
   const [profileRes, progressRes] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user.id).single(),
-    supabase.from("module_progress").select("*").eq("user_id", user.id),
+    supabase.from("profiles").select("display_name, role_track, public_profile").eq("id", user.id).single(),
+    supabase.from("module_progress").select("module_number, status, completed_at").eq("user_id", user.id),
   ]);
 
   const profile = profileRes.data as Profile;

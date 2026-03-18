@@ -34,6 +34,21 @@ export async function POST(request: NextRequest) {
 
   const supabase = getSupabaseAdmin();
 
+  // Idempotency: skip already-processed events (Stripe retries duplicates)
+  const { data: existing } = await supabase
+    .from("processed_events")
+    .select("id")
+    .eq("id", event.id)
+    .maybeSingle();
+
+  if (existing) {
+    return NextResponse.json({ received: true });
+  }
+
+  await supabase
+    .from("processed_events")
+    .insert({ id: event.id, event_type: event.type });
+
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;

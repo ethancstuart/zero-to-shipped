@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { MODULE_METADATA } from "@/lib/content/modules";
 import { cn } from "@/lib/utils";
 import type { ModuleStatus } from "@/types";
 
@@ -32,11 +31,19 @@ const NODE_POSITIONS: Record<number, { x: number; y: number }> = {
 
 const NODE_RADIUS = 28;
 
+interface TreeModule {
+  number: number;
+  slug: string;
+  title: string;
+  prerequisites: number[];
+}
+
 interface SkillTreeGraphProps {
+  modules: TreeModule[];
   statusMap: Record<number, ModuleStatus>;
 }
 
-export function SkillTreeGraph({ statusMap }: SkillTreeGraphProps) {
+export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
   const getStatus = (num: number): ModuleStatus =>
     statusMap[num] ?? "locked";
 
@@ -62,7 +69,7 @@ export function SkillTreeGraph({ statusMap }: SkillTreeGraphProps) {
 
   // Build edges from prerequisites
   const edges: { from: number; to: number }[] = [];
-  for (const mod of MODULE_METADATA) {
+  for (const mod of modules) {
     for (const prereq of mod.prerequisites) {
       edges.push({ from: prereq, to: mod.number });
     }
@@ -106,7 +113,7 @@ export function SkillTreeGraph({ statusMap }: SkillTreeGraphProps) {
         })}
 
         {/* Nodes */}
-        {MODULE_METADATA.map((mod) => {
+        {modules.map((mod) => {
           const pos = NODE_POSITIONS[mod.number];
           if (!pos) return null;
           const status = getStatus(mod.number);

@@ -40,7 +40,7 @@ export default async function PublicProfilePage({ params }: Props) {
   // Find public profile by display name
   const { data: profile } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id, display_name, avatar_url, xp, level, role_track, longest_streak, created_at")
     .eq("public_profile", true)
     .ilike("display_name", decodedName)
     .single();
@@ -54,9 +54,9 @@ export default async function PublicProfilePage({ params }: Props) {
   const [progressRes, badgesRes] = await Promise.all([
     adminClient
       .from("module_progress")
-      .select("*")
+      .select("id, module_number, status")
       .eq("user_id", typedProfile.id),
-    adminClient.from("badges").select("*").eq("user_id", typedProfile.id),
+    adminClient.from("badges").select("id, badge_slug").eq("user_id", typedProfile.id),
   ]);
 
   const progress = (progressRes.data ?? []) as ModuleProgress[];

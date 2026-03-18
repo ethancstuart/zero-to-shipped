@@ -32,7 +32,7 @@ export default async function ModulesPage() {
 
   const [profileRes, progressRes] = await Promise.all([
     supabase.from("profiles").select("role_track").eq("id", user.id).single(),
-    supabase.from("module_progress").select("*").eq("user_id", user.id),
+    supabase.from("module_progress").select("module_number, status").eq("user_id", user.id),
   ]);
 
   const profile = profileRes.data as Pick<Profile, "role_track">;
