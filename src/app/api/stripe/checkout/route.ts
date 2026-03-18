@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
@@ -35,9 +36,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Auto-apply founding member coupon if available and tier is full_access
+    const discounts: Stripe.Checkout.SessionCreateParams.Discount[] = [];
+    const foundingCouponId = process.env.STRIPE_COUPON_FOUNDING;
+
+    if (tier === "full_access" && foundingCouponId) {
+      try {
+        const coupon = await getStripe().coupons.retrieve(foundingCouponId);
+        const underLimit =
+          !coupon.max_redemptions ||
+          (coupon.times_redeemed ?? 0) < coupon.max_redemptions;
+        if (coupon.valid && underLimit) {
+          discounts.push({ coupon: foundingCouponId });
+        }
+      } catch {
+        // Coupon not found or expired — proceed without discount
+      }
+    }
+
     const session = await getStripe().checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
+      ...(discounts.length > 0 && { discounts }),
       customer_email: user.email,
       automatic_tax: { enabled: true },
       metadata: { user_id: user.id },
