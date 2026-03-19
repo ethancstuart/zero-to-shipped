@@ -30,6 +30,8 @@ export interface Profile {
   referral_code: string | null;
   referred_by: string | null;
   nurture_emails_sent: number[];
+  email_opt_out: boolean;
+  welcome_email_sent: boolean;
   created_at: string;
   updated_at: string;
 }

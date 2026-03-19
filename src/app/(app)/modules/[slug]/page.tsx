@@ -11,6 +11,7 @@ import { ToolSetupBanner } from "@/components/modules/tool-setup-banner";
 import { CapstoneSuggestions } from "@/components/modules/capstone-suggestions";
 import { canAccessModule } from "@/lib/content/tiers";
 import { PremiumGate } from "@/components/modules/premium-gate";
+import { siteConfig } from "@/lib/constants";
 import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack, SubscriptionTier } from "@/types";
 
 interface Props {
@@ -21,7 +22,14 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const mod = getModuleBySlug(slug);
   if (!mod) return { title: "Module Not Found" };
-  return { title: `Module ${mod.number}: ${mod.title}` };
+
+  const ogUrl = `${siteConfig.url}/api/og?template=module&number=${mod.number}&title=${encodeURIComponent(mod.title)}&tier=${mod.tier}`;
+
+  return {
+    title: `Module ${mod.number}: ${mod.title}`,
+    openGraph: { images: [{ url: ogUrl, width: 1200, height: 630 }] },
+    twitter: { card: "summary_large_image" as const, images: [ogUrl] },
+  };
 }
 
 export default async function ModuleReaderPage({ params }: Props) {

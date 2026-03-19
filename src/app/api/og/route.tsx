@@ -26,11 +26,119 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const template = searchParams.get("template") ?? "profile";
 
+  if (template === "module") {
+    return renderModule(searchParams);
+  }
+
   if (template === "module-complete") {
     return renderModuleComplete(searchParams);
   }
 
   return renderProfile(searchParams);
+}
+
+function renderModule(searchParams: URLSearchParams) {
+  const number = searchParams.get("number") ?? "1";
+  const title = searchParams.get("title") ?? "Module";
+  const tier = searchParams.get("tier") ?? "foundations";
+
+  const tierColors: Record<string, string> = {
+    foundations: "#3b82f6",
+    intermediate: "#8b5cf6",
+    advanced: "#f59e0b",
+    capstone: "#22c55e",
+  };
+  const tierColor = tierColors[tier] ?? "#3b82f6";
+
+  const tierLabels: Record<string, string> = {
+    foundations: "Foundations",
+    intermediate: "Intermediate",
+    advanced: "Advanced",
+    capstone: "Capstone",
+  };
+  const tierLabel = tierLabels[tier] ?? tier;
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0a",
+          color: "#fafafa",
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 60px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 20,
+              color: "#3b82f6",
+              letterSpacing: "0.1em",
+              marginBottom: 32,
+            }}
+          >
+            ZERO TO SHIPPED
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 96,
+              height: 96,
+              borderRadius: "50%",
+              border: `3px solid ${tierColor}`,
+              fontSize: 40,
+              fontWeight: "bold",
+              marginBottom: 24,
+            }}
+          >
+            {number}
+          </div>
+          <div
+            style={{
+              fontSize: 44,
+              fontWeight: "bold",
+              marginBottom: 16,
+              textAlign: "center",
+              maxWidth: 800,
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 18,
+              color: tierColor,
+              backgroundColor: `${tierColor}20`,
+              padding: "8px 20px",
+              borderRadius: 20,
+              fontWeight: 600,
+            }}
+          >
+            {tierLabel}
+          </div>
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
 }
 
 function renderProfile(searchParams: URLSearchParams) {

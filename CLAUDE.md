@@ -82,3 +82,7 @@ When planning new modules or features, check the API catalog for teaching-friend
 - `CLAUDE.local.md` is gitignored — personal context
 - Content lives in a separate repo (cursor-for-product-teams) and is synced at build time
 - Site URL: zerotoship.app
+- Sentry for error tracking (`NEXT_PUBLIC_SENTRY_DSN` env var, empty = disabled)
+- Email unsubscribe: HMAC-signed tokens via `CRON_SECRET`, `/api/unsubscribe` route (CAN-SPAM compliance)
+- Server action input validation: Zod v4 schemas in actions files
+- Profile-not-found safety net: auto-recovers missing profiles in app layout, fallback to `/setup-error`

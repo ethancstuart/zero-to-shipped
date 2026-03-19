@@ -20,6 +20,12 @@ export async function toggleCheckpoint(
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
+  // Validate input bounds
+  const mod = MODULE_METADATA.find((m) => m.number === moduleNumber);
+  if (!mod || checkpointIndex < 0 || checkpointIndex >= mod.checkpoints.length) {
+    return null;
+  }
+
   // Ensure module is in_progress
   await supabase
     .from("module_progress")
@@ -36,10 +42,8 @@ export async function toggleCheckpoint(
     await handleCheckpointUncomplete(user.id, moduleNumber, checkpointIndex);
   }
 
-  const mod = MODULE_METADATA.find((m) => m.number === moduleNumber);
-  const slug = mod?.slug;
-  if (slug) {
-    revalidatePath(`/modules/${slug}`, "page");
+  if (mod.slug) {
+    revalidatePath(`/modules/${mod.slug}`, "page");
   }
   revalidatePath(`/modules`, "page");
   revalidatePath(`/dashboard`, "page");

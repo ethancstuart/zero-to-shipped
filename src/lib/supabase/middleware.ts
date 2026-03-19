@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import * as Sentry from "@sentry/nextjs";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
@@ -61,7 +62,7 @@ export async function updateSession(request: NextRequest) {
     }
   } catch (e) {
     // If Supabase fails, allow the request through
-    console.error("Middleware error:", e);
+    Sentry.captureException(e);
   }
 
   return supabaseResponse;

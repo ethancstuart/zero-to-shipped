@@ -24,10 +24,52 @@ export default async function AppLayout({
     redirect("/");
   }
 
-  const profile = await getProfile(user.id);
+  let profile = await getProfile(user.id);
 
+  // Safety net: auto-recover missing profile
   if (!profile) {
-    redirect("/");
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const admin = createAdminClient();
+    const name =
+      user.user_metadata?.full_name ??
+      user.user_metadata?.name ??
+      user.email?.split("@")[0] ??
+      "Learner";
+    const avatar =
+      user.user_metadata?.avatar_url ??
+      user.user_metadata?.picture ??
+      null;
+    const refCode = crypto.randomUUID().slice(0, 8);
+
+    const { data: recovered } = await admin
+      .from("profiles")
+      .upsert(
+        { id: user.id, display_name: name, avatar_url: avatar, referral_code: refCode },
+        { onConflict: "id" }
+      )
+      .select("*")
+      .single();
+
+    if (!recovered) {
+      redirect("/setup-error");
+    }
+
+    // Seed module progress if missing
+    const { count } = await admin
+      .from("module_progress")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if (!count || count === 0) {
+      const rows = Array.from({ length: 16 }, (_, i) => ({
+        user_id: user.id,
+        module_number: i + 1,
+        status: i === 0 ? "available" : "locked",
+      }));
+      await admin.from("module_progress").insert(rows);
+    }
+
+    profile = recovered;
   }
 
   const typedProfile = profile as Profile;

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { getStripe } from "@/lib/stripe";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
+import { generateUnsubscribeToken } from "@/lib/email/tokens";
 
 function getSupabaseAdmin() {
   return createClient(
@@ -26,6 +29,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
+    Sentry.captureException(err);
     return NextResponse.json(
       { error: "Webhook verification failed" },
       { status: 400 }
@@ -62,6 +66,46 @@ export async function POST(request: NextRequest) {
             stripe_customer_id: session.customer as string,
           })
           .eq("id", userId);
+
+        // Send purchase confirmation email
+        try {
+          const { data: buyer } = await supabase
+            .from("profiles")
+            .select("display_name")
+            .eq("id", userId)
+            .single();
+
+          const name = buyer?.display_name?.split(" ")[0] ?? "there";
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          const unsubToken = generateUnsubscribeToken(userId);
+
+          await resend.emails.send({
+            from: "Zero to Ship <hello@zerotoship.app>",
+            to: session.customer_email!,
+            subject: "Welcome to Full Access — Zero to Ship",
+            html: `
+              <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+                <p>Hey ${name},</p>
+                <p>You now have <strong>Full Access</strong> to Zero to Ship. Here's what's unlocked:</p>
+                <ul>
+                  <li>Modules 6–16 (intermediate, advanced, and capstone)</li>
+                  <li>Capstone project with guided prompts</li>
+                  <li>Completion certificate</li>
+                  <li>Build log and learning path</li>
+                  <li>Leaderboard eligibility</li>
+                </ul>
+                <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Go to Dashboard</a></p>
+                <p style="color: #666; font-size: 14px;">Stripe will send your payment receipt separately.</p>
+                <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
+                <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
+                  <a href="https://zerotoship.app/api/unsubscribe?token=${unsubToken}" style="color: #999;">Unsubscribe</a>
+                </p>
+              </div>
+            `,
+          });
+        } catch {
+          // Don't fail the webhook on email error
+        }
       }
       break;
     }

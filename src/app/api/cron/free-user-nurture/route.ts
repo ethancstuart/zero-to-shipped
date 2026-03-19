@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { generateUnsubscribeToken } from "@/lib/email/tokens";
 
 const NURTURE_SCHEDULE: {
   day: number;
@@ -82,7 +83,8 @@ export async function GET(request: NextRequest) {
   const { data: freeUsers } = await supabase
     .from("profiles")
     .select("id, display_name, subscription_tier, nurture_emails_sent")
-    .eq("subscription_tier", "free");
+    .eq("subscription_tier", "free")
+    .eq("email_opt_out", false);
 
   if (!freeUsers || freeUsers.length === 0) {
     await supabase.from("cron_locks").delete().eq("lock_name", "free-user-nurture");
@@ -143,6 +145,9 @@ export async function GET(request: NextRequest) {
               <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
                 ${email.body(name, progressPct)}
                 <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
+                <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
+                  <a href="https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}" style="color: #999;">Unsubscribe</a>
+                </p>
               </div>
             `,
           });

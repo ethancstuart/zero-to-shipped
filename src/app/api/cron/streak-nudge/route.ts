@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { generateUnsubscribeToken } from "@/lib/email/tokens";
 
 export async function GET(request: NextRequest) {
   // Verify cron secret
@@ -40,7 +41,8 @@ export async function GET(request: NextRequest) {
     .from("profiles")
     .select("id, display_name, current_streak")
     .gt("current_streak", 0)
-    .lt("last_activity_date", threeDaysAgo.toISOString().split("T")[0]);
+    .lt("last_activity_date", threeDaysAgo.toISOString().split("T")[0])
+    .eq("email_opt_out", false);
 
   if (!users || users.length === 0) {
     await supabase.from("cron_locks").delete().eq("lock_name", "streak-nudge");
@@ -73,6 +75,9 @@ export async function GET(request: NextRequest) {
             <p>Even one checkpoint keeps the streak alive.</p>
             <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Continue Learning</a></p>
             <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
+            <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
+              <a href="https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}" style="color: #999;">Unsubscribe</a>
+            </p>
           </div>
         `,
       });

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
 import { rateLimit, rateLimitResponse } from "@/lib/rate-limit";
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
       ...(discounts.length > 0 && { discounts }),
       customer_email: user.email,
       automatic_tax: { enabled: true },
+      payment_intent_data: { receipt_email: user.email },
       metadata: { user_id: user.id },
       success_url: `${request.nextUrl.origin}/purchase/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${request.nextUrl.origin}/pricing`,
@@ -68,7 +70,7 @@ export async function POST(request: NextRequest) {
     // Analytics: checkout_start tracked client-side when redirect happens
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    console.error("Checkout error:", err);
+    Sentry.captureException(err);
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
   }

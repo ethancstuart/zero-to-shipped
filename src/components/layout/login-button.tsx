@@ -1,5 +1,6 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
@@ -15,13 +16,13 @@ async function handleGoogleLogin() {
       },
     });
     if (error) {
-      console.error("OAuth error:", error.message);
+      Sentry.captureException(error);
       toast.error("Sign in failed. Please try again.");
     } else if (data.url) {
       window.location.href = data.url;
     }
   } catch (e) {
-    console.error("Login error:", e);
+    Sentry.captureException(e);
     toast.error("Sign in failed. Please try again.");
   }
 }
