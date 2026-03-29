@@ -24,6 +24,12 @@ const GUIDES = [
     status: "live" as const,
   },
   {
+    title: "Claude Code for Non-Engineers",
+    description: "Build real software with AI — no coding experience required.",
+    href: "/guides/claude-code-101",
+    status: "live" as const,
+  },
+  {
     title: "Git 102: Collaboration Workflows",
     description: "PRs, code review, and working with engineering teams.",
     href: "#",
