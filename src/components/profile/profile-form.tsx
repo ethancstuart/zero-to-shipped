@@ -66,6 +66,18 @@ export function ProfileForm({ profile }: { profile: Profile }) {
             ))}
           </select>
         </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium">GitHub Username</label>
+          <input
+            name="github_username"
+            defaultValue={profile.github_username ?? ""}
+            placeholder="your-username"
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <p className="mt-1 text-xs text-muted-foreground">
+            Optional. Displayed on your public profile.
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <input
             type="checkbox"

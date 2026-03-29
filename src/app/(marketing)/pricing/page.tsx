@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { LoginButton } from "@/components/layout/login-button";
 import { CheckoutButton } from "@/components/pricing/checkout-button";
+import { FoundingCounter } from "@/components/marketing/founding-counter";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Pricing" };
@@ -93,10 +94,13 @@ export default async function PricingPage() {
               </span>
             </p>
             {isLoggedIn ? (
-              <CheckoutButton tier="full_access" label="Get Full Access" />
+              <CheckoutButton tier="full_access" label="Get Founding Member Access" />
             ) : (
               <LoginButton />
             )}
+            <div className="mt-4">
+              <FoundingCounter />
+            </div>
             <ul className="mt-6 space-y-3">
               {FULL_ACCESS_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">

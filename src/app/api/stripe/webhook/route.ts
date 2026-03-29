@@ -67,6 +67,27 @@ export async function POST(request: NextRequest) {
           })
           .eq("id", userId);
 
+        // Award Founding Member badge if founding coupon was applied
+        const foundingCouponId = process.env.STRIPE_COUPON_FOUNDING;
+        const hasFoundingCoupon = foundingCouponId && session.discounts?.some(
+          (d) => typeof d.coupon === "object" && d.coupon?.id === foundingCouponId
+        );
+        if (hasFoundingCoupon) {
+          const { data: existingBadge } = await supabase
+            .from("badges")
+            .select("id")
+            .eq("user_id", userId)
+            .eq("slug", "founding-member")
+            .maybeSingle();
+
+          if (!existingBadge) {
+            await supabase.from("badges").insert({
+              user_id: userId,
+              slug: "founding-member",
+            });
+          }
+        }
+
         // Send purchase confirmation email
         try {
           const { data: buyer } = await supabase

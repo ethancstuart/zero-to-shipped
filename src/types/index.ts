@@ -27,6 +27,7 @@ export interface Profile {
   public_profile: boolean;
   subscription_tier: SubscriptionTier;
   stripe_customer_id: string | null;
+  github_username: string | null;
   referral_code: string | null;
   referred_by: string | null;
   nurture_emails_sent: number[];
@@ -43,6 +44,7 @@ export interface ModuleProgress {
   status: ModuleStatus;
   started_at: string | null;
   completed_at: string | null;
+  capstone_url: string | null;
 }
 
 export interface CheckpointProgress {

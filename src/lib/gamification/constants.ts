@@ -149,6 +149,13 @@ export const BADGES: BadgeDefinition[] = [
   },
   // Special
   {
+    slug: "founding-member",
+    name: "Founding Member",
+    description: "One of the first 100 students",
+    icon: "⭐",
+    category: "special",
+  },
+  {
     slug: "night-owl",
     name: "Night Owl",
     description: "Complete a checkpoint after 10pm",

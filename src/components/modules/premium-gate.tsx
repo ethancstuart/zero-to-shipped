@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CheckoutButton } from "@/components/pricing/checkout-button";
+import { PremiumGateTracker } from "./premium-gate-tracker";
 
 interface PremiumGateProps {
   moduleTitle: string;
@@ -16,6 +17,7 @@ export function PremiumGate({
 }: PremiumGateProps) {
   return (
     <div className="relative">
+      <PremiumGateTracker moduleNumber={moduleNumber} moduleTitle={moduleTitle} />
       {/* Blurred preview */}
       <div className="pointer-events-none select-none blur-sm">
         <div className="prose prose-sm max-w-none dark:prose-invert">

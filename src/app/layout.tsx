@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [{ url: "/api/og?template=site", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",

@@ -15,6 +15,7 @@ import {
   Trophy,
   Route,
   ClipboardList,
+  Gift,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ const NAV_ITEMS = [
   { href: "/cheat-sheets", label: "Cheat Sheets", icon: FileText },
   { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
   { href: "/build-log", label: "Build Log", icon: ClipboardList },
+  { href: "/referrals", label: "Referrals", icon: Gift },
   { href: "/profile", label: "Profile", icon: User },
   { href: "/certificate", label: "Certificate", icon: Award },
 ];

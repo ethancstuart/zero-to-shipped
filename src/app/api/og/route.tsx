@@ -26,6 +26,18 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const template = searchParams.get("template") ?? "profile";
 
+  if (template === "site") {
+    return renderSite();
+  }
+
+  if (template === "guide") {
+    return renderGuide(searchParams);
+  }
+
+  if (template === "achievement") {
+    return renderAchievement(searchParams);
+  }
+
   if (template === "module") {
     return renderModule(searchParams);
   }
@@ -233,6 +245,211 @@ function renderProfile(searchParams: URLSearchParams) {
       width: 1200,
       height: 630,
     }
+  );
+}
+
+function renderSite() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0a",
+          color: "#fafafa",
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 60px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 24,
+              color: "#3b82f6",
+              letterSpacing: "0.1em",
+              marginBottom: 24,
+            }}
+          >
+            ZERO TO SHIP
+          </div>
+          <div
+            style={{
+              fontSize: 52,
+              fontWeight: "bold",
+              marginBottom: 16,
+              textAlign: "center",
+              maxWidth: 900,
+            }}
+          >
+            Build with AI — no engineering degree required
+          </div>
+          <div
+            style={{
+              fontSize: 22,
+              color: "#a3a3a3",
+              marginBottom: 32,
+              textAlign: "center",
+            }}
+          >
+            16 modules. Ship a capstone. Earn a certificate.
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 16,
+              color: "#22c55e",
+              backgroundColor: "#22c55e20",
+              padding: "10px 24px",
+              borderRadius: 24,
+              fontWeight: 600,
+            }}
+          >
+            Founding member pricing: $49 (first 100 students)
+          </div>
+        </div>
+      </div>
+    ),
+    { width: 1200, height: 630 }
+  );
+}
+
+function renderGuide(searchParams: URLSearchParams) {
+  const title = searchParams.get("title") ?? "Guide";
+  const subtitle = searchParams.get("subtitle") ?? "Zero to Ship";
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0a",
+          color: "#fafafa",
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 60px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 20,
+              color: "#3b82f6",
+              letterSpacing: "0.1em",
+              marginBottom: 16,
+            }}
+          >
+            ZERO TO SHIP — GUIDE
+          </div>
+          <div
+            style={{
+              fontSize: 48,
+              fontWeight: "bold",
+              marginBottom: 16,
+              textAlign: "center",
+              maxWidth: 800,
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              fontSize: 22,
+              color: "#a3a3a3",
+              textAlign: "center",
+            }}
+          >
+            {subtitle}
+          </div>
+        </div>
+      </div>
+    ),
+    { width: 1200, height: 630 }
+  );
+}
+
+function renderAchievement(searchParams: URLSearchParams) {
+  const icon = searchParams.get("icon") ?? "🏆";
+  const title = searchParams.get("title") ?? "Achievement Unlocked";
+  const name = searchParams.get("name") ?? "";
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0a",
+          color: "#fafafa",
+          fontFamily: "system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 60px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 20,
+              color: "#3b82f6",
+              letterSpacing: "0.1em",
+              marginBottom: 32,
+            }}
+          >
+            ZERO TO SHIP
+          </div>
+          <div style={{ fontSize: 72, marginBottom: 16 }}>{icon}</div>
+          <div
+            style={{
+              fontSize: 44,
+              fontWeight: "bold",
+              marginBottom: 12,
+              textAlign: "center",
+            }}
+          >
+            {title}
+          </div>
+          {name && (
+            <div
+              style={{
+                fontSize: 24,
+                color: "#a3a3a3",
+              }}
+            >
+              {name}
+            </div>
+          )}
+        </div>
+      </div>
+    ),
+    { width: 1200, height: 630 }
   );
 }
 

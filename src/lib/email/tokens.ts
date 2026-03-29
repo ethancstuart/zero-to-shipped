@@ -23,6 +23,38 @@ export function generateUnsubscribeToken(userId: string): string {
   return `${toBase64Url(Buffer.from(userId))}:${toBase64Url(sig)}`;
 }
 
+// Email-based tokens for waitlist users (no userId)
+export function generateEmailUnsubscribeToken(email: string): string {
+  const sig = createHmac(ALGORITHM, getSecret())
+    .update(`email:${email}`)
+    .digest();
+  return `${toBase64Url(Buffer.from(email))}:${toBase64Url(sig)}`;
+}
+
+export function verifyEmailUnsubscribeToken(token: string): string | null {
+  const parts = token.split(":");
+  if (parts.length !== 2) return null;
+
+  try {
+    const email = fromBase64Url(parts[0]).toString("utf-8");
+    const providedSig = fromBase64Url(parts[1]);
+    const expectedSig = createHmac(ALGORITHM, getSecret())
+      .update(`email:${email}`)
+      .digest();
+
+    if (
+      providedSig.length !== expectedSig.length ||
+      !timingSafeEqual(providedSig, expectedSig)
+    ) {
+      return null;
+    }
+
+    return email;
+  } catch {
+    return null;
+  }
+}
+
 export function verifyUnsubscribeToken(token: string): string | null {
   const parts = token.split(":");
   if (parts.length !== 2) return null;

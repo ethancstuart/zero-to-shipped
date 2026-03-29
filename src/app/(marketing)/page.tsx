@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/layout/login-button";
-import { WaitlistForm } from "@/app/(marketing)/waitlist/waitlist-form";
+import { FoundingCounter } from "@/components/marketing/founding-counter";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { ROLE_LABELS, TIER_LABELS, siteConfig } from "@/lib/constants";
 import type { RoleTrack, ModuleTier } from "@/types";
@@ -85,15 +85,18 @@ export default async function LandingPage({
             <span className="text-primary">Start shipping.</span>
           </h1>
           <p className="mx-auto mb-4 max-w-2xl text-lg text-muted-foreground">
-            Build with AI — no engineering degree required. A gamified learning
-            platform for PMs, Project Managers, Business Analysts, and BI
-            Engineers who want to build real products with AI coding tools.
+            Go from &ldquo;I have an idea&rdquo; to &ldquo;here&apos;s the live
+            URL&rdquo; — even if you&apos;ve never written a line of code.
           </p>
-          <p className="mx-auto mb-8 max-w-2xl text-sm text-muted-foreground/70">
+          <p className="mx-auto mb-2 max-w-2xl text-base text-muted-foreground">
             Built by Ethan Stuart — Senior Manager, Data &amp; AI Products at
             Disney Studio Technology
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <p className="mx-auto mb-8 max-w-2xl text-sm font-medium text-muted-foreground">
+            16 modules. Ship a capstone. Earn a certificate.
+          </p>
+          <FoundingCounter />
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
             <LoginButton />
             <Button
               variant="outline"
@@ -105,9 +108,12 @@ export default async function LandingPage({
           </div>
           <div className="mx-auto mt-8 max-w-sm">
             <p className="mb-3 text-sm text-muted-foreground">
-              Not ready to sign in? Get notified when we launch:
+              Try Module 1 free — no sign-up required
             </p>
-            <WaitlistForm />
+            <Button render={<Link href="/preview/module-1" />} variant="outline">
+              Preview Module 1
+              <ArrowRight className="ml-2 size-4" />
+            </Button>
           </div>
         </div>
       </section>
@@ -138,6 +144,48 @@ export default async function LandingPage({
               <p className="text-sm text-muted-foreground">
                 Tailored learning paths for PMs, Project Managers, BAs, and BI
                 Engineers — focus on what matters to your role.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You'll Build */}
+      <section className="border-t border-border py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="mb-4 text-center text-3xl font-bold">
+            What You&apos;ll Build
+          </h2>
+          <p className="mx-auto mb-12 max-w-2xl text-center text-muted-foreground">
+            Real projects for your actual role — not toy apps.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="mb-2 text-primary"><Target className="size-6" /></div>
+              <h3 className="mb-1 font-semibold">Product Managers</h3>
+              <p className="text-sm text-muted-foreground">
+                Ship prototypes your eng team deprioritized.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="mb-2 text-primary"><BarChart3 className="size-6" /></div>
+              <h3 className="mb-1 font-semibold">Project Managers</h3>
+              <p className="text-sm text-muted-foreground">
+                Build status dashboards stakeholders check daily.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="mb-2 text-primary"><Users className="size-6" /></div>
+              <h3 className="mb-1 font-semibold">Business Analysts</h3>
+              <p className="text-sm text-muted-foreground">
+                Create data tools that replace manual spreadsheets.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="mb-2 text-primary"><Zap className="size-6" /></div>
+              <h3 className="mb-1 font-semibold">BI Engineers</h3>
+              <p className="text-sm text-muted-foreground">
+                Automate the reports you rebuild every Monday.
               </p>
             </div>
           </div>

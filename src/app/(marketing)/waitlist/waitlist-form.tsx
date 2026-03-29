@@ -45,7 +45,7 @@ export function WaitlistForm() {
         <CheckCircle2 className="size-12 text-green-500" />
         <p className="font-semibold">You&apos;re on the list!</p>
         <p className="text-sm text-muted-foreground">
-          We&apos;ll let you know when Premium launches.
+          Thanks! Check your inbox for updates.
         </p>
       </div>
     );

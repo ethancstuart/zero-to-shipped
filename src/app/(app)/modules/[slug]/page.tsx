@@ -11,6 +11,7 @@ import { ToolSetupBanner } from "@/components/modules/tool-setup-banner";
 import { CapstoneSuggestions } from "@/components/modules/capstone-suggestions";
 import { canAccessModule } from "@/lib/content/tiers";
 import { PremiumGate } from "@/components/modules/premium-gate";
+import { ShareYourBuild } from "@/components/modules/share-your-build";
 import { siteConfig } from "@/lib/constants";
 import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack, SubscriptionTier } from "@/types";
 
@@ -158,8 +159,13 @@ export default async function ModuleReaderPage({ params }: Props) {
         >
           <ModuleContent moduleNumber={mod.number} />
           {mod.number === 16 && (
-            <div className="mt-8 not-prose">
+            <div className="mt-8 space-y-6 not-prose">
               <CapstoneSuggestions roleTrack={profile.role_track as RoleTrack | null} isPremium={subscriptionTier === "premium"} />
+              <ShareYourBuild
+                userId={user.id}
+                moduleNumber={16}
+                existingUrl={(moduleProgress as ModuleProgress & { capstone_url?: string | null })?.capstone_url ?? null}
+              />
             </div>
           )}
         </div>

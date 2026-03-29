@@ -24,9 +24,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${siteConfig.url}/waitlist`,
+      url: `${siteConfig.url}/guides/git-101`,
       lastModified: new Date(),
       changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteConfig.url}/resources`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
       priority: 0.6,
     },
     {

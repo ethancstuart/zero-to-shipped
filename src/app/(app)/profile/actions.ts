@@ -9,6 +9,7 @@ const profileSchema = z.object({
   role_track: z.enum(["pm", "pjm", "ba", "bi"]),
   tool_preference: z.enum(["claude-code", "cursor"]),
   public_profile: z.boolean(),
+  github_username: z.string().trim().max(39).optional(),
 });
 
 export async function updateProfile(formData: FormData) {
@@ -23,6 +24,7 @@ export async function updateProfile(formData: FormData) {
     role_track: formData.get("role_track"),
     tool_preference: formData.get("tool_preference"),
     public_profile: formData.get("public_profile") === "on",
+    github_username: formData.get("github_username") || undefined,
   });
 
   if (!parsed.success) return;
@@ -34,6 +36,7 @@ export async function updateProfile(formData: FormData) {
       role_track: parsed.data.role_track,
       tool_preference: parsed.data.tool_preference,
       public_profile: parsed.data.public_profile,
+      github_username: parsed.data.github_username ?? null,
     })
     .eq("id", user.id);
 

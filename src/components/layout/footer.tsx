@@ -12,8 +12,8 @@ export function Footer() {
             <Link href="/pricing" className="hover:text-foreground">
               Pricing
             </Link>
-            <Link href="/waitlist" className="hover:text-foreground">
-              Waitlist
+            <Link href="/guides/git-101" className="hover:text-foreground">
+              Git Guide
             </Link>
             <Link href="/leaderboard" className="hover:text-foreground">
               Leaderboard
