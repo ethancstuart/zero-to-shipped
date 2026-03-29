@@ -46,6 +46,14 @@ const GUIDES = [
 const RESOURCES = [
   {
     icon: FileCode2,
+    title: "MCP Toolkit",
+    description:
+      "Curated directory of MCP plugins for non-engineers — connect Claude Code to GitHub, Slack, databases, and more.",
+    href: "/resources/mcp-plugins",
+    external: false,
+  },
+  {
+    icon: FileCode2,
     title: "CLAUDE.md Templates",
     description:
       "3 ready-to-use templates for Next.js + Supabase, data dashboards, and automation projects.",
