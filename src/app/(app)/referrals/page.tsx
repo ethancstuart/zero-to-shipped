@@ -21,30 +21,32 @@ export default async function ReferralsPage() {
 
   if (!profile) redirect("/");
 
-  // Get referred users with their Module 1 completion status
+  // Get referred users with their Module 1 completion status (batch query)
   const { data: referredUsers } = await supabase
     .from("profiles")
     .select("id, display_name, created_at")
     .eq("referred_by", profile.id);
 
-  // Check which referred users completed Module 1
-  const referredWithProgress = await Promise.all(
-    (referredUsers ?? []).map(async (referred) => {
-      const { data: moduleProgress } = await supabase
-        .from("module_progress")
-        .select("status")
-        .eq("user_id", referred.id)
-        .eq("module_number", 1)
-        .maybeSingle();
+  const referredIds = (referredUsers ?? []).map((u) => u.id);
 
-      return {
-        id: referred.id,
-        displayName: referred.display_name ?? "Anonymous",
-        joinedAt: referred.created_at,
-        completedModule1: moduleProgress?.status === "completed",
-      };
-    })
-  );
+  // Single batch query for all Module 1 completions
+  const { data: completedModule1 } = referredIds.length > 0
+    ? await supabase
+        .from("module_progress")
+        .select("user_id")
+        .in("user_id", referredIds)
+        .eq("module_number", 1)
+        .eq("status", "completed")
+    : { data: [] };
+
+  const completedSet = new Set((completedModule1 ?? []).map((r) => r.user_id));
+
+  const referredWithProgress = (referredUsers ?? []).map((referred) => ({
+    id: referred.id,
+    displayName: referred.display_name ?? "Anonymous",
+    joinedAt: referred.created_at,
+    completedModule1: completedSet.has(referred.id),
+  }));
 
   const qualifiedReferrals = referredWithProgress.filter(
     (r) => r.completedModule1

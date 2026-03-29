@@ -44,23 +44,24 @@ export async function getReferralRewards(
 ): Promise<ReferralRewardsResult> {
   const supabase = await createClient();
 
-  // Count referred users who have completed Module 1
+  // Count referred users who have completed Module 1 (single batch query)
   const { data: referredUsers } = await supabase
     .from("profiles")
     .select("id")
     .eq("referred_by", userId);
 
+  const referredIds = (referredUsers ?? []).map((u) => u.id);
   let qualifiedCount = 0;
-  for (const referred of referredUsers ?? []) {
-    const { data: progress } = await supabase
-      .from("module_progress")
-      .select("status")
-      .eq("user_id", referred.id)
-      .eq("module_number", 1)
-      .eq("status", "completed")
-      .maybeSingle();
 
-    if (progress) qualifiedCount++;
+  if (referredIds.length > 0) {
+    const { count } = await supabase
+      .from("module_progress")
+      .select("user_id", { count: "exact", head: true })
+      .in("user_id", referredIds)
+      .eq("module_number", 1)
+      .eq("status", "completed");
+
+    qualifiedCount = count ?? 0;
   }
 
   const unlockedTiers = REFERRAL_TIERS.filter(

@@ -65,8 +65,9 @@ export default async function ModuleReaderPage({ params }: Props) {
       .eq("status", "completed"),
   ]);
 
-  const profile = profileRes.data as Pick<Profile, "tool_preference" | "role_track" | "subscription_tier">;
-  const moduleProgress = progressRes.data as ModuleProgress | null;
+  if (!profileRes.data) redirect("/");
+  const profile = profileRes.data;
+  const moduleProgress = progressRes.data;
   const completedCheckpoints = (checkpointsRes.data ?? []) as CheckpointProgress[];
   const completedIndexes = completedCheckpoints.map((c) => c.checkpoint_index);
   const totalCompletedModules = allProgressRes.data?.length ?? 0;
@@ -99,7 +100,7 @@ export default async function ModuleReaderPage({ params }: Props) {
   }
 
   // Check premium access
-  const subscriptionTier = (profile.subscription_tier ?? "free") as SubscriptionTier;
+  const subscriptionTier: SubscriptionTier = profile.subscription_tier === "premium" ? "premium" : "free";
   if (!canAccessModule(mod.number, subscriptionTier)) {
     return (
       <div className="mx-auto max-w-4xl py-10">

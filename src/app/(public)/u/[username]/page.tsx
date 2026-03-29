@@ -72,7 +72,7 @@ export default async function PublicProfilePage({ params }: Props) {
           {typedProfile.avatar_url ? (
             <Image
               src={typedProfile.avatar_url}
-              alt=""
+              alt={`${typedProfile.display_name ?? "User"}'s avatar`}
               width={80}
               height={80}
               className="mx-auto mb-4 size-20 rounded-full"

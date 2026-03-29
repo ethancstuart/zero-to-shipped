@@ -106,7 +106,7 @@ export function AppSidebar({ profile }: { profile: Profile }) {
           {profile.avatar_url ? (
             <Image
               src={profile.avatar_url}
-              alt=""
+              alt={`${profile.display_name ?? "User"}'s avatar`}
               width={32}
               height={32}
               className="size-8 rounded-full"

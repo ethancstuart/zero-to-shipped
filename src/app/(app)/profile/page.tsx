@@ -33,7 +33,7 @@ export default async function ProfilePage() {
           {profile.avatar_url ? (
             <Image
               src={profile.avatar_url}
-              alt=""
+              alt={`${profile.display_name ?? "User"}'s avatar`}
               width={64}
               height={64}
               className="size-16 rounded-full"
