@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 
-export const revalidate = 300; // ISR: cache for 5 minutes
+export const revalidate = 60; // ISR: cache for 60 seconds
 
 export async function GET() {
   try {

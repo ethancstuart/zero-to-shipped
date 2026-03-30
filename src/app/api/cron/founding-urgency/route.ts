@@ -108,11 +108,11 @@ export async function GET(request: NextRequest) {
               : `<strong>${remaining} of 100 founding member spots</strong> are still available.`
             }</p>
 
-            <p>Founding members get full access to all 16 modules, the capstone project, and a certificate of completion for <strong>$49</strong> (standard price: $79). Plus a Founding Member badge on your profile.</p>
+            <p>Founding members get full access to all 16 modules, the capstone project, a certificate of completion, and Season 2 when it ships — all for <strong>$99</strong> (standard price: $199). Plus a Founding Member badge on your profile.</p>
 
-            ${remaining <= 25 ? `<p style="color: #f59e0b; font-weight: 600;">Founding pricing ends April 15 or when spots run out — whichever comes first.</p>` : ""}
+            ${remaining <= 25 ? `<p style="color: #f59e0b; font-weight: 600;">Founding pricing ends April 30 or when spots run out — whichever comes first.</p>` : ""}
 
-            <p><a href="https://zerotoship.app/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Founding Member Access — $49</a></p>
+            <p><a href="https://zerotoship.app/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Founding Member Access — $99</a></p>
 
             <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
 

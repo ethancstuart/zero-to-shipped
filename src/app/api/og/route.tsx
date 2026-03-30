@@ -314,7 +314,7 @@ function renderSite() {
               fontWeight: 600,
             }}
           >
-            Founding member pricing: $49 (first 100 students)
+            Founding member pricing: $99 (first 100 students)
           </div>
         </div>
       </div>

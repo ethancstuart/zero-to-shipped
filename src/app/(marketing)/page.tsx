@@ -77,7 +77,7 @@ export default async function LandingPage({
           )}
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-500">
             <Rocket className="size-4" />
-            Founding member pricing: $49 (first 100 students)
+            Founding member pricing: $99 (first 100 students)
           </div>
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
             Stop learning.
@@ -278,10 +278,10 @@ export default async function LandingPage({
         <div className="mx-auto max-w-2xl px-4 text-center">
           <h2 className="mb-4 text-3xl font-bold">Ready to start building?</h2>
           <p className="mb-4 text-muted-foreground">
-            5 modules free. Full access: $79 one-time.
+            5 modules free. Full access: $199 one-time.
           </p>
           <p className="mb-8 text-sm font-medium text-green-500">
-            First 100 students get founding member pricing: $49
+            First 100 students get founding member pricing: $99
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <LoginButton />
