@@ -279,6 +279,9 @@ Add to the sidebar navigation if it's a new page.`}</code></pre>
             <li>
               <strong>Building agents</strong> — Create automated workflows where
               Claude Code handles recurring tasks without you prompting it each time.
+              We built 4 free templates to get you started:{" "}
+              <a href="/agents">AI Agent Templates</a>. Or read{" "}
+              <a href="/guides/agent-builder">The Agent Builder Guide</a>.
             </li>
             <li>
               <strong>Context engineering</strong> — The art of structuring your

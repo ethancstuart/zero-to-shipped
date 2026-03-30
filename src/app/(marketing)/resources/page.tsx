@@ -30,6 +30,12 @@ const GUIDES = [
     status: "live" as const,
   },
   {
+    title: "The Agent Builder Guide",
+    description: "What AI agents are, why they matter, and how to build your first one with 4 free templates.",
+    href: "/guides/agent-builder",
+    status: "live" as const,
+  },
+  {
     title: "Git 102: Collaboration Workflows",
     description: "PRs, code review, and working with engineering teams.",
     href: "#",
@@ -44,6 +50,14 @@ const GUIDES = [
 ];
 
 const RESOURCES = [
+  {
+    icon: FileCode2,
+    title: "Agent Templates",
+    description:
+      "4 free, open-source AI agent templates — news digests, advisory boards, data monitors, and PR reviewers. Fork and customize.",
+    href: "/agents",
+    external: false,
+  },
   {
     icon: FileCode2,
     title: "MCP Toolkit",
