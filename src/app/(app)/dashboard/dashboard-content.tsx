@@ -96,14 +96,14 @@ export async function DashboardContent({ userId }: { userId: string }) {
 
       {/* Upgrade CTA for free users */}
       {profile.subscription_tier !== "premium" && (
-        <div className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/5 p-4">
+        <div className="flex flex-col gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-medium">Unlock the full curriculum</p>
             <p className="text-sm text-muted-foreground">
               Get access to all 16 modules, capstone templates, and certificates.
             </p>
           </div>
-          <Button render={<Link href="/pricing" />}>
+          <Button className="w-full shrink-0 sm:w-auto" render={<Link href="/pricing" />}>
             Upgrade
             <ArrowRight className="ml-1 size-4" />
           </Button>
@@ -112,9 +112,9 @@ export async function DashboardContent({ userId }: { userId: string }) {
 
       {/* Share & Earn */}
       {profile.referral_code && (
-        <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4">
+        <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <Users className="size-5 text-primary" />
+            <Users className="size-5 shrink-0 text-primary" />
             <div>
               <p className="font-medium">Share &amp; Earn</p>
               <p className="text-sm text-muted-foreground">
@@ -122,11 +122,9 @@ export async function DashboardContent({ userId }: { userId: string }) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <code className="rounded bg-muted px-2 py-1 text-xs">
-              zerotoship.app?ref={profile.referral_code}
-            </code>
-          </div>
+          <code className="overflow-x-auto rounded bg-muted px-2 py-1 text-xs">
+            zerotoship.app?ref={profile.referral_code}
+          </code>
         </div>
       )}
 

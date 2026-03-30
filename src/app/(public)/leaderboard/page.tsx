@@ -71,20 +71,20 @@ export default async function LeaderboardPage({
   return (
     <div className="py-20">
       <div className="mx-auto max-w-3xl px-4 space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Trophy className="size-6 text-primary" />
               <h1 className="text-2xl font-bold">Leaderboard</h1>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground sm:text-base">
               Top builders ranked by XP. Ship modules, earn badges, climb the ranks.
             </p>
           </div>
           {userRank !== null && (
             <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
               <Trophy className="size-4 text-primary" />
-              <span className="text-sm font-medium">Your rank: #{userRank}</span>
+              <span className="text-sm font-medium whitespace-nowrap">Your rank: #{userRank}</span>
             </div>
           )}
         </div>
@@ -147,7 +147,7 @@ export default async function LeaderboardPage({
                   <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
                     {leader.display_name?.[0]?.toUpperCase() ?? "?"}
                   </div>
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1" style={{ minWidth: "120px" }}>
                     <p className="font-medium truncate">
                       {displayName}
                       {isCurrentUser && (

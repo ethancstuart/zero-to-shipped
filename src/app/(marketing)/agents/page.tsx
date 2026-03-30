@@ -181,7 +181,7 @@ export default function AgentsPage() {
             <Sparkles className="size-5 text-primary" />
             <h2 className="text-2xl font-bold">Agent Templates</h2>
           </div>
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="stagger-fade-in grid gap-6 md:grid-cols-2">
             {AGENT_TEMPLATES.map((template) => (
               <TemplateCard key={template.slug} template={template} />
             ))}

@@ -36,7 +36,7 @@ export function XPPopup({ xp, trigger }: XPPopupProps) {
           animate={{ opacity: 0, y: -24 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="pointer-events-none absolute -top-2 right-0 text-sm font-bold text-primary"
+          className="pointer-events-none absolute -top-2 right-0 max-w-fit whitespace-nowrap text-xs font-bold text-primary sm:text-sm"
         >
           +{xp} XP
         </motion.span>

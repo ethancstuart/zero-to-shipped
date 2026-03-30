@@ -89,19 +89,19 @@ export function PremiumGate({
 
       {/* Gate overlay */}
       <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
-        <div className="w-full max-w-lg px-4">
+        <div className="w-full max-w-lg px-3 sm:px-4">
           {/* Premium card with gradient border effect */}
           <div className="rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent p-px shadow-lg shadow-primary/5">
             <Card className="rounded-2xl">
               <CardHeader>
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex items-center gap-2">
                     <Lock className="size-4 text-muted-foreground/60" />
                     <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                       Premium Module {moduleNumber}
                     </span>
                   </div>
-                  <div className="flex gap-1.5">
+                  <div className="flex flex-wrap gap-1.5">
                     {relevantRoles.map((role) => (
                       <Badge key={role} variant="secondary">
                         {ROLE_LABELS[role]}
@@ -109,7 +109,7 @@ export function PremiumGate({
                     ))}
                   </div>
                 </div>
-                <CardTitle className="text-lg">{moduleTitle}</CardTitle>
+                <CardTitle className="text-base sm:text-lg">{moduleTitle}</CardTitle>
                 <CardDescription>{description}</CardDescription>
               </CardHeader>
 

@@ -47,7 +47,7 @@ export default async function PricingPage() {
 
         <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
           {/* Free Tier */}
-          <div className="rounded-xl border border-border bg-card p-8">
+          <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500 rounded-xl border border-border bg-card p-6 sm:p-8">
             <h2 className="mb-1 text-xl font-bold">Free</h2>
             <p className="mb-6 text-sm text-muted-foreground">
               Learn the foundations at your own pace.
@@ -74,7 +74,7 @@ export default async function PricingPage() {
           </div>
 
           {/* Full Access */}
-          <div className="rounded-xl border-2 border-primary bg-card p-8">
+          <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500 delay-150 rounded-xl border-2 border-primary bg-card p-6 sm:p-8">
             <div className="mb-1 flex items-center gap-2">
               <h2 className="text-xl font-bold">Full Access</h2>
               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">

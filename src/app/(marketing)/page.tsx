@@ -75,45 +75,49 @@ export default async function LandingPage({
               Sign in failed. Please try again.
             </div>
           )}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-500">
-            <Rocket className="size-4" />
-            Founding member pricing: $99 (first 100 students)
-          </div>
-          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
-            Stop learning.
-            <br />
-            <span className="text-primary">Start shipping.</span>
-          </h1>
-          <p className="mx-auto mb-4 max-w-2xl text-lg text-muted-foreground">
-            Go from &ldquo;I have an idea&rdquo; to &ldquo;here&apos;s the live
-            URL&rdquo; — even if you&apos;ve never written a line of code.
-          </p>
-          <p className="mx-auto mb-2 max-w-2xl text-base text-muted-foreground">
-            Built by Ethan Stuart — Senior Manager, Data &amp; AI Products at
-            Disney Studio Technology
-          </p>
-          <p className="mx-auto mb-8 max-w-2xl text-sm font-medium text-muted-foreground">
-            16 modules. Ship a capstone. Earn a certificate.
-          </p>
-          <FoundingCounter />
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
-            <LoginButton />
-            <Button
-              variant="outline"
-              render={<a href="#curriculum" />}
-            >
-              View Curriculum
-              <ArrowRight className="ml-2 size-4" />
-            </Button>
-          </div>
-          <div className="mx-auto mt-8 max-w-sm">
-            <p className="mb-3 text-sm text-muted-foreground">
-              Try Module 1 free — no sign-up required
+          <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-xs font-medium text-green-500 sm:px-4 sm:text-sm">
+              <Rocket className="size-4" />
+              Founding member pricing: $99 (first 100 students)
+            </div>
+            <h1 className="mb-6 text-3xl font-bold tracking-tight sm:text-6xl">
+              Stop learning.
+              <br />
+              <span className="text-primary">Start shipping.</span>
+            </h1>
+            <p className="mx-auto mb-4 max-w-2xl text-sm text-muted-foreground sm:text-lg">
+              Go from &ldquo;I have an idea&rdquo; to &ldquo;here&apos;s the live
+              URL&rdquo; — even if you&apos;ve never written a line of code.
             </p>
-            <Button render={<Link href="/preview/module-1" />} variant="outline">
-              Preview Module 1
-              <ArrowRight className="ml-2 size-4" />
-            </Button>
+            <p className="mx-auto mb-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+              Built by Ethan Stuart — Senior Manager, Data &amp; AI Products at
+              Disney Studio Technology
+            </p>
+            <p className="mx-auto mb-8 max-w-2xl text-sm font-medium text-muted-foreground">
+              16 modules. Ship a capstone. Earn a certificate.
+            </p>
+          </div>
+          <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500 delay-200">
+            <FoundingCounter />
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+              <LoginButton />
+              <Button
+                variant="outline"
+                render={<a href="#curriculum" />}
+              >
+                View Curriculum
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+            </div>
+            <div className="mx-auto mt-8 max-w-sm">
+              <p className="mb-3 text-sm text-muted-foreground">
+                Try Module 1 free — no sign-up required
+              </p>
+              <Button render={<Link href="/preview/module-1" />} variant="outline">
+                Preview Module 1
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
