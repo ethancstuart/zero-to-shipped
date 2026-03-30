@@ -1,7 +1,8 @@
-import { Trophy } from "lucide-react";
+import { Trophy, Users } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { LoginButton } from "@/components/layout/login-button";
 import { ROLE_LABELS } from "@/lib/constants";
 import type { Profile, RoleTrack } from "@/types";
@@ -113,9 +114,11 @@ export default async function LeaderboardPage({
 
         {/* Leaderboard list */}
         {leaderboard.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            No public profiles yet. Be the first!
-          </p>
+          <EmptyState
+            icon={Users}
+            title="No public profiles yet"
+            description="Be the first to make your profile public and claim a spot on the leaderboard."
+          />
         ) : (
           <div className="rounded-xl border border-border bg-card divide-y divide-border">
             {leaderboard.map((leader, index) => {

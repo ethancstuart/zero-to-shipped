@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "./theme-toggle";
 import type { Profile } from "@/types";
 import { getXPProgress } from "@/lib/gamification/constants";
@@ -122,7 +123,8 @@ export function AppTopbar({ profile }: { profile: Profile }) {
               );
             })}
           </div>
-          <div className="mt-auto border-t border-border pt-4">
+          <div className="mt-auto pt-4">
+            <Separator className="mb-4" />
             <button
               onClick={handleSignOut}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-base font-medium text-muted-foreground transition-colors hover:bg-muted"

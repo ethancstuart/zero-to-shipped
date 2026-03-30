@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 import type { ModuleStatus } from "@/types";
 
 // Node positions on the SVG canvas (hand-tuned layout)
@@ -60,7 +60,8 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
     }
   };
 
-  const getEdgeColor = (from: number, to: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const getEdgeColor = (from: number, _to: number) => {
     const fromStatus = getStatus(from);
     if (fromStatus === "completed") return "#22c55e";
     if (fromStatus === "in_progress") return "#3b82f6";
@@ -76,7 +77,8 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-border bg-card p-4">
+    <Card className="overflow-x-auto">
+      <CardContent>
       <svg viewBox="0 0 800 860" className="mx-auto w-full max-w-3xl">
         {/* Tier labels */}
         <text x="20" y="60" className="fill-primary text-[11px] font-semibold">
@@ -170,6 +172,7 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
           return node;
         })}
       </svg>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

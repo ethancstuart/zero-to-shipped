@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { MODULE_METADATA } from "@/lib/content/modules";
-import { TIER_LABELS } from "@/lib/constants";
 import { SkillTreeGraph } from "@/components/gamification/skill-tree-graph";
 import type { ModuleProgress } from "@/types";
 

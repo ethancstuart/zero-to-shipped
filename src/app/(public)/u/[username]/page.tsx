@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MODULE_METADATA } from "@/lib/content/modules";
-import { getXPProgress, getBadgeBySlug, BADGES } from "@/lib/gamification/constants";
+import { getXPProgress, getBadgeBySlug } from "@/lib/gamification/constants";
 import { ROLE_LABELS, siteConfig } from "@/lib/constants";
 import { ShareButtons } from "@/components/profile/share-buttons";
 import Image from "next/image";

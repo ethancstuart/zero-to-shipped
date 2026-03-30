@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { XP, getBadgeBySlug } from "./constants";
 import { MODULE_METADATA, getModulesByTier } from "@/lib/content/modules";
-import type { ModuleProgress, CheckpointResult } from "@/types";
+import type { CheckpointResult } from "@/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 // Internal collector that accumulates awards during a checkpoint flow

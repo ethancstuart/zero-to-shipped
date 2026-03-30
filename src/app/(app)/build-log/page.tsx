@@ -9,13 +9,6 @@ import type { ModuleProgress, Profile, RoleTrack } from "@/types";
 
 export const metadata = { title: "Build Log" };
 
-const ROLE_LABELS: Record<RoleTrack, string> = {
-  pm: "Product Manager",
-  pjm: "Project Manager",
-  ba: "Business Analyst",
-  bi: "Business Intelligence",
-};
-
 export default async function BuildLogPage() {
   const supabase = await createClient();
   const {

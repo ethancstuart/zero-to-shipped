@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Copy, Gift, Linkedin, Lock, Twitter, Unlock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { siteConfig } from "@/lib/constants";
 
 interface ReferredUser {
@@ -231,9 +232,11 @@ export function ReferralDashboard({
           Referred Users
         </h2>
         {referredUsers.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No referrals yet. Share your link to get started!
-          </p>
+          <EmptyState
+            icon={Users}
+            title="No referrals yet"
+            description="Share your referral link to earn XP and unlock rewards."
+          />
         ) : (
           <div className="space-y-3">
             {referredUsers.map((user) => (

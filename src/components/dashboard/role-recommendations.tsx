@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import type { RoleTrack, ModuleProgress } from "@/types";
 
@@ -40,9 +41,11 @@ export function RoleRecommendations({
   if (recommended.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
-      <h2 className="mb-4 font-semibold">Recommended for Your Track</h2>
-      <div className="space-y-3">
+    <Card>
+      <CardHeader>
+        <CardTitle>Recommended for Your Track</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
         {recommended.map((mod) => (
           <div key={mod!.number} className="flex items-start gap-3">
             <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
@@ -64,7 +67,7 @@ export function RoleRecommendations({
             </Button>
           </div>
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

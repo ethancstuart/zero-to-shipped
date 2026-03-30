@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -19,7 +18,11 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
 import type { Profile } from "@/types";
 import { getXPProgress } from "@/lib/gamification/constants";
 
@@ -49,34 +52,32 @@ export function AppSidebar({ profile }: { profile: Profile }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-card lg:flex">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2 border-b border-border px-6">
+      <div className="flex h-16 items-center gap-2 px-6">
         <Rocket className="size-5 text-primary" />
         <span className="font-bold">Zero to Ship</span>
         {profile.subscription_tier === "premium" && (
-          <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+          <Badge variant="secondary" className="ml-auto text-[10px]">
             Premium
-          </span>
+          </Badge>
         )}
       </div>
 
+      <Separator />
+
       {/* XP Bar */}
-      <div className="border-b border-border px-6 py-4">
-        <div className="mb-1 flex items-center justify-between text-xs">
-          <span className="font-medium">Lv.{current.level} {current.title}</span>
-          <span className="text-muted-foreground">{profile.xp} XP</span>
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-primary transition-all"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+      <div className="px-6 py-4">
+        <Progress value={progressPercent} className="mb-1">
+          <span className="text-xs font-medium">Lv.{current.level} {current.title}</span>
+          <span className="ml-auto text-xs text-muted-foreground">{profile.xp} XP</span>
+        </Progress>
         {next && (
           <p className="mt-1 text-[10px] text-muted-foreground">
             {next.xpRequired - profile.xp} XP to {next.title}
           </p>
         )}
       </div>
+
+      <Separator />
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
@@ -101,21 +102,20 @@ export function AppSidebar({ profile }: { profile: Profile }) {
       </nav>
 
       {/* User */}
-      <div className="border-t border-border p-4">
+      <Separator />
+      <div className="p-4">
         <div className="mb-2 flex items-center gap-3">
-          {profile.avatar_url ? (
-            <Image
-              src={profile.avatar_url}
-              alt={`${profile.display_name ?? "User"}'s avatar`}
-              width={32}
-              height={32}
-              className="size-8 rounded-full"
-            />
-          ) : (
-            <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+          <Avatar>
+            {profile.avatar_url ? (
+              <AvatarImage
+                src={profile.avatar_url}
+                alt={`${profile.display_name ?? "User"}'s avatar`}
+              />
+            ) : null}
+            <AvatarFallback>
               {profile.display_name?.[0]?.toUpperCase() ?? "?"}
-            </div>
-          )}
+            </AvatarFallback>
+          </Avatar>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">
               {profile.display_name}

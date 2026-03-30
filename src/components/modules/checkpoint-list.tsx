@@ -86,7 +86,7 @@ export function CheckpointList({
           style={{ width: `${progressPercent}%` }}
         />
       </div>
-      <div className="space-y-2" role="group" aria-label="Module checkpoints">
+      <div className={cn("space-y-2 transition-opacity", isPending && "opacity-70")} role="group" aria-label="Module checkpoints">
         {checkpoints.map((checkpoint, index) => {
           const isCompleted = optimisticCompleted.includes(index);
           return (
@@ -97,10 +97,11 @@ export function CheckpointList({
               onClick={() => handleToggle(index)}
               disabled={isPending}
               className={cn(
-                "flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                "flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-all",
                 isCompleted
                   ? "bg-green-500/5 text-foreground"
-                  : "hover:bg-muted text-muted-foreground"
+                  : "hover:bg-muted text-muted-foreground",
+                isPending && "pointer-events-none"
               )}
             >
               {isCompleted ? (

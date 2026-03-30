@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { CheckCircle2, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ShareButtons } from "@/components/profile/share-buttons";
 
 interface ModuleCompleteShareProps {

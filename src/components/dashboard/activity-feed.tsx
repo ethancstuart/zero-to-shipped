@@ -1,4 +1,5 @@
 import {
+  Activity,
   CheckCircle2,
   BookOpen,
   Flame,
@@ -6,6 +7,7 @@ import {
   Layers,
   Rocket,
 } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { XPEvent } from "@/types";
 
 const EVENT_CONFIG: Record<
@@ -65,9 +67,11 @@ interface ActivityFeedProps {
 export function ActivityFeed({ events }: ActivityFeedProps) {
   if (events.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
-        No activity yet. Start your first module!
-      </p>
+      <EmptyState
+        icon={Activity}
+        title="No activity yet"
+        description="Start Module 1 to see your progress here."
+      />
     );
   }
 

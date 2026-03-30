@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/supabase/cached-queries";
 import { redirect } from "next/navigation";
 import {
+  Award,
   Flame,
   Trophy,
   ArrowRight,
@@ -16,6 +17,7 @@ import { CompletionRing } from "@/components/dashboard/completion-ring";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { StreakCalendar } from "@/components/dashboard/streak-calendar";
 import { RoleRecommendations } from "@/components/dashboard/role-recommendations";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { ModuleProgress, Badge, XPEvent, RoleTrack } from "@/types";
 
 export async function DashboardContent({ userId }: { userId: string }) {
@@ -194,9 +196,9 @@ export async function DashboardContent({ userId }: { userId: string }) {
       </div>
 
       {/* Badges */}
-      {badges.length > 0 && (
-        <div className="rounded-xl border border-border bg-card p-6">
-          <h2 className="mb-4 font-semibold">Badges Earned</h2>
+      <div className="rounded-xl border border-border bg-card p-6">
+        <h2 className="mb-4 font-semibold">Badges Earned</h2>
+        {badges.length > 0 ? (
           <div className="flex flex-wrap gap-3">
             {badges.map((badge) => {
               const def = getBadgeBySlug(badge.badge_slug);
@@ -213,8 +215,14 @@ export async function DashboardContent({ userId }: { userId: string }) {
               );
             })}
           </div>
-        </div>
-      )}
+        ) : (
+          <EmptyState
+            icon={Award}
+            title="No badges yet"
+            description="Complete modules and hit streaks to earn badges."
+          />
+        )}
+      </div>
     </div>
   );
 }

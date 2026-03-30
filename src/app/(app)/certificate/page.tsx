@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Award, Lock } from "lucide-react";
-import { MODULE_METADATA } from "@/lib/content/modules";
 import { CertificateDownload } from "@/components/profile/certificate-download";
 import { ShareButtons } from "@/components/profile/share-buttons";
 import { siteConfig } from "@/lib/constants";

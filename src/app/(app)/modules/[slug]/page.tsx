@@ -13,7 +13,7 @@ import { canAccessModule } from "@/lib/content/tiers";
 import { PremiumGate } from "@/components/modules/premium-gate";
 import { ShareYourBuild } from "@/components/modules/share-your-build";
 import { siteConfig } from "@/lib/constants";
-import type { ModuleProgress, CheckpointProgress, Profile, RoleTrack, SubscriptionTier } from "@/types";
+import type { ModuleProgress, CheckpointProgress, RoleTrack, SubscriptionTier } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;

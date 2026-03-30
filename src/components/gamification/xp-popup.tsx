@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface XPPopupProps {
   xp: number;
@@ -10,12 +10,22 @@ interface XPPopupProps {
 
 export function XPPopup({ xp, trigger }: XPPopupProps) {
   const [visible, setVisible] = useState(false);
+  const prevTrigger = useRef(trigger);
 
   useEffect(() => {
-    if (trigger === 0) return;
-    setVisible(true);
-    const timer = setTimeout(() => setVisible(false), 1200);
-    return () => clearTimeout(timer);
+    if (trigger === prevTrigger.current || trigger === 0) return;
+    prevTrigger.current = trigger;
+
+    const raf = requestAnimationFrame(() => {
+      setVisible(true);
+    });
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 1200);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+    };
   }, [trigger]);
 
   return (

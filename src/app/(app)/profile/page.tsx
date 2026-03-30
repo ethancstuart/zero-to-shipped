@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { ProfileForm } from "@/components/profile/profile-form";
-import { BADGES, getBadgeBySlug, getXPProgress } from "@/lib/gamification/constants";
+import { BADGES, getXPProgress } from "@/lib/gamification/constants";
 import type { Profile, Badge } from "@/types";
 
 export const metadata = { title: "Profile" };
@@ -21,7 +21,7 @@ export default async function ProfilePage() {
 
   const profile = profileRes.data as Profile;
   const badges = (badgesRes.data ?? []) as Badge[];
-  const { current, progressPercent } = getXPProgress(profile.xp);
+  const { current } = getXPProgress(profile.xp);
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">

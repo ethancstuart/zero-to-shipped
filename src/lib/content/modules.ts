@@ -1,4 +1,4 @@
-import type { ModuleMeta, ModuleTier, RoleTrack } from "@/types";
+import type { ModuleMeta } from "@/types";
 
 export const MODULE_METADATA: ModuleMeta[] = [
   // Tier 1: Foundations (Modules 1-5)

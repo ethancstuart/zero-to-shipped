@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { RoleTrack, ModuleTier } from "@/types";
+import type { RoleTrack } from "@/types";
 
 const ROLE_LABELS: Record<RoleTrack, string> = {
   pm: "Product Manager",
