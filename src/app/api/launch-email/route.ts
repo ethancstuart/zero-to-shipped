@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: "Ethan from Zero to Ship <hello@zerotoship.app>",
+        from: "Zero to Ship <hello@zerotoship.app>",
         to: user.email,
         subject: "Zero to Ship is live — founding member spots open",
         html: `
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
 
             <p>Thanks for being on the waitlist. This project has been a labor of love, and I'm excited to share it.</p>
 
-            <p>— Ethan</p>
+            <p>— The Zero to Ship Team</p>
 
             <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
               You're receiving this because you signed up for the Zero to Ship waitlist.

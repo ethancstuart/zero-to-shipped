@@ -90,8 +90,7 @@ export default async function LandingPage({
               URL&rdquo; — even if you&apos;ve never written a line of code.
             </p>
             <p className="mx-auto mb-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-              Built by Ethan Stuart — Senior Manager, Data &amp; AI Products at
-              Disney Studio Technology
+              Built for PMs, Project Managers, BAs, and BI Engineers
             </p>
             <p className="mx-auto mb-8 max-w-2xl text-sm font-medium text-muted-foreground">
               16 modules. Ship a capstone. Earn a certificate.
