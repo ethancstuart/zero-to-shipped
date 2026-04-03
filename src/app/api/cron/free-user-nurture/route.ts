@@ -3,6 +3,9 @@ import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
+import { buildAuthMap } from "@/lib/supabase/list-all-users";
+import { batchSendEmails } from "@/lib/email/batch-send";
+import { emailWrapper, emailButton } from "@/lib/email/templates";
 
 const NURTURE_SCHEDULE: {
   day: number;
@@ -16,7 +19,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>You signed up for Zero to Ship a few days ago — nice move.</p>
       <p>If you haven't started yet, Module 1 takes about 3 hours and you'll have your first build by the end. Plus, completing checkpoints every day earns you streak bonuses.</p>
-      <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Continue Learning</a></p>
+      <p>${emailButton("Continue Learning", "https://zerotoship.app/dashboard")}</p>
     `,
   },
   {
@@ -26,7 +29,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>Builders on Zero to Ship are creating dashboards, internal tools, automated reports, and more — all without engineering backgrounds.</p>
       <p>The premium modules (6–16) are where things get real: interactive tools, data products, automations, and your capstone project.</p>
-      <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">See What You'll Build</a></p>
+      <p>${emailButton("See What You'll Build", "https://zerotoship.app/pricing")}</p>
     `,
   },
   {
@@ -36,7 +39,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>You're ${progressPct}% through the foundations. The first 5 modules give you the building blocks — the next 11 modules are where you ship real things.</p>
       <p>Upgrade to Full Access to unlock your capstone project, earn your certificate, and get on the leaderboard.</p>
-      <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Upgrade — $99</a></p>
+      <p>${emailButton("Upgrade — $99", "https://zerotoship.app/pricing")}</p>
     `,
   },
   {
@@ -46,7 +49,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>Just a friendly nudge — your Zero to Ship modules are still waiting for you.</p>
       <p>At $99, Full Access is under most L&D approval thresholds. We'll send you a receipt you can expense.</p>
-      <p><a href="https://zerotoship.app/pricing" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Full Access</a></p>
+      <p>${emailButton("Get Full Access", "https://zerotoship.app/pricing")}</p>
       <p style="color: #666; font-size: 14px;">This is the last email in this series. You can always come back when you're ready.</p>
     `,
   },
@@ -92,16 +95,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ sent: 0 });
   }
 
-  // Batch fetch all auth users upfront (emails + created_at) instead of N+1
-  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
-  const authMap = new Map<string, { email: string; created_at: string }>();
-  if (authData?.users) {
-    for (const u of authData.users) {
-      if (u.email && u.created_at) {
-        authMap.set(u.id, { email: u.email, created_at: u.created_at });
-      }
-    }
-  }
+  // Paginated fetch of all auth users (emails + created_at)
+  const authMap = await buildAuthMap(supabase);
 
   // Batch fetch completed module counts for all free users
   const userIds = freeUsers.map((u) => u.id);
@@ -118,7 +113,9 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  let sent = 0;
+  // Build email payloads and track which nurture day each user should receive
+  const emailPayloads: { from: string; to: string; subject: string; html: string }[] = [];
+  const userUpdates: { userId: string; alreadySent: number[]; day: number }[] = [];
 
   for (const user of freeUsers) {
     const auth = authMap.get(user.id);
@@ -137,40 +134,40 @@ export async function GET(request: NextRequest) {
         const progressPct = Math.round(((completedCounts.get(user.id) ?? 0) / 5) * 100);
         const name = user.display_name?.split(" ")[0] ?? "there";
 
-        try {
-          await resend.emails.send({
-            from: "Zero to Ship <hello@zerotoship.app>",
-            to: auth.email,
-            subject: email.subject,
-            html: `
-              <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-                ${email.body(name, progressPct)}
-                <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
-                <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-                  <a href="https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}" style="color: #999;">Unsubscribe</a>
-                </p>
-              </div>
-            `,
-          });
+        emailPayloads.push({
+          from: "Zero to Ship <hello@zerotoship.app>",
+          to: auth.email,
+          subject: email.subject,
+          html: emailWrapper(email.body(name, progressPct), {
+            unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}`,
+          }),
+        });
 
-          // Track that this email was sent
-          await supabase
-            .from("profiles")
-            .update({
-              nurture_emails_sent: [...alreadySent, email.day],
-            })
-            .eq("id", user.id);
-
-          sent++;
-        } catch (error) {
-          Sentry.captureException(error);
-        }
+        userUpdates.push({ userId: user.id, alreadySent, day: email.day });
 
         // Only send one email per user per run
         break;
       }
     }
   }
+
+  // Batch send all emails
+  const sent = await batchSendEmails(resend, emailPayloads);
+
+  // Update nurture_emails_sent for all users that were queued
+  // (Best-effort: if batch partially failed, some updates may be slightly ahead,
+  //  but the nurture schedule is idempotent — duplicates are harmless)
+  const updatePromises = userUpdates.map(async (u) => {
+    try {
+      await supabase
+        .from("profiles")
+        .update({ nurture_emails_sent: [...u.alreadySent, u.day] })
+        .eq("id", u.userId);
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  });
+  await Promise.all(updatePromises);
 
   // Release lock
   await supabase.from("cron_locks").delete().eq("lock_name", "free-user-nurture");

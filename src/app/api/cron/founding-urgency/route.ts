@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
+import { buildEmailMap } from "@/lib/supabase/list-all-users";
+import { batchSendEmails } from "@/lib/email/batch-send";
+import { emailWrapper, emailButton } from "@/lib/email/templates";
+import * as Sentry from "@sentry/nextjs";
 
 const URGENCY_THRESHOLDS = [75, 50, 25, 10, 5] as const;
 
@@ -73,37 +76,28 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ sent: 0, remaining });
   }
 
-  // Get emails
-  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
-  const emailMap = new Map<string, string>();
-  if (authData?.users) {
-    for (const u of authData.users) {
-      if (u.email) emailMap.set(u.id, u.email);
-    }
-  }
+  // Paginated fetch of all auth users to build userId -> email map
+  const emailMap = await buildEmailMap(supabase);
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  let sent = 0;
 
   const subject = remaining <= 10
     ? `Only ${remaining} founding member spots left`
     : `${remaining} founding member spots remaining — Zero to Ship`;
 
-  for (const user of freeUsers) {
-    const email = emailMap.get(user.id);
-    if (!email) continue;
+  // Collect all emails for batch sending
+  const emailPayloads = freeUsers
+    .filter((user) => emailMap.has(user.id))
+    .map((user) => {
+      const name = user.display_name?.split(" ")[0] ?? "there";
+      const unsubToken = generateUnsubscribeToken(user.id);
 
-    const name = user.display_name?.split(" ")[0] ?? "there";
-    const unsubToken = generateUnsubscribeToken(user.id);
-
-    try {
-      await resend.emails.send({
+      return {
         from: "Zero to Ship <hello@zerotoship.app>",
-        to: email,
+        to: emailMap.get(user.id)!,
         subject,
-        html: `
-          <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-            <p>Hey ${name},</p>
+        html: emailWrapper(
+          `<p>Hey ${name},</p>
 
             <p>${remaining <= 10
               ? `There are only <strong>${remaining} founding member spots</strong> left.`
@@ -114,21 +108,13 @@ export async function GET(request: NextRequest) {
 
             ${remaining <= 25 ? `<p style="color: #f59e0b; font-weight: 600;">Founding pricing ends April 30 or when spots run out — whichever comes first.</p>` : ""}
 
-            <p><a href="https://zerotoship.app/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">Get Founding Member Access — $99</a></p>
+            <p>${emailButton("Get Founding Member Access — $99", "https://zerotoship.app/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding", { large: true })}</p>`,
+          { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+        ),
+      };
+    });
 
-            <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
-
-            <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
-              <a href="https://zerotoship.app/api/unsubscribe?token=${unsubToken}" style="color: #999;">Unsubscribe</a>
-            </p>
-          </div>
-        `,
-      });
-      sent++;
-    } catch (error) {
-      Sentry.captureException(error);
-    }
-  }
+  const sent = await batchSendEmails(resend, emailPayloads);
 
   return NextResponse.json({ sent, remaining, threshold: currentThreshold });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateEmailUnsubscribeToken } from "@/lib/email/tokens";
+import { emailWrapper, emailButton } from "@/lib/email/templates";
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -34,9 +35,8 @@ export async function GET(request: NextRequest) {
         from: "Zero to Ship <hello@zerotoship.app>",
         to: user.email,
         subject: "Zero to Ship is live — founding member spots open",
-        html: `
-          <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-            <p>Hey!</p>
+        html: emailWrapper(
+          `<p>Hey!</p>
 
             <p>You signed up for the Zero to Ship waitlist, and I wanted to let you know — it's live.</p>
 
@@ -58,21 +58,17 @@ export async function GET(request: NextRequest) {
             </p>
 
             <p style="text-align: center;">
-              <a href="https://zerotoship.app?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Start Learning Free</a>
+              ${emailButton("Start Learning Free", "https://zerotoship.app?utm_source=waitlist&utm_medium=email&utm_campaign=launch", { large: true })}
             </p>
 
             <p>Not ready for premium? Try the <a href="https://zerotoship.app/guides/git-101?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">free Git 101 guide</a> — no sign-up required.</p>
 
-            <p>Thanks for being on the waitlist. This project has been a labor of love, and I'm excited to share it.</p>
-
-            <p>— The Zero to Ship Team</p>
-
-            <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
-              You're receiving this because you signed up for the Zero to Ship waitlist.
-              <br><a href="${unsubUrl}" style="color: #999;">Unsubscribe</a>
-            </p>
-          </div>
-        `,
+            <p>Thanks for being on the waitlist. This project has been a labor of love, and I'm excited to share it.</p>`,
+          {
+            unsubscribeUrl: unsubUrl,
+            footerNote: "You're receiving this because you signed up for the Zero to Ship waitlist.",
+          }
+        ),
       });
       sent++;
     } catch {

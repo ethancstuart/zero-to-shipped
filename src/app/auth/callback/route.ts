@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
+import { emailWrapper, emailButton } from "@/lib/email/templates";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -67,9 +68,8 @@ export async function GET(request: Request) {
               from: "Zero to Ship <hello@zerotoship.app>",
               to: data.user.email!,
               subject: "Welcome to Zero to Ship",
-              html: `
-                <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-                  <p>Hey ${name},</p>
+              html: emailWrapper(
+                `<p>Hey ${name},</p>
                   <p>Welcome to <strong>Zero to Ship</strong> — you just took the first step toward building real software with AI.</p>
                   <p>Here's what to expect:</p>
                   <ul>
@@ -78,13 +78,9 @@ export async function GET(request: Request) {
                     <li><strong>Streaks & XP</strong> — stay consistent and climb the leaderboard</li>
                   </ul>
                   <p>Module 1 takes about 3 hours, and you'll have your first build by the end.</p>
-                  <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Go to Dashboard</a></p>
-                  <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
-                  <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-                    <a href="https://zerotoship.app/api/unsubscribe?token=${unsubToken}" style="color: #999;">Unsubscribe</a>
-                  </p>
-                </div>
-              `,
+                  <p>${emailButton("Go to Dashboard", "https://zerotoship.app/dashboard")}</p>`,
+                { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+              ),
             });
 
             await serviceClient

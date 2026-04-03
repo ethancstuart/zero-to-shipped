@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
+import { CheckCircle2, ChevronRight, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { ModuleStatus } from "@/types";
 
 // Node positions on the SVG canvas (hand-tuned layout)
@@ -43,6 +45,100 @@ interface SkillTreeGraphProps {
   statusMap: Record<number, ModuleStatus>;
 }
 
+const TIER_ORDER = ["foundations", "intermediate", "advanced", "capstone"] as const;
+const TIER_LABELS: Record<string, string> = {
+  foundations: "Foundations",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
+  capstone: "Capstone",
+};
+
+// Map module numbers to tiers based on the known layout
+function getModuleTier(num: number): string {
+  if (num <= 5) return "foundations";
+  if (num <= 10) return "intermediate";
+  if (num <= 15) return "advanced";
+  return "capstone";
+}
+
+function StatusIcon({ status }: { status: ModuleStatus }) {
+  switch (status) {
+    case "completed":
+      return <CheckCircle2 className="size-5 shrink-0 text-green-500" />;
+    case "in_progress":
+      return (
+        <div className="size-5 shrink-0 rounded-full border-2 border-primary bg-primary/20" />
+      );
+    case "available":
+      return <ChevronRight className="size-5 shrink-0 text-primary" />;
+    default:
+      return <Lock className="size-4 shrink-0 text-muted-foreground/40" />;
+  }
+}
+
+function MobileSkillTreeList({ modules, statusMap }: SkillTreeGraphProps) {
+  const getStatus = (num: number): ModuleStatus =>
+    statusMap[num] ?? "locked";
+
+  const grouped = TIER_ORDER.map((tier) => ({
+    tier,
+    label: TIER_LABELS[tier],
+    modules: modules.filter((m) => getModuleTier(m.number) === tier),
+  }));
+
+  return (
+    <div className="space-y-6">
+      {grouped.map(({ tier, label, modules: tierModules }) => (
+        <div key={tier}>
+          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-primary">
+            {label}
+          </h3>
+          <div className="space-y-2">
+            {tierModules.map((mod) => {
+              const status = getStatus(mod.number);
+              const isClickable = status !== "locked";
+
+              const content = (
+                <div
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors",
+                    status === "completed" && "border-green-500/20 bg-green-500/5",
+                    status === "in_progress" && "border-primary/30 bg-primary/5",
+                    status === "available" && "border-border hover:border-primary/40 hover:bg-muted/50",
+                    status === "locked" && "border-border/50 bg-muted/30 opacity-60"
+                  )}
+                >
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold text-muted-foreground">
+                    {mod.number}
+                  </span>
+                  <span
+                    className={cn(
+                      "flex-1 text-sm font-medium",
+                      status === "locked" ? "text-muted-foreground" : "text-foreground"
+                    )}
+                  >
+                    {mod.title}
+                  </span>
+                  <StatusIcon status={status} />
+                </div>
+              );
+
+              if (isClickable) {
+                return (
+                  <Link key={mod.number} href={`/modules/${mod.slug}`}>
+                    {content}
+                  </Link>
+                );
+              }
+              return <div key={mod.number}>{content}</div>;
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
   const getStatus = (num: number): ModuleStatus =>
     statusMap[num] ?? "locked";
@@ -77,7 +173,14 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
   }
 
   return (
-    <Card className="overflow-x-auto">
+    <>
+    {/* Mobile: list view */}
+    <div className="block lg:hidden">
+      <MobileSkillTreeList modules={modules} statusMap={statusMap} />
+    </div>
+
+    {/* Desktop: SVG graph */}
+    <Card className="hidden overflow-x-auto lg:block">
       <CardContent>
       <svg viewBox="0 0 800 860" className="mx-auto w-full max-w-3xl">
         {/* Tier labels */}
@@ -174,5 +277,6 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
       </svg>
       </CardContent>
     </Card>
+    </>
   );
 }

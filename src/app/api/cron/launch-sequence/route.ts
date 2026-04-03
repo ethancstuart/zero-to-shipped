@@ -1,28 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
 import { generateEmailUnsubscribeToken } from "@/lib/email/tokens";
+import { batchSendEmails } from "@/lib/email/batch-send";
+import { emailWrapperDark, emailButtonCentered } from "@/lib/email/templates";
+import * as Sentry from "@sentry/nextjs";
 
 interface LaunchEmail {
   id: string;
   date: string; // YYYY-MM-DD
   subject: string | ((remaining: number) => string);
   body: string | ((remaining: number) => string);
-}
-
-function emailWrapper(content: string, unsubUrl: string): string {
-  return `
-    <div style="font-family: monospace; max-width: 560px; margin: 0 auto; color: #e0e0e0; background: #0a0a0a; padding: 24px; border-radius: 12px;">
-      ${content}
-      <p style="color: #888; font-size: 14px; margin-top: 24px;">— Zero to Ship</p>
-      <p style="color: #666; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-        You're receiving this because you signed up for the Zero to Ship waitlist.
-        <br><a href="${unsubUrl}" style="color: #666;">Unsubscribe</a>
-      </p>
-    </div>
-  `;
 }
 
 const LAUNCH_EMAILS: LaunchEmail[] = [
@@ -39,9 +28,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>I'm looking for <strong style="color: #fff;">20 founding members</strong> to take the course and help shape it. Founding member pricing is <strong style="color: #22c55e;">$99</strong> — 100 spots, ends April 30.</p>
 
-      <p style="text-align: center; margin: 24px 0;">
-        <a href="https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email1" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">See Founding Member Pricing</a>
-      </p>
+      ${emailButtonCentered("See Founding Member Pricing", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email1")}
     `,
   },
   {
@@ -80,9 +67,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p style="color: #f59e0b;">Founding member pricing: $99 (100 spots, ends April 30)</p>
 
-      <p style="text-align: center; margin: 24px 0;">
-        <a href="https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email2" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">See Full Pricing</a>
-      </p>
+      ${emailButtonCentered("See Full Pricing", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email2")}
     `,
   },
   {
@@ -99,9 +84,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Founding pricing is <strong style="color: #22c55e;">$99</strong> and ends April 30 or when spots run out.</p>
 
-      <p style="text-align: center; margin: 24px 0;">
-        <a href="https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email3" style="display: inline-block; background: #6366f1; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Claim Your Founding Spot</a>
-      </p>
+      ${emailButtonCentered("Claim Your Founding Spot", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email3")}
     `,
   },
 ];
@@ -177,24 +160,24 @@ export async function GET(request: NextRequest) {
     .insert({ id: scheduledEmail.id, event_type: "launch_sequence" });
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  let sent = 0;
 
-  for (const user of waitlistUsers) {
+  // Collect all emails for batch sending
+  const emailPayloads = waitlistUsers.map((user) => {
     const unsubToken = generateEmailUnsubscribeToken(user.email);
     const unsubUrl = `https://zerotoship.app/api/unsubscribe?token=${unsubToken}&type=email`;
 
-    try {
-      await resend.emails.send({
-        from: "Zero to Ship <hello@zerotoship.app>",
-        to: user.email,
-        subject,
-        html: emailWrapper(bodyContent, unsubUrl),
-      });
-      sent++;
-    } catch (error) {
-      Sentry.captureException(error);
-    }
-  }
+    return {
+      from: "Zero to Ship <hello@zerotoship.app>",
+      to: user.email,
+      subject,
+      html: emailWrapperDark(bodyContent, {
+        unsubscribeUrl: unsubUrl,
+        footerNote: "You're receiving this because you signed up for the Zero to Ship waitlist.",
+      }),
+    };
+  });
+
+  const sent = await batchSendEmails(resend, emailPayloads);
 
   return NextResponse.json({
     sent,

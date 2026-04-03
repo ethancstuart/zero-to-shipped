@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
+import { emailWrapperDark } from "@/lib/email/templates";
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -116,9 +117,8 @@ export async function GET(request: NextRequest) {
       from: "ZTS Analytics <hello@zerotoship.app>",
       to: "ethan@zerotoship.app",
       subject: `📊 ZTS Daily Digest — ${digest.date}`,
-      html: `
-        <div style="font-family: monospace; max-width: 560px; margin: 0 auto; color: #e0e0e0; background: #0a0a0a; padding: 24px; border-radius: 12px;">
-          <h2 style="color: #fff; margin-top: 0;">ZTS Daily Digest</h2>
+      html: emailWrapperDark(
+        `<h2 style="color: #fff; margin-top: 0;">ZTS Daily Digest</h2>
           <p style="color: #888;">${digest.date}</p>
 
           <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
@@ -162,13 +162,9 @@ export async function GET(request: NextRequest) {
             </tr>
             `).join("")}
           </table>
-          ` : ""}
-
-          <p style="color: #666; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-            Automated digest from Zero to Ship analytics agent.
-          </p>
-        </div>
-      `,
+          ` : ""}`,
+        { footerNote: "Automated digest from Zero to Ship analytics agent." }
+      ),
     });
   } catch (error) {
     Sentry.captureException(error);

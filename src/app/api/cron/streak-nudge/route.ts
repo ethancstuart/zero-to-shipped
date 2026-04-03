@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
+import { buildEmailMap } from "@/lib/supabase/list-all-users";
+import { batchSendEmails } from "@/lib/email/batch-send";
+import { emailWrapper, emailButton } from "@/lib/email/templates";
 
 export async function GET(request: NextRequest) {
   // Verify cron secret
@@ -50,43 +52,26 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ nudged: 0 });
   }
 
-  // Batch fetch all emails upfront instead of N+1 getUserById calls
-  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
-  const emailMap = new Map<string, string>();
-  if (authData?.users) {
-    for (const u of authData.users) {
-      if (u.email) emailMap.set(u.id, u.email);
-    }
-  }
+  // Paginated fetch of all auth users to build userId -> email map
+  const emailMap = await buildEmailMap(supabase);
 
-  let nudged = 0;
-  for (const user of users) {
-    const email = emailMap.get(user.id);
-    if (!email) continue;
+  // Collect all emails for batch sending
+  const emailPayloads = users
+    .filter((user) => emailMap.has(user.id))
+    .map((user) => ({
+      from: "Zero to Ship <hello@zerotoship.app>",
+      to: emailMap.get(user.id)!,
+      subject: `Don't lose your ${user.current_streak}-day streak!`,
+      html: emailWrapper(
+        `<p>Hey ${user.display_name?.split(" ")[0] ?? "there"},</p>
+          <p>You've got a <strong>${user.current_streak}-day streak</strong> on Zero to Ship — don't let it slip!</p>
+          <p>Even one checkpoint keeps the streak alive.</p>
+          <p>${emailButton("Continue Learning", "https://zerotoship.app/dashboard")}</p>`,
+        { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}` }
+      ),
+    }));
 
-    try {
-      await resend.emails.send({
-        from: "Zero to Ship <hello@zerotoship.app>",
-        to: email,
-        subject: `Don't lose your ${user.current_streak}-day streak!`,
-        html: `
-          <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-            <p>Hey ${user.display_name?.split(" ")[0] ?? "there"},</p>
-            <p>You've got a <strong>${user.current_streak}-day streak</strong> on Zero to Ship — don't let it slip!</p>
-            <p>Even one checkpoint keeps the streak alive.</p>
-            <p><a href="https://zerotoship.app/dashboard" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Continue Learning</a></p>
-            <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
-            <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-              <a href="https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}" style="color: #999;">Unsubscribe</a>
-            </p>
-          </div>
-        `,
-      });
-      nudged++;
-    } catch (error) {
-      Sentry.captureException(error);
-    }
-  }
+  const nudged = await batchSendEmails(resend, emailPayloads);
 
   // Release lock
   await supabase.from("cron_locks").delete().eq("lock_name", "streak-nudge");

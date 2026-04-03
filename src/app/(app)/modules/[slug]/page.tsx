@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Lock } from "lucide-react";
 import { MODULE_METADATA, getModuleBySlug } from "@/lib/content/modules";
 import { CheckpointList } from "@/components/modules/checkpoint-list";
+import { MobileCheckpointBar } from "@/components/modules/mobile-checkpoint-bar";
 import { ToolToggle } from "@/components/modules/tool-toggle";
 import { ModuleContent } from "@/components/modules/module-content";
 import { Button } from "@/components/ui/button";
@@ -230,6 +231,12 @@ export default async function ModuleReaderPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Mobile floating checkpoint progress bar */}
+      <MobileCheckpointBar
+        completedCount={completedIndexes.length}
+        totalCount={mod.checkpoints.length}
+      />
     </div>
   );
 }

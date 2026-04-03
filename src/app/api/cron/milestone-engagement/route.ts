@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
+import { buildEmailMap } from "@/lib/supabase/list-all-users";
+import { batchSendEmails } from "@/lib/email/batch-send";
+import { emailWrapper, emailButton, emailLink } from "@/lib/email/templates";
 
 interface Milestone {
   key: string;
@@ -20,7 +22,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You completed Module 1. That means you've built something, seen it run, and iterated on it. Most people never get this far.</p>
       <p>Module 2 teaches you how to give AI tools better instructions — the prompts that separate "meh" output from "wow, that's exactly what I needed."</p>
-      <p><a href="https://zerotoship.app/modules/02-prompt-engineering?utm_source=milestone&utm_medium=email&utm_campaign=module1" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Start Module 2</a></p>
+      <p>${emailButton("Start Module 2", "https://zerotoship.app/modules/02-prompt-engineering?utm_source=milestone&utm_medium=email&utm_campaign=module1")}</p>
     `,
   },
   {
@@ -31,7 +33,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You just finished all 5 foundation modules. You can set up projects, write effective prompts, understand code, use the terminal, and manage version control. That's a real skill set.</p>
       <p>The next 11 modules are where you build real things — interactive tools, data products, automations, and your capstone project.</p>
-      <p><a href="https://zerotoship.app/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Unlock Full Access — $199</a></p>
+      <p>${emailButton("Unlock Full Access — $199", "https://zerotoship.app/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5")}</p>
       <p style="color: #22c55e; font-size: 14px; font-weight: 600;">Founding member price: $99 (limited spots)</p>
     `,
   },
@@ -43,7 +45,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You just earned your first badge on Zero to Ship. Badges track your progress and show up on your public profile.</p>
       <p>Keep building — there are 20+ badges to collect, from streak milestones to role-specific achievements.</p>
-      <p><a href="https://zerotoship.app/dashboard?utm_source=milestone&utm_medium=email&utm_campaign=firstbadge" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">View Your Progress</a></p>
+      <p>${emailButton("View Your Progress", "https://zerotoship.app/dashboard?utm_source=milestone&utm_medium=email&utm_campaign=firstbadge")}</p>
     `,
   },
   {
@@ -54,9 +56,9 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You completed all 16 modules and shipped your capstone project. That's incredible.</p>
       <p>Your certificate is ready. Share it on LinkedIn — you earned it.</p>
-      <p><a href="https://zerotoship.app/certificate?utm_source=milestone&utm_medium=email&utm_campaign=capstone" style="display: inline-block; background: #6366f1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Download Your Certificate</a></p>
+      <p>${emailButton("Download Your Certificate", "https://zerotoship.app/certificate?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
       <p>One more thing: if you know a PM, analyst, or project manager who'd benefit from this, share your referral link. You both earn 100 XP.</p>
-      <p><a href="https://zerotoship.app/referrals?utm_source=milestone&utm_medium=email&utm_campaign=capstone" style="color: #6366f1;">Your referral dashboard →</a></p>
+      <p>${emailLink("Your referral dashboard →", "https://zerotoship.app/referrals?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
     `,
   },
 ];
@@ -82,14 +84,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ sent: 0 });
   }
 
-  // Get emails in batch
-  const { data: authData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
-  const emailMap = new Map<string, string>();
-  if (authData?.users) {
-    for (const u of authData.users) {
-      if (u.email) emailMap.set(u.id, u.email);
-    }
-  }
+  // Paginated fetch of all auth users to build userId -> email map
+  const emailMap = await buildEmailMap(supabase);
 
   // Get all progress and badges in batch
   const userIds = users.map((u) => u.id);
@@ -128,7 +124,10 @@ export async function GET(request: NextRequest) {
   const sentSet = new Set((sentEvents ?? []).map((e) => e.id));
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  let sent = 0;
+
+  // Collect email payloads and event markers for batch processing
+  const emailPayloads: { from: string; to: string; subject: string; html: string }[] = [];
+  const eventInserts: { id: string; event_type: string }[] = [];
 
   for (const user of users) {
     const email = emailMap.get(user.id);
@@ -145,38 +144,33 @@ export async function GET(request: NextRequest) {
       if (sentSet.has(eventId)) continue;
       if (!milestone.check(data)) continue;
 
-      // Mark as sent first (idempotent)
-      await supabase
-        .from("processed_events")
-        .insert({ id: eventId, event_type: "milestone_email" });
-
       const name = user.display_name?.split(" ")[0] ?? "there";
       const unsubToken = generateUnsubscribeToken(user.id);
 
-      try {
-        await resend.emails.send({
-          from: "Zero to Ship <hello@zerotoship.app>",
-          to: email,
-          subject: milestone.subject,
-          html: `
-            <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
-              ${milestone.body(name)}
-              <p style="color: #666; font-size: 14px;">— Zero to Ship</p>
-              <p style="color: #999; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
-                <a href="https://zerotoship.app/api/unsubscribe?token=${unsubToken}" style="color: #999;">Unsubscribe</a>
-              </p>
-            </div>
-          `,
-        });
-        sent++;
-      } catch (error) {
-        Sentry.captureException(error);
-      }
+      eventInserts.push({ id: eventId, event_type: "milestone_email" });
+
+      emailPayloads.push({
+        from: "Zero to Ship <hello@zerotoship.app>",
+        to: email,
+        subject: milestone.subject,
+        html: emailWrapper(milestone.body(name), {
+          unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}`,
+        }),
+      });
 
       // Only send one milestone email per user per run
       break;
     }
   }
+
+  // Mark events as sent first (idempotent), then batch send emails
+  if (eventInserts.length > 0) {
+    await supabase
+      .from("processed_events")
+      .insert(eventInserts);
+  }
+
+  const sent = await batchSendEmails(resend, emailPayloads);
 
   return NextResponse.json({ sent });
 }
