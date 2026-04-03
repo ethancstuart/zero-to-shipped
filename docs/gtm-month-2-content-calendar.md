@@ -10,7 +10,7 @@
 
 ---
 
-## Day 31 (Saturday, May 3) — 30 min
+## Day 31 (Sunday, May 3) — 30 min
 ### Action: Month 2 kickoff + LinkedIn post
 
 **First action:** Review Day 30 checkpoint results. Confirm or adjust Month 2 plan based on what worked. 15 min.
@@ -48,12 +48,12 @@ Repost with comment: "This is the skill gap I keep seeing in PM orgs. The ones w
 
 ---
 
-## Day 32 (Sunday, May 4) — 5 min
+## Day 32 (Monday, May 4) — 5 min
 Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 33 (Monday, May 5) — 15 min
+## Day 33 (Tuesday, May 5) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Tip thread format)
 
@@ -81,7 +81,7 @@ Repost with comment: "Number 3 is underrated. A PM who can read code catches des
 
 ---
 
-## Day 34 (Tuesday, May 6) — 30 min
+## Day 34 (Wednesday, May 6) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "AI coding for product managers")
 
@@ -169,7 +169,7 @@ zerotoship.app
 
 ---
 
-## Day 35 (Wednesday, May 7) — 30 min
+## Day 35 (Thursday, May 7) — 30 min
 ### Platform: Substack
 ### Action: Newsletter Issue #3
 
@@ -217,7 +217,7 @@ zerotoship.app
 
 ---
 
-## Day 36 (Thursday, May 8) — 15 min
+## Day 36 (Friday, May 8) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Social proof / behind the scenes)
 
@@ -247,7 +247,7 @@ No repost today — let the post breathe and gather organic engagement.
 
 ---
 
-## Day 37 (Friday, May 9) — 15 min
+## Day 37 (Saturday, May 9) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -274,7 +274,7 @@ Repost with comment: "I've never seen a team argue about a working prototype the
 
 ---
 
-## Day 38 (Saturday, May 10) — 15 min
+## Day 38 (Sunday, May 10) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (User milestone celebration)
 
@@ -306,12 +306,12 @@ Repost with comment: "18 days from zero to code-literate. The learning curve isn
 
 ---
 
-## Day 39 (Sunday, May 11) — 5 min
+## Day 39 (Monday, May 11) — 5 min
 Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 40 (Monday, May 12) — 30 min
+## Day 40 (Tuesday, May 12) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Native Poll
 
@@ -342,7 +342,7 @@ No repost today — let the poll gather votes organically.
 
 ---
 
-## Day 40b (Monday, May 12) — 30 min
+## Day 40b (Tuesday, May 12) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "build software without engineering degree")
 
@@ -446,7 +446,7 @@ zerotoship.app
 
 ---
 
-## Day 41 (Tuesday, May 13) — 30 min
+## Day 41 (Wednesday, May 13) — 30 min
 ### Platform: Substack
 ### Action: Newsletter Issue #4
 
@@ -508,7 +508,7 @@ zerotoship.app
 
 ---
 
-## Day 42 (Wednesday, May 14) — 15 min
+## Day 42 (Thursday, May 14) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Engagement bait — question)
 
@@ -539,7 +539,7 @@ No repost today — let the engagement question drive conversation on its own.
 
 ---
 
-## Day 43 (Thursday, May 15) — 30 min
+## Day 43 (Friday, May 15) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -577,7 +577,7 @@ Repost with comment: "Data professionals have the hardest technical skills alrea
 
 ---
 
-## Day 44 (Friday, May 16) — 15 min
+## Day 44 (Saturday, May 16) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -607,7 +607,7 @@ Repost with comment: "The 'can you add X to the dashboard' Slack channel is the 
 
 ---
 
-## Day 45 (Saturday, May 17) — 30 min
+## Day 45 (Sunday, May 17) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Carousel Post (5 slides)
 
@@ -698,12 +698,12 @@ No repost today — carousels get algorithmic boost on their own. Let it run.
 
 ---
 
-## Day 46 (Sunday, May 18) — 5 min
+## Day 46 (Monday, May 18) — 5 min
 Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 47 (Monday, May 19) — 30 min
+## Day 47 (Tuesday, May 19) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "Claude Code tutorial for beginners")
 
@@ -834,7 +834,7 @@ zerotoship.app
 
 ---
 
-## Day 48 (Tuesday, May 20) — 30 min
+## Day 48 (Wednesday, May 20) — 30 min
 ### Platform: Substack
 ### Action: Newsletter Issue #5
 
@@ -893,7 +893,7 @@ Repost with comment: "The gap between 'I can query data' and 'I can build a tool
 
 ---
 
-## Day 49 (Wednesday, May 21) — 15 min
+## Day 49 (Thursday, May 21) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -926,7 +926,7 @@ No repost today — this is a list post that performs well on its own.
 
 ---
 
-## Day 50 (Thursday, May 22) — 30 min
+## Day 50 (Friday, May 22) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Native Poll
 
@@ -958,7 +958,7 @@ No repost today — let the poll gather votes organically.
 
 ---
 
-## Day 51 (Friday, May 23) — 30 min
+## Day 51 (Saturday, May 23) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Broadening to general business)
 
@@ -990,7 +990,7 @@ Repost with comment: "The number of business processes running on spreadsheets t
 
 ---
 
-## Day 52 (Saturday, May 24) — 15 min
+## Day 52 (Sunday, May 24) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Weekend — light content)
 
@@ -1016,12 +1016,12 @@ No repost today — weekend content, keep it light.
 
 ---
 
-## Day 53 (Sunday, May 25) — 5 min
+## Day 53 (Monday, May 25) — 5 min
 Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 54 (Monday, May 26) — 30 min
+## Day 54 (Tuesday, May 26) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "non-technical founder build MVP")
 
@@ -1131,7 +1131,7 @@ zerotoship.app
 
 ---
 
-## Day 55 (Tuesday, May 27) — 30 min
+## Day 55 (Wednesday, May 27) — 30 min
 ### Platform: Substack
 ### Action: Newsletter Issue #6
 
@@ -1197,7 +1197,7 @@ Repost with comment: "This 30-day playbook for non-technical founders is the mos
 
 ---
 
-## Day 56 (Wednesday, May 28) — 45 min
+## Day 56 (Thursday, May 28) — 45 min
 ### Platform: LinkedIn (Company Page) + Substack
 ### Action: LinkedIn Post + Newsletter Issue #7
 
@@ -1310,7 +1310,7 @@ zerotoship.app
 
 ---
 
-## Day 57 (Thursday, May 29) — 15 min
+## Day 57 (Friday, May 29) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Business professional angle)
 
@@ -1336,7 +1336,7 @@ Repost with comment: "Operations professionals are the sleeper audience for AI c
 
 ---
 
-## Day 58 (Friday, May 30) — 15 min
+## Day 58 (Saturday, May 30) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Social proof compilation)
 
@@ -1368,12 +1368,12 @@ Repost with comment: "Real tools for real problems. Not a single to-do app in th
 
 ---
 
-## Day 59 (Saturday, May 31) — 5 min
+## Day 59 (Sunday, May 31) — 5 min
 Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 60 (Sunday, June 1) — 30 min
+## Day 60 (Monday, June 1) — 30 min
 ### Action: Day 60 Checkpoint Review
 
 Block 30 minutes. Pull all analytics. Complete the checkpoint framework below.
@@ -1386,7 +1386,7 @@ The calendar above covers the anchor posts. Below are additional posts to mainta
 
 ---
 
-## Day 34b (Tuesday, May 6) — 15 min
+## Day 34b (Wednesday, May 6) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick tip)
 
@@ -1405,7 +1405,7 @@ Sound familiar? It's the same structure as a user story. PMs have been writing p
 
 ---
 
-## Day 38b (Saturday, May 10) — 15 min
+## Day 38b (Sunday, May 10) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick insight)
 
@@ -1422,7 +1422,7 @@ The ceiling is different. The learning curve is similar. The outcomes aren't eve
 
 ---
 
-## Day 42b (Wednesday, May 14) — 15 min
+## Day 42b (Thursday, May 14) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Engagement question)
 
@@ -1436,7 +1436,7 @@ Drop it in the comments. Bet at least half of them could be built in a weekend w
 
 ---
 
-## Day 44b (Friday, May 16) — 15 min
+## Day 44b (Saturday, May 16) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick tip)
 
@@ -1456,7 +1456,7 @@ This is how professional developers work too. The tool just makes it faster.
 
 ---
 
-## Day 52b (Saturday, May 24) — 15 min
+## Day 52b (Sunday, May 24) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Boost candidate — practical value)
 
@@ -1479,7 +1479,7 @@ zerotoship.app
 
 ---
 
-## Day 56b (Wednesday, May 28) — 15 min
+## Day 56b (Thursday, May 28) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Testimonial/social proof format)
 

@@ -27,7 +27,7 @@
 
 ---
 
-## Day 61 — Monday, June 2 — 15 min
+## Day 61 — Tuesday, June 2 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Month 3 Transition + Post
 
@@ -70,7 +70,7 @@ Repost with comment: "The 'what did you build' question is so much more powerful
 
 ---
 
-## Day 62 — Tuesday, June 3 — 30 min
+## Day 62 — Wednesday, June 3 — 30 min
 ### Platform: Substack
 ### Action: Newsletter issue
 
@@ -122,7 +122,7 @@ Zero to Ship
 
 ---
 
-## Day 63 — Wednesday, June 4 — 15 min
+## Day 63 — Thursday, June 4 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -158,7 +158,7 @@ Repost with comment: "I keep seeing PM job posts that list 'technical skills pre
 
 ---
 
-## Day 64 — Thursday, June 5 — 15 min
+## Day 64 — Friday, June 5 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (carousel-style text post)
 
@@ -190,7 +190,7 @@ zerotoship.app
 
 ---
 
-## Day 65 — Friday, June 6 — 30 min
+## Day 65 — Saturday, June 6 — 30 min
 ### Platform: Medium
 ### Action: Article (SEO-focused)
 
@@ -295,17 +295,17 @@ Read it: (paste your live URL here after publishing)
 
 ---
 
-## Day 66 — Saturday, June 7 — Rest day
+## Day 66 — Sunday, June 7 — Rest day
 ### Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 67 — Sunday, June 8 — Rest day
+## Day 67 — Monday, June 8 — Rest day
 ### Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 68 — Monday, June 9 — 15 min
+## Day 68 — Tuesday, June 9 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -335,7 +335,7 @@ Repost with comment: "The '38 minutes per day' stat is what stands out to me. Th
 
 ---
 
-## Day 69 — Tuesday, June 10 — 30 min
+## Day 69 — Wednesday, June 10 — 30 min
 ### Platform: Substack + Email
 ### Action: Newsletter + Referral Launch Email
 
@@ -386,7 +386,7 @@ P.S. — If you haven't started the course yet, now's a great time. The first 5 
 
 ---
 
-## Day 70 — Wednesday, June 11 — 15 min
+## Day 70 — Thursday, June 11 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Referral announcement)
 
@@ -419,7 +419,7 @@ Repost with comment: "Word of mouth from builders beats advertising every time. 
 
 ---
 
-## Day 71 — Thursday, June 12 — 15 min
+## Day 71 — Friday, June 12 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (User showcase)
 
@@ -454,7 +454,7 @@ zerotoship.app
 
 ---
 
-## Day 72 — Friday, June 13 — 15 min
+## Day 72 — Saturday, June 13 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: LinkedIn Native Poll
 
@@ -487,7 +487,7 @@ zerotoship.app
 
 ---
 
-## Day 73 — Saturday, June 14 — 30 min
+## Day 73 — Sunday, June 14 — 30 min
 ### Platform: Medium
 ### Action: Article (SEO + conversion)
 
@@ -589,12 +589,12 @@ zerotoship.app
 
 ---
 
-## Day 74 — Sunday, June 15 — Rest day
+## Day 74 — Monday, June 15 — Rest day
 ### Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 75 — Monday, June 16 — 15 min
+## Day 75 — Tuesday, June 16 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -627,7 +627,7 @@ Repost with comment: "33 spots left at the founding member price. If you've been
 
 ---
 
-## Day 76 — Tuesday, June 17 — 30 min
+## Day 76 — Wednesday, June 17 — 30 min
 ### Platform: Substack
 ### Action: Newsletter
 
@@ -685,7 +685,7 @@ Zero to Ship
 
 ---
 
-## Day 77 — Wednesday, June 18 — 15 min
+## Day 77 — Thursday, June 18 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -723,7 +723,7 @@ Repost with comment: "The operations and strategy cohort surprised me. But it ma
 
 ---
 
-## Day 78 — Thursday, June 19 — 15 min
+## Day 78 — Friday, June 19 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: LinkedIn Carousel Post
 
@@ -780,7 +780,7 @@ zerotoship.app
 
 ---
 
-## Day 79 — Friday, June 20 — 30 min
+## Day 79 — Saturday, June 20 — 30 min
 ### Platform: Medium
 ### Action: Article (comprehensive guide / lead magnet)
 
@@ -954,7 +954,7 @@ If you want the structured version with hands-on projects, zerotoship.app — 25
 
 ---
 
-## Day 80 — Saturday, June 21 — 15 min
+## Day 80 — Sunday, June 21 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: LinkedIn Native Poll
 
@@ -988,12 +988,12 @@ zerotoship.app
 
 ---
 
-## Day 81 — Sunday, June 22 — Rest day
+## Day 81 — Monday, June 22 — Rest day
 ### Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 82 — Monday, June 23 — 15 min
+## Day 82 — Tuesday, June 23 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1023,7 +1023,7 @@ Repost with comment: "20 spots. I've been watching this community grow for 2 mon
 
 ---
 
-## Day 83 — Tuesday, June 24 — 30 min
+## Day 83 — Wednesday, June 24 — 30 min
 ### Platform: Substack
 ### Action: Newsletter (testimonial compilation)
 
@@ -1079,7 +1079,7 @@ Zero to Ship
 
 ---
 
-## Day 84 — Wednesday, June 25 — 15 min
+## Day 84 — Thursday, June 25 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1112,7 +1112,7 @@ Repost with comment: "The ROI breakdown here is conservative. The real value is 
 
 ---
 
-## Day 85 — Thursday, June 26 — 15 min
+## Day 85 — Friday, June 26 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1148,7 +1148,7 @@ You already built something. Now build the rest.
 
 ---
 
-## Day 86 — Friday, June 27 — 30 min
+## Day 86 — Saturday, June 27 — 30 min
 ### Platform: Medium
 ### Action: Article
 
@@ -1270,7 +1270,7 @@ The full breakdown, with costs, time invested, and impact: (paste your live URL 
 
 ---
 
-## Day 87 — Saturday, June 28 — 15 min
+## Day 87 — Sunday, June 28 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Referral program update)
 
@@ -1298,12 +1298,12 @@ zerotoship.app
 
 ---
 
-## Day 88 — Sunday, June 29 — Rest day
+## Day 88 — Monday, June 29 — Rest day
 ### Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 89 — Monday, June 30 — 15 min
+## Day 89 — Tuesday, June 30 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1336,7 +1336,7 @@ Repost with comment: "10 spots left. I've been following this from the beginning
 
 ---
 
-## Day 90 — Tuesday, July 1 — 30 min
+## Day 90 — Wednesday, July 1 — 30 min
 ### Platform: Substack
 ### Action: Newsletter (last call)
 
@@ -1777,7 +1777,7 @@ Full retrospective: [link to detailed assessment below]
 
 ## Overview
 
-**Launch:** Day 69 (Week 10 Tuesday, June 10)
+**Launch:** Day 69 (Week 10 Wednesday, June 10)
 **Duration:** 3 weeks (Days 69-90)
 **Goal:** 15-20 founding member signups via referral
 **Mechanism:** Built into the product (user dashboard → referral link)
