@@ -102,12 +102,37 @@ export default async function ModuleReaderPage({ params }: Props) {
   // Check premium access
   const subscriptionTier: SubscriptionTier = profile.subscription_tier === "premium" ? "premium" : "free";
   if (!canAccessModule(mod.number, subscriptionTier)) {
+    // Count how many of the free modules (1-5) the user has completed
+    const freeModulesCompleted = (allProgressRes.data ?? []).filter(
+      (p) => p.module_number >= 1 && p.module_number <= 5
+    ).length;
+
+    // Derive props from module metadata
+    const checkpointCount = mod.checkpoints.length;
+
+    // Parse "3–5" style estimated hours → midpoint in minutes
+    const hourParts = mod.estimatedHours.replace(/[–—-]/g, " ").split(/\s+/).map(Number).filter(Boolean);
+    const avgHours = hourParts.length > 0
+      ? hourParts.reduce((a, b) => a + b, 0) / hourParts.length
+      : 1;
+    const estimatedMinutes = Math.round(avgHours * 60);
+
+    // Extract roles where relevance is "core" or "recommended"
+    const relevantRoles = (Object.entries(mod.roleRelevance) as [keyof typeof mod.roleRelevance, string][])
+      .filter(([, level]) => level === "core" || level === "recommended")
+      .map(([role]) => role);
+
     return (
       <div className="mx-auto max-w-4xl py-10">
         <PremiumGate
           moduleTitle={mod.title}
           moduleNumber={mod.number}
           description={mod.description}
+          freeModulesCompleted={freeModulesCompleted}
+          freeModulesTotal={5}
+          checkpointCount={checkpointCount}
+          estimatedMinutes={estimatedMinutes}
+          relevantRoles={relevantRoles}
         />
       </div>
     );

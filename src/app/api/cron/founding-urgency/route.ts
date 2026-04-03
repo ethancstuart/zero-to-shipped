@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
@@ -24,7 +25,8 @@ export async function GET(request: NextRequest) {
     const total = coupon.max_redemptions ?? 100;
     const used = coupon.times_redeemed ?? 0;
     remaining = Math.max(0, total - used);
-  } catch {
+  } catch (error) {
+    Sentry.captureException(error);
     return NextResponse.json({ error: "Failed to fetch coupon" }, { status: 500 });
   }
 
@@ -123,8 +125,8 @@ export async function GET(request: NextRequest) {
         `,
       });
       sent++;
-    } catch {
-      // Continue with remaining users
+    } catch (error) {
+      Sentry.captureException(error);
     }
   }
 

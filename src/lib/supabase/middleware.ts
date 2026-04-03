@@ -36,13 +36,15 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     // Public routes that don't require auth
-    const publicRoutes = ["/", "/auth/callback", "/pricing", "/waitlist", "/leaderboard", "/preview/module-1"];
+    const publicRoutes = ["/", "/auth/callback", "/pricing", "/waitlist", "/leaderboard", "/preview/module-1", "/guides", "/resources", "/agents", "/privacy", "/terms"];
     const isPublicRoute =
       publicRoutes.some((route) => request.nextUrl.pathname === route) ||
       request.nextUrl.pathname.startsWith("/u/") ||
       request.nextUrl.pathname.startsWith("/purchase/") ||
       request.nextUrl.pathname.startsWith("/verify/") ||
-      request.nextUrl.pathname.startsWith("/api/");
+      request.nextUrl.pathname.startsWith("/api/") ||
+      request.nextUrl.pathname.startsWith("/guides/") ||
+      request.nextUrl.pathname.startsWith("/resources/");
 
     // Capture referral code from URL into a cookie
     const refCode = request.nextUrl.searchParams.get("ref");

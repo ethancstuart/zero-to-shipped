@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
@@ -146,8 +147,8 @@ export async function GET(request: NextRequest) {
       const used = coupon.times_redeemed ?? 0;
       foundingRemaining = Math.max(0, total - used);
     }
-  } catch {
-    // Default to 100 if Stripe fails
+  } catch (error) {
+    Sentry.captureException(error);
   }
 
   // Resolve subject and body (some are functions for dynamic content)
@@ -190,8 +191,8 @@ export async function GET(request: NextRequest) {
         html: emailWrapper(bodyContent, unsubUrl),
       });
       sent++;
-    } catch {
-      // Continue with remaining emails
+    } catch (error) {
+      Sentry.captureException(error);
     }
   }
 

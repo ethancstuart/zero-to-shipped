@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getStripe } from "@/lib/stripe";
@@ -60,7 +61,8 @@ export async function GET(request: NextRequest) {
         const total = coupon.max_redemptions ?? 100;
         const used = coupon.times_redeemed ?? 0;
         return { remaining: Math.max(0, total - used), total };
-      } catch {
+      } catch (error) {
+        Sentry.captureException(error);
         return { remaining: "Error", total: 100 };
       }
     })(),
@@ -76,8 +78,8 @@ export async function GET(request: NextRequest) {
     revenue24h = charges.data
       .filter((c) => c.status === "succeeded")
       .reduce((sum, c) => sum + c.amount, 0) / 100;
-  } catch {
-    // Stripe error — continue with 0
+  } catch (error) {
+    Sentry.captureException(error);
   }
 
   // Top modules completed (all time)
@@ -109,64 +111,69 @@ export async function GET(request: NextRequest) {
   // Send digest email
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  await resend.emails.send({
-    from: "ZTS Analytics <hello@zerotoship.app>",
-    to: "ethan@zerotoship.app",
-    subject: `📊 ZTS Daily Digest — ${digest.date}`,
-    html: `
-      <div style="font-family: monospace; max-width: 560px; margin: 0 auto; color: #e0e0e0; background: #0a0a0a; padding: 24px; border-radius: 12px;">
-        <h2 style="color: #fff; margin-top: 0;">ZTS Daily Digest</h2>
-        <p style="color: #888;">${digest.date}</p>
+  try {
+    await resend.emails.send({
+      from: "ZTS Analytics <hello@zerotoship.app>",
+      to: "ethan@zerotoship.app",
+      subject: `📊 ZTS Daily Digest — ${digest.date}`,
+      html: `
+        <div style="font-family: monospace; max-width: 560px; margin: 0 auto; color: #e0e0e0; background: #0a0a0a; padding: 24px; border-radius: 12px;">
+          <h2 style="color: #fff; margin-top: 0;">ZTS Daily Digest</h2>
+          <p style="color: #888;">${digest.date}</p>
 
-        <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Total Users</td>
-            <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.totalUsers}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">New Signups (24h)</td>
-            <td style="padding: 8px 0; text-align: right; color: #22c55e; font-weight: bold;">${digest.newSignups24h > 0 ? "+" : ""}${digest.newSignups24h}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Premium Users</td>
-            <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.premiumUsers}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Revenue (24h)</td>
-            <td style="padding: 8px 0; text-align: right; color: #22c55e; font-weight: bold;">$${digest.revenue24h.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Completions (24h)</td>
-            <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.completions24h}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Waitlist Size</td>
-            <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.waitlistSize}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; color: #888;">Founding Spots Left</td>
-            <td style="padding: 8px 0; text-align: right; color: #f59e0b; font-weight: bold;">${digest.foundingSpots.remaining} / ${digest.foundingSpots.total}</td>
-          </tr>
-        </table>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Total Users</td>
+              <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.totalUsers}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">New Signups (24h)</td>
+              <td style="padding: 8px 0; text-align: right; color: #22c55e; font-weight: bold;">${digest.newSignups24h > 0 ? "+" : ""}${digest.newSignups24h}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Premium Users</td>
+              <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.premiumUsers}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Revenue (24h)</td>
+              <td style="padding: 8px 0; text-align: right; color: #22c55e; font-weight: bold;">$${digest.revenue24h.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Completions (24h)</td>
+              <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.completions24h}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Waitlist Size</td>
+              <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.waitlistSize}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #888;">Founding Spots Left</td>
+              <td style="padding: 8px 0; text-align: right; color: #f59e0b; font-weight: bold;">${digest.foundingSpots.remaining} / ${digest.foundingSpots.total}</td>
+            </tr>
+          </table>
 
-        ${sortedModules.length > 0 ? `
-        <h3 style="color: #fff; margin-top: 24px;">Top Completed Modules</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          ${sortedModules.map(([num, count]) => `
-          <tr>
-            <td style="padding: 4px 0; color: #888;">Module ${num}</td>
-            <td style="padding: 4px 0; text-align: right; color: #fff;">${count} completions</td>
-          </tr>
-          `).join("")}
-        </table>
-        ` : ""}
+          ${sortedModules.length > 0 ? `
+          <h3 style="color: #fff; margin-top: 24px;">Top Completed Modules</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            ${sortedModules.map(([num, count]) => `
+            <tr>
+              <td style="padding: 4px 0; color: #888;">Module ${num}</td>
+              <td style="padding: 4px 0; text-align: right; color: #fff;">${count} completions</td>
+            </tr>
+            `).join("")}
+          </table>
+          ` : ""}
 
-        <p style="color: #666; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
-          Automated digest from Zero to Ship analytics agent.
-        </p>
-      </div>
-    `,
-  });
+          <p style="color: #666; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">
+            Automated digest from Zero to Ship analytics agent.
+          </p>
+        </div>
+      `,
+    });
+  } catch (error) {
+    Sentry.captureException(error);
+    return NextResponse.json({ sent: false, error: "Failed to send digest email", digest }, { status: 500 });
+  }
 
   return NextResponse.json({ sent: true, digest });
 }

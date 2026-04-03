@@ -77,13 +77,13 @@ export async function POST(request: NextRequest) {
             .from("badges")
             .select("id")
             .eq("user_id", userId)
-            .eq("slug", "founding-member")
+            .eq("badge_slug", "founding-member")
             .maybeSingle();
 
           if (!existingBadge) {
             await supabase.from("badges").insert({
               user_id: userId,
-              slug: "founding-member",
+              badge_slug: "founding-member",
             });
           }
         }
@@ -124,8 +124,8 @@ export async function POST(request: NextRequest) {
               </div>
             `,
           });
-        } catch {
-          // Don't fail the webhook on email error
+        } catch (error) {
+          Sentry.captureException(error);
         }
       }
       break;

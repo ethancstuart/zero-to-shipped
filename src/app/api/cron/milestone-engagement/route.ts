@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { generateUnsubscribeToken } from "@/lib/email/tokens";
@@ -168,8 +169,8 @@ export async function GET(request: NextRequest) {
           `,
         });
         sent++;
-      } catch {
-        // Continue with remaining users
+      } catch (error) {
+        Sentry.captureException(error);
       }
 
       // Only send one milestone email per user per run

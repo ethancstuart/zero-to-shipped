@@ -103,10 +103,8 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${origin}${next}`);
     }
 
-    // Signal signup event via query param — client-side analytics will pick it up
-    const redirectUrl = new URL(`${origin}${next}`);
-    redirectUrl.searchParams.set("event", "signup");
-    return NextResponse.redirect(redirectUrl.toString());
+    // Code exchange failed — redirect to error page
+    return NextResponse.redirect(`${origin}/?error=auth`);
   }
 
   return NextResponse.redirect(`${origin}/?error=auth`);

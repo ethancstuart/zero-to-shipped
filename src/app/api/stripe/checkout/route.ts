@@ -21,6 +21,20 @@ export async function POST(request: NextRequest) {
     const { success } = limiter.check(`checkout:${user.id}`);
     if (!success) return rateLimitResponse(60_000);
 
+    // Double-purchase guard: prevent premium users from buying again
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("subscription_tier")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.subscription_tier === "premium") {
+      return NextResponse.json(
+        { error: "You already have premium access" },
+        { status: 400 }
+      );
+    }
+
     const { tier } = await request.json();
 
     const priceMap: Record<string, string | undefined> = {
