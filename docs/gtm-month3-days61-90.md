@@ -1,7 +1,7 @@
 # Zero to Ship — Go-to-Market Month 3 (Days 61-90)
 ## CONVERSION PUSH: Founding Member Close
 
-**Date range:** Days 61-90 (Weeks 9-12)
+**Date range:** June 2 – July 1, 2026 (Days 61-90, Weeks 9-13)
 **Goal:** Sell out 100 founding member spots at $99
 **Entering Month 3 with (estimated):** ~200-400 LinkedIn followers, ~100-150 Substack subscribers, ~50-80 signups, ~5-15 paid users
 
@@ -27,9 +27,13 @@
 
 ---
 
-## Day 61 (Monday) — 15 min
+## Day 61 — Monday, June 2 — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post
+### Action: Month 3 Transition + Post
+
+**First action:** Review Day 60 checkpoint results. Confirm or adjust Month 3 plan. 15 min.
+
+Then post:
 
 We asked our first 10 users one question:
 
@@ -55,6 +59,8 @@ zerotoship.app
 
 #BuildWithAI #NoCode #ProductManagement #CareerGrowth #AI
 
+> Include screenshot of user-built projects gallery from zerotoship.app (1200x627px)
+
 ### Personal LinkedIn action:
 Repost with comment: "The 'what did you build' question is so much more powerful than 'what did you learn.' Seeing this from the Zero to Ship community."
 
@@ -64,7 +70,7 @@ Repost with comment: "The 'what did you build' question is so much more powerful
 
 ---
 
-## Day 62 (Tuesday) — 30 min
+## Day 62 — Tuesday, June 3 — 30 min
 ### Platform: Substack
 ### Action: Newsletter issue
 
@@ -116,7 +122,7 @@ Zero to Ship
 
 ---
 
-## Day 63 (Wednesday) — 15 min
+## Day 63 — Wednesday, June 4 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -152,7 +158,7 @@ Repost with comment: "I keep seeing PM job posts that list 'technical skills pre
 
 ---
 
-## Day 64 (Thursday) — 15 min
+## Day 64 — Thursday, June 5 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (carousel-style text post)
 
@@ -176,13 +182,15 @@ zerotoship.app
 
 #AI #BuildWithAI #ProductManagement #DataAnalytics #SoftwareEngineering
 
+> Include screenshot of course completion testimonials from zerotoship.app (1200x627px)
+
 ### Engagement tasks:
 - Reply to comments asking which quotes resonate
 - Send post link to 3 people who engaged with previous content
 
 ---
 
-## Day 65 (Friday) — 30 min
+## Day 65 — Friday, June 6 — 30 min
 ### Platform: Medium
 ### Action: Article (SEO-focused)
 
@@ -264,12 +272,14 @@ That's a 3-week journey, not a 3-year one.
 
 **Tags:** Product Management, AI, Learn to Code, Career Development, Artificial Intelligence
 
+> Include screenshot of the module curriculum / skill tree from zerotoship.app (1200x627px)
+
 ### LinkedIn Company Post (same day):
 New on the blog: a step-by-step breakdown of how a PM went from "can't read a pull request" to shipping production software in 3 weeks.
 
 Not a bootcamp ad. Not a thread of hot takes. Just the exact path, week by week.
 
-Read it: [Medium link]
+Read it: (paste your live URL here after publishing)
 
 ### Engagement tasks:
 - Submit article to Medium publications: Better Programming, The Startup, Towards Data Science
@@ -285,7 +295,17 @@ Read it: [Medium link]
 
 ---
 
-## Day 66 (Monday) — 15 min
+## Day 66 — Saturday, June 7 — Rest day
+### Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 67 — Sunday, June 8 — Rest day
+### Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 68 — Monday, June 9 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -315,7 +335,7 @@ Repost with comment: "The '38 minutes per day' stat is what stands out to me. Th
 
 ---
 
-## Day 67 (Tuesday) — 30 min
+## Day 69 — Tuesday, June 10 — 30 min
 ### Platform: Substack + Email
 ### Action: Newsletter + Referral Launch Email
 
@@ -366,7 +386,7 @@ P.S. — If you haven't started the course yet, now's a great time. The first 5 
 
 ---
 
-## Day 68 (Wednesday) — 15 min
+## Day 70 — Wednesday, June 11 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Referral announcement)
 
@@ -399,7 +419,7 @@ Repost with comment: "Word of mouth from builders beats advertising every time. 
 
 ---
 
-## Day 69 (Thursday) — 15 min
+## Day 71 — Thursday, June 12 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (User showcase)
 
@@ -426,13 +446,48 @@ zerotoship.app
 
 #DataAnalytics #BuildWithAI #AI #ProductManagement #Dashboard
 
+> Include screenshot of a sample data dashboard built in the course from zerotoship.app (1200x627px)
+
 ### Engagement tasks:
 - Tag relevant data analytics hashtags
 - Comment on 3 data analytics posts with genuine engagement
 
 ---
 
-## Day 70 (Friday) — 30 min
+## Day 72 — Friday, June 13 — 15 min
+### Platform: LinkedIn (Company Page)
+### Action: LinkedIn Native Poll
+
+**Poll question:** How many hours per week would you spend learning to build with AI?
+
+**Options:**
+- 1-2 hours
+- 3-5 hours
+- 5-10 hours
+- Already doing it
+
+**Post text:**
+
+Genuine question for PMs, analysts, and ops people:
+
+If you could learn to build real software with AI tools — not theory, actual deployed apps — how much time would you commit per week?
+
+Our founding members average about 4 hours/week (35 min/day). Most say they'd do more if they could.
+
+Vote below. Curious where the audience lands.
+
+zerotoship.app
+
+#BuildWithAI #AI #ProductManagement #Poll
+
+### Engagement tasks:
+- Reply to every comment on the poll
+- Use poll results in future content ("X% of you said...")
+- Share poll in 2 relevant LinkedIn groups
+
+---
+
+## Day 73 — Saturday, June 14 — 30 min
 ### Platform: Medium
 ### Action: Article (SEO + conversion)
 
@@ -517,7 +572,7 @@ New article: why "build it yourself with AI" is the third option in every build-
 
 We broke down the cost comparison. The numbers aren't even close.
 
-Read it: [Medium link]
+Read it: (paste your live URL here after publishing)
 
 zerotoship.app
 
@@ -528,13 +583,18 @@ zerotoship.app
 ---
 
 <a id="week-11"></a>
-# WEEK 11 (Days 71-75) — Urgency & Countdown
+# WEEK 11 (Days 73-79) — Urgency & Countdown
 
 **Theme:** Founding member spots running low. Urgency is real. Content shifts to "last chance" without being manipulative.
 
 ---
 
-## Day 71 (Monday) — 15 min
+## Day 74 — Sunday, June 15 — Rest day
+### Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 75 — Monday, June 16 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -567,7 +627,7 @@ Repost with comment: "33 spots left at the founding member price. If you've been
 
 ---
 
-## Day 72 (Tuesday) — 30 min
+## Day 76 — Tuesday, June 17 — 30 min
 ### Platform: Substack
 ### Action: Newsletter
 
@@ -625,7 +685,7 @@ Zero to Ship
 
 ---
 
-## Day 73 (Wednesday) — 15 min
+## Day 77 — Wednesday, June 18 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -663,27 +723,56 @@ Repost with comment: "The operations and strategy cohort surprised me. But it ma
 
 ---
 
-## Day 74 (Thursday) — 15 min
+## Day 78 — Thursday, June 19 — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post (Referral spotlight)
+### Action: LinkedIn Carousel Post
 
-Shoutout to our top referrers this week.
+**Carousel: "5 things our founding members built in their first month"**
 
-3 Zero to Ship members each referred 2+ people.
+> Create this as a LinkedIn carousel (PDF upload or multi-image post). Include screenshot of a sample user project from zerotoship.app (1200x627px) for the cover slide.
 
-Here's what one of them said:
+**Slide 1 (Cover):**
+5 Things Our Founding Members Built in Their First Month
+Zero to Ship — zerotoship.app
 
-"I showed my colleague the dashboard I built in Module 12. She said 'I need to learn how to do that.' I sent her my referral link and she signed up that afternoon."
+**Slide 2:**
+A CLIENT FEEDBACK TRACKER
+A product manager replaced Typeform + Airtable ($70/month) with a custom app she built in a weekend. Her team uses it daily. Annual savings: $840.
 
-That's the whole referral program in action. Build something. Show someone. They want to learn too.
+**Slide 3:**
+A TEAM CAPACITY DASHBOARD
+A data analyst built an interactive dashboard with filters and charts. Replaced a shared Google Sheet from 2019 that nobody trusted. Built in 5 hours.
 
-If you're a Zero to Ship member, your referral link is in your dashboard. Refer 3 people and get a 1-on-1 project review. Refer 5 and get lifetime access to every course we ever build.
+**Slide 4:**
+AN AUTOMATED STANDUP SUMMARIZER
+An ops manager built a form + AI summary tool that replaced 15-minute daily standups. Team got 75 minutes/week back. Built in 3 days.
 
-25 founding member spots remaining at $99.
+**Slide 5:**
+A PORTFOLIO SITE WITH BLOG AND ANALYTICS
+A strategy consultant ditched Squarespace ($30/month) and built a fully custom site on a free tier. Full control over design. Annual savings: $360.
+
+**Slide 6:**
+AN ONBOARDING CHECKLIST APP
+A marketing manager replaced a 12-page PDF nobody read with an interactive app that tracks progress and sends reminders. New hire satisfaction jumped from 3.2 to 4.6 out of 5.
+
+**Slide 7 (CTA):**
+None of these people could code before Zero to Ship.
+All of them built with AI tools and shipped to production.
+First 5 modules are free. Founding member spots ($99) running low.
+zerotoship.app
+
+### Post caption:
+Our founding members aren't just learning — they're building real tools their teams use daily.
+
+Swipe through to see 5 things they shipped in their first month.
+
+None of them had coding experience before starting.
+
+25 founding member spots left at $99.
 
 zerotoship.app
 
-#BuildWithAI #Community #AI #Referral
+#BuildWithAI #AI #ProductManagement #DataAnalytics #Carousel
 
 ### Engagement tasks:
 - Reply to all comments
@@ -691,7 +780,7 @@ zerotoship.app
 
 ---
 
-## Day 75 (Friday) — 30 min
+## Day 79 — Friday, June 20 — 30 min
 ### Platform: Medium
 ### Action: Article (comprehensive guide / lead magnet)
 
@@ -838,6 +927,8 @@ Either way — build something.
 
 **Tags:** Artificial Intelligence, Web Development, No Code, Product Management, Learning To Code
 
+> Include screenshot of the course module list / skill tree from zerotoship.app (1200x627px)
+
 ### LinkedIn Company Post (same day):
 We just published the most comprehensive free guide we've ever written:
 
@@ -845,7 +936,7 @@ We just published the most comprehensive free guide we've ever written:
 
 No prior experience needed. Covers tools, concepts, workflow, and exact steps.
 
-Read it: [Medium link]
+Read it: (paste your live URL here after publishing)
 
 If you want the structured version with hands-on projects, zerotoship.app — 25 founding member spots left at $99.
 
@@ -857,13 +948,52 @@ If you want the structured version with hands-on projects, zerotoship.app — 25
 ---
 
 <a id="week-12"></a>
-# WEEK 12 (Days 76-80) — Final Conversion Push
+# WEEK 12 (Days 80-86) — Final Conversion Push
 
 **Theme:** Last ~20 spots. Every post is conversion-focused. Referral program in full swing.
 
 ---
 
-## Day 76 (Monday) — 15 min
+## Day 80 — Saturday, June 21 — 15 min
+### Platform: LinkedIn (Company Page)
+### Action: LinkedIn Native Poll
+
+**Poll question:** Would you pay $99 for a course that taught you to build real software?
+
+**Options:**
+- Already did
+- Yes
+- Maybe
+- No
+
+**Post text:**
+
+Honest question. No pitch.
+
+Zero to Ship teaches non-engineers to build and deploy real software with AI. The founding member price is $99.
+
+Our founding members have collectively replaced $15,000+ in SaaS subscriptions by building their own tools.
+
+Is $99 worth it to you?
+
+Vote and tell us why (or why not) in the comments. We read everything.
+
+zerotoship.app
+
+#BuildWithAI #AI #ProductManagement #Poll
+
+### Engagement tasks:
+- Reply to every comment, especially the "No" and "Maybe" votes — ask what would change their mind
+- Use results in future content
+
+---
+
+## Day 81 — Sunday, June 22 — Rest day
+### Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 82 — Monday, June 23 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -893,7 +1023,7 @@ Repost with comment: "20 spots. I've been watching this community grow for 2 mon
 
 ---
 
-## Day 77 (Tuesday) — 30 min
+## Day 83 — Tuesday, June 24 — 30 min
 ### Platform: Substack
 ### Action: Newsletter (testimonial compilation)
 
@@ -949,7 +1079,7 @@ Zero to Ship
 
 ---
 
-## Day 78 (Wednesday) — 15 min
+## Day 84 — Wednesday, June 25 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -982,7 +1112,7 @@ Repost with comment: "The ROI breakdown here is conservative. The real value is 
 
 ---
 
-## Day 79 (Thursday) — 15 min
+## Day 85 — Thursday, June 26 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1010,13 +1140,15 @@ You already built something. Now build the rest.
 
 #BuildWithAI #AI #ProductManagement #DataAnalytics
 
+> Include screenshot of the skill tree showing free vs. premium modules from zerotoship.app (1200x627px)
+
 ### Engagement tasks:
 - Send targeted email to free users who completed 3+ modules (see email copy in Referral Campaign section)
 - Reply to all LinkedIn comments
 
 ---
 
-## Day 80 (Friday) — 30 min
+## Day 86 — Friday, June 27 — 30 min
 ### Platform: Medium
 ### Action: Article
 
@@ -1113,6 +1245,8 @@ Zero to Ship teaches this exact skill set across 16 structured modules. First 5 
 
 **Tags:** Artificial Intelligence, Internal Tools, Product Management, Productivity, No Code
 
+> Include screenshot of user-built projects gallery from zerotoship.app (1200x627px)
+
 ### LinkedIn Company Post (same day):
 5 internal tools built by non-engineers. With AI.
 
@@ -1120,7 +1254,7 @@ None of these people could code 3 months ago.
 
 All of them now build tools their teams use daily.
 
-The full breakdown, with costs, time invested, and impact: [Medium link]
+The full breakdown, with costs, time invested, and impact: (paste your live URL here after publishing)
 
 10 founding member spots left at $99. zerotoship.app
 
@@ -1132,11 +1266,44 @@ The full breakdown, with costs, time invested, and impact: [Medium link]
 ---
 
 <a id="days-81-85"></a>
-# Days 81-85 — Last Call
+# Days 87-90 — Close & Transition
 
 ---
 
-## Day 81 (Monday) — 15 min
+## Day 87 — Saturday, June 28 — 15 min
+### Platform: LinkedIn (Company Page)
+### Action: Post (Referral program update)
+
+Our referral program update:
+
+→ 23 members have shared their referral link
+→ 15 new signups from referrals
+→ Top referrer has brought in 4 people
+
+When someone builds something real, they want to tell people. That's the whole program.
+
+If you're a Zero to Ship member, your referral link is in your dashboard.
+
+If you're not a member yet, someone you know might have a link for you. Ask around.
+
+10 founding member spots left.
+
+zerotoship.app
+
+#BuildWithAI #Community #AI #Referral
+
+### Engagement tasks:
+- Reply to all comments
+- Send congratulations DM to top referrers
+
+---
+
+## Day 88 — Sunday, June 29 — Rest day
+### Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 89 — Monday, June 30 — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1169,7 +1336,7 @@ Repost with comment: "10 spots left. I've been following this from the beginning
 
 ---
 
-## Day 82 (Tuesday) — 30 min
+## Day 90 — Tuesday, July 1 — 30 min
 ### Platform: Substack
 ### Action: Newsletter (last call)
 
@@ -1214,7 +1381,13 @@ Zero to Ship
 
 ---
 
-## Day 83 (Wednesday) — 15 min
+# OVERFLOW DAYS (Post-Day 90 — extend if founding spots remain)
+
+The following content was originally planned for later in the close sequence. If all 100 spots are not yet sold by Day 90, continue posting this content on consecutive days until sold out or Day 97 (July 8).
+
+---
+
+## Overflow Day A — AMA Tease
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1242,7 +1415,7 @@ See you tomorrow.
 
 ---
 
-## Day 84 (Thursday) — 30 min
+## Overflow Day B — AMA Live
 ### Platform: LinkedIn (Company Page)
 ### Action: AMA in comments + Post
 
@@ -1269,12 +1442,9 @@ A: No. 35% PMs, 25% analysts, 15% ops, 10% marketing, 15% other. The common thre
 Q: "Is the $99 price real?"
 A: Yes. 5 founding member spots remain. When they're gone, it's $199.
 
-Ask away. 👇
+Ask away.
 
 #BuildWithAI #AI #AMA #ProductManagement #DataAnalytics
-
-### Personal LinkedIn action:
-Repost with comment: "Open AMA happening right now. If you've ever been curious about building software with AI tools, ask anything."
 
 ### Engagement tasks:
 - Monitor and respond to every comment within 30 minutes
@@ -1282,9 +1452,9 @@ Repost with comment: "Open AMA happening right now. If you've ever been curious 
 
 ---
 
-## Day 85 (Friday) — 30 min
+## Overflow Day C — Retrospective Article
 ### Platform: Medium + LinkedIn
-### Action: Article + Post
+### Action: Article + Post (60 min)
 
 **Medium Article:**
 
@@ -1352,6 +1522,8 @@ To the 90 people who've already gone through the course: thank you. You taught m
 
 **Tags:** Artificial Intelligence, Education, Product Management, Career Development, Teaching
 
+> Include screenshot of course completion stats or community activity from zerotoship.app (1200x627px)
+
 ### LinkedIn Company Post (same day):
 What we learned from teaching 90 non-engineers to build software with AI.
 
@@ -1359,7 +1531,7 @@ The 5 predictors of success were not what we expected.
 
 (Spoiler: technical aptitude wasn't one of them.)
 
-Full breakdown: [Medium link]
+Full breakdown: (paste your live URL here after publishing)
 
 5 founding member spots left at $99.
 
@@ -1375,41 +1547,7 @@ Repost with comment: "This is a genuinely insightful breakdown. The pattern abou
 
 ---
 
-<a id="days-86-90"></a>
-# Days 86-90 — Close & Transition
-
----
-
-## Day 86 (Monday) — 15 min
-### Platform: LinkedIn (Company Page)
-### Action: Post
-
-3 founding member spots left.
-
-That's all. Three.
-
-97 people decided to invest $99 in learning to build with AI. They built apps, dashboards, portfolios, tools, and one person built a business.
-
-3 more will join them. Then the founding member chapter closes.
-
-$199 standard pricing begins after. Same course. Different price. No founding perks.
-
-If you've been thinking about it, this is it.
-
-zerotoship.app
-
-#BuildWithAI #AI #FoundingMember #LastChance
-
-### Personal LinkedIn action:
-Repost with comment: "3 spots. Just putting this here for anyone who's been bookmarking 'for later.'"
-
-### Engagement tasks:
-- Reply to every comment immediately
-- Final round of personal DMs to warm leads
-
----
-
-## Day 87 (Tuesday) — 15 min
+## Overflow Day D — Last Spot
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1431,9 +1569,9 @@ zerotoship.app
 
 ---
 
-## Day 88 (Wednesday) — 30 min
+## Overflow Day E — Sold Out + Newsletter
 ### Platform: LinkedIn + Substack
-### Action: Post + Newsletter
+### Action: Post + Newsletter (30 min)
 
 **LinkedIn Post:**
 
@@ -1526,7 +1664,7 @@ Repost with comment: "100 founding members, sold out. Been watching this from Da
 
 ---
 
-## Day 89 (Thursday) — 15 min
+## Overflow Day F — What's Next
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -1558,9 +1696,9 @@ zerotoship.app
 
 ---
 
-## Day 90 (Friday) — 60 min
+## Overflow Day G — Full Retrospective Article + Assessment
 ### Platform: Internal (Assessment) + Medium
-### Action: Day 90 Assessment + Retrospective Article
+### Action: Day 90 Assessment + Retrospective Article (60 min)
 
 **Medium Article:**
 
@@ -1596,7 +1734,7 @@ This was intentional. We wanted the work to speak for itself.
 - **Substack as the conversion engine.** Email subscribers who opened 3+ newsletters converted at 5x the average rate.
 - **The founding member model.** 100 spots at $99 created real scarcity. Not manufactured urgency — genuine limited supply.
 - **Referral program.** Launched in Week 10, drove ~15% of total founding members.
-- **The comprehensive Medium guide (Day 75).** Our highest-traffic article by 3x. SEO + genuine value = long-term traffic.
+- **The comprehensive Medium guide (Day 79).** Our highest-traffic article by 3x. SEO + genuine value = long-term traffic.
 
 **What Didn't Work:**
 
@@ -1639,8 +1777,8 @@ Full retrospective: [link to detailed assessment below]
 
 ## Overview
 
-**Launch:** Day 67 (Week 10 Tuesday)
-**Duration:** 3 weeks (Days 67-90)
+**Launch:** Day 69 (Week 10 Tuesday, June 10)
+**Duration:** 3 weeks (Days 69-90)
 **Goal:** 15-20 founding member signups via referral
 **Mechanism:** Built into the product (user dashboard → referral link)
 
@@ -1666,7 +1804,7 @@ Full retrospective: [link to detailed assessment below]
 ### Twitter/X version:
 "Went from 'I'm not technical' to shipping a production app in 3 weeks. Zero to Ship taught me to build with AI — no coding background needed. zerotoship.app/?ref=[CODE]"
 
-## Email Copy — Referral Launch (Day 67)
+## Email Copy — Referral Launch (Day 69, June 10)
 
 **To:** All active Zero to Ship users (free and paid)
 **Subject:** Share Zero to Ship, get rewarded
@@ -1699,7 +1837,7 @@ Zero to Ship
 
 P.S. — The founding member price ($99) is still available but spots are limited. If your friend signs up at $199 later, they'll wish you'd shared sooner.
 
-## Email Copy — Referral Reminder (Day 74, 1 week after launch)
+## Email Copy — Referral Reminder (Day 78, June 19 — 1 week after launch)
 
 **To:** All active users who haven't referred anyone yet
 **Subject:** Your referral link has been lonely
@@ -1724,7 +1862,7 @@ Refer 5 → lifetime access to all future courses
 
 — Zero to Ship
 
-## Email Copy — Conversion Push for Free Users (Day 79)
+## Email Copy — Conversion Push for Free Users (Day 85, June 26)
 
 **To:** Free users who completed Module 3+ but haven't upgraded
 **Subject:** You built something. Ready to build more?
@@ -1757,7 +1895,7 @@ You've already done the hard part — you started. Now finish.
 
 — Zero to Ship
 
-## Email Copy — Final Push (Day 82)
+## Email Copy — Final Push (Day 90, July 1)
 
 **To:** All free users
 **Subject:** Last 10 founding member spots
@@ -1786,26 +1924,6 @@ If you're not ready, that's fine. The free modules aren't going anywhere.
 
 — Zero to Ship
 
-## LinkedIn Posts About the Referral Program
-
-**(Already included in the main calendar: Day 68 and Day 74)**
-
-### Additional referral post (use anytime in Weeks 11-12):
-
-Our referral program update:
-
-→ 23 members have shared their referral link
-→ 15 new signups from referrals
-→ Top referrer has brought in 4 people
-
-When someone builds something real, they want to tell people. That's the whole program.
-
-If you're a Zero to Ship member, your referral link is in your dashboard.
-
-If you're not a member yet, someone you know might have a link for you. Ask around.
-
-zerotoship.app
-
 ## How to Celebrate/Showcase Referrers
 
 1. **Weekly shoutout on LinkedIn** (no real names unless they opt in): "Shoutout to our top referrers this week — 3 members each referred 2+ people."
@@ -1824,9 +1942,9 @@ zerotoship.app
 
 Our referral program is 2 weeks in. Here's who's been sharing:
 
-- 🔨 Builder A: 4 referrals (earning: future course access)
-- 🔨 Builder B: 3 referrals (earning: 1-on-1 project review)
-- 🔨 Builder C: 2 referrals (earning: bonus cheat sheets)
+- Builder A: 4 referrals (earning: future course access)
+- Builder B: 3 referrals (earning: 1-on-1 project review)
+- Builder C: 2 referrals (earning: bonus cheat sheets)
 
 Total referral signups this week: [X]
 
@@ -1907,11 +2025,11 @@ Rank channels by: (1) total conversions driven, (2) conversion rate, (3) cost ef
 | 5 | | | | | |
 
 **Expected top performers:**
-1. "Complete Guide to Building Your First Web App with AI" (Day 75 Medium) — SEO traffic
-2. "What 80 founding members have to say" (Day 77 Substack) — social proof
-3. User stories compilation (Day 61 LinkedIn) — awareness → conversion
-4. "5 Internal Tools" article (Day 80 Medium) — SEO + social proof
-5. Referral launch email (Day 67) — direct conversion from existing users
+1. "Complete Guide to Building Your First Web App with AI" (Day 79, Jun 20 Medium) — SEO traffic
+2. "What 80 founding members have to say" (Day 83, Jun 24 Substack) — social proof
+3. User stories compilation (Day 61, Jun 2 LinkedIn) — awareness → conversion
+4. "5 Internal Tools" article (Day 86, Jun 27 Medium) — SEO + social proof
+5. Referral launch email (Day 69, Jun 10) — direct conversion from existing users
 
 ## Lessons Learned
 
@@ -1986,27 +2104,39 @@ Make this decision by Day 100.
 
 | Type | Count |
 |------|-------|
-| LinkedIn company posts | 22 |
-| Personal LinkedIn reposts | ~12 |
-| Substack newsletters | 7 |
-| Medium articles | 5 |
+| LinkedIn company posts | ~18 |
+| LinkedIn native polls | 2 |
+| LinkedIn carousel | 1 |
+| Personal LinkedIn reposts | ~10 |
+| Substack newsletters | 5 |
+| Medium articles | 4 |
 | Referral emails | 4 |
 | Conversion emails | 2 |
-| **Total** | **~52** |
+| Rest days | 4 |
+| **Total active days** | **~26** |
 
 ## Daily time investment:
-- 15-min days: ~15 days
-- 30-min days: ~12 days
-- 60-min days: 1 day (Day 90)
-- Average: ~22 min/day
+- Rest days (5 min): 4 days
+- 15-min days: ~14 days
+- 30-min days: ~11 days
+- 60-min days: 1 day (overflow retrospective)
+- Average: ~18 min/day
 
 ## Key dates:
-- Day 67: Referral program launch
-- Day 71: Urgency phase begins (~33 spots left)
-- Day 76: Final push (~20 spots left)
-- Day 81: Last call (~10 spots)
-- Day 87-88: Sell out + celebration
-- Day 90: Assessment + retrospective
+- Day 61 (Jun 2): Month 3 transition — review Day 60 checkpoint
+- Day 66-67 (Jun 7-8): Rest / weekend buffer
+- Day 69 (Jun 10): Referral program launch
+- Day 72 (Jun 13): LinkedIn poll — hours per week learning AI
+- Day 74 (Jun 15): Rest day
+- Day 75 (Jun 16): Urgency phase begins (~33 spots left)
+- Day 78 (Jun 19): Carousel post — 5 things members built
+- Day 80 (Jun 21): LinkedIn poll — would you pay $99
+- Day 81 (Jun 22): Rest day
+- Day 82 (Jun 23): Final push (~20 spots left)
+- Day 87 (Jun 28): Referral program update post
+- Day 88 (Jun 29): Rest day
+- Day 89-90 (Jun 30-Jul 1): Last call (~10 spots)
+- Overflow Days A-G: Sell out sequence + celebration + retrospective
 
 ---
 

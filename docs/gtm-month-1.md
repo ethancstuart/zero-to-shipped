@@ -1,10 +1,65 @@
 # Zero to Ship — Month 1 Go-to-Market Plan (Days 1-30)
 
-**Launch date:** Day 1 = first execution day
+**Launch date:** Day 1 = Thursday, April 3, 2026
 **Brand:** Zero to Ship (zerotoship.app)
 **Identity:** Anonymous. No personal name. Brand speaks.
 **Budget:** $0 for 30 days
 **Time:** 15 min/day baseline, 30 min days marked
+
+---
+
+# OPERATIONS REFERENCE
+
+## Logo & Asset Creation (Day 1 task)
+
+**Logo:** Use [Recraft](https://recraft.ai). Free tier, 50 generations/day. Prompt: "Minimal geometric lightning bolt logo mark for 'Zero to Ship', a tech education brand. Blue #3b82f6 bolt on dark #0a0a0a background. Clean sharp angles, flat color, no gradients, no shadows. Modern SaaS aesthetic. Simple enough to work as a 16x16 favicon. Vector." Download SVG + PNG at 512x512.
+
+**Banners:** Use [Canva](https://canva.com) (free). Create these exact sizes:
+- LinkedIn company page banner: 1128x191px
+- LinkedIn personal profile banner: 1584x396px (optional)
+- Substack publication header: 1100x220px
+- Medium publication header: 600x600px
+
+**Design:** Dark background (#0a0a0a), logo on left, text "Build real software. No engineering degree required." in white, "zerotoship.app" in brand blue (#3b82f6).
+
+**Total time:** 20-30 minutes
+
+## Scheduling & Posting
+
+- LinkedIn company pages support native post scheduling. Batch-schedule a week's posts every Monday.
+- Best posting times: Tuesday-Thursday 8-10am ET, or 12pm ET. Saturday posts do well 9-11am ET.
+- Substack: Schedule delivery for Wednesday 9am ET (consistent slot).
+- Medium: Publish Tuesday-Thursday mornings for maximum distribution.
+
+## UTM Parameters
+
+- Standard format: `zerotoship.app?utm_source=linkedin&utm_medium=social&utm_campaign=month1`
+- For Substack posts: `utm_source=substack`
+- For Medium: `utm_source=medium`
+- Add UTM to every zerotoship.app link in posts. These track which channel drives signups.
+
+## Link Workflow
+
+- When a post references a Substack or Medium link: publish the Substack/Medium piece FIRST, copy the live URL, then paste it into the LinkedIn post. You cannot pre-schedule LinkedIn posts that reference Substack/Medium articles you haven't published yet.
+- For zerotoship.app links: these can be pre-scheduled since the URL doesn't change.
+
+## Metric Tracking
+
+- Create a simple Google Sheet with columns: Date, Platform, Post Title, Impressions, Engagements, Engagement Rate, Link Clicks, New Followers
+- Update weekly (every Monday, 5 min)
+- LinkedIn: Company page → Analytics → Content
+- Substack: Dashboard → Stats
+- Medium: Stats page
+- Vercel: Analytics tab for zerotoship.app traffic
+- Supabase: profiles table count for signups
+
+## Image Guidance
+
+- Most LinkedIn posts should be text-only (they perform well on LinkedIn)
+- Add an image when the post describes something visual (build examples, skill tree, course preview)
+- Image size for LinkedIn: 1200x627px
+- Create images in Canva using the same dark brand aesthetic
+- Substack and Medium articles should always have a header image (1200x627px minimum)
 
 ---
 
@@ -105,7 +160,7 @@ Published weekly. Written for PMs, analysts, and business professionals who are 
 
 ---
 
-## Day 1 (Tuesday) — 30 min
+## Day 1 (Thursday) — 30 min
 
 ### Action: Account setup
 Set up LinkedIn company page, Substack, and Medium accounts using the instructions above. Upload all profile images, write all bios, configure settings.
@@ -120,7 +175,7 @@ Follow the new Zero to Ship company page. No post today.
 
 ---
 
-## Day 2 (Wednesday) — 30 min
+## Day 2 (Friday) — 30 min
 
 ### Action: Finish setup + pre-schedule content
 Finalize any remaining account setup. Write and save (don't post yet) the Day 3 and Day 4 posts. Familiarize yourself with LinkedIn company page posting interface.
@@ -135,7 +190,7 @@ No post today. Engage with 5 posts from PMs or analysts in your feed — leave s
 
 ---
 
-## Day 3 (Thursday) — 15 min
+## Day 3 (Saturday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: First post — The Problem
@@ -181,7 +236,7 @@ This resonates. I've seen so many sharp PMs and analysts stuck in the "waiting f
 
 ---
 
-## Day 4 (Saturday) — 15 min
+## Day 4 (Monday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — The Irony
@@ -217,15 +272,15 @@ No repost today. Engage in comments on other posts.
 
 ---
 
-## Day 5 (Sunday) — REST DAY
+## Day 5 (Tuesday) — REST DAY
 
 No posting. Spend 5 minutes checking for any comments to respond to on existing posts.
 
 ---
 
-## Day 6 (Monday) — 15 min
+## Day 6 (Wednesday) — 15 min
 
-### Action: Engagement only (no post today — next post is Tuesday)
+### Action: Engagement only (no post today — next post is Thursday)
 
 ### Engagement tasks:
 - Respond to all accumulated comments
@@ -235,7 +290,7 @@ No posting. Spend 5 minutes checking for any comments to respond to on existing 
 
 ---
 
-## Day 7 (Tuesday) — 15 min
+## Day 7 (Thursday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — The Confession
@@ -282,7 +337,7 @@ The "Googling how to make an app at 11pm" line hits different. We've all been th
 
 ---
 
-## Day 8 (Wednesday) — 15 min
+## Day 8 (Friday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — The Build Loop (Value)
@@ -323,7 +378,7 @@ No repost today.
 
 ---
 
-## Day 9 (Thursday) — 15 min
+## Day 9 (Saturday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — What You Can Build in a Weekend
@@ -361,7 +416,7 @@ The "it's on the backlog" line is painfully real. Interesting to see what happen
 
 ---
 
-## Day 10 (Friday) — REST DAY (engagement only)
+## Day 10 (Sunday) — REST DAY (engagement only)
 
 ### Engagement tasks:
 - Respond to any new comments
@@ -370,7 +425,7 @@ The "it's on the backlog" line is painfully real. Interesting to see what happen
 
 ---
 
-## Day 11 (Saturday) — 15 min
+## Day 11 (Monday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — The 3 Things You Actually Need to Learn
@@ -405,15 +460,15 @@ No repost today.
 
 ---
 
-## Day 12 (Sunday) — REST DAY
+## Day 12 (Tuesday) — REST DAY
 
 Spend 5 minutes checking comments. Nothing else.
 
 ---
 
-## Day 13 (Monday) — 15 min
+## Day 13 (Wednesday) — 15 min
 
-### Action: Engagement only (no post — next is Tuesday)
+### Action: Engagement only (no post — next is Thursday)
 
 ### Engagement tasks:
 - Respond to all comments from the weekend
@@ -422,7 +477,7 @@ Spend 5 minutes checking comments. Nothing else.
 
 ---
 
-## Day 14 (Tuesday) — 15 min
+## Day 14 (Thursday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — The Myth of "Technical"
@@ -476,7 +531,7 @@ The redefinition of "technical" is long overdue. The most effective builders I'v
 
 ---
 
-## Day 15 (Wednesday) — 15 min
+## Day 15 (Friday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — PM-Specific Pain
@@ -518,7 +573,7 @@ No repost today.
 
 ---
 
-## Day 16 (Thursday) — 30 min
+## Day 16 (Saturday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — teaser for Substack launch
@@ -536,7 +591,7 @@ First issue: "The PM Who Shipped a Feature Before Engineering Could Estimate It"
 
 Real story. Real tools. Real walkthrough.
 
-Subscribe free: [Substack link]
+Subscribe free: (paste your live Substack URL here after publishing)
 
 #ProductManagement #BuildWithAI #AI #Newsletter
 ```
@@ -606,7 +661,7 @@ Following this one. The PM-who-can-prototype angle is especially relevant right 
 
 ---
 
-## Day 17 (Friday) — REST DAY (engagement only)
+## Day 17 (Sunday) — REST DAY (engagement only)
 
 ### Engagement tasks:
 - Respond to comments
@@ -615,7 +670,7 @@ Following this one. The PM-who-can-prototype angle is especially relevant right 
 
 ---
 
-## Day 18 (Saturday) — 30 min
+## Day 18 (Monday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — PM Career Angle
@@ -653,13 +708,13 @@ No repost today.
 
 ---
 
-## Day 19 (Sunday) — REST DAY
+## Day 19 (Tuesday) — REST DAY
 
 Check comments. 5 minutes.
 
 ---
 
-## Day 20 (Monday) — 15 min
+## Day 20 (Wednesday) — 15 min
 
 ### Action: Engagement + prep for first full Substack issue
 
@@ -670,7 +725,7 @@ Check comments. 5 minutes.
 
 ---
 
-## Day 21 (Tuesday) — 30 min
+## Day 21 (Thursday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Substack Issue Promo
@@ -690,7 +745,7 @@ In this week's newsletter, we break down:
 → Why "prototype first, spec second" is the future of PM work
 → How to start even if you've never written a line of code
 
-Read it free: [Substack link]
+Read it free: (paste your live Substack URL here after publishing)
 
 #ProductManagement #BuildWithAI #AI #Prototyping
 ```
@@ -808,7 +863,7 @@ Repost the LinkedIn promo post with comment:
 
 ---
 
-## Day 22 (Wednesday) — 30 min
+## Day 22 (Friday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Medium article promo
@@ -824,7 +879,7 @@ It's about a specific, learnable skill that's quietly separating the PMs who get
 
 The tools changed. The expectations are changing. The PMs who adapt will own the next decade.
 
-Full article: [Medium link]
+Full article: (paste your live Medium URL here after publishing)
 
 #ProductManagement #AI #CareerGrowth #TechSkills #BuildWithAI
 ```
@@ -834,6 +889,8 @@ Full article: [Medium link]
 **Title:** Why the Best Product Managers in 2026 Will Know How to Code (Sort Of)
 
 **Subtitle:** The "technical fluency" bar just moved. Here's what that actually means.
+
+**Tags:** AI, Product Management, Programming, Career Development, Coding, Software Engineering, No-Code
 
 **Content:**
 
@@ -974,7 +1031,7 @@ The framing of "three levels of PM technical fluency" is really useful here. Lev
 
 ---
 
-## Day 23 (Thursday) — 15 min
+## Day 23 (Saturday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Quick value post
@@ -1008,13 +1065,13 @@ No repost today.
 
 ---
 
-## Day 24 (Friday) — REST DAY
+## Day 24 (Sunday) — REST DAY
 
 Respond to comments. 5 minutes.
 
 ---
 
-## Day 25 (Saturday) — 15 min
+## Day 25 (Monday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — BI Engineer / Data Professional Entry
@@ -1064,13 +1121,13 @@ Underrated angle. BI engineers already think in data models and pipelines — th
 
 ---
 
-## Day 26 (Sunday) — REST DAY
+## Day 26 (Tuesday) — REST DAY
 
 Check comments. 5 minutes.
 
 ---
 
-## Day 27 (Monday) — 15 min
+## Day 27 (Wednesday) — 15 min
 
 ### Action: Engagement + prep Substack Issue #2
 
@@ -1081,7 +1138,7 @@ Check comments. 5 minutes.
 
 ---
 
-## Day 28 (Tuesday) — 30 min
+## Day 28 (Thursday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Substack Issue #2 promo
@@ -1099,7 +1156,7 @@ This week's newsletter breaks down:
 → A real walkthrough: from dashboard to full-stack app
 → The career math that makes this a no-brainer
 
-Read free: [Substack link]
+Read free: (paste your live Substack URL here after publishing)
 
 #BusinessIntelligence #DataAnalytics #BuildWithAI #AI #CareerGrowth
 ```
@@ -1219,7 +1276,7 @@ The "you already have the hard parts" argument is compelling. BI/data profession
 
 ---
 
-## Day 29 (Wednesday) — 15 min
+## Day 29 (Friday) — 15 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Social Proof / Milestone
@@ -1258,7 +1315,7 @@ No repost today.
 
 ---
 
-## Day 30 (Thursday) — 30 min
+## Day 30 (Saturday) — 30 min
 
 ### Platform: LinkedIn (Company Page)
 ### Action: Post — Business Professional Teaser for Month 2
@@ -1393,36 +1450,36 @@ The expansion beyond PMs and BI makes sense. The common thread is "domain expert
 
 | Day | Date Slot | Platform | Type | Time |
 |-----|-----------|----------|------|------|
-| 1 | Tue | All | Account setup | 30 min |
-| 2 | Wed | All | Finish setup + engagement | 30 min |
-| 3 | Thu | LinkedIn | Post: The Problem | 15 min |
-| 4 | Sat | LinkedIn | Post: The Irony | 15 min |
-| 5 | Sun | — | Rest | 5 min |
-| 6 | Mon | — | Engagement only | 15 min |
-| 7 | Tue | LinkedIn | Post: The Confession | 15 min |
-| 8 | Wed | LinkedIn | Post: Build Loop | 15 min |
-| 9 | Thu | LinkedIn | Post: Weekend Builds | 15 min |
-| 10 | Fri | — | Engagement only | 15 min |
-| 11 | Sat | LinkedIn | Post: 3 Things to Learn | 15 min |
-| 12 | Sun | — | Rest | 5 min |
-| 13 | Mon | — | Engagement only | 15 min |
-| 14 | Tue | LinkedIn | Post: Myth of Technical | 15 min |
-| 15 | Wed | LinkedIn | Post: PM Sprint Pain | 15 min |
-| 16 | Thu | LinkedIn + Substack | Post + Substack Welcome | 30 min |
-| 17 | Fri | — | Engagement only | 15 min |
-| 18 | Sat | LinkedIn | Post: PM Career Angle | 30 min |
-| 19 | Sun | — | Rest | 5 min |
-| 20 | Mon | — | Engagement + Substack prep | 15 min |
-| 21 | Tue | LinkedIn + Substack | Post + Issue #1 | 30 min |
-| 22 | Wed | LinkedIn + Medium | Post + Medium Article #1 | 30 min |
-| 23 | Thu | LinkedIn | Post: Quick Tip | 15 min |
-| 24 | Fri | — | Rest | 5 min |
-| 25 | Sat | LinkedIn | Post: BI Engineer Angle | 15 min |
-| 26 | Sun | — | Rest | 5 min |
-| 27 | Mon | — | Engagement + Substack prep | 15 min |
-| 28 | Tue | LinkedIn + Substack | Post + Issue #2 | 30 min |
-| 29 | Wed | LinkedIn | Post: Social Proof | 15 min |
-| 30 | Thu | LinkedIn | Post: Month 2 Teaser | 30 min |
+| 1 | Thu | All | Account setup | 30 min |
+| 2 | Fri | All | Finish setup + engagement | 30 min |
+| 3 | Sat | LinkedIn | Post: The Problem | 15 min |
+| 4 | Mon | LinkedIn | Post: The Irony | 15 min |
+| 5 | Tue | — | Rest | 5 min |
+| 6 | Wed | — | Engagement only | 15 min |
+| 7 | Thu | LinkedIn | Post: The Confession | 15 min |
+| 8 | Fri | LinkedIn | Post: Build Loop | 15 min |
+| 9 | Sat | LinkedIn | Post: Weekend Builds | 15 min |
+| 10 | Sun | — | Engagement only | 15 min |
+| 11 | Mon | LinkedIn | Post: 3 Things to Learn | 15 min |
+| 12 | Tue | — | Rest | 5 min |
+| 13 | Wed | — | Engagement only | 15 min |
+| 14 | Thu | LinkedIn | Post: Myth of Technical | 15 min |
+| 15 | Fri | LinkedIn | Post: PM Sprint Pain | 15 min |
+| 16 | Sat | LinkedIn + Substack | Post + Substack Welcome | 30 min |
+| 17 | Sun | — | Engagement only | 15 min |
+| 18 | Mon | LinkedIn | Post: PM Career Angle | 30 min |
+| 19 | Tue | — | Rest | 5 min |
+| 20 | Wed | — | Engagement + Substack prep | 15 min |
+| 21 | Thu | LinkedIn + Substack | Post + Issue #1 | 30 min |
+| 22 | Fri | LinkedIn + Medium | Post + Medium Article #1 | 30 min |
+| 23 | Sat | LinkedIn | Post: Quick Tip | 15 min |
+| 24 | Sun | — | Rest | 5 min |
+| 25 | Mon | LinkedIn | Post: BI Engineer Angle | 15 min |
+| 26 | Tue | — | Rest | 5 min |
+| 27 | Wed | — | Engagement + Substack prep | 15 min |
+| 28 | Thu | LinkedIn + Substack | Post + Issue #2 | 30 min |
+| 29 | Fri | LinkedIn | Post: Social Proof | 15 min |
+| 30 | Sat | LinkedIn | Post: Month 2 Teaser | 30 min |
 
 **Total time investment:** ~8.5 hours over 30 days (avg. ~17 min/day)
 

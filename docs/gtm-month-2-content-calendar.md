@@ -1,16 +1,20 @@
 # Zero to Ship — Month 2 Content Calendar (Days 31-60)
 
-**Period:** May 1 - May 30, 2026
+**Period:** May 3 - June 1, 2026
 **Focus:** Deepen PM + BI/data content, expand to broader business professionals, build social proof, launch SEO play
 **Budget:** $50-100/month on top-performing LinkedIn boosts (if Day 30 metrics hit targets)
 
 ---
 
-## WEEK 5: The PM Who Ships (May 1-7)
+## WEEK 5: The PM Who Ships (May 3-9)
 
 ---
 
-## Day 31 (Friday, May 1) — 30 min
+## Day 31 (Saturday, May 3) — 30 min
+### Action: Month 2 kickoff + LinkedIn post
+
+**First action:** Review Day 30 checkpoint results. Confirm or adjust Month 2 plan based on what worked. 15 min.
+
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -44,32 +48,12 @@ Repost with comment: "This is the skill gap I keep seeing in PM orgs. The ones w
 
 ---
 
-## Day 32 (Saturday, May 2) — 15 min
-### Platform: LinkedIn (Company Page)
-### Action: Post (Weekend tip)
-
-Weekend project idea for PMs:
-
-Take your most recent PRD. Open an AI coding tool. Paste in the user stories.
-
-Say: "Build me a working prototype of this. Use a simple local database. Make it interactive."
-
-Watch what happens in 20 minutes.
-
-You'll learn more about feasibility, edge cases, and user experience from a working prototype than from 3 rounds of stakeholder review.
-
-This is Module 1 of Zero to Ship. Setup to working app in one session.
-
-zerotoship.app
-
-#ProductManagement #WeekendProject #AI
-
-### Engagement tasks:
-- Respond to any comments from Friday's post within 2 hours
+## Day 32 (Sunday, May 4) — 5 min
+Rest day. Check comments. 5 minutes.
 
 ---
 
-## Day 33 (Monday, May 4) — 15 min
+## Day 33 (Monday, May 5) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Tip thread format)
 
@@ -97,7 +81,7 @@ Repost with comment: "Number 3 is underrated. A PM who can read code catches des
 
 ---
 
-## Day 34 (Tuesday, May 5) — 30 min
+## Day 34 (Tuesday, May 6) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "AI coding for product managers")
 
@@ -185,9 +169,9 @@ zerotoship.app
 
 ---
 
-## Day 35 (Wednesday, May 6) — 30 min
+## Day 35 (Wednesday, May 7) — 30 min
 ### Platform: Substack
-### Action: Newsletter Issue #5
+### Action: Newsletter Issue #3
 
 **Subject:** The prototype that killed a 6-week debate
 
@@ -233,7 +217,7 @@ zerotoship.app
 
 ---
 
-## Day 36 (Thursday, May 7) — 15 min
+## Day 36 (Thursday, May 8) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Social proof / behind the scenes)
 
@@ -251,16 +235,19 @@ zerotoship.app
 
 #OnlineLearning #AI #BuildWithAI
 
+### Personal LinkedIn action:
+No repost today — let the post breathe and gather organic engagement.
+
 ### Engagement tasks:
 - Monitor and respond to all comments same day
 
 ---
 
-## WEEK 6: PM Power Moves + Social Proof (May 8-14)
+## WEEK 6: PM Power Moves + Social Proof (May 10-16)
 
 ---
 
-## Day 37 (Friday, May 8) — 15 min
+## Day 37 (Friday, May 9) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -287,7 +274,7 @@ Repost with comment: "I've never seen a team argue about a working prototype the
 
 ---
 
-## Day 38 (Monday, May 11) — 15 min
+## Day 38 (Saturday, May 10) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (User milestone celebration)
 
@@ -311,12 +298,51 @@ zerotoship.app
 
 #LearnToCode #AI #CareerGrowth
 
+### Personal LinkedIn action:
+Repost with comment: "18 days from zero to code-literate. The learning curve isn't what people think it is."
+
 ### Engagement tasks:
 - Respond to all comments with encouragement and specifics about the course
 
 ---
 
-## Day 39 (Tuesday, May 12) — 30 min
+## Day 39 (Sunday, May 11) — 5 min
+Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 40 (Monday, May 12) — 30 min
+### Platform: LinkedIn (Company Page)
+### Action: Native Poll
+
+**Poll question:**
+
+What's the #1 thing stopping you from building your own tools?
+
+- Don't know where to start
+- No time
+- Don't think I can
+- Already building
+
+**Post text above the poll:**
+
+Every week someone tells me they wish they could build their own internal tools, dashboards, or automations — but something is holding them back.
+
+Genuinely curious: what's the biggest blocker? Vote below and I'll share what we've learned from helping non-engineers get past each one.
+
+#BuildWithAI #AI #CareerGrowth #Productivity
+
+### Personal LinkedIn action:
+No repost today — let the poll gather votes organically.
+
+### Engagement tasks:
+- Monitor poll results throughout the day
+- Comment with insights as votes come in: "Interesting — 'Don't know where to start' is leading. That's exactly why Module 1 is free. The hardest part is literally the first hour."
+- Reply to every commenter who elaborates on their choice
+
+---
+
+## Day 40b (Monday, May 12) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "build software without engineering degree")
 
@@ -420,9 +446,9 @@ zerotoship.app
 
 ---
 
-## Day 40 (Wednesday, May 13) — 30 min
+## Day 41 (Tuesday, May 13) — 30 min
 ### Platform: Substack
-### Action: Newsletter Issue #6
+### Action: Newsletter Issue #4
 
 **Subject:** The skill tree that actually matters
 
@@ -434,13 +460,13 @@ Not the gamified ones in courses (though we have one of those too). The real one
 
 Here's the traditional PM skill tree:
 
-Strategy → Research → Specs → Prioritization → Stakeholder Management → Execution
+Strategy -> Research -> Specs -> Prioritization -> Stakeholder Management -> Execution
 
 Every branch is about influencing, communicating, and coordinating. Important skills. But notice what's missing: the ability to build anything yourself.
 
 Here's the updated PM skill tree for 2026:
 
-Strategy → Research → Prototype → Test → Spec (informed by real data) → Prioritization (with working proof) → Ship
+Strategy -> Research -> Prototype -> Test -> Spec (informed by real data) -> Prioritization (with working proof) -> Ship
 
 The prototype branch changes everything downstream. Your specs are better because you've already built the thing. Your prioritization is sharper because you've hit the real constraints. Your stakeholder conversations are faster because you can demo instead of describe.
 
@@ -482,9 +508,9 @@ zerotoship.app
 
 ---
 
-## Day 41 (Thursday, May 14) — 15 min
+## Day 42 (Wednesday, May 14) — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post (Engagement bait — poll/question)
+### Action: Post (Engagement bait — question)
 
 Question for PMs:
 
@@ -501,16 +527,19 @@ That's what AI coding tools do for product managers. Not replace engineering jud
 
 #ProductManagement #AI #TechFeasibility
 
+### Personal LinkedIn action:
+No repost today — let the engagement question drive conversation on its own.
+
 ### Engagement tasks:
 - Monitor poll results and comment with insights as votes come in
 
 ---
 
-## WEEK 7: The Data Professional's Edge (May 15-21)
+## WEEK 7: The Data Professional's Edge (May 17-23)
 
 ---
 
-## Day 42 (Friday, May 15) — 30 min
+## Day 43 (Thursday, May 15) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -548,7 +577,7 @@ Repost with comment: "Data professionals have the hardest technical skills alrea
 
 ---
 
-## Day 43 (Monday, May 18) — 15 min
+## Day 44 (Friday, May 16) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -570,12 +599,111 @@ AI coding tools make the second option possible for anyone who understands the d
 
 #BusinessIntelligence #DataAnalytics #Dashboards
 
+### Personal LinkedIn action:
+Repost with comment: "The 'can you add X to the dashboard' Slack channel is the most reliable signal that your team needs someone who can build their own tools."
+
 ### Engagement tasks:
 - Respond to comments with specific examples
 
 ---
 
-## Day 44 (Tuesday, May 19) — 30 min
+## Day 45 (Saturday, May 17) — 30 min
+### Platform: LinkedIn (Company Page)
+### Action: Carousel Post (5 slides)
+
+**Post text:**
+
+5 tools non-engineers can build in a weekend — with AI coding tools and zero prior experience. Swipe through to see what's possible.
+
+Every one of these was built by a Zero to Ship member using the skills from Modules 1-6. No engineering background required.
+
+If you already know spreadsheets, you can build these. zerotoship.app
+
+#BuildWithAI #AI #Productivity #NoCode #CareerGrowth
+
+**Slide 1 (Title slide):**
+
+5 TOOLS YOU CAN BUILD IN A WEEKEND
+
+No engineering degree. No bootcamp. Just AI coding tools and a clear idea.
+
+Here's what Zero to Ship members are building after Modules 1-6.
+
+**Slide 2:**
+
+TOOL #1: A LIVE TEAM DASHBOARD
+
+Replace: The shared spreadsheet everyone edits but nobody trusts.
+
+Build: A web dashboard that pulls real data, auto-refreshes, and shows exactly what your team needs — nothing more.
+
+Time: 4-6 hours (Saturday morning).
+
+Key skill: Describing your data structure clearly to an AI coding tool.
+
+**Slide 3:**
+
+TOOL #2: A CLIENT-FACING REPORT GENERATOR
+
+Replace: The manual process of copying data into slides every week.
+
+Build: A tool that pulls data, formats it, and generates a clean report your clients can view in their browser.
+
+Time: 5-7 hours (one focused session).
+
+Key skill: Connecting a data source to a frontend display.
+
+**Slide 4:**
+
+TOOL #3: A WORKFLOW AUTOMATION
+
+Replace: The process someone on your team does manually every Monday morning.
+
+Build: A tool that runs on a schedule, processes the data, and sends the result via email or Slack.
+
+Time: 3-4 hours.
+
+Key skill: Breaking a manual process into steps an AI can automate.
+
+**Slide 5:**
+
+TOOL #4: A SELF-SERVICE CALCULATOR
+
+Replace: The spreadsheet with formulas only one person understands.
+
+Build: A clean, shareable web tool where anyone enters inputs and gets results. No training required.
+
+Time: 2-3 hours (the fastest build on this list).
+
+Key skill: Translating spreadsheet logic into a prompt.
+
+TOOL #5: A SIMPLE INTERNAL DIRECTORY
+
+Replace: The outdated spreadsheet or Notion page nobody maintains.
+
+Build: A searchable, filterable tool where people can add and update their own entries.
+
+Time: 3-4 hours.
+
+Key skill: Basic data storage (the AI handles the rest).
+
+START BUILDING: zerotoship.app — Module 1 is free.
+
+### Personal LinkedIn action:
+No repost today — carousels get algorithmic boost on their own. Let it run.
+
+### Engagement tasks:
+- Monitor engagement and respond to all comments
+- Pin the post for the weekend
+
+---
+
+## Day 46 (Sunday, May 18) — 5 min
+Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 47 (Monday, May 19) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "Claude Code tutorial for beginners")
 
@@ -706,9 +834,9 @@ zerotoship.app
 
 ---
 
-## Day 45 (Wednesday, May 20) — 30 min
+## Day 48 (Tuesday, May 20) — 30 min
 ### Platform: Substack
-### Action: Newsletter Issue #7
+### Action: Newsletter Issue #5
 
 **Subject:** The BI analyst who stopped filing Jira tickets
 
@@ -736,7 +864,7 @@ This module was built for data professionals. It covers:
 
 - Building data dashboards from scratch (not dragging tiles in Tableau)
 - Connecting to real data sources
-- Query → Transform → Display pipeline
+- Query -> Transform -> Display pipeline
 - Handing off a working prototype to engineering for production
 
 If you already know SQL, this module will feel like a cheat code. You're not learning data concepts — you're learning how to turn the concepts you already know into tools people can use.
@@ -757,13 +885,15 @@ zerotoship.app
 
 ---
 
+### Personal LinkedIn action:
+Repost with comment: "The gap between 'I can query data' and 'I can build a tool' has collapsed. This is real."
+
 ### Engagement tasks:
 - Share newsletter on LinkedIn company page
-- Personal repost: "The gap between 'I can query data' and 'I can build a tool' has collapsed. This is real."
 
 ---
 
-## Day 46 (Thursday, May 21) — 15 min
+## Day 49 (Wednesday, May 21) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post
 
@@ -783,17 +913,52 @@ zerotoship.app
 
 #BusinessIntelligence #DataAnalytics #AI #BuildWithAI
 
+### Personal LinkedIn action:
+No repost today — this is a list post that performs well on its own.
+
 ### Engagement tasks:
 - Share in data analytics LinkedIn groups
 - Comment on 3 posts about BI tools or data careers
 
 ---
 
-## WEEK 8: Broader Business Audience + Month Close (May 22-30)
+## WEEK 8: Broader Business Audience + Month Close (May 24-June 1)
 
 ---
 
-## Day 47 (Friday, May 22) — 30 min
+## Day 50 (Thursday, May 22) — 30 min
+### Platform: LinkedIn (Company Page)
+### Action: Native Poll
+
+**Poll question:**
+
+Which role benefits most from AI coding skills?
+
+- Product Managers
+- BI Engineers
+- Business Analysts
+- All equally
+
+**Post text above the poll:**
+
+We've been teaching non-engineers to build with AI coding tools for two months. Here's what surprised us: every role uses the skills differently, but the impact is equally dramatic.
+
+PMs build prototypes. BI engineers build custom dashboards. Business analysts build automations. Founders build MVPs.
+
+Same tools, different superpowers. Who do you think benefits most? Vote and tell me why in the comments.
+
+#BuildWithAI #AI #CareerGrowth #ProductManagement #DataAnalytics
+
+### Personal LinkedIn action:
+No repost today — let the poll gather votes organically.
+
+### Engagement tasks:
+- Monitor poll results and comment with role-specific insights as votes come in
+- Reply to every commenter who explains their vote
+
+---
+
+## Day 51 (Friday, May 23) — 30 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Broadening to general business)
 
@@ -825,11 +990,11 @@ Repost with comment: "The number of business processes running on spreadsheets t
 
 ---
 
-## Day 48 (Monday, May 25) — 15 min
+## Day 52 (Saturday, May 24) — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post (Memorial Day — light content)
+### Action: Post (Weekend — light content)
 
-Quick thought for anyone with an extra day off today:
+Quick thought for anyone with an extra day off this weekend:
 
 The best side projects start on long weekends. Low pressure. No meetings. Just you and an idea.
 
@@ -841,14 +1006,22 @@ No better time than a day with nothing on the calendar.
 
 zerotoship.app
 
-#MemorialDay #SideProject #LearnToCode
+#SideProject #LearnToCode #WeekendProject
+
+### Personal LinkedIn action:
+No repost today — weekend content, keep it light.
 
 ### Engagement tasks:
-- Keep engagement light — holiday posting, monitor for comments
+- Keep engagement light — weekend posting, monitor for comments
 
 ---
 
-## Day 49 (Tuesday, May 26) — 30 min
+## Day 53 (Sunday, May 25) — 5 min
+Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 54 (Monday, May 26) — 30 min
 ### Platform: Medium
 ### Action: Article (SEO target: "non-technical founder build MVP")
 
@@ -958,9 +1131,9 @@ zerotoship.app
 
 ---
 
-## Day 50 (Wednesday, May 27) — 30 min
+## Day 55 (Tuesday, May 27) — 30 min
 ### Platform: Substack
-### Action: Newsletter Issue #8
+### Action: Newsletter Issue #6
 
 **Subject:** What I'd build if I were starting a company tomorrow
 
@@ -1016,15 +1189,19 @@ zerotoship.app
 
 ---
 
+### Personal LinkedIn action:
+Repost with comment: "This 30-day playbook for non-technical founders is the most practical startup advice I've seen lately."
+
 ### Engagement tasks:
 - Share newsletter on LinkedIn company page
-- Personal repost: "This 30-day playbook for non-technical founders is the most practical startup advice I've seen lately."
 
 ---
 
-## Day 51 (Thursday, May 28) — 15 min
-### Platform: LinkedIn (Company Page)
-### Action: Post
+## Day 56 (Wednesday, May 28) — 45 min
+### Platform: LinkedIn (Company Page) + Substack
+### Action: LinkedIn Post + Newsletter Issue #7
+
+**LinkedIn Post:**
 
 The most common objection to learning AI coding tools:
 
@@ -1048,45 +1225,120 @@ zerotoship.app
 
 #Productivity #AI #TimeManagement #ROI
 
+### Personal LinkedIn action:
+Repost with comment: "The ROI math on learning to build is hard to argue with. 15 hours invested, 14 hours saved per month. That's a career cheat code."
+
 ### Engagement tasks:
 - Respond to all comments with additional examples
 
 ---
 
-## Day 52 (Friday, May 29) — 15 min
+### Platform: Substack
+### Action: Newsletter Issue #7
+
+**Subject:** What 50 signups taught us about non-engineers who build
+
+---
+
+We hit a milestone this week: 50 signups.
+
+Not 50 impressions. Not 50 page views. 50 people who created an account and started Module 1.
+
+Here's what we've learned from watching them.
+
+**Lesson 1: The "aha" moment is always the same.**
+
+It happens in Module 1, somewhere between minutes 45 and 90. The person types a description of what they want, the AI generates code, they run it, and a working app appears in their browser.
+
+Every single time, the reaction is some version of: "Wait. That actually works?"
+
+That moment — the gap between expectation and reality — is the hook. Before it, building software feels like something Other People do. After it, it's something you just did.
+
+**Lesson 2: The people who finish aren't who you'd expect.**
+
+We assumed the strongest completers would be the most technical — the BI analysts, the data-adjacent roles, the people who already write SQL.
+
+Wrong.
+
+The strongest completers are the people with the clearest problem to solve. A PM who needs a better way to demo features to stakeholders. A founder who's been sitting on an idea for 6 months. An ops manager who is tired of their team's spreadsheet workflow.
+
+Clarity of purpose beats technical aptitude every time.
+
+**Lesson 3: The biggest dropout moment is between Module 1 and Module 2.**
+
+Module 1 is exciting. You build something. It works. You feel like a wizard.
+
+Module 2 (Prompt Engineering) is where you learn the craft behind the magic. It's less flashy. It requires more patience. And about 35% of people who finish Module 1 don't start Module 2 within a week.
+
+We're redesigning the transition between modules to address this. More on that soon.
+
+**Lesson 4: Weekend builders outperform weekday builders.**
+
+People who do their first session on a Saturday morning complete Module 1 at nearly double the rate of people who start on a Tuesday evening.
+
+The reason is obvious in retrospect: building requires focus. A 3-hour Saturday session beats five 30-minute sessions after work. The context-switching cost is real.
+
+Our advice now: treat Module 1 like a Saturday morning project. Block the time. Close Slack. Build.
+
+**Lesson 5: The roles are more diverse than we expected.**
+
+Our original audience was PMs and BI analysts. Here's who's actually signing up:
+
+- Product Managers (35%)
+- BI / Data Analysts (20%)
+- Founders / Entrepreneurs (18%)
+- Operations / Business Professionals (15%)
+- Other (12% — includes marketers, consultants, and a few teachers)
+
+The course works for all of them because the core skill is the same: describe what you want, review what you get, iterate until it's right. The specific projects differ, but the workflow is universal.
+
+---
+
+**What's next:**
+
+Month 3 is about deepening the community and scaling what's working. We'll share our full transparency report — signups, completion rates, revenue, and what we're changing — in next week's issue.
+
+If you haven't started yet: the best data point we have is that 50 signups in, zero people have asked for a refund. The course works. Module 1 is free.
+
+zerotoship.app
+
+---
+
+### Substack engagement tasks:
+- Share newsletter on LinkedIn company page with hook: "50 signups. Here's what we learned."
+- Personal LinkedIn: Share with comment "Lesson 2 surprised me the most. Clarity of purpose beats technical aptitude. Every time."
+
+---
+
+## Day 57 (Thursday, May 29) — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post (Week close)
+### Action: Post (Business professional angle)
 
-Friday reflection:
+The fastest-growing segment of Zero to Ship members isn't PMs or data analysts.
 
-The people signing up for Zero to Ship aren't trying to become engineers.
+It's operations managers and business professionals.
 
-They're:
-- PMs who want to prototype faster
-- Analysts who want to build their own tools
-- Founders who want to validate ideas without a technical co-founder
-- Managers who want to automate the boring stuff
-- Business professionals who are tired of waiting for IT
+People who spend their days managing processes, coordinating teams, and maintaining systems held together by spreadsheets and manual workflows.
 
-Different roles. Same realization: the barrier to building software isn't intelligence or aptitude. It's just that nobody showed them the new path.
+They're signing up because they realized something: every "process improvement" project they've tried to get prioritized by IT has a 6-month wait time. And the spreadsheet workaround they built in the meantime is becoming a liability.
 
-The tools exist. The learning path exists. The only question is whether you start.
+AI coding tools let them skip the IT queue entirely. Build the tool. Deploy it. Move on.
 
-Module 1 is free. zerotoship.app
+If you manage a process that runs on spreadsheets, this is your signal. zerotoship.app
 
-#AI #CareerGrowth #BuildWithAI
+#Operations #BusinessTools #AI #BuildWithAI
 
 ### Personal LinkedIn action:
-Repost with comment: "Different roles, same realization. This is the common thread I keep seeing."
+Repost with comment: "Operations professionals are the sleeper audience for AI coding tools. They already think in systems and workflows — they just need the building blocks."
 
 ### Engagement tasks:
 - End-of-week engagement sweep — respond to all pending comments
 
 ---
 
-## Day 53 (Saturday, May 30) — 15 min
+## Day 58 (Friday, May 30) — 15 min
 ### Platform: LinkedIn (Company Page)
-### Action: Post (Weekend — social proof compilation)
+### Action: Post (Social proof compilation)
 
 Month 2 in numbers:
 
@@ -1107,9 +1359,24 @@ zerotoship.app
 
 #BuildWithAI #AI #SideProject #Entrepreneurship
 
+### Personal LinkedIn action:
+Repost with comment: "Real tools for real problems. Not a single to-do app in the bunch."
+
 ### Engagement tasks:
 - Pin this post for the weekend
 - Respond to every comment with specifics about the course
+
+---
+
+## Day 59 (Saturday, May 31) — 5 min
+Rest day. Check comments. 5 minutes.
+
+---
+
+## Day 60 (Sunday, June 1) — 30 min
+### Action: Day 60 Checkpoint Review
+
+Block 30 minutes. Pull all analytics. Complete the checkpoint framework below.
 
 ---
 
@@ -1119,7 +1386,7 @@ The calendar above covers the anchor posts. Below are additional posts to mainta
 
 ---
 
-## Day 34b (Wednesday, May 6) — 15 min
+## Day 34b (Tuesday, May 6) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick tip)
 
@@ -1138,7 +1405,7 @@ Sound familiar? It's the same structure as a user story. PMs have been writing p
 
 ---
 
-## Day 38b (Tuesday, May 12) — 15 min
+## Day 38b (Saturday, May 10) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick insight)
 
@@ -1155,7 +1422,7 @@ The ceiling is different. The learning curve is similar. The outcomes aren't eve
 
 ---
 
-## Day 40b (Thursday, May 14) — 15 min
+## Day 42b (Wednesday, May 14) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Engagement question)
 
@@ -1169,7 +1436,7 @@ Drop it in the comments. Bet at least half of them could be built in a weekend w
 
 ---
 
-## Day 43b (Tuesday, May 19) — 15 min
+## Day 44b (Friday, May 16) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Quick tip)
 
@@ -1189,7 +1456,7 @@ This is how professional developers work too. The tool just makes it faster.
 
 ---
 
-## Day 47b (Monday, May 25) — 15 min
+## Day 52b (Saturday, May 24) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Boost candidate — practical value)
 
@@ -1212,7 +1479,7 @@ zerotoship.app
 
 ---
 
-## Day 50b (Thursday, May 28) — 15 min
+## Day 56b (Wednesday, May 28) — 15 min
 ### Platform: LinkedIn (Company Page)
 ### Action: Post (Testimonial/social proof format)
 
@@ -1247,10 +1514,12 @@ That's the whole pitch. zerotoship.app
 
 ### Boost candidates (mark post-publication based on organic performance):
 - Day 31 (PM prototype post)
-- Day 42 (BI analyst post)
-- Day 47 (broadening to general business)
-- Day 50b (testimonial format)
-- Day 53 (month 2 numbers)
+- Day 40 (poll — if engagement is high)
+- Day 43 (BI analyst post)
+- Day 45 (carousel — 5 tools non-engineers can build)
+- Day 50 (poll — role benefits)
+- Day 51 (broadening to general business)
+- Day 58 (month 2 numbers / social proof)
 
 ### Boost measurement:
 - Track cost per website click
@@ -1264,9 +1533,9 @@ That's the whole pitch. zerotoship.app
 
 ## Articles published in Month 2:
 1. Day 34: "AI Coding for Product Managers" — target: "AI coding for product managers"
-2. Day 39: "How to Build Real Software Without an Engineering Degree" — target: "build software without engineering degree"
-3. Day 44: "Claude Code Tutorial for Beginners" — target: "Claude Code tutorial for beginners"
-4. Day 49: "How Non-Technical Founders Are Building MVPs" — target: "non-technical founder build MVP"
+2. Day 40b: "How to Build Real Software Without an Engineering Degree" — target: "build software without engineering degree"
+3. Day 47: "Claude Code Tutorial for Beginners" — target: "Claude Code tutorial for beginners"
+4. Day 54: "How Non-Technical Founders Are Building MVPs" — target: "non-technical founder build MVP"
 
 ## SEO checklist for each article:
 - [ ] Primary keyword in title
@@ -1307,14 +1576,14 @@ That's the whole pitch. zerotoship.app
 Track and report on each stage:
 
 ```
-LinkedIn impression → Profile visit → Website click → Landing page view → Signup → Module 1 start → Module 1 complete → Module 5 complete → Paid conversion
+LinkedIn impression -> Profile visit -> Website click -> Landing page view -> Signup -> Module 1 start -> Module 1 complete -> Module 5 complete -> Paid conversion
 ```
 
 Key metrics to calculate:
-- **Top of funnel:** LinkedIn impressions → website visits (target: 2-3% CTR)
-- **Mid funnel:** Website visits → signups (target: 5-10%)
-- **Bottom funnel:** Signups → paid (target: 10-15%)
-- **Engagement funnel:** Module 1 start → Module 5 complete (target: 30-40%)
+- **Top of funnel:** LinkedIn impressions -> website visits (target: 2-3% CTR)
+- **Mid funnel:** Website visits -> signups (target: 5-10%)
+- **Bottom funnel:** Signups -> paid (target: 10-15%)
+- **Engagement funnel:** Module 1 start -> Module 5 complete (target: 30-40%)
 
 ## Content Performance Analysis
 
@@ -1327,7 +1596,7 @@ At Day 60, rank all content by:
 Identify:
 - Top 3 performing posts (by signups)
 - Top performing content theme (PM vs BI vs founder vs general)
-- Top performing format (tip, story, data, question, social proof)
+- Top performing format (tip, story, data, question, social proof, poll, carousel)
 - Best day/time for posting
 
 ## Paid Spend Results (if applicable)
@@ -1348,17 +1617,50 @@ Evaluate:
 - Are there repeat commenters who could become testimonial sources?
 - Is there enough activity to start a Discord/Slack community in Month 3?
 
-## Month 3 Adjustments (to be determined at Day 60)
+## If/Then Decision Framework (Day 60)
 
-Based on Month 2 data, decide:
+### Decision 1: Content Audience Mix
+- **IF** PM content drives >50% of signups -> **THEN** increase PM content to 60% of Month 3, reduce general business to 10%
+- **IF** BI/data content drives >30% of signups -> **THEN** launch dedicated "Data Professionals" Substack series in Month 3
+- **IF** founder content drives >30% of signups -> **THEN** add founder-specific case studies and a "Founder Track" landing page
+- **IF** no clear winner (all audiences within 10% of each other) -> **THEN** maintain current balance and test new angles within each segment
 
-1. **Content mix:** Double down on the winning audience (PM, BI, founder, general) or maintain balance?
-2. **Paid strategy:** Increase budget if ROAS is positive. Cut if not.
-3. **Platform priority:** Is Medium SEO working? Is Substack growing? Adjust effort allocation.
-4. **Community:** Launch a community channel if engagement warrants it.
-5. **Partnerships:** Reach out to complementary newsletters or courses for cross-promotion (warm intros only).
-6. **Pricing:** Evaluate founding member → standard pricing transition timeline.
-7. **Social proof:** Compile best testimonials and case studies for landing page.
-8. **Content format:** Test video content (short LinkedIn videos, Loom tutorials) if written content plateaus.
-9. **Product-led growth:** Evaluate whether to make Modules 1-2 fully free (vs just Module 1) to increase top of funnel.
-10. **Referral program:** Consider "invite a friend, both get 20% off" if organic growth is strong.
+### Decision 2: Paid Spend
+- **IF** cost per signup <$15 and ROAS >2x -> **THEN** increase budget to $200/month, expand to 2 boosts per week
+- **IF** cost per signup $15-25 and ROAS >1x -> **THEN** maintain $100/month budget, optimize targeting based on best-performing boost
+- **IF** cost per signup >$25 or ROAS <1x -> **THEN** pause paid spend entirely. Reallocate budget to content creation tools or community building
+
+### Decision 3: Platform Priority
+- **IF** Medium articles drive >100 organic monthly visits each -> **THEN** increase to 5 articles/month in Month 3, invest in SEO optimization
+- **IF** Medium articles drive <50 organic monthly visits -> **THEN** reduce to 2 articles/month, shift writing time to LinkedIn and Substack
+- **IF** Substack open rate >40% and subscriber growth >20%/month -> **THEN** increase to 2 newsletters/week in Month 3
+- **IF** Substack open rate <30% or growth stalls -> **THEN** audit subject lines, test send times, survey subscribers on content preferences
+
+### Decision 4: Community Launch
+- **IF** >10 repeat commenters across LinkedIn posts AND >3 members sharing builds publicly -> **THEN** launch Discord community in Month 3, Week 1
+- **IF** engagement is present but not concentrated (no repeat commenters) -> **THEN** delay community launch. Focus on building deeper 1:1 relationships with engaged members first
+- **IF** minimal engagement beyond likes -> **THEN** no community launch. Focus Month 3 on content quality and top-of-funnel growth
+
+### Decision 5: Pricing Transition
+- **IF** >50 paid members at $99 AND new signups steady/growing -> **THEN** announce founding member price ends Day 75. New price: $149
+- **IF** 20-50 paid members AND conversion rate >10% -> **THEN** keep $99 price through Month 3 but add urgency messaging ("founding cohort closing soon")
+- **IF** <20 paid members -> **THEN** keep $99 price. Diagnose conversion blockers: is it awareness (top of funnel), interest (mid funnel), or trust (bottom funnel)?
+
+### Decision 6: Product-Led Growth
+- **IF** Module 1 completion rate >60% but Module 2 start rate <40% -> **THEN** make Module 2 free as well. The dropout point is the gate, not the content
+- **IF** Module 1 completion rate <40% -> **THEN** shorten Module 1 or add a "Quick Win" mini-module (30 min) before the full Module 1
+- **IF** Module 1->5 completion rate >30% -> **THEN** current free-to-paid gate is working. No changes needed
+
+### Decision 7: Content Format
+- **IF** carousel post (Day 45) outperforms text posts by >2x engagement -> **THEN** add 2 carousels/week to Month 3
+- **IF** polls (Day 40, Day 50) drive >50 votes each -> **THEN** add weekly polls as a recurring format
+- **IF** text posts consistently outperform other formats -> **THEN** stick with what works. Don't fix what isn't broken
+- **IF** all formats plateau -> **THEN** test short video content (LinkedIn native video, Loom tutorials) in Month 3
+
+### Decision 8: Referral Program
+- **IF** >3 members have organically referred others (tracked via "how did you hear about us") -> **THEN** launch formal referral program: "Invite a friend, both get 20% off"
+- **IF** no organic referrals detected -> **THEN** delay referral program. Focus on making the product remarkable enough that people talk about it unprompted
+
+### Decision 9: Partnerships
+- **IF** any newsletter or course creator has engaged with our content -> **THEN** reach out for cross-promotion (warm intro only, per standing rules)
+- **IF** no warm connections yet -> **THEN** no outreach. Continue building content that attracts inbound partnership interest
