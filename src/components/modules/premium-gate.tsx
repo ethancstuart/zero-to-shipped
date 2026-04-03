@@ -196,10 +196,16 @@ export function PremiumGate({
                 </div>
               </CardContent>
 
-              <CardFooter className="justify-center">
+              <CardFooter className="flex-col gap-2">
                 <p className="text-xs text-muted-foreground">
                   One-time payment. Lifetime access. No subscription.
                 </p>
+                <Link
+                  href="/modules"
+                  className="text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"
+                >
+                  Not ready yet? Continue with free modules &rarr;
+                </Link>
               </CardFooter>
             </Card>
           </div>

@@ -14,6 +14,9 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error, data } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // Track whether this is a first-time signup
+      let isNewUser = false;
+
       // Capture referral from cookie
       const cookieStore = await cookies();
       const refCode = cookieStore.get("zts_ref")?.value;
@@ -55,6 +58,7 @@ export async function GET(request: Request) {
             .single();
 
           if (profile && !profile.welcome_email_sent) {
+            isNewUser = true;
             const name = profile.display_name?.split(" ")[0] ?? "there";
             const unsubToken = generateUnsubscribeToken(data.user.id);
             const resend = new Resend(process.env.RESEND_API_KEY);
@@ -93,14 +97,16 @@ export async function GET(request: Request) {
         }
       }
 
+      const redirectPath = isNewUser ? "/welcome" : next;
+
       // Clear the referral cookie if present
       if (refCode) {
-        const response = NextResponse.redirect(`${origin}${next}`);
+        const response = NextResponse.redirect(`${origin}${redirectPath}`);
         response.cookies.set("zts_ref", "", { maxAge: 0, path: "/" });
         return response;
       }
 
-      return NextResponse.redirect(`${origin}${next}`);
+      return NextResponse.redirect(`${origin}${redirectPath}`);
     }
 
     // Code exchange failed — redirect to error page

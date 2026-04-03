@@ -364,6 +364,12 @@ export function getModulesByTier(tier: ModuleMeta["tier"]): ModuleMeta[] {
   return MODULE_METADATA.filter((m) => m.tier === tier);
 }
 
+export function getCoreModulesForRole(role: import("@/types").RoleTrack): number[] {
+  return MODULE_METADATA
+    .filter((m) => m.roleRelevance[role] === "core")
+    .map((m) => m.number);
+}
+
 export function arePrerequisitesMet(
   moduleNumber: number,
   completedModules: number[]

@@ -84,7 +84,7 @@ export default async function CertificatePage() {
       {profile.public_profile && (
         <div className="mt-6 flex justify-center">
           <ShareButtons
-            url={`${siteConfig.url}/u/${encodeURIComponent(profile.display_name ?? "")}`}
+            url={`${siteConfig.url}/u/${user.id}`}
             title={`I just completed Zero to Ship! 🚀 All 16 modules done.`}
           />
         </div>

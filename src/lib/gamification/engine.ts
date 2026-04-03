@@ -2,9 +2,17 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { XP, getBadgeBySlug } from "./constants";
-import { MODULE_METADATA, getModulesByTier } from "@/lib/content/modules";
+import { MODULE_METADATA, getModulesByTier, getCoreModulesForRole } from "@/lib/content/modules";
+import type { RoleTrack } from "@/types";
 import type { CheckpointResult } from "@/types";
 import type { SupabaseClient } from "@supabase/supabase-js";
+
+const ROLE_BADGE_SLUGS: Record<RoleTrack, string> = {
+  pm: "pm-track",
+  pjm: "pjm-track",
+  ba: "ba-track",
+  bi: "bi-track",
+};
 
 // Internal collector that accumulates awards during a checkpoint flow
 class ResultCollector {
@@ -344,6 +352,41 @@ async function handleModuleComplete(
   }
   if (advancedModules.every((n) => completed.includes(n))) {
     await awardXP(supabase, userId, "tier_complete", XP.TIER_COMPLETE, { tier: "advanced" }, collector);
+  }
+
+  // Role-track badge checks
+  const { data: roleProfile } = await supabase
+    .from("profiles")
+    .select("role_track")
+    .eq("id", userId)
+    .single();
+
+  if (roleProfile?.role_track) {
+    const role = roleProfile.role_track as RoleTrack;
+    const roleBadgeSlug = ROLE_BADGE_SLUGS[role];
+    const coreModules = getCoreModulesForRole(role);
+    const allCoreComplete = coreModules.every((n) => completed.includes(n));
+
+    if (allCoreComplete) {
+      const roleBadgeCandidates: string[] = [roleBadgeSlug];
+
+      // Award role-capstone when they have Module 16 done AND the role badge
+      if (completed.includes(16)) {
+        // Check if they already have or are about to earn the role badge
+        const { data: existingRoleBadge } = await supabase
+          .from("badges")
+          .select("badge_slug")
+          .eq("user_id", userId)
+          .eq("badge_slug", roleBadgeSlug)
+          .maybeSingle();
+
+        if (existingRoleBadge || roleBadgeCandidates.includes(roleBadgeSlug)) {
+          roleBadgeCandidates.push("role-capstone");
+        }
+      }
+
+      await batchAwardBadges(supabase, userId, roleBadgeCandidates, collector);
+    }
   }
 
   // Referral XP award on Module 1 completion

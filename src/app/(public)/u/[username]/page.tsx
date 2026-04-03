@@ -16,16 +16,30 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
   const decoded = decodeURIComponent(username);
-  const ogUrl = `${siteConfig.url}/api/og?name=${encodeURIComponent(decoded)}`;
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(decoded);
+
+  let displayName = decoded;
+  if (isUUID) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", decoded)
+      .eq("public_profile", true)
+      .single();
+    displayName = data?.display_name ?? "User";
+  }
+
+  const ogUrl = `${siteConfig.url}/api/og?name=${encodeURIComponent(displayName)}`;
   return {
-    title: `${decoded}'s Profile`,
+    title: `${displayName}'s Profile`,
     openGraph: {
-      title: `${decoded} — Zero to Ship`,
+      title: `${displayName} — Zero to Ship`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${decoded} — Zero to Ship`,
+      title: `${displayName} — Zero to Ship`,
       images: [ogUrl],
     },
   };
@@ -37,13 +51,16 @@ export default async function PublicProfilePage({ params }: Props) {
 
   const supabase = await createClient();
 
-  // Find public profile by display name
-  const { data: profile } = await supabase
+  // Find public profile by ID or display name
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(decodedName);
+  const query = supabase
     .from("profiles")
     .select("id, display_name, avatar_url, xp, level, role_track, longest_streak, created_at")
-    .eq("public_profile", true)
-    .ilike("display_name", decodedName)
-    .single();
+    .eq("public_profile", true);
+
+  const { data: profile } = isUUID
+    ? await query.eq("id", decodedName).single()
+    : await query.ilike("display_name", decodedName).single();
 
   if (!profile) notFound();
 

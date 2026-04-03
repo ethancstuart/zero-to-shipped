@@ -18,6 +18,7 @@ import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { StreakCalendar } from "@/components/dashboard/streak-calendar";
 import { RoleRecommendations } from "@/components/dashboard/role-recommendations";
 import { EmptyState } from "@/components/ui/empty-state";
+import { CopyReferralLink } from "./copy-referral-link";
 import type { ModuleProgress, Badge, XPEvent, RoleTrack } from "@/types";
 
 export async function DashboardContent({ userId }: { userId: string }) {
@@ -122,9 +123,7 @@ export async function DashboardContent({ userId }: { userId: string }) {
               </p>
             </div>
           </div>
-          <code className="overflow-x-auto rounded bg-muted px-2 py-1 text-xs">
-            zerotoship.app?ref={profile.referral_code}
-          </code>
+          <CopyReferralLink referralCode={profile.referral_code} />
         </div>
       )}
 
