@@ -94,6 +94,7 @@ export function CheckpointList({
               key={index}
               role="checkbox"
               aria-checked={isCompleted}
+              data-checkpoint-index={index}
               onClick={() => handleToggle(index)}
               disabled={isPending}
               className={cn(

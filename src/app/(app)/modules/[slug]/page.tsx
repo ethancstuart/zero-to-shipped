@@ -4,7 +4,9 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Lock } from "lucide-react";
 import { MODULE_METADATA, getModuleBySlug } from "@/lib/content/modules";
 import { CheckpointList } from "@/components/modules/checkpoint-list";
+import { ContinueBanner } from "@/components/modules/continue-banner";
 import { MobileCheckpointBar } from "@/components/modules/mobile-checkpoint-bar";
+import { StuckHelp } from "@/components/modules/stuck-help";
 import { ToolToggle } from "@/components/modules/tool-toggle";
 import { ModuleContent } from "@/components/modules/module-content";
 import { Button } from "@/components/ui/button";
@@ -177,6 +179,12 @@ export default async function ModuleReaderPage({ params }: Props) {
       {/* Tool Setup Banner for Module 5+ */}
       {mod.number >= 5 && <ToolSetupBanner toolPreference={profile.tool_preference} />}
 
+      {/* Continue where you left off */}
+      <ContinueBanner
+        completedIndexes={completedIndexes}
+        totalCheckpoints={mod.checkpoints.length}
+      />
+
       {/* Content + Sidebar */}
       <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
         {/* Module Content */}
@@ -231,6 +239,9 @@ export default async function ModuleReaderPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Contextual help for stuck users */}
+      <StuckHelp />
 
       {/* Mobile floating checkpoint progress bar */}
       <MobileCheckpointBar

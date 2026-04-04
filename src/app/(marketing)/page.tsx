@@ -9,6 +9,10 @@ import {
   Zap,
   Target,
   BarChart3,
+  Award,
+  Globe,
+  Briefcase,
+  Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/layout/login-button";
@@ -272,6 +276,113 @@ export default async function LandingPage({
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Built For Professionals */}
+      <section className="border-t border-border py-16">
+        <div className="mx-auto max-w-4xl px-4 text-center">
+          <p className="mb-6 text-sm font-medium uppercase tracking-wider text-muted-foreground">
+            Built for professionals in
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {["Tech", "Finance", "Healthcare", "Media", "Consulting"].map(
+              (category) => (
+                <span
+                  key={category}
+                  className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground"
+                >
+                  {category}
+                </span>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Course Stats */}
+      <section className="border-t border-border py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            <div className="rounded-xl border border-border bg-card p-6 text-center">
+              <BookOpen className="mx-auto mb-3 size-6 text-primary" />
+              <p className="text-3xl font-bold">16</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Hands-on modules
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6 text-center">
+              <CheckCircle2 className="mx-auto mb-3 size-6 text-primary" />
+              <p className="text-3xl font-bold">100+</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Checkpoints
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6 text-center">
+              <Briefcase className="mx-auto mb-3 size-6 text-primary" />
+              <p className="text-3xl font-bold">4</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Role-specific tracks
+              </p>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6 text-center">
+              <Award className="mx-auto mb-3 size-6 text-primary" />
+              <p className="text-3xl font-bold">1</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Certificate of completion
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You'll Walk Away With */}
+      <section className="border-t border-border py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="mb-4 text-center text-3xl font-bold">
+            What You&apos;ll Walk Away With
+          </h2>
+          <p className="mx-auto mb-12 max-w-2xl text-center text-muted-foreground">
+            Not just knowledge — tangible proof you can build.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-6">
+              <Globe className="mt-0.5 size-6 shrink-0 text-primary" />
+              <div>
+                <h3 className="font-semibold">A deployed project with a real URL</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Ship something live to the internet that anyone can visit.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-6">
+              <Briefcase className="mt-0.5 size-6 shrink-0 text-primary" />
+              <div>
+                <h3 className="font-semibold">A portfolio you can show in interviews</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Demonstrate technical ability with real, working projects.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-6">
+              <Code2 className="mt-0.5 size-6 shrink-0 text-primary" />
+              <div>
+                <h3 className="font-semibold">The AI build loop — a skill that transfers to any project</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Learn the repeatable process for turning ideas into software with AI.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4 rounded-xl border border-border bg-card p-6">
+              <Award className="mt-0.5 size-6 shrink-0 text-primary" />
+              <div>
+                <h3 className="font-semibold">A certificate proving you can ship</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Shareable proof of completion for your LinkedIn and resume.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

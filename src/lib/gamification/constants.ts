@@ -15,9 +15,11 @@ export const XP = {
 // Levels
 export const LEVELS: LevelDefinition[] = [
   { level: 1, title: "Novice", xpRequired: 0 },
-  { level: 2, title: "Builder", xpRequired: 500 },
-  { level: 3, title: "Shipper", xpRequired: 1200 },
-  { level: 4, title: "Master", xpRequired: 2000 },
+  { level: 2, title: "Explorer", xpRequired: 250 },
+  { level: 3, title: "Builder", xpRequired: 500 },
+  { level: 4, title: "Shipper", xpRequired: 1200 },
+  { level: 5, title: "Architect", xpRequired: 1500 },
+  { level: 6, title: "Master", xpRequired: 2000 },
 ];
 
 export function getLevelForXP(xp: number): LevelDefinition {
