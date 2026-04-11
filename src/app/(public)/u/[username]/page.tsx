@@ -157,7 +157,13 @@ export default async function PublicProfilePage({ params }: Props) {
                     className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2"
                     title={def.description}
                   >
-                    <span className="text-lg">{def.icon}</span>
+                    <span
+                      className="text-lg"
+                      role="img"
+                      aria-label={`${def.name} badge`}
+                    >
+                      {def.icon}
+                    </span>
                     <span className="text-xs font-medium">{def.name}</span>
                   </div>
                 );

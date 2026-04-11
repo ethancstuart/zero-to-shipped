@@ -73,8 +73,17 @@ export default async function ProfilePage() {
                   earned ? "" : "opacity-30"
                 }`}
                 title={def.description}
+                aria-label={`${def.name} — ${def.description}${
+                  earned ? " (earned)" : " (locked)"
+                }`}
               >
-                <span className="text-2xl">{def.icon}</span>
+                <span
+                  className="text-2xl"
+                  role="img"
+                  aria-hidden="true"
+                >
+                  {def.icon}
+                </span>
                 <span className="text-[10px] font-medium leading-tight">
                   {def.name}
                 </span>

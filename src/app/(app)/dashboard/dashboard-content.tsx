@@ -206,7 +206,13 @@ export async function DashboardContent({ userId }: { userId: string }) {
                   className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2"
                   title={def.description}
                 >
-                  <span className="text-xl">{def.icon}</span>
+                  <span
+                    className="text-xl"
+                    role="img"
+                    aria-label={`${def.name} badge`}
+                  >
+                    {def.icon}
+                  </span>
                   <span className="text-sm font-medium">{def.name}</span>
                 </div>
               );
