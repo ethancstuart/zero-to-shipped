@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { siteConfig } from "@/lib/constants";
+import { ROLE_LANDING_SLUGS } from "@/lib/content/role-landing";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const modules: MetadataRoute.Sitemap = MODULE_METADATA.map((mod) => ({
@@ -9,6 +10,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: 0.7,
   }));
+
+  const roleLandings: MetadataRoute.Sitemap = ROLE_LANDING_SLUGS.map(
+    (slug) => ({
+      url: `${siteConfig.url}/for/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    })
+  );
 
   return [
     {
@@ -53,6 +63,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.7,
     },
+    ...roleLandings,
     ...modules,
   ];
 }

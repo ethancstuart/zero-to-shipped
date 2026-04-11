@@ -46,7 +46,97 @@ export async function GET(request: NextRequest) {
     return renderModuleComplete(searchParams);
   }
 
+  if (template === "role-landing") {
+    return renderRoleLanding(searchParams);
+  }
+
   return renderProfile(searchParams);
+}
+
+function renderRoleLanding(searchParams: URLSearchParams) {
+  const role = searchParams.get("role") ?? "Builders";
+  const headline = searchParams.get("headline") ?? "Build with AI";
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#0a0a0a",
+          color: "#fafafa",
+          fontFamily: "system-ui, sans-serif",
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, #1e40af30 0%, transparent 50%), radial-gradient(circle at 80% 80%, #7c3aed25 0%, transparent 50%)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: "40px 80px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 20,
+              color: "#3b82f6",
+              letterSpacing: "0.15em",
+              marginBottom: 16,
+              fontWeight: 600,
+            }}
+          >
+            ZERO TO SHIP
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 18,
+              color: "#a3a3a3",
+              padding: "6px 18px",
+              borderRadius: 999,
+              border: "1px solid #3b82f6",
+              marginBottom: 28,
+            }}
+          >
+            Built for {role}
+          </div>
+          <div
+            style={{
+              fontSize: 56,
+              fontWeight: "bold",
+              marginBottom: 20,
+              textAlign: "center",
+              maxWidth: 980,
+              lineHeight: 1.1,
+            }}
+          >
+            {headline}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 20,
+              color: "#22c55e",
+              backgroundColor: "#22c55e20",
+              padding: "10px 24px",
+              borderRadius: 24,
+              fontWeight: 600,
+              marginTop: 12,
+            }}
+          >
+            16 modules · shipped capstone · $99 founding
+          </div>
+        </div>
+      </div>
+    ),
+    { width: 1200, height: 630 }
+  );
 }
 
 function renderModule(searchParams: URLSearchParams) {
