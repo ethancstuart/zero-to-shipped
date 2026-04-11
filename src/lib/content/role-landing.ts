@@ -437,3 +437,20 @@ export function getRoleLandingConfig(
   }
   return undefined;
 }
+
+/**
+ * Reverse lookup: ROLE_LABELS key ("pm", "pjm", "ba", "bi") → /for/[slug].
+ * Lets the main landing page and other surfaces link to the right role page
+ * without hardcoding the mapping in multiple places.
+ */
+export function getRoleLandingSlugByRoleKey(
+  roleKey: keyof typeof ROLE_LABELS
+): RoleLandingSlug {
+  const match = Object.values(ROLE_LANDING_CONFIGS).find(
+    (c) => c.roleKey === roleKey
+  );
+  if (!match) {
+    throw new Error(`No role landing page configured for role key: ${roleKey}`);
+  }
+  return match.slug;
+}

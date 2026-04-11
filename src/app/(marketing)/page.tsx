@@ -19,6 +19,7 @@ import { LoginButton } from "@/components/layout/login-button";
 import { FoundingCounter } from "@/components/marketing/founding-counter";
 import { MODULE_METADATA } from "@/lib/content/modules";
 import { ROLE_LABELS, TIER_LABELS, siteConfig } from "@/lib/constants";
+import { getRoleLandingSlugByRoleKey } from "@/lib/content/role-landing";
 import type { RoleTrack, ModuleTier } from "@/types";
 
 const ROLE_ICONS: Record<RoleTrack, React.ReactNode> = {
@@ -102,23 +103,24 @@ export default async function LandingPage({
           </div>
           <div className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500 delay-200">
             <FoundingCounter />
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+              <Button size="lg" render={<Link href="/preview/module-1" />}>
+                Try Module 1 free
+                <ArrowRight className="ml-2 size-4" />
+              </Button>
               <LoginButton />
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              No sign-up required to preview. 5 modules free after you sign in.
+            </p>
+            <div className="mt-6">
               <Button
-                variant="outline"
+                variant="ghost"
+                size="sm"
                 render={<a href="#curriculum" />}
               >
                 View Curriculum
-                <ArrowRight className="ml-2 size-4" />
-              </Button>
-            </div>
-            <div className="mx-auto mt-8 max-w-sm">
-              <p className="mb-3 text-sm text-muted-foreground">
-                Try Module 1 free — no sign-up required
-              </p>
-              <Button render={<Link href="/preview/module-1" />} variant="outline">
-                Preview Module 1
-                <ArrowRight className="ml-2 size-4" />
+                <ArrowRight className="ml-1 size-4" />
               </Button>
             </div>
           </div>
@@ -214,20 +216,25 @@ export default async function LandingPage({
               const coreModules = MODULE_METADATA.filter(
                 (m) => m.roleRelevance[role] === "core"
               );
+              const roleSlug = getRoleLandingSlugByRoleKey(role);
               return (
-                <div
+                <Link
                   key={role}
-                  className="rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
+                  href={`/for/${roleSlug}`}
+                  className="group rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md"
                 >
                   <div className="mb-3 text-primary">{ROLE_ICONS[role]}</div>
                   <h3 className="mb-1 font-semibold">{ROLE_LABELS[role]}</h3>
                   <p className="mb-4 text-sm text-muted-foreground">
                     {ROLE_DESCRIPTIONS[role]}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {coreModules.length} core modules
-                  </p>
-                </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground">
+                      {coreModules.length} core modules
+                    </p>
+                    <ArrowRight className="size-4 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </div>
+                </Link>
               );
             })}
           </div>

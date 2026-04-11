@@ -3,6 +3,7 @@ import {
   ROLE_LANDING_CONFIGS,
   ROLE_LANDING_SLUGS,
   getRoleLandingConfig,
+  getRoleLandingSlugByRoleKey,
 } from "../role-landing";
 import { ROLE_LABELS } from "@/lib/constants";
 
@@ -77,5 +78,21 @@ describe("getRoleLandingConfig", () => {
     expect(getRoleLandingConfig("engineers")).toBeUndefined();
     expect(getRoleLandingConfig("")).toBeUndefined();
     expect(getRoleLandingConfig("product-manager")).toBeUndefined();
+  });
+});
+
+describe("getRoleLandingSlugByRoleKey", () => {
+  it("maps every ROLE_LABELS key to a valid landing slug", () => {
+    for (const key of Object.keys(ROLE_LABELS) as (keyof typeof ROLE_LABELS)[]) {
+      const slug = getRoleLandingSlugByRoleKey(key);
+      expect(ROLE_LANDING_SLUGS).toContain(slug);
+    }
+  });
+
+  it("is invertible — slug → config → key round-trips", () => {
+    for (const key of Object.keys(ROLE_LABELS) as (keyof typeof ROLE_LABELS)[]) {
+      const slug = getRoleLandingSlugByRoleKey(key);
+      expect(ROLE_LANDING_CONFIGS[slug].roleKey).toBe(key);
+    }
   });
 });
