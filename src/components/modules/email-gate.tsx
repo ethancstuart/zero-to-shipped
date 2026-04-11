@@ -43,7 +43,7 @@ export function EmailGate({ moduleTitle, description }: EmailGateProps) {
             Sign in with Google to unlock all 5 foundation modules for free. No
             credit card required.
           </p>
-          <LoginButton />
+          <LoginButton source="preview_gate" />
         </div>
       </div>
     </div>

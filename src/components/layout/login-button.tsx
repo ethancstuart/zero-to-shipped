@@ -1,12 +1,27 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
+import { track } from "@vercel/analytics";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import { toast } from "sonner";
 
-async function handleGoogleLogin() {
+/**
+ * Where the LoginButton is being rendered. Used to attribute signups to the
+ * surface that drove them — closes the launch-day funnel on "what CTA worked"
+ * without adding a new events table.
+ */
+export type LoginSource =
+  | "landing_hero"
+  | "landing_cta"
+  | "pricing_page"
+  | "preview_gate"
+  | "nav"
+  | "unknown";
+
+async function handleGoogleLogin(source: LoginSource) {
+  track("login_click", { source });
   try {
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -27,18 +42,32 @@ async function handleGoogleLogin() {
   }
 }
 
-export function LoginButton() {
+export function LoginButton({
+  source = "unknown",
+  label = "Sign in with Google",
+}: {
+  source?: LoginSource;
+  label?: string;
+} = {}) {
   return (
-    <Button onClick={handleGoogleLogin} className="gap-2">
+    <Button onClick={() => handleGoogleLogin(source)} className="gap-2">
       <LogIn className="size-4" />
-      Sign in with Google
+      {label}
     </Button>
   );
 }
 
-export function LoginButtonOutline() {
+export function LoginButtonOutline({
+  source = "unknown",
+}: {
+  source?: LoginSource;
+} = {}) {
   return (
-    <Button variant="outline" onClick={handleGoogleLogin} className="gap-2">
+    <Button
+      variant="outline"
+      onClick={() => handleGoogleLogin(source)}
+      className="gap-2"
+    >
       <LogIn className="size-4" />
       Sign In
     </Button>

@@ -61,7 +61,7 @@ export default async function PricingPage() {
                 Current Plan
               </div>
             ) : (
-              <LoginButton />
+              <LoginButton source="pricing_page" />
             )}
             <ul className="mt-6 space-y-3">
               {FREE_FEATURES.map((feature) => (
@@ -100,7 +100,7 @@ export default async function PricingPage() {
                 source="pricing_page"
               />
             ) : (
-              <LoginButton />
+              <LoginButton source="pricing_page" />
             )}
             <p className="mt-3 text-center text-xs text-muted-foreground">
               14-day money-back guarantee — no questions asked

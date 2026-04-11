@@ -25,7 +25,7 @@ export async function MarketingNav() {
               Dashboard
             </Button>
           ) : (
-            <LoginButtonOutline />
+            <LoginButtonOutline source="nav" />
           )}
         </div>
       </nav>

@@ -108,7 +108,7 @@ export default async function LandingPage({
                 Try Module 1 free
                 <ArrowRight className="ml-2 size-4" />
               </Button>
-              <LoginButton />
+              <LoginButton source="landing_hero" />
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
               No sign-up required to preview. 5 modules free after you sign in.
@@ -405,7 +405,7 @@ export default async function LandingPage({
             First 100 students get founding member pricing: $99
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <LoginButton />
+            <LoginButton source="landing_cta" />
             <Button
               variant="outline"
               render={<Link href="/pricing" />}

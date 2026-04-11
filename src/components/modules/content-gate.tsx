@@ -36,7 +36,7 @@ export function ContentGate({ moduleTitle, gatedHtml }: ContentGateProps) {
           <p className="mb-5 text-xs text-muted-foreground">
             No credit card required. Just a Google account.
           </p>
-          <LoginButton />
+          <LoginButton source="preview_gate" />
         </div>
       </div>
     </div>

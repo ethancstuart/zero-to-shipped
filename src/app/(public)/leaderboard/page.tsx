@@ -179,7 +179,7 @@ export default async function LeaderboardPage({
             <p className="mb-4 font-medium">
               Sign up free to see your rank and start earning XP
             </p>
-            <LoginButton />
+            <LoginButton source="unknown" />
           </div>
         )}
 
