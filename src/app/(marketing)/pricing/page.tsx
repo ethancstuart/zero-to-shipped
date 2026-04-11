@@ -98,7 +98,10 @@ export default async function PricingPage() {
             ) : (
               <LoginButton />
             )}
-            <div className="mt-4">
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              14-day money-back guarantee — no questions asked
+            </p>
+            <div className="mt-3">
               <FoundingCounter />
             </div>
             <ul className="mt-6 space-y-3">
@@ -146,6 +149,20 @@ export default async function PricingPage() {
               <p className="text-sm text-muted-foreground">
                 Built by a product leader who uses AI tools daily to ship at
                 scale. Every module is based on real workflows, not theory.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">What&apos;s the refund policy?</h3>
+              <p className="text-sm text-muted-foreground">
+                14-day money-back guarantee, no questions asked. If you&apos;re
+                not satisfied within 14 days of purchase, email{" "}
+                <a
+                  href="mailto:hello@zerotoship.app"
+                  className="text-primary hover:underline"
+                >
+                  hello@zerotoship.app
+                </a>{" "}
+                for a full refund.
               </p>
             </div>
           </div>

@@ -35,7 +35,7 @@ export function showRewardToasts(result: CheckpointResult) {
     toast(
       <div>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{badge.icon}</span>
+          <span className="text-2xl" role="img" aria-label={badge.name}>{badge.icon}</span>
           <div>
             <p className="font-semibold">Badge Earned: {badge.name}</p>
             <p className="text-sm text-muted-foreground">{badge.description}</p>
@@ -55,7 +55,7 @@ export function showRewardToasts(result: CheckpointResult) {
     toast(
       <div>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">🎉</span>
+          <span className="text-2xl" role="img" aria-label="Level up celebration">🎉</span>
           <div>
             <p className="font-semibold">Level Up!</p>
             <p className="text-sm text-muted-foreground">
@@ -78,7 +78,7 @@ export function showRewardToasts(result: CheckpointResult) {
     toast(
       <div>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{emoji}</span>
+          <span className="text-2xl" role="img" aria-label={`${result.streakMilestone}-day streak`}>{emoji}</span>
           <div>
             <p className="font-semibold">{result.streakMilestone}-Day Streak!</p>
             <p className="text-sm text-muted-foreground">

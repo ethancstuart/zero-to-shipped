@@ -22,9 +22,9 @@ export default function TermsPage() {
           <p>Premium access is a one-time purchase — there are no recurring charges or subscriptions. All payments are processed securely through Stripe. Prices are displayed in USD and may include applicable taxes.</p>
         </section>
 
-        <section>
+        <section id="refund-policy">
           <h2>Refund Policy</h2>
-          <p>If you&apos;re not satisfied with your purchase, contact us within 14 days for a full refund. After 14 days, refunds are handled on a case-by-case basis. Refunds are processed back to the original payment method.</p>
+          <p>If you&apos;re not satisfied with your purchase, contact us within 14 days for a full refund — no questions asked. After 14 days, refunds are handled on a case-by-case basis. Refunds are processed back to the original payment method within 5–10 business days.</p>
         </section>
 
         <section>

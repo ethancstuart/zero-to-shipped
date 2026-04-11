@@ -200,6 +200,16 @@ export function PremiumGate({
                 <p className="text-xs text-muted-foreground">
                   One-time payment. Lifetime access. No subscription.
                 </p>
+                <p className="text-xs text-muted-foreground">
+                  Not satisfied?{" "}
+                  <Link
+                    href="/terms#refund-policy"
+                    className="underline underline-offset-2 transition-colors hover:text-foreground"
+                  >
+                    14-day money-back guarantee
+                  </Link>
+                  . No questions asked.
+                </p>
                 <Link
                   href="/modules"
                   className="text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"

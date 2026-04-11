@@ -64,15 +64,15 @@ function getModuleTier(num: number): string {
 function StatusIcon({ status }: { status: ModuleStatus }) {
   switch (status) {
     case "completed":
-      return <CheckCircle2 className="size-5 shrink-0 text-green-500" />;
+      return <CheckCircle2 className="size-5 shrink-0 text-green-500" aria-hidden="true" />;
     case "in_progress":
       return (
-        <div className="size-5 shrink-0 rounded-full border-2 border-primary bg-primary/20" />
+        <div className="size-5 shrink-0 rounded-full border-2 border-primary bg-primary/20" aria-hidden="true" />
       );
     case "available":
-      return <ChevronRight className="size-5 shrink-0 text-primary" />;
+      return <ChevronRight className="size-5 shrink-0 text-primary" aria-hidden="true" />;
     default:
-      return <Lock className="size-4 shrink-0 text-muted-foreground/40" />;
+      return <Lock className="size-4 shrink-0 text-muted-foreground/40" aria-hidden="true" />;
   }
 }
 
@@ -125,12 +125,23 @@ function MobileSkillTreeList({ modules, statusMap }: SkillTreeGraphProps) {
 
               if (isClickable) {
                 return (
-                  <Link key={mod.number} href={`/modules/${mod.slug}`}>
+                  <Link
+                    key={mod.number}
+                    href={`/modules/${mod.slug}`}
+                    aria-label={`Module ${mod.number}: ${mod.title} — ${status}`}
+                  >
                     {content}
                   </Link>
                 );
               }
-              return <div key={mod.number}>{content}</div>;
+              return (
+                <div
+                  key={mod.number}
+                  aria-label={`Module ${mod.number}: ${mod.title} — locked`}
+                >
+                  {content}
+                </div>
+              );
             })}
           </div>
         </div>
@@ -182,7 +193,13 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
     {/* Desktop: SVG graph */}
     <Card className="hidden overflow-x-auto lg:block">
       <CardContent>
-      <svg viewBox="0 0 800 860" className="mx-auto w-full max-w-3xl">
+      <svg
+        viewBox="0 0 800 860"
+        className="mx-auto w-full max-w-3xl"
+        role="img"
+        aria-label="Skill tree showing 16 learning modules across four tiers: Foundations, Intermediate, Advanced, and Capstone"
+      >
+        <title>Zero to Ship Skill Tree</title>
         {/* Tier labels */}
         <text x="20" y="60" className="fill-primary text-[11px] font-semibold">
           FOUNDATIONS
@@ -232,6 +249,8 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: mod.number * 0.05, type: "spring" }}
               className={isClickable ? "cursor-pointer" : ""}
+              role="listitem"
+              aria-label={`Module ${mod.number}: ${mod.title} — ${status}`}
             >
               <circle
                 cx={pos.x}
