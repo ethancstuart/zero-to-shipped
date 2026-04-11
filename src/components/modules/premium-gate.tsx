@@ -26,6 +26,10 @@ import {
   ProgressValue,
 } from "@/components/ui/progress";
 import { ROLE_LABELS } from "@/lib/constants";
+import {
+  PAYWALL_VARIANT_COPY,
+  type PaywallVariant,
+} from "@/lib/experiments/paywall-variant";
 
 interface PremiumGateProps {
   moduleTitle: string;
@@ -45,6 +49,8 @@ interface PremiumGateProps {
   freeModulesCompleted?: number;
   /** Total number of free modules available */
   freeModulesTotal?: number;
+  /** Paywall A/B test variant — assigned deterministically server-side from user.id */
+  variant: PaywallVariant;
 }
 
 export function PremiumGate({
@@ -62,7 +68,9 @@ export function PremiumGate({
   buildOutput = "a working feature you can add to your portfolio",
   freeModulesCompleted = 0,
   freeModulesTotal = 5,
+  variant,
 }: PremiumGateProps) {
+  const variantCopy = PAYWALL_VARIANT_COPY[variant];
   const progressPercent =
     freeModulesTotal > 0
       ? Math.round((freeModulesCompleted / freeModulesTotal) * 100)
@@ -73,6 +81,7 @@ export function PremiumGate({
       <PremiumGateTracker
         moduleNumber={moduleNumber}
         moduleTitle={moduleTitle}
+        variant={variant}
       />
 
       {/* Blurred preview of background content */}
@@ -179,11 +188,19 @@ export function PremiumGate({
                   </p>
                 </div>
 
+                {/* Variant-specific hook — the A/B test signal */}
+                <p className="text-center text-sm font-medium text-foreground/90">
+                  {variantCopy.hook}
+                </p>
+
                 {/* CTA */}
                 <div className="space-y-2">
                   <CheckoutButton
                     tier="full_access"
-                    label="Unlock Full Access — $99"
+                    label={variantCopy.ctaLabel}
+                    source="premium_gate"
+                    variant={variant}
+                    moduleNumber={moduleNumber}
                   />
                   <Button
                     variant="outline"

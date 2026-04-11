@@ -14,6 +14,7 @@ import { ToolSetupBanner } from "@/components/modules/tool-setup-banner";
 import { CapstoneSuggestions } from "@/components/modules/capstone-suggestions";
 import { canAccessModule } from "@/lib/content/tiers";
 import { PremiumGate } from "@/components/modules/premium-gate";
+import { getPaywallVariant } from "@/lib/experiments/paywall-variant";
 import { ShareYourBuild } from "@/components/modules/share-your-build";
 import { siteConfig } from "@/lib/constants";
 import type { ModuleProgress, CheckpointProgress, RoleTrack, SubscriptionTier } from "@/types";
@@ -125,6 +126,10 @@ export default async function ModuleReaderPage({ params }: Props) {
       .filter(([, level]) => level === "core" || level === "recommended")
       .map(([role]) => role);
 
+    // A/B test: deterministic variant assignment from user.id.
+    // Same user always sees the same variant across modules and sessions.
+    const paywallVariant = getPaywallVariant(user.id);
+
     return (
       <div className="mx-auto max-w-4xl py-10">
         <PremiumGate
@@ -136,6 +141,7 @@ export default async function ModuleReaderPage({ params }: Props) {
           checkpointCount={checkpointCount}
           estimatedMinutes={estimatedMinutes}
           relevantRoles={relevantRoles}
+          variant={paywallVariant}
         />
       </div>
     );

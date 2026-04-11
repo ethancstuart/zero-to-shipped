@@ -29,11 +29,117 @@ interface FunnelStep {
   };
 }
 
+type PaywallVariant = "control" | "outcome" | "social";
+
+interface VariantRow {
+  signups: number;
+  paid: number;
+  conversion: string;
+}
+
+type VariantBreakdown = Record<PaywallVariant, VariantRow>;
+
 interface FunnelData {
   generatedAt: string;
   allTime: FunnelStep;
   last7d: FunnelStep;
   last30d: FunnelStep;
+  paywallVariants?: {
+    allTime: VariantBreakdown;
+    last7d: VariantBreakdown;
+    last30d: VariantBreakdown;
+  };
+}
+
+const VARIANT_META: Record<
+  PaywallVariant,
+  { label: string; copy: string; color: string }
+> = {
+  control: {
+    label: "Control — price-led",
+    copy: "Unlock Full Access — $99",
+    color: "bg-slate-400",
+  },
+  outcome: {
+    label: "Variant A — outcome",
+    copy: "Start building — $99",
+    color: "bg-indigo-400",
+  },
+  social: {
+    label: "Variant B — social proof",
+    copy: "Join the founding members — $99",
+    color: "bg-fuchsia-400",
+  },
+};
+
+function PaywallVariantSection({
+  title,
+  description,
+  breakdown,
+}: {
+  title: string;
+  description: string;
+  breakdown: VariantBreakdown;
+}) {
+  const variants: PaywallVariant[] = ["control", "outcome", "social"];
+  const maxConversion = Math.max(
+    ...variants.map((v) => parseFloat(breakdown[v].conversion))
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {variants.map((variant) => {
+          const row = breakdown[variant];
+          const meta = VARIANT_META[variant];
+          const isLeader =
+            parseFloat(row.conversion) === maxConversion &&
+            maxConversion > 0;
+          return (
+            <div key={variant} className="space-y-2">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-foreground">
+                      {meta.label}
+                    </span>
+                    {isLeader && (
+                      <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-500">
+                        leader
+                      </span>
+                    )}
+                  </div>
+                  <p className="truncate text-xs text-muted-foreground">
+                    &ldquo;{meta.copy}&rdquo;
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <div className="text-lg font-bold tabular-nums">
+                    {row.conversion}%
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    {row.paid}/{row.signups} paid
+                  </div>
+                </div>
+              </div>
+              <div className="relative h-2 overflow-hidden rounded bg-muted">
+                <div
+                  className={`${meta.color} h-full transition-all duration-500`}
+                  style={{
+                    width: `${Math.min(parseFloat(row.conversion) * 10, 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </CardContent>
+    </Card>
+  );
 }
 
 const STEP_LABELS = [
@@ -243,6 +349,38 @@ export default function FunnelPage() {
         description="Lifetime funnel metrics"
         step={data.allTime}
       />
+
+      {data.paywallVariants && (
+        <>
+          <div className="pt-6">
+            <h2 className="text-xl font-bold text-foreground">
+              Paywall A/B Test
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Deterministic 3-way split by user ID. Conversion rate = paid /
+              signups per variant.
+            </p>
+          </div>
+
+          <PaywallVariantSection
+            title="Last 7 Days"
+            description="Recent paywall variant performance"
+            breakdown={data.paywallVariants.last7d}
+          />
+
+          <PaywallVariantSection
+            title="Last 30 Days"
+            description="Monthly paywall variant performance"
+            breakdown={data.paywallVariants.last30d}
+          />
+
+          <PaywallVariantSection
+            title="All Time"
+            description="Lifetime paywall variant performance"
+            breakdown={data.paywallVariants.allTime}
+          />
+        </>
+      )}
     </div>
   );
 }

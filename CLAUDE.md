@@ -58,6 +58,41 @@ src/
 - Markdown with frontmatter → rendered with remark/rehype pipeline + Shiki
 - Module slugs match filenames (01-setup-and-first-build, etc.)
 
+## Notion Context
+This project is tracked in Notion under Zero to Ship.
+- **Zero to Ship page:** `33945c2d-baf4-8154-a09e-f604d9bb8b18`
+- **Technical Architecture:** `33945c2d-baf4-814c-822f-fb7bfc54b60a`
+
+> ⚠️ **Pre-launch P0 (April 28 deadline):** NEXT_PUBLIC_SENTRY_DSN is blank — Sentry is installed and wired but not capturing. Create a Sentry project and add the DSN to .env.local + Vercel env vars before launch. Refund policy also missing from paywall. Both tracked in Bugs & Issues.
+- **Launch Tracker:** `33945c2d-baf4-81c9-99a1-ce19d0eb395c`
+- **Content Calendar:** `33945c2d-baf4-8110-90e4-f47474f388d8`
+- **Bugs & Issues:** `33945c2d-baf4-8154-81ad-d0dd62c3a7ba`
+- **GTM Tracker:** `33945c2d-baf4-817e-bfb4-c7c5a9fe3c4c`
+- **Session Brief (global):** `33945c2d-baf4-81df-bdcf-f10616ef92cf`
+- **Weekly Execution Brief (global):** `33945c2d-baf4-81d6-8e6e-e401346c03d1`
+- **Prompt Library (global):** `33945c2d-baf4-81dc-9f20-c8f04a134c5f`
+
+### Bugs & Issues Severity
+- **P0 — Critical**: data loss, broken auth, payment failures, crashes in core flows. Drop everything and fix immediately.
+- **P1 — High**: broken feature, bad UX blocking a key user task. Fix in current session before starting new work.
+- **P2 — Normal**: cosmetic issues, edge cases, minor UX degradation. Fix in order when capacity allows.
+Always label new bugs with their severity tier.
+
+### Session start — read in this order:
+1. **Weekly Execution Brief** — read the most recent week entry for priority context.
+   - **Staleness check**: if the most recent entry is more than 7 days old or the page is empty, flag this immediately and ask Ethan for today's priorities before proceeding.
+2. **Session Brief** — check for a same-day brief. Overrides the weekly brief if present.
+3. **Bugs & Issues** — check for any OPEN items. P0 blocks all other work. P1 blocks new features unless brief says otherwise.
+4. **GTM Tracker** — check launch task status. If launch is within 14 days and tasks are unchecked, surface them proactively.
+5. **Launch Tracker** — read current pre-launch checklist state.
+6. Then begin work.
+
+### Session end — always:
+- Append a Launch Tracker entry using this structure:
+  `Last updated: YYYY-MM-DD | Days to launch: N | Completed this session: [list] | Still open: [list] | P0 blockers: [list or "none"]`
+- If content was planned or published, update the Content Calendar with: title, type, target channel, publish date, status.
+- If it is post-April 28 launch: replace "Days to launch" with "Days since launch: N | Signups: X | Free→Premium conversions: X | Top source: [channel]".
+
 ## Conventions
 - Dark theme by default (next-themes)
 - Mobile-first responsive design
@@ -73,7 +108,12 @@ Before planning features or making architectural decisions, reference:
 - `~/Projects/home-base/apis/catalog.md` — curated API catalog (teaching APIs for course modules)
 - `~/Projects/home-base/standards/quality.md` — shared quality standards
 - `~/Projects/home-base/standards/design-principles.md` — shared design philosophy
+- `~/Projects/home-base/standards/design-toolkit.md` — skills, component libraries, and design references
 - `~/Projects/home-base/personal/CLAUDE.local.md` — who Ethan is, how he works
+
+When designing UI, consult the design toolkit before building components from scratch.
+Use `/brand-guidelines` to auto-apply this project's brand identity.
+Use `/frontend-design` for intentional aesthetic direction on new UI work.
 
 When planning new modules or features, check the API catalog for teaching-friendly APIs.
 

@@ -94,7 +94,11 @@ export default async function PricingPage() {
               </span>
             </p>
             {isLoggedIn ? (
-              <CheckoutButton tier="full_access" label="Get Founding Member Access" />
+              <CheckoutButton
+                tier="full_access"
+                label="Get Founding Member Access"
+                source="pricing_page"
+              />
             ) : (
               <LoginButton />
             )}

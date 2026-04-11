@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createClient as createServerClient } from "@/lib/supabase/server";
+import {
+  PAYWALL_VARIANTS,
+  getPaywallVariant,
+  type PaywallVariant,
+} from "@/lib/experiments/paywall-variant";
 
 const ADMIN_EMAIL = "ethan@zerotoship.app";
 
@@ -179,10 +184,70 @@ export async function GET(request: NextRequest) {
     };
   }
 
+  // Paywall A/B breakdown: re-derive variant from user.id for every profile
+  // and bucket signups + paid. Variant assignment is deterministic so this
+  // always matches what the user was shown.
+  const { data: allProfiles } = await supabase
+    .from("profiles")
+    .select("id, subscription_tier, created_at");
+
+  type VariantRow = { signups: number; paid: number; conversion: string };
+  const emptyVariantBreakdown = (): Record<PaywallVariant, VariantRow> => ({
+    control: { signups: 0, paid: 0, conversion: "0.0" },
+    outcome: { signups: 0, paid: 0, conversion: "0.0" },
+    social: { signups: 0, paid: 0, conversion: "0.0" },
+  });
+
+  const variantAllTime = emptyVariantBreakdown();
+  const variant7d = emptyVariantBreakdown();
+  const variant30d = emptyVariantBreakdown();
+
+  for (const row of allProfiles ?? []) {
+    const profile = row as {
+      id: string;
+      subscription_tier: string | null;
+      created_at: string;
+    };
+    const variant = getPaywallVariant(profile.id);
+    const isPaid = profile.subscription_tier === "premium";
+
+    variantAllTime[variant].signups++;
+    if (isPaid) variantAllTime[variant].paid++;
+
+    if (profile.created_at >= sevenDaysAgo) {
+      variant7d[variant].signups++;
+      if (isPaid) variant7d[variant].paid++;
+    }
+    if (profile.created_at >= thirtyDaysAgo) {
+      variant30d[variant].signups++;
+      if (isPaid) variant30d[variant].paid++;
+    }
+  }
+
+  for (const variant of PAYWALL_VARIANTS) {
+    variantAllTime[variant].conversion = rate(
+      variantAllTime[variant].paid,
+      variantAllTime[variant].signups
+    );
+    variant7d[variant].conversion = rate(
+      variant7d[variant].paid,
+      variant7d[variant].signups
+    );
+    variant30d[variant].conversion = rate(
+      variant30d[variant].paid,
+      variant30d[variant].signups
+    );
+  }
+
   return NextResponse.json({
     generatedAt: now.toISOString(),
     allTime: { ...allTime, rates: buildRates(allTime) },
     last7d: { ...last7d, rates: buildRates(last7d) },
     last30d: { ...last30d, rates: buildRates(last30d) },
+    paywallVariants: {
+      allTime: variantAllTime,
+      last7d: variant7d,
+      last30d: variant30d,
+    },
   });
 }
