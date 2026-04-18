@@ -169,7 +169,55 @@ export default async function PricingPage() {
                 for a full refund.
               </p>
             </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">Do I need any coding experience?</h3>
+              <p className="text-sm text-muted-foreground">
+                None. Zero to Ship is built for Product Managers, Business
+                Analysts, Project Managers, and BI Engineers — people with
+                strong product instincts who have never written production code.
+                Module 1 starts from scratch and you&apos;ll have a working app
+                by the end.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">What tools will I use?</h3>
+              <p className="text-sm text-muted-foreground">
+                Cursor and Claude Code — the two most widely adopted AI coding
+                tools. Both have free tiers you can start with. Setup is covered
+                in Module 1.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">How long does it take to complete?</h3>
+              <p className="text-sm text-muted-foreground">
+                Most students finish the full 16 modules in 4–6 weeks at a pace
+                of 2–3 hours per week. Each module is self-contained — you can
+                go faster or take breaks without losing context.
+              </p>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-5">
+              <h3 className="mb-1 font-semibold">Is access time-limited?</h3>
+              <p className="text-sm text-muted-foreground">
+                No. Full Access is a one-time payment for lifetime access. No
+                subscription, no expiration. Content updates are included.
+              </p>
+            </div>
           </div>
+        </div>
+
+        {/* Free preview nudge */}
+        <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center">
+          <h2 className="mb-2 text-xl font-bold">Not ready to commit?</h2>
+          <p className="mx-auto mb-6 max-w-lg text-muted-foreground">
+            Module 1 is completely free — no account required. See how the
+            method works before you pay anything.
+          </p>
+          <a
+            href="/preview/module-1"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            Try Module 1 free →
+          </a>
         </div>
       </div>
     </div>

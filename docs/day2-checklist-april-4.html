@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero to Ship — Day 2 Checklist (April 4, 2026)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #fafafa;
+      line-height: 1.6;
+      padding: 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .date { color: #3b82f6; font-size: 14px; font-weight: 600; margin-bottom: 32px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .time-est { background: #141414; border: 1px solid #262626; border-radius: 10px; padding: 16px 20px; margin-bottom: 32px; }
+    .time-est strong { color: #3b82f6; }
+    .section { margin-bottom: 40px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #262626;
+    }
+    .section-number {
+      background: #3b82f6;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 20px; font-weight: 700; }
+    .section-time { color: #a3a3a3; font-size: 13px; margin-left: auto; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .step:last-child { border-bottom: none; }
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #3b82f6;
+      border-radius: 6px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    .checkbox:checked {
+      background: #3b82f6;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2.5-2.5a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+    }
+    .step-content { flex: 1; }
+    .step-title { font-weight: 600; font-size: 15px; }
+    .step-detail { color: #a3a3a3; font-size: 13px; margin-top: 4px; }
+    .copy-box {
+      background: #141414;
+      border: 1px solid #262626;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      font-size: 13px;
+      white-space: pre-wrap;
+      position: relative;
+      cursor: pointer;
+    }
+    .copy-box:hover { border-color: #3b82f6; }
+    .copy-box::after {
+      content: 'click to copy';
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 11px;
+      color: #3b82f6;
+      opacity: 0.7;
+    }
+    .copy-box.copied::after { content: 'copied!'; }
+    a { color: #3b82f6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .link-btn {
+      display: inline-block;
+      background: #3b82f6;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 8px;
+      text-decoration: none;
+    }
+    .link-btn:hover { background: #2563eb; text-decoration: none; }
+    .note {
+      background: #1a1700;
+      border: 1px solid #3b3000;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #d4a800;
+    }
+    .sql-box {
+      background: #0d1117;
+      border: 1px solid #262626;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      position: relative;
+      cursor: pointer;
+    }
+    .sql-box:hover { border-color: #3b82f6; }
+    .sql-box::after {
+      content: 'click to copy';
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 11px;
+      color: #3b82f6;
+      opacity: 0.7;
+      font-family: 'Inter', sans-serif;
+    }
+    .sql-box.copied::after { content: 'copied!'; }
+    .revenue-target {
+      background: linear-gradient(135deg, #1e1b4b, #172554);
+      border: 1px solid #3b82f6;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .revenue-target .big { font-size: 24px; font-weight: 700; color: #3b82f6; }
+    .divider { height: 1px; background: #262626; margin: 40px 0; }
+    .footer { color: #737373; font-size: 12px; margin-top: 40px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<h1>Zero to Ship — Day 2 Checklist</h1>
+<p class="date">Saturday, April 4, 2026</p>
+
+<div class="time-est">
+  <strong>Total time: ~45-60 min</strong> (one-time setup, then you're done)
+  <br>
+  <span style="color: #a3a3a3; font-size: 13px;">After today, daily time drops to 15-30 min</span>
+</div>
+
+<!-- SECTION 1: SUPABASE MIGRATION -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <div class="section-title">Run Supabase Migration</div>
+    <div class="section-time">2 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Open Supabase SQL Editor</div>
+      <div class="step-detail">Go to your Supabase project dashboard &rarr; SQL Editor &rarr; New Query</div>
+      <a href="https://supabase.com/dashboard" class="link-btn" target="_blank">Open Supabase Dashboard</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Paste and run this SQL</div>
+      <div class="step-detail">This adds 2 new XP levels (Explorer at 250 XP, Architect at 1500 XP) and updates the level calculation.</div>
+      <div class="sql-box" onclick="copyToClipboard(this)">-- 007: Add Explorer (250) and Architect (1500) XP levels
+CREATE OR REPLACE FUNCTION increment_xp(p_user_id uuid, p_amount int)
+RETURNS TABLE(old_xp int, new_xp int, old_level text, new_level text) AS $$
+DECLARE
+  v_old_xp int;
+  v_new_xp int;
+  v_old_level text;
+  v_new_level text;
+BEGIN
+  SELECT xp, level INTO v_old_xp, v_old_level
+  FROM profiles WHERE id = p_user_id FOR UPDATE;
+  v_new_xp := v_old_xp + p_amount;
+  v_new_level := CASE
+    WHEN v_new_xp >= 2000 THEN 'Master'
+    WHEN v_new_xp >= 1500 THEN 'Architect'
+    WHEN v_new_xp >= 1200 THEN 'Shipper'
+    WHEN v_new_xp >= 500 THEN 'Builder'
+    WHEN v_new_xp >= 250 THEN 'Explorer'
+    ELSE 'Novice'
+  END;
+  UPDATE profiles SET xp = v_new_xp, level = v_new_level WHERE id = p_user_id;
+  RETURN QUERY SELECT v_old_xp, v_new_xp, v_old_level, v_new_level;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Backfill existing profiles
+UPDATE profiles SET level = CASE
+  WHEN xp >= 2000 THEN 'Master'
+  WHEN xp >= 1500 THEN 'Architect'
+  WHEN xp >= 1200 THEN 'Shipper'
+  WHEN xp >= 500 THEN 'Builder'
+  WHEN xp >= 250 THEN 'Explorer'
+  ELSE 'Novice'
+END;</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Verify it ran</div>
+      <div class="step-detail">You should see "Success. No rows returned" for the function, then "X rows affected" for the backfill. Done.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: LOGO -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <div class="section-title">Generate Your Logo</div>
+    <div class="section-time">10 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Open Recraft</div>
+      <div class="step-detail">Free account, 50 generations/day. No credit card needed.</div>
+      <a href="https://recraft.ai" class="link-btn" target="_blank">Open Recraft</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Generate logo variations</div>
+      <div class="step-detail">Paste this exact prompt. Generate 5-10 variations. Pick your favorite.</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">Minimal geometric lightning bolt logo mark for "Zero to Ship", a tech education brand. Blue #3b82f6 bolt on dark #0a0a0a background. Clean sharp angles, flat color, no gradients, no shadows. Modern SaaS aesthetic. Simple enough to work as a 16x16 favicon. Vector.</div>
+      <div class="note">Tip: If the first results are too complex, add "extremely simple, single shape, no text" to the prompt.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Download your logo</div>
+      <div class="step-detail">Download as SVG (for web) and PNG at 512x512 (for social profiles). Save both to your desktop &mdash; you'll need them in the next steps.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: BANNERS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <div class="section-title">Create Banners in Canva</div>
+    <div class="section-time">10 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Open Canva and create a free account</div>
+      <a href="https://canva.com" class="link-btn" target="_blank">Open Canva</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Create LinkedIn company banner (1128 x 191 px)</div>
+      <div class="step-detail">
+        1. Click "Create a design" &rarr; Custom size &rarr; 1128 x 191 px<br>
+        2. Set background color to <strong>#0a0a0a</strong> (black)<br>
+        3. Upload your logo PNG, place it on the left (about 150px wide)<br>
+        4. Add text: <strong>"Build real software. No engineering degree required."</strong> in white, Inter or any clean sans-serif, 20-24px<br>
+        5. Add <strong>zerotoship.app</strong> in blue <strong>#3b82f6</strong>, 14-16px, below or right of the tagline<br>
+        6. Download as PNG
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Create Substack header (1100 x 220 px)</div>
+      <div class="step-detail">Duplicate the LinkedIn banner, resize to 1100 x 220 px, adjust text size if needed. Download as PNG.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Save all assets</div>
+      <div class="step-detail">You should now have: logo.svg, logo-512.png, linkedin-banner.png, substack-banner.png</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: LINKEDIN -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <div class="section-title">Create LinkedIn Company Page</div>
+    <div class="section-time">10 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Go to LinkedIn &rarr; "For Business" &rarr; "Create a Company Page"</div>
+      <a href="https://www.linkedin.com/company/setup/new/" class="link-btn" target="_blank">Create Company Page</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Fill in the basics</div>
+      <div class="step-detail">
+        &bull; <strong>Type:</strong> Small business<br>
+        &bull; <strong>Company name:</strong> Zero to Ship<br>
+        &bull; <strong>URL:</strong> linkedin.com/company/zerotoship<br>
+        &bull; <strong>Website:</strong> https://zerotoship.app<br>
+        &bull; <strong>Industry:</strong> E-Learning Providers<br>
+        &bull; <strong>Company size:</strong> 2-10 employees<br>
+        &bull; <strong>Type:</strong> Educational
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Upload logo (300x300) and banner (1128x191)</div>
+      <div class="step-detail">Use the assets you just created in Canva.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Add the tagline (120 characters max)</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">The AI coding course for non-engineers who want to build real software. 16 modules. Zero to shipped.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Add the About section</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">You're smart enough to spec software. You're smart enough to build it.
+
+Zero to Ship is a gamified AI coding course for product managers, BI engineers, business analysts, and anyone who's tired of waiting for engineering to build what they need.
+
+16 hands-on modules. Real projects. AI-assisted the entire way.
+
+Start with the problem you want to solve. End with software you actually shipped.
+
+Free to start. No credit card. No fluff.
+
+zerotoship.app</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Add specialties</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">AI coding, product management, no-code alternatives, AI-assisted development, career skills, business intelligence, software development education</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Invite 25 connections to follow</div>
+      <div class="step-detail">Focus on PMs, analysts, BI engineers, and managers in your network. LinkedIn lets you invite connections directly from the company page admin.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: SUBSTACK -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <div class="section-title">Create Substack Newsletter</div>
+    <div class="section-time">5 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Go to Substack and start a publication</div>
+      <a href="https://substack.com/publish" class="link-btn" target="_blank">Start on Substack</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Set up your publication</div>
+      <div class="step-detail">
+        &bull; <strong>Email:</strong> hello@zerotoship.app (or a gmail alias)<br>
+        &bull; <strong>Publication name:</strong> Zero to Ship<br>
+        &bull; <strong>Handle:</strong> zerotoship<br>
+        &bull; <strong>Logo:</strong> Upload the 300x300 logo<br>
+        &bull; <strong>Header:</strong> Upload the 1100x220 banner<br>
+        &bull; <strong>Category:</strong> Technology &gt; Software<br>
+        &bull; <strong>Free newsletter</strong> (no paid tier)
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Add the short description</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">A weekly letter for non-engineers building real software with AI.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Write the About page</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">Zero to Ship is for the people who sit in sprint planning and think: "I could build this myself if someone just showed me how."
+
+This newsletter covers:
+- How non-engineers are using AI tools to build real, working software
+- Practical tutorials and build walkthroughs
+- The mindset shifts that matter more than syntax
+- What's actually worth learning vs. what you can skip
+
+Published weekly. Written for PMs, analysts, and business professionals who are done waiting.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Follow 10 adjacent Substacks</div>
+      <div class="step-detail">Search for: AI tools, product management, no-code, career development, tech education. Subscribe to 10 that have active audiences. Leave a thoughtful comment on 2-3 posts this week.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: METRICS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <div class="section-title">Set Up Metric Tracking</div>
+    <div class="section-time">5 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Create a Google Sheet</div>
+      <div class="step-detail">Name it "ZTS Marketing Metrics". Add these columns:</div>
+      <div class="copy-box" onclick="copyToClipboard(this)">Date | Platform | Post Title | Impressions | Engagements | Engagement Rate | Link Clicks | New Followers</div>
+      <div class="step-detail" style="margin-top: 8px;">You'll update this every Monday morning (5 min). Don't overthink it.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Bookmark your conversion funnel dashboard</div>
+      <div class="step-detail">After you sign in to zerotoship.app, visit /admin/funnel to see your live conversion funnel (signup &rarr; Module 1 &rarr; Module 5 &rarr; paid). Check this weekly.</div>
+      <a href="https://zerotoship.app/admin/funnel" class="link-btn" target="_blank">Open Funnel Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: REVENUE TARGET -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <div class="section-title">Set Your Revenue Target</div>
+    <div class="section-time">1 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Write this down somewhere you'll see it every day</div>
+      <div class="revenue-target">
+        <div class="big">First paid customer by May 3, 2026</div>
+        <div style="color: #a3a3a3; font-size: 14px; margin-top: 8px;">Day 30. One person. $99. That's the whole goal for Month 1.</div>
+      </div>
+      <div class="step-detail" style="margin-top: 12px;">Put it on a sticky note, phone wallpaper, or whiteboard. Revenue targets change behavior in ways audience targets don't.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8: ENGAGEMENT -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <div class="section-title">Day 2 Engagement Tasks</div>
+    <div class="section-time">10 min</div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Comment on 5 LinkedIn posts</div>
+      <div class="step-detail">Find posts from PMs, analysts, or BI engineers in your feed. Leave substantive comments (not "great post!" &mdash; add a real thought, ask a question, share a perspective). This builds visibility before you start posting.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <input type="checkbox" class="checkbox">
+    <div class="step-content">
+      <div class="step-title">Comment on 2 Substack posts</div>
+      <div class="step-detail">From the adjacent newsletters you just followed. Thoughtful, relevant comments that add value. This gets your publication name in front of their readers.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div style="background: #141414; border: 1px solid #262626; border-radius: 10px; padding: 20px 24px;">
+  <strong>What happens next:</strong>
+  <ul style="margin-top: 8px; padding-left: 20px; color: #a3a3a3; font-size: 14px;">
+    <li><strong>Day 3 (Sunday, April 5):</strong> First LinkedIn post from company page &mdash; "The Problem" post. Full copy-paste text is in gtm-month-1.md.</li>
+    <li><strong>Day 4 (Monday, April 6):</strong> Rest/engagement day. Check comments, engage with 5 posts.</li>
+    <li><strong>Day 5 (Tuesday, April 7):</strong> Second LinkedIn post &mdash; "The Irony." First personal repost.</li>
+  </ul>
+  <p style="margin-top: 12px; font-size: 13px; color: #737373;">When you're ready for any day's content, ask and I'll pull up the exact post to copy-paste.</p>
+</div>
+
+<p class="footer">Zero to Ship &mdash; Day 2 of 90</p>
+
+<script>
+  function copyToClipboard(el) {
+    const text = el.innerText.replace('click to copy', '').replace('copied!', '').trim();
+    navigator.clipboard.writeText(text).then(() => {
+      el.classList.add('copied');
+      setTimeout(() => el.classList.remove('copied'), 2000);
+    });
+  }
+
+  // Save checkbox state to localStorage
+  document.querySelectorAll('.checkbox').forEach((cb, i) => {
+    const key = 'zts-day2-' + i;
+    cb.checked = localStorage.getItem(key) === 'true';
+    cb.addEventListener('change', () => {
+      localStorage.setItem(key, cb.checked);
+    });
+  });
+</script>
+
+</body>
+</html>
