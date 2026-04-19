@@ -28,7 +28,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Gamified progress (XP, streaks, badges, skill tree). Role-specific learning paths. Certificate of completion. And founding members get <strong style="color: #fff;">Season 2 free</strong> — covering Claude Code mastery, MCP servers, and agent building.</p>
 
-      <p>Founding member pricing: <strong style="color: #22c55e;">$99 one-time</strong> (standard: $199). 100 spots. Opens Monday April 28.</p>
+      <p>Founding member pricing: <strong style="color: #22c55e;">$99 one-time</strong> (standard: $199). 200 spots. Opens Monday April 28.</p>
 
       <p style="color: #888; font-size: 14px;">Not ready to commit? The <a href="https://zerotoship.app/library?utm_source=launch&utm_medium=email&utm_campaign=email1" style="color: #6366f1;">Builder's Library</a> is free — 40+ prompts, guides, and templates, no account required.</p>
 
@@ -69,7 +69,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Founding members also get free access to resources outside the core modules: <strong style="color: #fff;">agent templates</strong>, an <strong style="color: #fff;">MCP toolkit</strong>, and a <strong style="color: #fff;">Claude Code guide</strong>.</p>
 
-      <p style="color: #f59e0b;">Founding member pricing: $99 (100 spots, ends April 30)</p>
+      <p style="color: #f59e0b;">Founding member pricing: $99 (200 spots, ends April 30)</p>
 
       ${emailButtonCentered("See Full Pricing", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email2")}
     `,
@@ -84,7 +84,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Zero to Ship opens tomorrow, Monday April 28.</p>
 
-      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
+      <p>There are <strong style="color: #f59e0b;">${remaining} of 200 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
 
       <p>Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, building MCP servers, and creating AI agents.</p>
 
