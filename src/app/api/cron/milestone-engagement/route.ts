@@ -33,7 +33,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You just finished all 5 foundation modules. You can set up projects, write effective prompts, understand code, use the terminal, and manage version control. That's a real skill set.</p>
       <p>The next 11 modules are where you build real things — interactive tools, data products, automations, and your capstone project.</p>
-      <p>${emailButton("Unlock Full Access — $199", "https://zerotoship.app/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5")}</p>
+      <p>${emailButton("Unlock Full Access — $149", "https://zerotoship.app/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5")}</p>
       <p style="color: #22c55e; font-size: 14px; font-weight: 600;">Founding member price: $99 (limited spots)</p>
     `,
   },

@@ -290,7 +290,7 @@ export default function AgentsPage() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button render={<Link href="/pricing" />} size="lg">
-              Get Full Access — $199
+              Get Full Access — $149
               <ArrowRight className="ml-2 size-4" />
             </Button>
             <p className="w-full text-sm font-medium text-green-400">

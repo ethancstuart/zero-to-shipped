@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
 
             <p style="background: #22c55e15; border: 1px solid #22c55e30; border-radius: 8px; padding: 16px; text-align: center;">
               <strong style="color: #22c55e;">Founding member pricing: $99</strong> (first 100 students)<br>
-              <span style="color: #666; font-size: 14px;">Standard price: $199. Founding spots end April 30. Includes Season 2 when it ships.</span>
+              <span style="color: #666; font-size: 14px;">Standard price: $149. Founding spots end April 30. Includes Season 2 when it ships.</span>
             </p>
 
             <p style="text-align: center;">

@@ -13,6 +13,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    console.error('[toolkit-subscribe] RESEND_API_KEY not configured')
+    return NextResponse.json({ error: 'Email service unavailable' }, { status: 503 })
+  }
+
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!

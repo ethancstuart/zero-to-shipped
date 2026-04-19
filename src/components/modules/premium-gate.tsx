@@ -174,7 +174,7 @@ export function PremiumGate({
                 <div className="space-y-3 text-center">
                   <div className="flex items-center justify-center gap-3">
                     <span className="text-sm text-muted-foreground line-through">
-                      $199
+                      $149
                     </span>
                     <span className="text-2xl font-bold">$99</span>
                     <span className="text-xs font-medium text-muted-foreground">

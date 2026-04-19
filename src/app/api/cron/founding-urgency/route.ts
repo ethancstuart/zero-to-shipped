@@ -104,7 +104,7 @@ export async function GET(request: NextRequest) {
               : `<strong>${remaining} of 100 founding member spots</strong> are still available.`
             }</p>
 
-            <p>Founding members get full access to all 16 modules, the capstone project, a certificate of completion, and Season 2 when it ships — all for <strong>$99</strong> (standard price: $199). Plus a Founding Member badge on your profile.</p>
+            <p>Founding members get full access to all 16 modules, the capstone project, a certificate of completion, and Season 2 when it ships — all for <strong>$99</strong> (standard price: $149). Plus a Founding Member badge on your profile.</p>
 
             ${remaining <= 25 ? `<p style="color: #f59e0b; font-weight: 600;">Founding pricing ends April 30 or when spots run out — whichever comes first.</p>` : ""}
 

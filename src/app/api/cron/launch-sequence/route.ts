@@ -26,7 +26,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Here's what's included: <strong style="color: #fff;">16 modules</strong>, gamified progress (XP, streaks, badges, skill tree), a certificate of completion, and role-specific learning paths. Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, MCP servers, and agent building.</p>
 
-      <p>Founding member pricing is <strong style="color: #22c55e;">$99</strong> (standard price: $199) — 100 spots, ends when they run out. The course opens Monday April 28.</p>
+      <p>Founding member pricing is <strong style="color: #22c55e;">$99</strong> (standard price: $149) — 100 spots, ends when they run out. The course opens Monday April 28.</p>
 
       ${emailButtonCentered("Preview Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email1")}
     `,
@@ -80,7 +80,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Zero to Ship opens tomorrow, Monday April 28.</p>
 
-      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
+      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $149.</p>
 
       <p>Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, building MCP servers, and creating AI agents.</p>
 
