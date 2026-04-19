@@ -153,7 +153,7 @@ export const BADGES: BadgeDefinition[] = [
   {
     slug: "founding-member",
     name: "Founding Member",
-    description: "One of the first 100 students",
+    description: "One of the first 200 students",
     icon: "⭐",
     category: "special",
   },
