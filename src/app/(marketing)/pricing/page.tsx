@@ -85,7 +85,7 @@ export default async function PricingPage() {
               Full curriculum with advanced modules and capstone.
             </p>
             <p className="mb-1">
-              <span className="text-4xl font-bold">$149</span>
+              <span className="text-4xl font-bold">$199</span>
               <span className="text-muted-foreground"> /one-time</span>
             </p>
             <p className="mb-6">
@@ -123,7 +123,7 @@ export default async function PricingPage() {
         <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center">
           <h2 className="mb-2 text-xl font-bold">Easy to expense</h2>
           <p className="mx-auto max-w-lg text-muted-foreground">
-            $149 is under most L&amp;D approval thresholds. We&apos;ll send you
+            $199 is under most L&amp;D approval thresholds. We&apos;ll send you
             a receipt you can submit to your company.
           </p>
         </div>
