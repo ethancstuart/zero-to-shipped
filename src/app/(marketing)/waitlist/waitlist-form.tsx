@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("");
@@ -18,20 +17,16 @@ export function WaitlistForm() {
     setErrorMsg("");
 
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("waitlist")
-        .insert({ email: email.toLowerCase().trim() });
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.toLowerCase().trim() }),
+      });
 
-      if (error) {
-        if (error.code === "23505") {
-          // Unique constraint — already signed up
-          setStatus("success");
-        } else {
-          throw error;
-        }
-      } else {
+      if (res.ok) {
         setStatus("success");
+      } else {
+        throw new Error("Subscribe failed");
       }
     } catch {
       setStatus("error");
@@ -45,7 +40,7 @@ export function WaitlistForm() {
         <CheckCircle2 className="size-12 text-green-500" />
         <p className="font-semibold">You&apos;re on the list!</p>
         <p className="text-sm text-muted-foreground">
-          Thanks! Check your inbox for updates.
+          Check your inbox — we&apos;ll email you when doors open April 28.
         </p>
       </div>
     );
@@ -62,7 +57,7 @@ export function WaitlistForm() {
         className="w-full rounded-lg border border-border bg-background px-4 py-3 text-center focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       />
       <Button type="submit" disabled={status === "loading"} size="lg">
-        {status === "loading" ? "Joining..." : "Join Waitlist"}
+        {status === "loading" ? "Joining..." : "Notify me April 28"}
       </Button>
       {status === "error" && (
         <p className="text-sm text-destructive">{errorMsg}</p>
