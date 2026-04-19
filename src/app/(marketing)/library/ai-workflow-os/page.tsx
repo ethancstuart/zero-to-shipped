@@ -127,7 +127,7 @@ src/components/   # Reusable UI components
 src/lib/          # Database queries, utilities
 
 ## Conventions
-- Server components by default — use "use client" only when needed
+- Server components by default — use &quot;use client&quot; only when needed
 - All DB queries go through src/lib/db.ts
 - Never inline SQL — always use the query functions in db.ts</code></pre>
 

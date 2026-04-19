@@ -134,7 +134,7 @@ git config --global user.email &quot;you@example.com&quot;</code></pre>
             <strong>console.anthropic.com</strong> → API Keys → Create Key.
             Then add it to your environment:
           </p>
-          <pre><code className="language-bash">echo 'export ANTHROPIC_API_KEY=&quot;your-key-here&quot;' &gt;&gt; ~/.zshrc
+          <pre><code className="language-bash">echo &apos;export ANTHROPIC_API_KEY=&quot;your-key-here&quot;&apos; &gt;&gt; ~/.zshrc
 source ~/.zshrc</code></pre>
           <p>Verify:</p>
           <pre><code className="language-bash">claude --version</code></pre>
@@ -190,10 +190,10 @@ git config --global user.email &quot;you@example.com&quot;</code></pre>
             Add it as a permanent environment variable:
           </p>
           <ol>
-            <li>Search "Environment Variables" in the Start menu</li>
-            <li>Click "Edit the system environment variables"</li>
-            <li>Click "Environment Variables…"</li>
-            <li>Under User variables, click "New"</li>
+            <li>Search &quot;Environment Variables&quot; in the Start menu</li>
+            <li>Click &quot;Edit the system environment variables&quot;</li>
+            <li>Click &quot;Environment Variables…&quot;</li>
+            <li>Under User variables, click &quot;New&quot;</li>
             <li>Name: <code>ANTHROPIC_API_KEY</code> | Value: your key</li>
             <li>Click OK, then close and reopen your terminal</li>
           </ol>
@@ -236,7 +236,7 @@ vercel --version     # Should show Vercel CLI x.x.x</code></pre>
 
           <h3>Navigation</h3>
           <pre><code className="language-bash">pwd              # Where am I? (print working directory)
-ls               # What's in this folder?
+ls               # What&apos;s in this folder?
 cd foldername    # Move into a folder
 cd ..            # Move up one level
 cd ~             # Go home (your user directory)</code></pre>

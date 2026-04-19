@@ -53,7 +53,7 @@ export default function ToolkitPage() {
         )}
 
         <p className="text-xs text-zinc-600 mt-4">
-          You'll also get the Zero to Ship weekly newsletter. Unsubscribe anytime.
+          You&apos;ll also get the Zero to Ship weekly newsletter. Unsubscribe anytime.
         </p>
       </div>
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { PROMPTS, CATEGORY_LABELS } from "@/lib/library/prompts";
@@ -46,16 +46,14 @@ export function PromptLibraryClient() {
     defaultCategory(roleParam)
   );
   const [search, setSearch] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
-  const [activeRole, setActiveRole] = useState<string | null>(roleParam);
-
-  useEffect(() => {
+  const [unlocked, setUnlocked] = useState(() => {
     try {
-      setUnlocked(localStorage.getItem(STORAGE_KEY) === "true");
+      return typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY) === "true";
     } catch {
-      // SSR safety
+      return false;
     }
-  }, []);
+  });
+  const [activeRole, setActiveRole] = useState<string | null>(roleParam);
 
   const handleRoleSelect = (roleId: string, category: PromptCategory) => {
     setActiveRole(roleId);
