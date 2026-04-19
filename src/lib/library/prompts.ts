@@ -674,13 +674,13 @@ For each endpoint, generate a documentation block with:
 Format as markdown so I can paste it into a README or a docs page.`,
   },
 
-  // THINK — 6 prompts, all gated
+  // THINK — 6 prompts, first 1 free
   {
     id: 'think-brainstorm',
     title: 'Brainstorm Features',
     description: 'Generate a broad list of feature ideas for a product or tool',
     category: 'think',
-    free: false,
+    free: true,
     prompt: `I'm working on [DESCRIBE YOUR PRODUCT — what it does, who uses it, the main problem it solves].
 
 Brainstorm 15 feature ideas that would make it significantly more valuable to users.
@@ -798,13 +798,13 @@ Rules:
 For each idea: one sentence on what it is, one sentence on why it might work despite seeming strange.`,
   },
 
-  // PM-SPECIFIC — 6 prompts, all gated
+  // PM-SPECIFIC — 6 prompts, first 1 free
   {
     id: 'pm-prd',
     title: 'Write a PRD',
     description: 'Generate a complete product requirements document from a rough idea',
     category: 'pm',
-    free: false,
+    free: true,
     prompt: `Write a Product Requirements Document (PRD) for this feature.
 
 Feature name: [NAME]

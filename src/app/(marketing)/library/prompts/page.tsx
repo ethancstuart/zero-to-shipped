@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PromptLibraryClient } from "@/components/library/PromptLibraryClient";
 import { siteConfig } from "@/lib/constants";
@@ -7,10 +8,11 @@ import { siteConfig } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Prompt Library — Builder's Library — Zero to Ship",
   description:
-    "40+ copy-paste prompts for building apps, debugging errors, refactoring code, shipping, thinking through problems, and PM-specific tasks.",
+    "40+ copy-paste prompts for PMs, BAs, and non-engineers. PRDs, stakeholder updates, feature specs, building apps, debugging, refactoring, and shipping.",
   openGraph: {
     title: "Prompt Library — Zero to Ship",
-    description: "40+ copy-paste prompts for non-engineers building with AI tools.",
+    description:
+      "40+ copy-paste prompts for PMs, BAs, and non-engineers building with AI tools.",
     url: `${siteConfig.url}/library/prompts`,
     images: [
       {
@@ -47,13 +49,15 @@ export default function PromptsPage() {
           </h1>
           <p className="text-lg text-muted-foreground">
             40+ prompts across 6 categories — ready to copy, customize, and paste into
-            Cursor or Claude Code. Try the first 10 free. One email unlocks everything,
-            including PM-specific prompts for PRDs, stakeholder updates, and roadmap narratives.
+            Cursor or Claude Code. Select your role below to see the most relevant prompts
+            first. PRDs, stakeholder updates, brainstorming, building, debugging, and more.
           </p>
         </div>
 
-        {/* Interactive prompt library */}
-        <PromptLibraryClient />
+        {/* Interactive prompt library — Suspense required for useSearchParams */}
+        <Suspense fallback={<div className="py-12 text-center text-muted-foreground text-sm">Loading prompts…</div>}>
+          <PromptLibraryClient />
+        </Suspense>
 
         {/* Bottom CTA */}
         <div className="mt-16 rounded-xl border border-border bg-card p-7 text-center">

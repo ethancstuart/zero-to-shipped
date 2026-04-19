@@ -52,6 +52,25 @@ export default function AIWorkflowOSPage() {
             entire development world so AI actually works for you.
           </p>
 
+          {/* Fast-track nav for experienced users */}
+          <div className="not-prose mb-8 rounded-xl border border-border bg-muted/40 p-4">
+            <p className="mb-2 text-sm font-semibold">Choose your starting point:</p>
+            <div className="flex flex-col gap-1.5 text-sm">
+              <div>
+                <span className="font-medium text-foreground">New to AI tools</span>
+                <span className="text-muted-foreground"> → Read everything from section 1</span>
+              </div>
+              <div>
+                <span className="font-medium text-foreground">Know ChatGPT, new to coding agents</span>
+                <span className="text-muted-foreground"> → Start at section 2 (CLAUDE.md) and section 5 (Build Loop)</span>
+              </div>
+              <div>
+                <span className="font-medium text-foreground">Already use Cursor or Claude Code</span>
+                <span className="text-muted-foreground"> → Skip to section 9 (Advanced Orchestration) — that&apos;s what you&apos;re missing</span>
+              </div>
+            </div>
+          </div>
+
           <h2>1. The philosophy</h2>
           <p>
             You&apos;re not using a chatbot. You&apos;re operating an agent.
@@ -367,6 +386,130 @@ Write a test for the update function.&quot;</code></pre>
             In Cursor&apos;s Agent mode, type <code>@</code> and mention specific files to give
             the AI focused context. Instead of &quot;fix the auth&quot;, try
             &quot;look at @src/lib/auth.ts and fix the session expiry.&quot;
+          </p>
+
+          <hr />
+
+          <h2>9. Advanced orchestration (for experienced builders)</h2>
+          <p>
+            You&apos;ve mastered the basics. This section is about running Claude Code
+            as a coordinated system — not just a smart assistant for single tasks.
+          </p>
+
+          <h3>Decompose before you build</h3>
+          <p>
+            For any feature larger than &quot;one file, one function,&quot; do a planning pass first:
+          </p>
+          <pre><code className="language-text">&quot;Before writing any code, outline how you would add Stripe subscriptions
+to this app. What files will change? What new files will you create?
+What are the dependencies? Show me the plan — don&apos;t start building yet.&quot;</code></pre>
+          <p>
+            Review the plan. If something&apos;s wrong, correct it before any code is written.
+            This one habit eliminates 80% of the rework in complex builds.
+          </p>
+
+          <h3>Cursor for the in-file layer, Claude Code for the system layer</h3>
+          <p>
+            A mature AI build workflow uses both tools in the same session:
+          </p>
+          <ul>
+            <li>
+              <strong>Cursor (Cmd+I)</strong> for targeted changes where you need to stay
+              in context — editing a specific component, adjusting logic in a function,
+              reviewing a diff line-by-line
+            </li>
+            <li>
+              <strong>Claude Code (terminal)</strong> for system-level tasks — running tests
+              and fixing what fails, applying a schema migration, renaming a pattern across
+              30 files, wiring a new API endpoint end-to-end
+            </li>
+          </ul>
+          <p>
+            The pattern: use Claude Code to build the scaffold and the system plumbing, then
+            switch to Cursor to refine the UI and review specific logic. Don&apos;t try to
+            do both in one tool.
+          </p>
+
+          <h3>Chain tasks, don&apos;t interrupt</h3>
+          <p>
+            Claude Code handles multi-step tasks natively. Instead of approving each action
+            one at a time, give it the full acceptance criteria:
+          </p>
+          <pre><code className="language-text">&quot;Add a /settings page where users can update their display name.
+Wire it up to the profiles table in Supabase.
+Add a nav link in the sidebar.
+Write a Vitest test that verifies the update endpoint.
+When done, run the tests and fix anything that fails.&quot;</code></pre>
+          <p>
+            This is five steps, but it&apos;s one prompt. Claude Code executes all five in
+            sequence, checking its own output as it goes. Let it run — interrupt only if
+            it&apos;s visibly going off-track.
+          </p>
+
+          <h3>Use CLAUDE.md for team conventions</h3>
+          <p>
+            If you&apos;re building with a team (or expect to share the repo), CLAUDE.md
+            becomes the team&apos;s shared rulebook. Every developer who runs Claude Code
+            gets the same context — the same conventions, the same constraints.
+          </p>
+          <p>
+            Structure your team CLAUDE.md to include:
+          </p>
+          <ul>
+            <li>The patterns you&apos;ve already decided on (database query location, auth conventions)</li>
+            <li>What <em>not</em> to touch without discussion (&quot;never modify the payment webhook handler&quot;)</li>
+            <li>How to run the test suite and what &quot;passing&quot; looks like</li>
+            <li>Which MCP servers are installed and what each one is for</li>
+          </ul>
+
+          <h3>MCP chaining</h3>
+          <p>
+            The real power of MCP servers is chaining them in a single task. Example:
+          </p>
+          <pre><code className="language-text">&quot;Read the open GitHub issues labeled &apos;bug&apos;. For each one, search
+the codebase for the relevant code. Then open the browser and test
+whether the described behavior actually breaks. Create a prioritized
+fix list based on what you find.&quot;</code></pre>
+          <p>
+            This task uses three MCP servers: GitHub (read issues), Filesystem (search code),
+            and Puppeteer (test in browser). Claude Code orchestrates all three in sequence.
+            The more MCP servers you have installed, the more of your real development
+            workflow you can hand off.
+          </p>
+
+          <h3>Memory files</h3>
+          <p>
+            Two kinds of memory extend Claude&apos;s context across sessions:
+          </p>
+          <ul>
+            <li>
+              <strong>Project memory:</strong> <code>CLAUDE.md</code> in the project root —
+              everything Claude needs to know about this specific project
+            </li>
+            <li>
+              <strong>Global memory:</strong> <code>~/.claude/CLAUDE.md</code> — your personal
+              preferences that apply across every project (your name, your preferred stack,
+              your working style, your rules about when to ask before acting)
+            </li>
+          </ul>
+          <p>
+            Your global CLAUDE.md is one of the most high-leverage things you can invest
+            30 minutes in. Write it once, and every new project benefits immediately.
+          </p>
+
+          <h3>Custom slash commands</h3>
+          <p>
+            Create a <code>.claude/commands/</code> folder in your project. Each Markdown
+            file becomes a slash command you can call from any session:
+          </p>
+          <pre><code className="language-bash">.claude/commands/
+  pr-review.md     # /pr-review — reviews the current branch for issues
+  test-fix.md      # /test-fix — runs tests and fixes all failures
+  deploy-check.md  # /deploy-check — pre-deploy checklist for this project</code></pre>
+          <p>
+            These commands encode your project-specific workflows. A PM who does weekly
+            status updates can have <code>/weekly-update</code> that pulls the week&apos;s
+            commits, extracts the themes, and drafts the stakeholder email automatically.
           </p>
         </article>
 

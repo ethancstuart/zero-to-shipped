@@ -45,16 +45,28 @@ describe('PROMPTS', () => {
     expect(free.length).toBe(4);
   });
 
-  it('refactor, ship, think, pm categories have no free prompts', () => {
-    const gatedCategories: PromptCategory[] = ['refactor', 'ship', 'think', 'pm'];
+  it('refactor and ship categories have no free prompts', () => {
+    const gatedCategories: PromptCategory[] = ['refactor', 'ship'];
     for (const cat of gatedCategories) {
       const free = PROMPTS.filter((p) => p.category === cat && p.free);
       expect(free.length).toBe(0);
     }
   });
 
-  it('exactly 10 free prompts total', () => {
+  it('think category has exactly 1 free prompt (brainstorm)', () => {
+    const free = PROMPTS.filter((p) => p.category === 'think' && p.free);
+    expect(free.length).toBe(1);
+    expect(free[0].id).toBe('think-brainstorm');
+  });
+
+  it('pm category has exactly 1 free prompt (prd)', () => {
+    const free = PROMPTS.filter((p) => p.category === 'pm' && p.free);
+    expect(free.length).toBe(1);
+    expect(free[0].id).toBe('pm-prd');
+  });
+
+  it('exactly 12 free prompts total', () => {
     const free = PROMPTS.filter((p) => p.free);
-    expect(free.length).toBe(10);
+    expect(free.length).toBe(12);
   });
 });

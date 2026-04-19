@@ -130,34 +130,65 @@ export default function LibraryPage() {
           </p>
         </div>
 
-        {/* Start here card */}
-        <div className="mb-10 rounded-xl border border-primary/30 bg-primary/5 p-6">
-          <p className="mb-3 text-sm font-semibold text-primary">New here? Start in this order:</p>
-          <ol className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+        {/* Persona routing */}
+        <div className="mb-10">
+          <p className="mb-4 text-center text-sm font-medium text-muted-foreground">
+            Which best describes you?
+          </p>
+          <div className="grid gap-3 sm:grid-cols-3">
             {[
-              { num: "1", label: "Prompt Library", sub: "try the first 10 free", href: "/library/prompts" },
-              { num: "2", label: "AI Workflow OS", sub: "understand the system", href: "/library/ai-workflow-os" },
-              { num: "3", label: "Dev Environment", sub: "get ready to build", href: "/library/dev-environment" },
-            ].map((step, i) => (
-              <div key={step.num} className="flex items-center gap-0">
-                <Link
-                  href={step.href}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-primary/10"
-                >
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {step.num}
-                  </span>
-                  <span>
-                    <span className="font-medium">{step.label}</span>
-                    <span className="ml-1 text-muted-foreground">— {step.sub}</span>
-                  </span>
-                </Link>
-                {i < 2 && (
-                  <ArrowRight className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" />
-                )}
+              {
+                label: "BA / Analyst new to AI",
+                description: "I've never built software. I want to see what's possible.",
+                steps: [
+                  { text: "Try the Feature Request Tracker prompt", href: "/library/prompts?role=ba" },
+                  { text: "Read the Dev Environment guide when ready", href: "/library/dev-environment" },
+                ],
+                accent: "blue",
+              },
+              {
+                label: "PM experimenting in my own time",
+                description: "I use ChatGPT for writing. I want to build real things.",
+                steps: [
+                  { text: "Start with PM prompts — PRDs, updates, specs", href: "/library/prompts?role=pm" },
+                  { text: "Then: AI Workflow OS for the system", href: "/library/ai-workflow-os" },
+                ],
+                accent: "violet",
+              },
+              {
+                label: "Staff PM who prototypes with AI",
+                description: "I use Cursor or Claude. I need the OS-level system.",
+                steps: [
+                  { text: "AI Workflow OS — jump to section 9", href: "/library/ai-workflow-os#advanced" },
+                  { text: "CLAUDE.md Templates — production-ready starting points", href: "/library/claude-md-templates" },
+                ],
+                accent: "emerald",
+              },
+            ].map((persona) => (
+              <div
+                key={persona.label}
+                className="flex flex-col rounded-xl border border-border bg-card p-5"
+              >
+                <p className="mb-1 text-sm font-semibold">{persona.label}</p>
+                <p className="mb-4 text-xs text-muted-foreground">{persona.description}</p>
+                <ol className="mt-auto flex flex-col gap-2">
+                  {persona.steps.map((step, i) => (
+                    <li key={i}>
+                      <Link
+                        href={step.href}
+                        className="flex items-start gap-2 text-xs text-primary hover:underline"
+                      >
+                        <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">
+                          {i + 1}
+                        </span>
+                        {step.text}
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
               </div>
             ))}
-          </ol>
+          </div>
         </div>
 
         {/* Resource grid */}
