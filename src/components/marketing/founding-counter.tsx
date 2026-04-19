@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 
 export function FoundingCounter() {
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [total, setTotal] = useState<number>(100);
+  const [total, setTotal] = useState<number>(200);
 
   const fetchSpots = useCallback(() => {
     fetch("/api/founding-spots")
