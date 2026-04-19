@@ -511,6 +511,47 @@ fix list based on what you find.&quot;</code></pre>
             status updates can have <code>/weekly-update</code> that pulls the week&apos;s
             commits, extracts the themes, and drafts the stakeholder email automatically.
           </p>
+
+          <h3 id="oversight">The oversight layer — review what AI builds, don&apos;t just accept it</h3>
+          <p>
+            The April 2026 narrative shift in AI development: &ldquo;raw vibe coding is over.&rdquo;
+            PMs and non-engineers who prompt AI and copy-paste the output without reviewing it are
+            producing apps with security holes, broken edge cases, and code no one can maintain.
+            The skill that separates competent builders from dangerous ones is <strong>oversight</strong> —
+            knowing what to check after AI writes something.
+          </p>
+          <p>You don&apos;t need to understand every line of code. You need four checks:</p>
+          <ul>
+            <li>
+              <strong>Ask Claude to critique its own output.</strong>{" "}
+              After it writes something, say: &ldquo;Review what you just wrote. What could go wrong?
+              What edge cases did you miss? What would a senior engineer flag?&rdquo; This is called
+              a self-review pass, and it catches 60–70% of the problems.
+            </li>
+            <li>
+              <strong>Run the tests.</strong> If you have tests, run them after every significant
+              change: <code>npm test</code>. If all tests pass and the feature works, you have
+              structural evidence the code is correct — not just Claude&apos;s word for it.
+            </li>
+            <li>
+              <strong>Read the diff, not the whole file.</strong> After a big Claude Code session,
+              run <code>git diff</code> and read what actually changed. You don&apos;t need to
+              understand every line — you&apos;re looking for: did it touch files it wasn&apos;t
+              supposed to? Did it delete something? Does anything look completely wrong?
+            </li>
+            <li>
+              <strong>Test the edges, not just the happy path.</strong> AI almost always builds
+              the &ldquo;it works when everything goes right&rdquo; version first. Manually test:
+              what happens if I submit an empty form? What if I enter a very long string?
+              What if I lose internet halfway through? These are the cases that break in production.
+            </li>
+          </ul>
+          <p>
+            The builders who succeed with AI in 2026 aren&apos;t the ones who prompt fastest —
+            they&apos;re the ones who direct AI confidently and then verify rigorously. This is
+            the same skill great PMs already have: they&apos;re not the ones who write the code,
+            they&apos;re the ones who define &ldquo;done&rdquo; and hold the bar.
+          </p>
         </article>
 
         {/* Bottom CTA */}

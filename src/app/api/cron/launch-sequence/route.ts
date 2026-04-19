@@ -22,11 +22,15 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
     body: `
       <h2 style="color: #fff; margin-top: 0;">Zero to Ship opens in 6 days.</h2>
 
-      <p>Zero to Ship is a hands-on course that teaches PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools. No engineering degree required. You go from zero to shipping a real project.</p>
+      <p>I'm a PM. A few months ago I realized I could describe what I wanted to build in plain English, and Claude Code would write the code, wire up the database, deploy it to a live URL — all while I watched and directed. No CS degree required.</p>
 
-      <p>Here's what's included: <strong style="color: #fff;">16 modules</strong>, gamified progress (XP, streaks, badges, skill tree), a certificate of completion, and role-specific learning paths. Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, MCP servers, and agent building.</p>
+      <p>I built Zero to Ship because I wanted to teach the workflow, not just show it off. <strong style="color: #fff;">16 modules</strong> — from setting up your environment to shipping a capstone project you can actually put on your resume. Built for PMs, Project Managers, BAs, and BI Engineers.</p>
 
-      <p>Founding member pricing is <strong style="color: #22c55e;">$99</strong> (standard price: $149) — 100 spots, ends when they run out. The course opens Monday April 28.</p>
+      <p>Gamified progress (XP, streaks, badges, skill tree). Role-specific learning paths. Certificate of completion. And founding members get <strong style="color: #fff;">Season 2 free</strong> — covering Claude Code mastery, MCP servers, and agent building.</p>
+
+      <p>Founding member pricing: <strong style="color: #22c55e;">$99 one-time</strong> (standard: $199). 100 spots. Opens Monday April 28.</p>
+
+      <p style="color: #888; font-size: 14px;">Not ready to commit? The <a href="https://zerotoship.app/library?utm_source=launch&utm_medium=email&utm_campaign=email1" style="color: #6366f1;">Builder's Library</a> is free — 40+ prompts, guides, and templates, no account required.</p>
 
       ${emailButtonCentered("Preview Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email1")}
     `,
@@ -80,7 +84,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>Zero to Ship opens tomorrow, Monday April 28.</p>
 
-      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $149.</p>
+      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
 
       <p>Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, building MCP servers, and creating AI agents.</p>
 
