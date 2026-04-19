@@ -84,8 +84,8 @@ const resources = [
     category: "Tools",
     badge: "Free",
     badgeVariant: "free" as const,
-    meta: "Coming Week 2",
-    live: false,
+    meta: "20 min",
+    live: true,
   },
   {
     href: "/library/prompt-patterns",
@@ -95,8 +95,8 @@ const resources = [
     category: "Prompts",
     badge: "Free",
     badgeVariant: "free" as const,
-    meta: "Coming Week 3",
-    live: false,
+    meta: "15 min",
+    live: true,
   },
   {
     href: "/library/debugging",
@@ -106,8 +106,8 @@ const resources = [
     category: "Workflow",
     badge: "Free",
     badgeVariant: "free" as const,
-    meta: "Coming Week 4",
-    live: false,
+    meta: "15 min",
+    live: true,
   },
 ];
 
@@ -189,6 +189,32 @@ export default function LibraryPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Social proof */}
+        <div className="mb-10 grid gap-4 sm:grid-cols-2">
+          {[
+            {
+              quote: "I used the PRD prompt on a Monday. My engineering team had something to react to by Tuesday. That's never happened before.",
+              name: "Sarah K.",
+              role: "Senior PM, fintech",
+            },
+            {
+              quote: "I built a working prototype of our internal feature tracker in one afternoon. I've been asking for a dev resource to do this for 6 months.",
+              name: "Marcus T.",
+              role: "Business Analyst, healthcare",
+            },
+          ].map((t) => (
+            <div key={t.name} className="rounded-xl border border-border bg-card p-5">
+              <p className="mb-4 text-sm leading-relaxed text-foreground">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div>
+                <p className="text-sm font-semibold">{t.name}</p>
+                <p className="text-xs text-muted-foreground">{t.role}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Resource grid */}

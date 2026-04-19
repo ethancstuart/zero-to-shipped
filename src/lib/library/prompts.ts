@@ -7,6 +7,7 @@ export interface Prompt {
   category: PromptCategory;
   prompt: string;
   free: boolean;
+  exampleOutput?: string;
 }
 
 export const CATEGORY_LABELS: Record<PromptCategory, string> = {
@@ -825,6 +826,53 @@ Structure the PRD with:
 9. Timeline estimate (rough — don't overthink it)
 
 Write it to be read by engineers, designers, and stakeholders. Clear and concrete, not vague.`,
+    exampleOutput: `## PRD: Feature Request Tracker
+
+**Executive summary**
+A lightweight internal tool for product managers to log, tag, and prioritize customer feature requests. Replaces the current spreadsheet + Slack thread workflow. Built in a single afternoon using Claude Code and Supabase. Target: PMs have a live, searchable request log within 2 weeks.
+
+**Background and motivation**
+Feature requests arrive through sales calls, support tickets, and Slack DMs. Currently tracked in a Google Sheet that is 6 months out of date. We lose ~40% of requests before they reach roadmap planning. Q2 planning was delayed by 3 days because we couldn't reconcile three different request lists.
+
+**Goals**
+- Log a feature request in under 60 seconds
+- Tag by customer name, segment (SMB / Enterprise / Internal), and product area
+- Vote on requests to surface community demand
+- Export top requests to Jira or CSV for roadmap planning
+
+**Non-goals (Phase 1)**
+- Customer-facing request portal (Phase 2)
+- Auto-sync with Salesforce or Zendesk
+- Public roadmap or voting widget
+
+**User stories (prioritized)**
+1. As a PM, I can log a new request with title, customer, segment, and description in one form
+2. As any team member, I can upvote a request I've heard from a customer
+3. As a PM, I can search and filter requests by segment, product area, or keyword
+4. As a PM, I can mark a request as "on roadmap," "declined," or "in review"
+5. As a PM, I can export the top 20 requests as CSV for roadmap planning
+
+**Functional requirements**
+- Request form: title (required), description, customer name, segment, product area
+- List view: sortable by vote count, date, status
+- Status workflow: New → In Review → On Roadmap / Declined
+- Export: CSV of current filtered view
+
+**Non-functional requirements**
+- Load time under 2s on standard office wifi
+- Mobile-readable (PMs log requests from their phone after calls)
+- No login required for internal users on company network
+
+**Open questions**
+- Who can delete requests? (PM only, or any team member?)
+- Do we need email notifications when a request status changes?
+- Does "segment" need to be a fixed list or freeform?
+
+**Timeline estimate**
+- Day 1: Schema + CRUD API (Claude Code)
+- Day 2: UI (Cursor) + deploy (Vercel)
+- Day 3: Test with 2 PMs, fix issues
+- Week 2: Roll out to full PM team`,
   },
   {
     id: 'pm-stakeholder',

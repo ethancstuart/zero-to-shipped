@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
 import type { Prompt } from "@/lib/library/prompts";
 import { CATEGORY_LABELS } from "@/lib/library/prompts";
 
@@ -11,6 +11,7 @@ interface PromptCardProps {
 
 export function PromptCard({ prompt }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
+  const [showExample, setShowExample] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(timerRef.current), []);
@@ -65,6 +66,39 @@ export function PromptCard({ prompt }: PromptCardProps) {
       <pre className="whitespace-pre-wrap rounded-lg bg-muted p-4 text-sm leading-relaxed text-muted-foreground overflow-auto max-h-72">
         {prompt.prompt}
       </pre>
+
+      {prompt.exampleOutput && (
+        <div>
+          <button
+            onClick={() => setShowExample((v) => !v)}
+            aria-expanded={showExample}
+            className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline min-h-[40px]"
+          >
+            {showExample ? (
+              <>
+                <ChevronUp className="h-3.5 w-3.5" />
+                Hide example output
+              </>
+            ) : (
+              <>
+                <ChevronDown className="h-3.5 w-3.5" />
+                See example output
+              </>
+            )}
+          </button>
+
+          {showExample && (
+            <div className="mt-2 rounded-lg border border-border bg-background p-4">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                Example output
+              </p>
+              <pre className="whitespace-pre-wrap text-sm leading-relaxed text-foreground overflow-auto max-h-[500px]">
+                {prompt.exampleOutput}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
