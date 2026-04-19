@@ -23,7 +23,7 @@ export async function GET() {
     return NextResponse.json({
       remaining,
       total,
-      deadline: "2026-04-15",
+      deadline: "2026-04-28",
     });
   } catch (err) {
     console.error("Failed to fetch founding spots:", err);

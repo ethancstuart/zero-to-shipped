@@ -17,23 +17,23 @@ interface LaunchEmail {
 const LAUNCH_EMAILS: LaunchEmail[] = [
   {
     id: "launch-email-1",
-    date: "2026-04-08",
-    subject: "Zero to Ship is live — founding member pricing",
+    date: "2026-04-22",
+    subject: "Zero to Ship opens Monday — founding member pricing",
     body: `
-      <h2 style="color: #fff; margin-top: 0;">Zero to Ship is live.</h2>
+      <h2 style="color: #fff; margin-top: 0;">Zero to Ship opens in 6 days.</h2>
 
       <p>Zero to Ship is a hands-on course that teaches PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools. No engineering degree required. You go from zero to shipping a real project.</p>
 
       <p>Here's what's included: <strong style="color: #fff;">16 modules</strong>, gamified progress (XP, streaks, badges, skill tree), a certificate of completion, and role-specific learning paths. Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, MCP servers, and agent building.</p>
 
-      <p>I'm looking for <strong style="color: #fff;">20 founding members</strong> to take the course and help shape it. Founding member pricing is <strong style="color: #22c55e;">$99</strong> — 100 spots, ends April 30.</p>
+      <p>Founding member pricing is <strong style="color: #22c55e;">$99</strong> (standard price: $199) — 100 spots, ends when they run out. The course opens Monday April 28.</p>
 
-      ${emailButtonCentered("See Founding Member Pricing", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email1")}
+      ${emailButtonCentered("Preview Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email1")}
     `,
   },
   {
     id: "launch-email-2",
-    date: "2026-04-10",
+    date: "2026-04-25",
     subject: "What 16 modules looks like — Zero to Ship",
     body: `
       <h2 style="color: #fff; margin-top: 0;">Here's what's inside.</h2>
@@ -72,19 +72,21 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
   },
   {
     id: "launch-email-3",
-    date: "2026-04-13",
+    date: "2026-04-27",
     subject: (remaining: number) =>
-      `${remaining} founding member spots remaining`,
+      `Zero to Ship opens tomorrow — ${remaining} founding spots left`,
     body: (remaining: number) => `
-      <h2 style="color: #fff; margin-top: 0;">Founding spots update.</h2>
+      <h2 style="color: #fff; margin-top: 0;">Tomorrow.</h2>
 
-      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining.</p>
+      <p>Zero to Ship opens tomorrow, Monday April 28.</p>
 
-      <p>Here's what founding members get that standard members don't: <strong style="color: #fff;">Season 2 free</strong> when it launches. Season 2 covers Claude Code mastery, building MCP servers, and creating AI agents — the next wave of AI-powered building.</p>
+      <p>There are <strong style="color: #f59e0b;">${remaining} of 100 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
 
-      <p>Founding pricing is <strong style="color: #22c55e;">$99</strong> and ends April 30 or when spots run out.</p>
+      <p>Founding members also get <strong style="color: #fff;">Season 2 free</strong> when it launches — covering Claude Code mastery, building MCP servers, and creating AI agents.</p>
 
-      ${emailButtonCentered("Claim Your Founding Spot", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email3")}
+      <p>If you want to try before you commit, Module 1 is completely free — no account required.</p>
+
+      ${emailButtonCentered("Try Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email3")}
     `,
   },
 ];
