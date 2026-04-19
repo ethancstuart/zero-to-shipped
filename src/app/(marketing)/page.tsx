@@ -394,12 +394,63 @@ export default async function LandingPage({
         </div>
       </section>
 
+      {/* Why not just watch YouTube? */}
+      <section className="border-t border-border py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="mb-4 text-center text-3xl font-bold">
+            &ldquo;Can&apos;t I just watch YouTube?&rdquo;
+          </h2>
+          <p className="mx-auto mb-12 max-w-2xl text-center text-muted-foreground">
+            Yes. And after 40 tabs and 12 tutorials you&apos;ll have a lot of half-built projects
+            and no idea how to debug any of them. We&apos;ve been there. Here&apos;s what&apos;s different.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                them: "Random YouTube tutorials",
+                us: "16 modules in the right sequence",
+                detail: "Each module builds on the last. No gaps, no backtracking.",
+              },
+              {
+                them: "Generic coding content",
+                us: "PM, BA, BI Engineer-specific projects",
+                detail: "Every example is something you'd actually use at work.",
+              },
+              {
+                them: "No feedback when something breaks",
+                us: "5-step debugging loop built into every module",
+                detail: "You learn how to get unstuck — not just how to build when things go right.",
+              },
+              {
+                them: "No structure = no completion",
+                us: "XP, streaks, and a capstone keep you on track",
+                detail: "The same gamification system that keeps 500M Duolingo users coming back daily.",
+              },
+            ].map(({ them, us, detail }) => (
+              <div key={them} className="rounded-xl border border-border bg-card p-5">
+                <div className="mb-3 flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground line-through">
+                    <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50 shrink-0" />
+                    {them}
+                  </div>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />
+                    {us}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">{detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="border-t border-border py-20">
         <div className="mx-auto max-w-2xl px-4 text-center">
           <h2 className="mb-4 text-3xl font-bold">Ready to start building?</h2>
           <p className="mb-4 text-muted-foreground">
-            5 modules free. Full access: $149 one-time.
+            5 modules free. Full access: $199 one-time.
           </p>
           <p className="mb-8 text-sm font-medium text-green-500">
             First 100 students get founding member pricing: $99

@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Prompt Library — Builder's Library — Zero to Ship",
   description:
-    "40+ copy-paste prompts for PMs, BAs, and non-engineers. PRDs, stakeholder updates, feature specs, building apps, debugging, refactoring, and shipping.",
+    "40+ copy-paste Cursor and Claude Code prompts for product managers, business analysts, and BI engineers. PRDs, stakeholder updates, debugging, building apps, and shipping — organized by role.",
   openGraph: {
     title: "Prompt Library — Zero to Ship",
     description:

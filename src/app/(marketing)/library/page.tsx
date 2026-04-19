@@ -15,7 +15,7 @@ import { siteConfig } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Builder's Library — Zero to Ship",
   description:
-    "Free resources to go from idea to working product — without an engineering background. Prompt library, dev environment setup, AI workflow guide, and CLAUDE.md templates.",
+    "Free Cursor and Claude Code prompts, guides, and templates for product managers, business analysts, and BI engineers. Build real software with AI tools — no engineering background required.",
   openGraph: {
     title: "Builder's Library — Zero to Ship",
     description:
