@@ -6,9 +6,18 @@ import { siteConfig } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Debugging with AI — Builder's Library — Zero to Ship",
   description:
-    "The 5-step loop for when the AI breaks your code. Coming Week 4.",
+    "The 5-step loop for when the AI breaks your code. How to read error messages, isolate the problem, and get back on track fast. Coming Week 4.",
   openGraph: {
+    title: "Debugging with AI — Zero to Ship",
+    description: "The 5-step loop for when the AI breaks your code. Coming Week 4.",
     url: `${siteConfig.url}/library/debugging`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("Debugging with AI")}&subtitle=${encodeURIComponent("Coming Week 4 — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 

@@ -6,9 +6,18 @@ import { siteConfig } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Builder's Tool Stack — Builder's Library — Zero to Ship",
   description:
-    "The full modern builder stack — every tool you need, with free tier notes. Coming Week 2.",
+    "The full modern builder stack — Cursor, Claude Code, GitHub, Vercel, Supabase, Resend — every tool you need with free tier notes. Coming Week 2.",
   openGraph: {
+    title: "Builder's Tool Stack — Zero to Ship",
+    description: "The full modern builder stack. Every tool you need, with free tier notes.",
     url: `${siteConfig.url}/library/builder-tools`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("Builder's Tool Stack")}&subtitle=${encodeURIComponent("Coming Week 2 — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 

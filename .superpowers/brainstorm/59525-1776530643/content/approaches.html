@@ -1,0 +1,45 @@
+<h2>3 Approaches — ZTS Marketing Automation</h2>
+<p class="subtitle">All three use Buffer API for LinkedIn + Twitter/X. Pick the architecture that fits how much you want to be involved.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Pure Cron (Vercel) — Full Autopilot</h3>
+      <p><strong>How it works:</strong> A standalone <code>zts-marketing</code> Vercel project. Cron jobs fire daily → Claude generates posts from your content pillars → Buffer API queues them for LinkedIn + Twitter/X. Zero UI. Set it and forget it.</p>
+      <p><strong>Build time:</strong> 1–1.5 days</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Fastest to ship</li><li>Zero ongoing effort</li><li>No hosting cost (Vercel free tier)</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>No visibility into what's going out</li><li>No override if Claude writes something off</li><li>Hard to tune without touching code</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Thin Admin UI — Automated with Emergency Brake ⭐ Recommended</h3>
+      <p><strong>How it works:</strong> Same cron engine as A, but adds a lightweight admin dashboard. Posts auto-queue to Buffer 24h before they go live. Dashboard shows upcoming posts — you can edit or delete any post in that window. If you don't touch it, it publishes automatically.</p>
+      <p><strong>Build time:</strong> 2–2.5 days</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Still fully automated by default</li><li>Emergency brake if something goes sideways</li><li>Content calendar visible at a glance</li><li>Easy to tune pillars via UI</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>1 extra day of build</li><li>One more thing to deploy + maintain</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>GitHub Actions + Buffer API — Developer-Native</h3>
+      <p><strong>How it works:</strong> Cron jobs run in GitHub Actions (free). Script generates a batch of posts, opens a PR with the content. You merge to approve the batch, GitHub Action then pushes to Buffer queue. Review is optional — you can auto-merge via a label.</p>
+      <p><strong>Build time:</strong> 1–1.5 days</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>No hosting cost at all</li><li>Git history of all content</li><li>PR review flow is familiar</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>GitHub-y — not a product feel</li><li>PR merge = extra friction</li><li>Less polished for a course founder persona</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem; font-size:0.85rem;">My recommendation: <strong>B</strong> — you get full automation with a safety net. The extra day of build is worth it given posts go out under your name.</p>

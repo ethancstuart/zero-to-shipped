@@ -14,6 +14,13 @@ export const metadata: Metadata = {
     description:
       "4 CLAUDE.md templates for different project types. Blank Canvas is free — the rest unlock with your email.",
     url: `${siteConfig.url}/library/claude-md-templates`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("CLAUDE.md Templates")}&subtitle=${encodeURIComponent("Project Instruction Files for Claude Code — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 
@@ -49,14 +56,37 @@ export default function ClaudeMdTemplatesPage() {
           </p>
         </div>
 
-        {/* What is CLAUDE.md explainer */}
+        {/* Pick the right template */}
+        <div className="mb-6 rounded-xl border border-border bg-muted/30 p-5">
+          <h2 className="mb-3 font-semibold">Which template is right for you?</h2>
+          <div className="space-y-2 text-sm">
+            <div className="flex gap-2">
+              <span className="shrink-0 font-medium text-foreground">Not sure?</span>
+              <span className="text-muted-foreground">→ Start with <strong>Blank Canvas</strong> — it works for any project type</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="shrink-0 font-medium text-foreground">Building a web app</span>
+              <span className="text-muted-foreground">→ <strong>Next.js + Supabase</strong> (login, data, payments, deploy)</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="shrink-0 font-medium text-foreground">Analyzing or visualizing data</span>
+              <span className="text-muted-foreground">→ <strong>Data Dashboard</strong> (best for BAs and BI Engineers)</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="shrink-0 font-medium text-foreground">Building scripts or scheduled jobs</span>
+              <span className="text-muted-foreground">→ <strong>Automation Project</strong> (reports, pipelines, crons)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* How to use */}
         <div className="mb-8 rounded-xl border border-border bg-muted/30 p-5">
           <h2 className="mb-2 font-semibold">How to use these templates</h2>
           <ol className="ml-4 list-decimal space-y-1 text-sm text-muted-foreground">
             <li>Copy the template that matches your project type</li>
             <li>Create a file called <code className="rounded bg-muted px-1 py-0.5 text-xs">CLAUDE.md</code> at the root of your project</li>
-            <li>Paste and fill in the <code className="rounded bg-muted px-1 py-0.5 text-xs">[TODO]</code> sections</li>
-            <li>Open Claude Code with <code className="rounded bg-muted px-1 py-0.5 text-xs">claude</code> — it reads the file automatically</li>
+            <li>Paste and fill in the <code className="rounded bg-muted px-1 py-0.5 text-xs">[TODO]</code> sections with your project details</li>
+            <li>Open Claude Code with <code className="rounded bg-muted px-1 py-0.5 text-xs">claude</code> — it reads the file automatically at the start of every session</li>
           </ol>
         </div>
 

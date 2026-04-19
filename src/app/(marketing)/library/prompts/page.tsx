@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     title: "Prompt Library — Zero to Ship",
     description: "40+ copy-paste prompts for non-engineers building with AI tools.",
     url: `${siteConfig.url}/library/prompts`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("Prompt Library")}&subtitle=${encodeURIComponent("40+ Copy-Paste Prompts for Builders — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 
@@ -40,7 +47,8 @@ export default function PromptsPage() {
           </h1>
           <p className="text-lg text-muted-foreground">
             40+ prompts across 6 categories — ready to copy, customize, and paste into
-            Cursor or Claude Code. First 10 are free. Enter your email to unlock everything.
+            Cursor or Claude Code. Try the first 10 free. One email unlocks everything,
+            including PM-specific prompts for PRDs, stakeholder updates, and roadmap narratives.
           </p>
         </div>
 

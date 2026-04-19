@@ -7,6 +7,7 @@ interface LibraryEmailGateProps {
   storageKey: string;
   heading?: string;
   description?: string;
+  onUnlock?: () => void;
   children: React.ReactNode;
 }
 
@@ -14,6 +15,7 @@ export function LibraryEmailGate({
   storageKey,
   heading = "Unlock the full library",
   description = "Enter your email to access everything — free.",
+  onUnlock,
   children,
 }: LibraryEmailGateProps) {
   const [unlocked, setUnlocked] = useState(false);
@@ -29,6 +31,14 @@ export function LibraryEmailGate({
     } catch {
       // SSR safety
     }
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === storageKey && e.newValue === "true") {
+        setUnlocked(true);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, [storageKey]);
 
   if (unlocked) {
@@ -41,31 +51,52 @@ export function LibraryEmailGate({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@") || !trimmed.includes(".")) {
+      setStatus("error");
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
 
     setStatus("loading");
     setErrorMsg("");
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
 
     try {
       const res = await fetch("/api/toolkit-subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: trimmed }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeout);
+
       if (!res.ok) {
-        throw new Error("Subscription failed");
+        const body = await res.json().catch(() => ({}));
+        throw new Error((body as { error?: string }).error ?? "Subscription failed");
       }
 
       try {
         localStorage.setItem(storageKey, "true");
       } catch {
-        // continue even if localStorage fails
+        // continue even if localStorage unavailable
       }
+
+      setEmail("");
+      setStatus("idle");
       setUnlocked(true);
-    } catch {
+      onUnlock?.();
+    } catch (err) {
+      clearTimeout(timeout);
       setStatus("error");
-      setErrorMsg("Something went wrong. Try again.");
+      if (err instanceof Error && err.name === "AbortError") {
+        setErrorMsg("Request timed out. Please try again.");
+      } else {
+        setErrorMsg("Something went wrong. Try again.");
+      }
     }
   };
 
@@ -80,15 +111,19 @@ export function LibraryEmailGate({
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
+          autoComplete="email"
           className="w-full rounded-lg border border-border bg-background px-4 py-3 text-center focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
         <Button type="submit" disabled={status === "loading"} size="lg">
-          {status === "loading" ? "Unlocking..." : "Unlock Full Library"}
+          {status === "loading" ? "Unlocking..." : "Unlock Free"}
         </Button>
         {status === "error" && (
-          <p className="text-sm text-destructive">{errorMsg}</p>
+          <p className="text-sm text-destructive" role="alert">{errorMsg}</p>
         )}
       </form>
+      <p className="mt-4 text-xs text-muted-foreground">
+        No spam. Unsubscribe any time.
+      </p>
     </div>
   );
 }

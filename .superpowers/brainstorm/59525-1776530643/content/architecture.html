@@ -1,0 +1,73 @@
+<h2>Design — Section 1: Architecture</h2>
+<p class="subtitle">Standalone <code>zts-marketing</code> repo, deployed to Vercel. Two flows: automated generation cron + admin UI for oversight.</p>
+
+<div class="mockup">
+  <div class="mockup-header">System Architecture — ZTS Marketing Engine</div>
+  <div class="mockup-body" style="padding: 1.5rem; font-family: monospace; font-size: 0.85rem; line-height: 2;">
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; text-align: center;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">⏰</div>
+        <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Trigger</div>
+        <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Vercel Cron</div>
+        <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">Daily at 6am UTC</div>
+      </div>
+
+      <div style="background: #1e293b; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; text-align: center;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">🧠</div>
+        <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Generator</div>
+        <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Claude API</div>
+        <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">Pillar-aware drafts</div>
+      </div>
+
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; text-align: center;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">📅</div>
+        <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Queue</div>
+        <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Buffer API</div>
+        <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">LinkedIn + Twitter/X</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #475569; margin-bottom: 1.5rem; font-size: 1.2rem;">↕ read / edit / delete</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; text-align: center;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">🖥️</div>
+        <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Admin UI</div>
+        <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Content Calendar</div>
+        <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">Edit / delete upcoming posts</div>
+      </div>
+
+      <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; text-align: center;">
+        <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">💾</div>
+        <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Storage</div>
+        <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Vercel KV</div>
+        <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">Post log + config</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #475569; margin-bottom: 1.5rem; font-size: 1.2rem;">↓ separate newsletter trigger</div>
+
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1rem; text-align: center; max-width: 200px; margin: 0 auto;">
+      <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">📧</div>
+      <div style="color: #94a3b8; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">Newsletter</div>
+      <div style="color: #f1f5f9; font-weight: bold; margin-top: 0.3rem;">Beehiiv</div>
+      <div style="color: #64748b; font-size: 0.75rem; margin-top: 0.3rem;">Weekly draft via API</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top: 1.5rem;">
+  <h3>Key Decisions Baked In</h3>
+  <ul style="color: #94a3b8; line-height: 1.9; font-size: 0.9rem;">
+    <li><strong style="color:#f1f5f9;">Vercel KV</strong> for storage — no separate DB to manage. Stores post log + pillar config. Buffer is source of truth for scheduling.</li>
+    <li><strong style="color:#f1f5f9;">24h window</strong> — posts queue to Buffer 24h before publish time. Admin UI shows anything in that window, editable until it goes live.</li>
+    <li><strong style="color:#f1f5f9;">Pillar rotation</strong> — generator reads last 7 days of posts from KV to avoid repeating pillars or topics.</li>
+    <li><strong style="color:#f1f5f9;">Beehiiv separate</strong> — newsletter is weekly, generated on its own cron, drafted in Beehiiv (not auto-published — Beehiiv API creates a draft, you hit send).</li>
+    <li><strong style="color:#f1f5f9;">Standalone repo</strong> — <code>zts-marketing</code>, own Vercel project, own env vars. Zero coupling to zerotoship.app.</li>
+  </ul>
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem; font-size:0.85rem;">Does this architecture look right? Any changes before we go deeper into each component?</p>

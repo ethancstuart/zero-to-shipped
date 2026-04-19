@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     description:
       "How to structure your AI development world. CLAUDE.md, MCP servers, the build loop — all in one guide.",
     url: `${siteConfig.url}/library/ai-workflow-os`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("AI Workflow OS")}&subtitle=${encodeURIComponent("CLAUDE.md · MCP Servers · The Build Loop — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 

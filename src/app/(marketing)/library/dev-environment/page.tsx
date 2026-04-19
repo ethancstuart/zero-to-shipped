@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     description:
       "Mac and Windows setup guide for non-engineers. From zero to a working dev environment in 45 minutes.",
     url: `${siteConfig.url}/library/dev-environment`,
+    images: [
+      {
+        url: `/api/og?template=guide&title=${encodeURIComponent("Dev Environment Setup")}&subtitle=${encodeURIComponent("Mac + Windows Guide for Non-Engineers — Zero to Ship")}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 };
 
