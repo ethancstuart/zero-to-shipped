@@ -303,6 +303,25 @@ export default async function RoleLandingPage({ params }: Props) {
           )}
         </div>
       </section>
+
+      {/* Library cross-link */}
+      <section className="mx-auto mt-12 mb-20 max-w-3xl px-4">
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center sm:flex-row sm:text-left">
+          <div className="flex-1">
+            <p className="text-sm font-semibold">Not ready to start a course?</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              The Builder&apos;s Library has 40+ free prompts, guides, and templates — no sign-up required.
+            </p>
+          </div>
+          <Link
+            href="/library"
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+          >
+            Browse the library
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

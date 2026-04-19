@@ -20,6 +20,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const libraryPages: MetadataRoute.Sitemap = [
+    { url: `${siteConfig.url}/library`, priority: 0.9 },
+    { url: `${siteConfig.url}/library/prompts`, priority: 0.9 },
+    { url: `${siteConfig.url}/library/dev-environment`, priority: 0.8 },
+    { url: `${siteConfig.url}/library/ai-workflow-os`, priority: 0.8 },
+    { url: `${siteConfig.url}/library/claude-md-templates`, priority: 0.8 },
+    { url: `${siteConfig.url}/library/builder-tools`, priority: 0.8 },
+    { url: `${siteConfig.url}/library/prompt-patterns`, priority: 0.8 },
+    { url: `${siteConfig.url}/library/debugging`, priority: 0.8 },
+  ].map((entry) => ({
+    ...entry,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+  }));
+
   return [
     {
       url: siteConfig.url,
@@ -46,12 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${siteConfig.url}/resources`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
       url: `${siteConfig.url}/resources/mcp-plugins`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -63,6 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.7,
     },
+    ...libraryPages,
     ...roleLandings,
     ...modules,
   ];

@@ -18,6 +18,20 @@ export async function MarketingNav() {
           <Rocket className="size-5 text-primary" />
           Zero to Ship
         </Link>
+        <div className="hidden items-center gap-1 sm:flex">
+          <Link
+            href="/library"
+            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            Library
+          </Link>
+          <Link
+            href="/pricing"
+            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            Pricing
+          </Link>
+        </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {user ? (

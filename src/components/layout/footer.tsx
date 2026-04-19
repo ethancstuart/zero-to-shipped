@@ -9,6 +9,9 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Zero to Ship
           </p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            <Link href="/library" className="hover:text-foreground">
+              Library
+            </Link>
             <Link href="/pricing" className="hover:text-foreground">
               Pricing
             </Link>
