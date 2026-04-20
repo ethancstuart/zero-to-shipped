@@ -4,6 +4,7 @@ import { join } from "path";
 import { createClient } from "@/lib/supabase/server";
 import { getModuleByNumber } from "@/lib/content/modules";
 import { ContentGate } from "@/components/modules/content-gate";
+import { LoginButton } from "@/components/layout/login-button";
 import type { Metadata } from "next";
 
 const MODULE_1 = getModuleByNumber(1)!;
@@ -92,6 +93,30 @@ export default async function Module1PreviewPage() {
           gatedHtml={gatedHtml}
         />
       )}
+
+      {/* Bottom CTA — shown only when no gate (full free content visible) */}
+      {!gatedHtml && (
+        <div className="mt-16 rounded-xl border border-border bg-card p-8 text-center">
+          <h2 className="mb-2 text-xl font-bold">Ready for Module 2?</h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            Sign in to track your progress and unlock Modules 2–5 free. All 16
+            modules available for $99 one-time.
+          </p>
+          <LoginButton source="preview_gate" label="Continue with Google — it&apos;s free" />
+        </div>
+      )}
+
+      {/* Support signal */}
+      <p className="mt-12 text-center text-sm text-muted-foreground">
+        Got stuck?{" "}
+        <a
+          href="mailto:ethan@zerotoship.app"
+          className="text-foreground underline-offset-4 hover:underline"
+        >
+          ethan@zerotoship.app
+        </a>{" "}
+        — I read every email.
+      </p>
     </div>
   );
 }

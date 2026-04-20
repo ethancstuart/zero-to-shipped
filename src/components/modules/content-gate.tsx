@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Lock } from "lucide-react";
 import { LoginButton } from "@/components/layout/login-button";
 
@@ -37,6 +38,15 @@ export function ContentGate({ moduleTitle, gatedHtml }: ContentGateProps) {
             No credit card required. Just a Google account.
           </p>
           <LoginButton source="preview_gate" />
+          <p className="mt-4 text-xs text-muted-foreground">
+            Ready to go all in?{" "}
+            <Link
+              href="/pricing"
+              className="font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Get all 16 modules — $99
+            </Link>
+          </p>
         </div>
       </div>
     </div>
