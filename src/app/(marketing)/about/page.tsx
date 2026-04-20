@@ -1,68 +1,46 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
-
 
 export const metadata: Metadata = {
   title: "About — Zero to Ship",
   description:
-    "Zero to Ship was built by a product leader who wanted to learn to build. Here's the story.",
+    "Zero to Ship was built by a PM who got tired of watching good ideas die in sprint planning. Here's what it is and why it exists.",
 };
 
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-20">
-      <div className="mb-12 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-        <div className="relative size-28 shrink-0 overflow-hidden rounded-full border border-border">
-          <Image
-            src="/ethan-stuart.jpg"
-            alt="Ethan Stuart"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-        <div>
-          <h1 className="mb-1 text-2xl font-bold">Ethan Stuart</h1>
-          <p className="text-sm text-muted-foreground">
-            Product &amp; Analytics Leader · Builder · Founder, Zero to Ship
-          </p>
-        </div>
-      </div>
+      <h1 className="mb-8 text-3xl font-bold">About Zero to Ship</h1>
 
       <div className="space-y-6 text-muted-foreground [&>p]:leading-relaxed">
         <p>
-          I lead a data product and analytics team at a Fortune 100 media and
-          tech company. My entire career has been in product, advanced
-          analytics, and strategy — thinking about what to build, why it
-          matters, and how to measure whether it worked.
+          Zero to Ship is a course for people who already understand products,
+          users, and problems — but have never had a direct way to build. It
+          teaches the AI coding workflow from zero to a shipped capstone project,
+          built specifically for PMs, Project Managers, BAs, and BI Engineers.
         </p>
 
         <p>
-          I built Zero to Ship because I wanted to. That&apos;s the real
-          answer. I&apos;d spent years writing specs for engineers and watching
-          ideas get scoped down, deprioritized, or lost entirely. When AI
-          coding tools got good enough that I could describe something in plain
-          English and watch it come to life, I stopped writing specs and
-          started building.
+          The curriculum is 16 modules: environment setup, prompt engineering,
+          how software actually works, version control, databases, APIs,
+          deployment, and a full capstone. Not a survey of tools. A structured
+          path with real output at the end.
         </p>
 
         <p>
-          Zero to Ship is the course I wish I&apos;d had — not a programming
-          tutorial, not a ChatGPT explainer, but a structured path from
-          &ldquo;I have no idea where to start&rdquo; to &ldquo;I just shipped
-          something real.&rdquo; Built specifically for the people who already
-          understand products, users, and problems. The ones who just never had
-          a way in.
+          It was built by a product leader at a Fortune 100 media and tech
+          company — someone who spent years writing specs for engineers and
+          watching ideas get scoped down, deprioritized, or lost. When AI coding
+          tools became capable enough to bridge that gap, the course followed.
         </p>
 
         <p>
-          Every module in this course is something I built, tested, and
-          iterated on myself. The capstone project I ask you to ship is the
-          same kind of thing I was building when I realized this workflow was
-          genuinely different. I teach it because it worked.
+          The goal isn&apos;t to turn you into a software engineer. It&apos;s
+          to give you a working build loop — prompt, review, evaluate, iterate —
+          that you can use to ship internal tools, validate ideas, and build
+          things that used to require headcount.
         </p>
       </div>
 
