@@ -3,6 +3,14 @@
 ## Project Overview
 Course platform teaching non-engineers to build real software with AI coding tools. 16-module curriculum from setup to capstone. Gamified learning with XP, streaks, skill trees, and certificates. Freemium model with premium gating. Built with Claude Code.
 
+## Brand Voice
+**Single source of truth:** `docs/brand/voice.md` — read this before writing any copy, emails, or UI text.
+- Core position: "Built by builders, for builders."
+- Audience: PMs, BAs, Project Managers, BI Engineers — not developers.
+- On-site: product voice, no personal brand, no founder mentions.
+- Content (email/social): first-person builder voice, anonymous ("a PM"), about the work not the person.
+- No hype, no exclamation points, no emoji. Short sentences. Ship is the verb.
+
 ## Tech Stack
 - Next.js 16 (App Router)
 - TypeScript (strict)
