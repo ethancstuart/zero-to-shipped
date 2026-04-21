@@ -81,6 +81,7 @@ export interface ModuleMeta {
   tier: ModuleTier;
   estimatedHours: string;
   description: string;
+  ships: string;
   prerequisites: number[];
   checkpoints: string[];
   roleRelevance: Record<RoleTrack, "core" | "recommended" | "optional">;

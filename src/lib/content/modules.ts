@@ -10,6 +10,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "3–5",
     description:
       "Install your tools, configure your environment, and build your first project with AI assistance.",
+    ships: "A working web app built from a plain-English prompt, running in a browser with a real URL.",
     prerequisites: [],
     checkpoints: [
       "Install Cursor (or Claude Code), Node.js, Python, and Git",
@@ -29,6 +30,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–6",
     description:
       "Master the art of giving AI clear, specific instructions that produce exceptional output.",
+    ships: "Three versions of the same app showing how prompt quality changes the output — documented and committed.",
     prerequisites: [1],
     checkpoints: [
       "Build the same application three times with three different prompt quality levels",
@@ -48,6 +50,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "3–5",
     description:
       "Build HTML, CSS, and JavaScript literacy so you can read and evaluate AI-generated code.",
+    ships: "Your Module 1 project with 10+ code annotations explaining what each part does.",
     prerequisites: [1],
     checkpoints: [
       "Identify HTML, CSS, JavaScript, and Python by sight",
@@ -67,6 +70,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "2–3",
     description:
       "Navigate the terminal confidently to run commands, manage files, and execute scripts.",
+    ships: "A set of CLI scripts that automate at least one task in your daily workflow.",
     prerequisites: [1],
     checkpoints: [
       "Open the terminal in your AI tool without looking up how",
@@ -91,6 +95,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "5–7",
     description:
       "Track changes, collaborate safely, and never lose work with Git and GitHub.",
+    ships: "A version-controlled project on GitHub with 5+ commits, a branch, and a merged pull request.",
     prerequisites: [1, 4],
     checkpoints: [
       "Your Module 1 project (or a new project) is in a GitHub repository",
@@ -112,6 +117,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–6",
     description:
       "Create context files and project structures that produce consistent, high-quality AI output.",
+    ships: "A project blueprint with rule files that make AI follow your conventions without being asked.",
     prerequisites: [2, 5],
     checkpoints: [
       "Have a .cursor/rules/ directory (or CLAUDE.md) with 3+ rule files in a project",
@@ -135,6 +141,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "3–4",
     description:
       "Use AI to generate divergent ideas, challenge assumptions, and push past obvious solutions.",
+    ships: "A documented ideation session with 20+ ideas, evaluated and committed to Git.",
     prerequisites: [2],
     checkpoints: [
       "Complete a structured brainstorming session with 20+ ideas",
@@ -158,6 +165,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–5",
     description:
       "Scope projects, break down tasks, and stress-test plans using AI as a thinking partner.",
+    ships: "A scoped project plan with task breakdown, estimates, and a stress-tested research synthesis.",
     prerequisites: [2, 6],
     checkpoints: [
       "Complete a project scoping exercise with Must Have / Should Have / Won't Have",
@@ -177,6 +185,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "6–8",
     description:
       "Build interactive tools with components, state management, and data visualization.",
+    ships: "A multi-component interactive tool deployed to a live URL with real user feedback.",
     prerequisites: [3, 5, 6],
     checkpoints: [
       "Build a multi-component application (not a single-page experiment)",
@@ -196,6 +205,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–5",
     description:
       "Build presentations, architecture diagrams, and visual assets using AI coding tools.",
+    ships: "A presentation deck with charts and a standalone architecture diagram, exported and committed.",
     prerequisites: [3, 6],
     checkpoints: [
       "Build a presentation deck with 8+ slides",
@@ -221,6 +231,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–5",
     description:
       "Apply alignment, contrast, spacing, and hierarchy to make your builds look professional.",
+    ships: "A restyled project that looks noticeably more professional, with before/after documentation.",
     prerequisites: [9],
     checkpoints: [
       "Restyle a previous project using the four design principles",
@@ -245,6 +256,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "5–7",
     description:
       "Build data architectures, write queries, transform data, and display insights.",
+    ships: "A data product prototype with charts, table, summary metrics, and a production handoff doc.",
     prerequisites: [9],
     checkpoints: [
       "Create a realistic synthetic dataset (30+ records)",
@@ -265,6 +277,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "5–6",
     description:
       "Build Python scripts for repetitive tasks and create an automation decision framework.",
+    ships: "A working automation that runs on a schedule, logs its actions, and has a documented ROI estimate.",
     prerequisites: [4, 6],
     checkpoints: [
       "Build at least one working automation",
@@ -289,6 +302,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "5–6",
     description:
       "Read documentation effectively, apply security best practices, write tests, and deploy.",
+    ships: "A security-audited, documented project with test coverage — shipped to a live URL.",
     prerequisites: [5, 9],
     checkpoints: [
       "Complete security audit on all course projects",
@@ -313,6 +327,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "4–5",
     description:
       "Collaborate on code with Git workflows, code review, and prototype handoff.",
+    ships: "A merged pull request on someone else's project, plus a handoff document for one of yours.",
     prerequisites: [5, 6],
     checkpoints: [
       "Contribute to someone else's project via a pull request",
@@ -338,6 +353,7 @@ export const MODULE_METADATA: ModuleMeta[] = [
     estimatedHours: "10–15",
     description:
       "Apply everything you've learned to build, ship, and present a real project.",
+    ships: "A complete product solving a real problem — live URL, user documentation, and a certificate of completion.",
     prerequisites: [5, 6, 9, 14],
     checkpoints: [
       "Solve a real, clearly articulated problem with a defined target user",
