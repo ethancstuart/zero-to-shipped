@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FoundingCounter } from "@/components/marketing/founding-counter";
 
 export function HeroSection() {
   return (
