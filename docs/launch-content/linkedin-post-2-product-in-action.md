@@ -14,7 +14,7 @@ Forty minutes.
 
 That's how long it took me to build my first working web app with an AI coding tool. I'm a Product Manager, not a developer. I've never shipped a line of production code in my life.
 
-The app was a habit tracker. Nothing revolutionary. Local storage, a streak counter, a simple UI. But it ran in my browser, I could send the URL to my {{wife/friend}}, and they could actually use it.
+The app was a habit tracker. Nothing revolutionary. Local storage, a streak counter, a simple UI. But it ran in my browser, I could send the URL to my wife, and she could actually use it.
 
 I sent the link. They added a habit. They watched the streak counter update.
 

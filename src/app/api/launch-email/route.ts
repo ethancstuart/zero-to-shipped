@@ -32,38 +32,45 @@ export async function GET(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: "Zero to Ship <hello@zerotoship.app>",
+        from: "Ethan Stuart <ethan@zerotoship.app>",
         to: user.email,
-        subject: "Zero to Ship is live — founding member spots open",
+        subject: "Your founding member spot is ready",
         html: emailWrapper(
-          `<p>Hey!</p>
+          `<p>Six months ago I told a handful of people I was going to build a course that teaches non-engineers to ship real software with AI tools. Today that course is live.</p>
 
-            <p>You signed up for the Zero to Ship waitlist, and I wanted to let you know — it's live.</p>
+            <p><strong>Zero to Ship is open.</strong> → <a href="https://zerotoship.app?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">zerotoship.app</a></p>
 
-            <p><strong>Zero to Ship</strong> teaches PMs, Project Managers, Business Analysts, and BI Engineers to build real products with AI coding tools. No engineering degree required.</p>
-
-            <p>Here's what's inside:</p>
+            <p>Here's what you're getting:</p>
             <ul>
-              <li><strong>16 hands-on modules</strong> — from setup to shipping a capstone project</li>
-              <li><strong>Gamified progress</strong> — XP, badges, streaks, skill tree, leaderboard</li>
-              <li><strong>Certificate of completion</strong> — shareable on LinkedIn</li>
-              <li><strong>Role-specific tracks</strong> — tailored for PMs, PjMs, BAs, and BI Engineers</li>
+              <li>16 modules from setup to shipped capstone</li>
+              <li>Hands-on builds, not lectures — every module produces something you can point to</li>
+              <li>Role-specific learning paths for PMs, Project Managers, BAs, and BI Engineers</li>
+              <li>XP, streaks, badges, and a skill tree</li>
+              <li>A certificate of completion when you're done</li>
+              <li>The first 5 modules free, forever</li>
             </ul>
 
-            <p>The first 5 modules are free. Full access is a one-time purchase.</p>
+            <p><strong>You're on the waitlist, which means you get founding member pricing: $99 one-time (normally $199).</strong> This is live for the first 100 students only. After that, it's $199.</p>
 
-            <p style="background: #22c55e15; border: 1px solid #22c55e30; border-radius: 8px; padding: 16px; text-align: center;">
-              <strong style="color: #22c55e;">Founding member pricing: $99</strong> (first 200 students)<br>
-              <span style="color: #666; font-size: 14px;">Standard price: $199. Founding spots end April 30. Includes Season 2 when it ships.</span>
-            </p>
+            <p>No subscription. Lifetime access. 14-day money-back guarantee, no questions asked.</p>
+
+            <p>If you want to start right now without committing to anything:</p>
 
             <p style="text-align: center;">
-              ${emailButton("Start Learning Free", "https://zerotoship.app?utm_source=waitlist&utm_medium=email&utm_campaign=launch", { large: true })}
+              ${emailButton("Try Module 1 Free — No Sign-Up Required", "https://zerotoship.app/preview/module-1?utm_source=waitlist&utm_medium=email&utm_campaign=launch", { large: true })}
             </p>
 
-            <p>Not ready for premium? Try the <a href="https://zerotoship.app/guides/git-101?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">free Git 101 guide</a> — no sign-up required.</p>
+            <p>You'll build a working web app from a natural language prompt in the first 40 minutes. That's how you know the method works before you pay for anything.</p>
 
-            <p>Thanks for being on the waitlist. This project has been a labor of love, and I'm excited to share it.</p>`,
+            <p>If you like how it feels: <a href="https://zerotoship.app/pricing?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">claim your founding spot here</a>.</p>
+
+            <p>I'll send one follow-up in a couple of days if you don't act on this. No drip sequence, no countdown timer, no pressure.</p>
+
+            <p>Thank you for waiting.</p>
+
+            <p>— Ethan</p>
+
+            <p style="font-size: 13px; color: #888;">PS: If you try Module 1 and something breaks, reply to this email. I read every response personally. Launch-day feedback is the most valuable feedback I'll get.</p>`,
           {
             unsubscribeUrl: unsubUrl,
             footerNote: "You're receiving this because you signed up for the Zero to Ship waitlist.",
