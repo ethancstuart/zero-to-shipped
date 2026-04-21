@@ -1,11 +1,36 @@
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { siteConfig } from "@/lib/constants";
 import { HeroSection } from "@/components/marketing/hero-section";
 import { WhatYouBuildStrip } from "@/components/marketing/what-you-build-strip";
 import { FreeContentHub } from "@/components/marketing/free-content-hub";
-import { CurriculumSection } from "@/components/marketing/curriculum-section";
-import { PricingSection } from "@/components/marketing/pricing-section";
-import { RoleTracksSection } from "@/components/marketing/role-tracks-section";
 import { FinalCtaSection } from "@/components/marketing/final-cta-section";
+import { AuthErrorBanner } from "@/components/marketing/auth-error-banner";
+
+// Below-fold sections: code-split to reduce initial bundle
+const CurriculumSection = dynamic(
+  () =>
+    import("@/components/marketing/curriculum-section").then(
+      (m) => ({ default: m.CurriculumSection })
+    ),
+  { ssr: true, loading: () => <div className="min-h-[200px]" /> }
+);
+const PricingSection = dynamic(
+  () =>
+    import("@/components/marketing/pricing-section").then(
+      (m) => ({ default: m.PricingSection })
+    ),
+  { ssr: true, loading: () => <div className="min-h-[200px]" /> }
+);
+const RoleTracksSection = dynamic(
+  () =>
+    import("@/components/marketing/role-tracks-section").then(
+      (m) => ({ default: m.RoleTracksSection })
+    ),
+  { ssr: true, loading: () => <div className="min-h-[100px]" /> }
+);
+
+export const dynamic_rendering = "force-static";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -28,13 +53,7 @@ const jsonLd = {
   },
 };
 
-export default async function LandingPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
-
+export default function LandingPage() {
   return (
     <div className="bg-white">
       <script
@@ -42,11 +61,10 @@ export default async function LandingPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {error === "auth" && (
-        <div className="border-b border-red-200 bg-red-50 px-6 py-3 text-center text-sm text-red-700">
-          Sign in failed. Please try again.
-        </div>
-      )}
+      {/* Error banner reads ?error=auth client-side so the page can stay static */}
+      <Suspense>
+        <AuthErrorBanner />
+      </Suspense>
 
       <HeroSection />
       <WhatYouBuildStrip />

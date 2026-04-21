@@ -28,7 +28,13 @@ export function FoundingCounter() {
     return () => clearInterval(interval);
   }, [fetchSpots]);
 
-  if (remaining === null) return null;
+  if (remaining === null) {
+    return (
+      <p className="text-sm font-medium text-transparent select-none" aria-hidden>
+        &nbsp;
+      </p>
+    );
+  }
 
   const colorClass =
     remaining < 10

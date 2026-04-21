@@ -2,28 +2,28 @@ import Link from "next/link";
 
 const FREE_RESOURCES = [
   {
-    emoji: "📖",
-    title: "Git for PMs",
-    body: "The 5 commands you actually need. Nothing else.",
-    href: "/guides/git-101",
-  },
-  {
     emoji: "⚡",
     title: "Claude Code 101",
     body: "Get from idea to running code in one session.",
     href: "/guides/claude-code-101",
   },
   {
-    emoji: "🤖",
-    title: "Agent Templates",
-    body: "4 open-source templates. Clone and run.",
-    href: "/agents",
-  },
-  {
     emoji: "🗂️",
     title: "Prompt Cheat Sheet",
     body: "40+ prompts for PMs who build.",
     href: "/library",
+  },
+  {
+    emoji: "📊",
+    title: "SQL for PMs & BAs",
+    body: "The 4 queries that cover 90% of PM/BA work.",
+    href: "/guides/sql-for-product-managers",
+  },
+  {
+    emoji: "🗺️",
+    title: "Learning Paths by Role",
+    body: "Start free. Know exactly when to go paid.",
+    href: "/learning-paths",
   },
 ];
 
