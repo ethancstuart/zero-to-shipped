@@ -1,0 +1,345 @@
+---
+title: "Build a REST API from Scratch with Gemini CLI"
+slug: api-with-gemini-cli
+pillar: build
+type: walkthrough
+format: written
+tools: [gemini-cli]
+toolVersions:
+  gemini-cli: "1.0"
+difficulty: intermediate
+estimatedMinutes: 75
+tags: [api, gemini-cli, node-js, express, backend, intermediate]
+isPremium: false
+isFeatured: true
+status: published
+publishedAt: "2026-05-25"
+---
+
+# Build a REST API from Scratch with Gemini CLI
+
+Most non-engineers treat APIs as something that exists — you use them, you don't build them. This walkthrough changes that. You'll build a functional REST API for a task management app, including database integration, input validation, error handling, and a test suite, entirely in Gemini CLI.
+
+By the end you'll have an API you understand deeply enough to extend, debug, and ship to production.
+
+Prerequisites: Node.js installed, Gemini CLI installed (`npm install -g @google/gemini-cli`), a Gemini API key set as `GEMINI_API_KEY` in your environment.
+
+---
+
+## Step 1: Set Up the Node.js Project
+
+Open your terminal, create a project directory, and start Gemini CLI:
+
+```bash
+mkdir task-api
+cd task-api
+gemini
+```
+
+Gemini CLI starts a conversational session in your current directory. It can read files, create files, and run commands — the same build loop as Claude Code, different model.
+
+Run your first prompt:
+
+```text
+Set up a new Node.js project for a REST API.
+
+Initialize package.json with these dev dependencies:
+- typescript
+- @types/node
+- @types/express
+- ts-node
+- nodemon
+
+And these production dependencies:
+- express
+- zod (for input validation)
+- better-sqlite3 (for local SQLite database)
+- @types/better-sqlite3
+
+Create a tsconfig.json configured for Node.js (target ES2022, module CommonJS, 
+strict true, outDir ./dist, rootDir ./src).
+
+Create a src/ directory with an empty src/index.ts file.
+
+Add these scripts to package.json:
+- "dev": "nodemon --exec ts-node src/index.ts"
+- "build": "tsc"
+- "start": "node dist/index.js"
+
+Run npm install to confirm everything installs correctly.
+```
+
+Once dependencies install, you have a TypeScript Node.js project ready to build on.
+
+---
+
+## Step 2: Create the Express Server
+
+```text
+Build the Express server in src/index.ts.
+
+Requirements:
+- Create an Express app and listen on port 3000 (or PORT env variable)
+- Add JSON body parsing middleware
+- Add a request logger that prints: [METHOD] /path - timestamp for every request
+- Add a health check route at GET /health that returns { status: 'ok', timestamp: new Date() }
+- Export the app (not just listen) so we can import it in tests
+
+Also create src/middleware/errorHandler.ts — a global error handler middleware 
+that catches any errors thrown in route handlers and returns:
+{ error: true, message: error.message, code: error.statusCode or 500 }
+
+Register the error handler at the bottom of index.ts.
+```
+
+Test it immediately:
+
+```text
+Run the dev server with npm run dev and confirm it starts.
+Then make a test request to the health check endpoint to verify it responds.
+Use curl or a fetch call — whichever is simpler.
+```
+
+---
+
+## Step 3: Set Up the Database
+
+You'll use SQLite for local development — no database server to configure, just a file on disk. This is the right choice for a build walkthrough. The API patterns work identically with PostgreSQL in production.
+
+```text
+Create a database module at src/db/database.ts.
+
+Use better-sqlite3 to create a SQLite database at ./data/tasks.db.
+Create the data/ directory if it doesn't exist.
+
+Define and run this schema on initialization:
+
+CREATE TABLE IF NOT EXISTS tasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'todo' 
+    CHECK(status IN ('todo', 'in_progress', 'done')),
+  priority TEXT NOT NULL DEFAULT 'medium'
+    CHECK(priority IN ('low', 'medium', 'high')),
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+Export a database instance that's imported and used across the app.
+Also export a helper that runs a query and returns typed results 
+(generic function: runQuery<T>(sql: string, params?: unknown[]): T[]).
+```
+
+---
+
+## Step 4: Build the Task Routes
+
+Now build the actual API endpoints. This is the core of the walkthrough:
+
+```text
+Create src/routes/tasks.ts with a full CRUD API for tasks.
+
+Routes to build:
+
+GET /api/tasks
+- Return all tasks
+- Support optional query params: status (filter by status), 
+  priority (filter by priority), limit (default 50, max 100)
+- Return: { data: Task[], total: number }
+
+GET /api/tasks/:id
+- Return single task by id
+- Return 404 with { error: true, message: 'Task not found' } if not found
+
+POST /api/tasks
+- Create a new task
+- Required body field: title (string, min 1 char, max 200 chars)
+- Optional: description (string, max 1000 chars), 
+  status (enum: todo/in_progress/done, default: todo),
+  priority (enum: low/medium/high, default: medium)
+- Validate with Zod — return 400 with validation errors if invalid
+- Return 201 with the created task
+
+PATCH /api/tasks/:id
+- Update a task (partial update — only fields provided are changed)
+- Same validation rules as POST for any fields provided
+- Also update updated_at to current timestamp
+- Return 404 if task doesn't exist
+- Return the updated task
+
+DELETE /api/tasks/:id
+- Delete a task
+- Return 404 if task doesn't exist
+- Return 204 No Content on success
+
+Register the router at /api/tasks in src/index.ts.
+```
+
+After Gemini CLI builds this, run the dev server and test each route manually:
+
+```text
+The routes are built. Test each endpoint with curl commands:
+1. POST a new task
+2. GET all tasks
+3. GET the task by its id
+4. PATCH it to change the status to 'in_progress'
+5. DELETE it
+6. GET /api/tasks again to confirm it's gone
+
+Show me the curl commands and the expected response for each.
+```
+
+---
+
+## Step 5: Add Input Validation
+
+Your routes have Zod validation wired in, but you need a clean way to handle validation errors across all routes. Improve the pattern:
+
+```text
+Create a validation helper at src/middleware/validate.ts.
+
+This should be an Express middleware factory that:
+1. Accepts a Zod schema
+2. Validates req.body against it
+3. On failure: immediately returns 400 with this shape:
+   { error: true, message: 'Validation failed', errors: [{ field, message }] }
+4. On success: attaches the parsed (type-safe) data to req.body and calls next()
+
+Example usage in a route:
+  router.post('/', validate(createTaskSchema), createTaskHandler)
+
+Refactor the task routes to use this middleware instead of inline validation.
+```
+
+This pattern matters in practice. Inline validation in every route handler leads to inconsistent error messages and repeated code. A single middleware factory keeps the whole API consistent.
+
+---
+
+## Step 6: Write the Tests
+
+Tests are what turn a script into software. Build a test suite:
+
+```text
+Set up testing with Node's built-in test runner (node:test) and supertest.
+
+Install supertest and @types/supertest.
+
+Create src/__tests__/tasks.test.ts with tests for:
+
+Setup:
+- Before each test, clear the tasks table so tests are isolated
+
+Tests to write:
+
+GET /api/tasks
+- returns empty array when no tasks exist
+- returns all tasks when tasks exist
+
+POST /api/tasks
+- creates a task with valid data and returns 201
+- rejects request with missing title and returns 400
+- rejects title longer than 200 characters and returns 400
+- rejects invalid status value and returns 400
+
+GET /api/tasks/:id
+- returns the task when it exists
+- returns 404 when task does not exist
+
+PATCH /api/tasks/:id
+- updates task status when valid status provided
+- returns 404 when task does not exist
+- does not update fields that weren't included in the request body
+
+DELETE /api/tasks/:id
+- deletes the task and returns 204
+- returns 404 when task does not exist
+
+Add a "test" script to package.json: "node --test src/__tests__/**/*.test.ts" 
+(using ts-node for TypeScript support).
+```
+
+Run the tests:
+
+```text
+Run npm test and show me the output.
+If any tests are failing, diagnose the failures and fix them.
+The goal is a green test suite — all tests passing.
+```
+
+---
+
+## Step 7: Error Handling Patterns
+
+Good error handling is what makes an API production-ready. Tighten it up:
+
+```text
+Audit the error handling across all routes and the error handler middleware.
+
+Make these improvements:
+
+1. Create a custom AppError class at src/errors/AppError.ts that extends Error 
+   and accepts a message and statusCode. This lets route handlers throw typed errors.
+
+2. In the global error handler, check if the error is an instance of AppError 
+   and use its statusCode. For unknown errors, log the full error 
+   (console.error) but only return a generic message to the client 
+   (never expose stack traces).
+
+3. Add a 404 catch-all route at the bottom of index.ts (before the error handler) 
+   that returns { error: true, message: 'Route not found' } for any unmatched routes.
+
+4. Wrap all database calls in try/catch and throw AppError instead of letting 
+   SQLite errors propagate directly to the client.
+```
+
+---
+
+## Step 8: Deploy
+
+Your API is ready. Deploy it to a server:
+
+```text
+Prepare the API for deployment.
+
+1. Add a .env.example file with: PORT=3000, NODE_ENV=development
+2. Add .env and data/ to .gitignore
+3. Build the TypeScript to JavaScript with npm run build and verify dist/ is created
+4. Add a Procfile with: web: node dist/index.js (for platforms like Railway or Render)
+
+Then give me step-by-step instructions to deploy this to Railway 
+(railway.app — free tier available). Include:
+- Installing the Railway CLI
+- Initializing the project
+- Setting environment variables
+- The deploy command
+- How to verify the health check endpoint is live after deployment
+```
+
+Railway is the easiest zero-config deployment for Node APIs. The entire deploy takes under 5 minutes once the CLI is installed.
+
+---
+
+## What You Built
+
+You now have a production-grade REST API with:
+
+- Full CRUD for tasks with SQLite persistence
+- Input validation via Zod with consistent error responses
+- A global error handler with custom error types
+- 14 tests covering happy paths and error cases
+- A 404 catch-all and proper error masking
+- A build pipeline from TypeScript to deployable JavaScript
+
+The patterns here — route files, validation middleware, custom error classes, isolated tests — are exactly what you'd find in a professional Node.js codebase. The only difference between this and a production API is the database (swap SQLite for Postgres) and authentication (add a JWT middleware).
+
+Both of those are one walkthrough away.
+
+---
+
+## Next Steps
+
+- Add authentication — protect routes with JWT tokens
+- Swap SQLite for a hosted Postgres database (Neon is free-tier friendly)
+- Add pagination with cursor-based navigation
+- Set up automatic OpenAPI documentation with swagger-jsdoc

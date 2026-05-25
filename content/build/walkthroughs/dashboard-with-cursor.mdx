@@ -1,0 +1,286 @@
+---
+title: "Build a Data Dashboard with Cursor"
+slug: dashboard-with-cursor
+pillar: build
+type: walkthrough
+format: written
+tools: [cursor]
+toolVersions:
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 90
+tags: [dashboard, cursor, data-viz, charts, intermediate]
+isPremium: false
+isFeatured: true
+status: published
+publishedAt: "2026-05-25"
+---
+
+# Build a Data Dashboard with Cursor
+
+Dashboards are where most product and data work lives. If you can build your own, you stop waiting on engineering and start shipping insights on your own timeline. This walkthrough builds a functional data dashboard with charts, tables, and dark mode using Cursor and Recharts.
+
+You'll end up with something you could actually use — not a toy example, but a real dashboard pattern you can extend for any data you have.
+
+Prerequisites: Node.js installed, Cursor installed and running, basic familiarity with the Cursor Agent panel.
+
+---
+
+## Step 1: Set Up the Project in Cursor
+
+Open Cursor, then use File → Open Folder to create a new folder called `data-dashboard` and open it.
+
+Open the Agent panel (Cmd+I on Mac, Ctrl+I on Windows) and run:
+
+```text
+Create a new Next.js 15 project in the current directory.
+Use TypeScript, App Router, and Tailwind CSS v4.
+Install Recharts for data visualization and date-fns for date formatting.
+Use npm as the package manager.
+After setup, clear the boilerplate from app/page.tsx so it's a clean starting point.
+```
+
+Cursor will run the installation commands and clean up the template. Confirm the project starts by opening the Cursor terminal (View → Terminal) and running `npm run dev`. You should see the dev server start at `localhost:3000`.
+
+---
+
+## Step 2: Create the Dashboard Layout
+
+A good dashboard has a permanent sidebar for navigation and a main content area. Build that structure first before touching any charts:
+
+```text
+Create the base dashboard layout.
+
+Create a root layout at app/(dashboard)/layout.tsx with:
+- A fixed sidebar on the left, 240px wide
+- The sidebar should have: app name at the top, navigation links in the middle, 
+  and a user section at the bottom
+- Nav links: Overview, Revenue, Users, Orders, Settings
+- Main content area takes up the remaining width
+- Dark background throughout: sidebar #0f0f0f, main content #141414
+- The sidebar should use a slightly different shade to separate it visually
+- No borders — use background contrast only
+
+Create app/(dashboard)/page.tsx as the Overview page.
+It should just render a heading "Overview" for now so we can verify the layout works.
+```
+
+Open `localhost:3000`. You should see the sidebar and the main content area. The navigation links are not functional yet — that's fine. You're building the skeleton first.
+
+---
+
+## Step 3: Create the Metric Cards
+
+Every dashboard starts with summary metric cards at the top. These are the numbers people look at first.
+
+```text
+Create a MetricCard component at components/dashboard/MetricCard.tsx.
+
+Props the component should accept:
+- title: string
+- value: string
+- change: number (positive or negative percentage)
+- changeLabel: string (e.g., "vs last month")
+- icon: React.ReactNode (optional)
+
+Design requirements:
+- Dark card background: #1a1a1a
+- Title in muted text, value in large bold white text (28px)
+- Change indicator: green with up arrow if positive, red with down arrow if negative
+- Subtle rounded corners (8px), no border
+- Padding: 24px
+
+Then in app/(dashboard)/page.tsx, create a 4-column grid of MetricCards 
+using this static data:
+- Total Revenue: $48,291 / +12.4% vs last month
+- Active Users: 2,847 / +8.1% vs last month  
+- New Signups: 421 / -3.2% vs last month
+- Churn Rate: 2.1% / -0.4% vs last month
+```
+
+After this, you'll have four metric cards across the top of the page. Look at the layout in your browser. Is the spacing right? Are the positive/negative indicators working correctly?
+
+---
+
+## Step 4: Build the Revenue Chart
+
+The main chart is typically the focal point of a dashboard. Build a line chart showing revenue over time:
+
+```text
+Create a RevenueChart component at components/dashboard/RevenueChart.tsx.
+
+Use Recharts to build a responsive area chart (AreaChart with Area).
+
+Static data to use — 12 months of revenue:
+const data = [
+  { month: 'Jun', revenue: 28400, target: 30000 },
+  { month: 'Jul', revenue: 31200, target: 32000 },
+  { month: 'Aug', revenue: 29800, target: 32000 },
+  { month: 'Sep', revenue: 34100, target: 34000 },
+  { month: 'Oct', revenue: 36700, target: 35000 },
+  { month: 'Nov', revenue: 38900, target: 36000 },
+  { month: 'Dec', revenue: 41200, target: 38000 },
+  { month: 'Jan', revenue: 39400, target: 39000 },
+  { month: 'Feb', revenue: 42100, target: 40000 },
+  { month: 'Mar', revenue: 44800, target: 42000 },
+  { month: 'Apr', revenue: 43600, target: 43000 },
+  { month: 'May', revenue: 48291, target: 45000 },
+]
+
+Chart requirements:
+- Show two lines: revenue (blue, #3b82f6) and target (muted, #444)
+- Revenue line should have a gradient fill below it, fading from blue to transparent
+- Dark chart background: #1a1a1a
+- Custom tooltip showing both values formatted as currency
+- Recharts ResponsiveContainer for full width
+- Remove the default chart border/frame
+- Add a legend above the chart, right-aligned
+
+Add this chart to the Overview page below the metric cards, spanning full width.
+```
+
+The gradient area fill is what separates a professional dashboard from a tutorial example. If it's not rendering correctly, follow up with:
+
+```text
+The gradient area fill isn't working — the area under the revenue line 
+is either not showing or showing as solid. 
+In Recharts, the gradient needs to be defined in a <defs> block inside the chart.
+Fix this so there's a smooth fade from blue at the top to transparent at the bottom.
+```
+
+---
+
+## Step 5: Add a Data Table
+
+Charts are for trends. Tables are for the specific numbers. Add an orders/transactions table below the chart:
+
+```text
+Create a DataTable component at components/dashboard/DataTable.tsx.
+
+Table columns: Date, Customer, Plan, Amount, Status
+
+Static data (10 rows):
+const transactions = [
+  { id: 1, date: '2026-05-24', customer: 'Acme Corp', plan: 'Pro', amount: 299, status: 'paid' },
+  { id: 2, date: '2026-05-23', customer: 'Bright Labs', plan: 'Starter', amount: 49, status: 'paid' },
+  { id: 3, date: '2026-05-23', customer: 'Meridian Inc', plan: 'Enterprise', amount: 799, status: 'pending' },
+  { id: 4, date: '2026-05-22', customer: 'Foxwell Group', plan: 'Pro', amount: 299, status: 'paid' },
+  { id: 5, date: '2026-05-22', customer: 'Nova Systems', plan: 'Pro', amount: 299, status: 'failed' },
+  { id: 6, date: '2026-05-21', customer: 'Prism Digital', plan: 'Starter', amount: 49, status: 'paid' },
+  { id: 7, date: '2026-05-20', customer: 'Cascade Works', plan: 'Enterprise', amount: 799, status: 'paid' },
+  { id: 8, date: '2026-05-19', customer: 'Apex Analytics', plan: 'Pro', amount: 299, status: 'paid' },
+  { id: 9, date: '2026-05-18', customer: 'Stellar Tech', plan: 'Starter', amount: 49, status: 'pending' },
+  { id: 10, date: '2026-05-17', customer: 'Ridge Capital', plan: 'Enterprise', amount: 799, status: 'paid' },
+]
+
+Design requirements:
+- Dark table background: #1a1a1a
+- Alternating row backgrounds: #1a1a1a and #1e1e1e
+- Status badges: green for "paid", yellow for "pending", red for "failed"
+- Amount formatted as currency
+- Date formatted as "May 24" (use date-fns format)
+- Table header in muted uppercase text
+- Hover state on rows: slight background highlight
+
+Add this table to the Overview page below the chart, full width.
+```
+
+---
+
+## Step 6: Build a Secondary Chart
+
+Add a bar chart to break up the visual rhythm. A user acquisition breakdown by channel works well:
+
+```text
+Create an AcquisitionChart component at components/dashboard/AcquisitionChart.tsx.
+
+Use Recharts BarChart.
+
+Data:
+const channels = [
+  { channel: 'Organic', users: 891 },
+  { channel: 'Paid Search', users: 642 },
+  { channel: 'Social', users: 438 },
+  { channel: 'Referral', users: 312 },
+  { channel: 'Email', users: 284 },
+  { channel: 'Direct', users: 280 },
+]
+
+Design:
+- Horizontal bar chart (layout="vertical" in Recharts)
+- Bars in indigo (#6366f1) with slightly rounded ends (radius={[0, 4, 4, 0]})
+- Dark background matching the other cards
+- Channel labels on the left, values on the right of each bar
+- No Y-axis line or tick marks
+
+Place this chart alongside a "Top Pages" list in a 2-column grid.
+For the Top Pages list, just create a simple static list component with 
+5 page paths, their view counts, and a small percentage bar indicator.
+```
+
+---
+
+## Step 7: Dark Mode as the Default
+
+Your dashboard is already dark — that's the default you set in Step 2. But verify everything looks right with the proper dark mode configuration in Tailwind:
+
+```text
+Check tailwind.config.ts (or wherever Tailwind v4 config lives) and ensure 
+dark mode is set to 'class' strategy.
+
+Update app/layout.tsx to add the 'dark' class to the HTML element by default.
+
+Also verify there are no white backgrounds or light-colored elements 
+bleeding through anywhere on the dashboard — scan all components 
+and fix any that use bg-white or text-black without a dark: variant.
+```
+
+---
+
+## Step 8: Responsive Design Patterns
+
+Open DevTools and check your dashboard at tablet width (768px) and mobile (375px).
+
+Dashboards don't need to be perfect on 375px — they're primarily desktop tools. But they should be usable on a 768px tablet. Give Cursor specific fixes:
+
+```text
+On tablet (768px):
+- The 4-column metric grid should collapse to 2 columns
+- The sidebar should collapse — hide it and replace with a hamburger menu icon
+- The 2-column chart/list row should collapse to single column
+
+On mobile (375px):
+- The 2-column metric grid should collapse to single column
+- The chart should remain visible but can be simplified
+- The data table should be horizontally scrollable in a scroll container rather than 
+  having all columns squeezed
+
+Don't build a mobile hamburger menu state yet — just hide the sidebar 
+and leave a menu icon as a placeholder.
+```
+
+---
+
+## What You Built
+
+You now have a functional data dashboard with:
+
+- A fixed dark sidebar layout with navigation
+- Four metric cards with trend indicators
+- An area chart with gradient fill and dual data series
+- A formatted data table with status badges
+- A horizontal bar chart for categorical data
+- Responsive breakpoints for tablet and mobile
+
+The entire thing is built on static data — which is actually the right starting point. You've validated the UI before wiring it to a real data source. The next step is replacing the static arrays with API calls, which is a separate walkthrough.
+
+The pattern scales. Every chart component you built accepts data as a prop. Replace those static arrays with `fetch()` calls or database queries and the dashboard is production-ready.
+
+---
+
+## Next Steps
+
+- Connect to a real data source — replace static arrays with API routes
+- Add date range filtering to the charts
+- Build a CSV export button on the data table
+- Add loading skeletons for when data is fetching

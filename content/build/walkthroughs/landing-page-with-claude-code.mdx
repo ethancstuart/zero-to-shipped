@@ -1,0 +1,249 @@
+---
+title: "Build a Landing Page in 60 Minutes with Claude Code"
+slug: landing-page-with-claude-code
+pillar: build
+type: walkthrough
+format: written
+tools: [claude-code]
+toolVersions:
+  claude-code: "1.0.32"
+difficulty: beginner
+estimatedMinutes: 60
+tags: [landing-page, claude-code, next-js, tailwind, beginner]
+isPremium: false
+isFeatured: true
+status: published
+publishedAt: "2026-05-25"
+---
+
+# Build a Landing Page in 60 Minutes with Claude Code
+
+You have an idea. You need a landing page. You don't want to spend a week on it. This walkthrough goes from an empty directory to a deployed, responsive landing page in under an hour using Claude Code.
+
+No prior coding experience required. All you need is Node.js installed and a Claude Code account.
+
+---
+
+## Step 1: Start from an Empty Directory
+
+Open your terminal and create a project folder:
+
+```bash
+mkdir my-landing-page
+cd my-landing-page
+claude
+```
+
+That last command starts a Claude Code session rooted in your new folder. You'll see the Claude Code prompt. This is your build environment for the next hour.
+
+Before you write your first prompt, spend two minutes thinking about what you're building. Claude Code produces dramatically better output when you give it a concrete context. Answer these three questions in your head: Who is this landing page for? What action do you want visitors to take? What's the one thing you want them to understand in the first five seconds?
+
+---
+
+## Step 2: Scaffold the Next.js Project
+
+Give Claude Code your first prompt:
+
+```text
+Create a new Next.js 15 project in the current directory using the App Router. 
+Use TypeScript. Set up Tailwind CSS v4. 
+Use npm as the package manager.
+Run the installation commands and confirm the project starts without errors.
+```
+
+Claude Code will run `npx create-next-app@latest` with the right flags, install dependencies, and verify the dev server starts. It will also clean up the default Next.js boilerplate so you're starting from a clean base rather than the default template.
+
+Watch the output as it runs. You'll see it executing real terminal commands — installing packages, creating files, confirming the server starts on `localhost:3000`. This is not a simulation.
+
+Once it confirms success, you have a working Next.js app. Open `localhost:3000` in your browser to verify.
+
+---
+
+## Step 3: Build the Hero Section
+
+The hero section is the most important part of your landing page. It's what visitors see first and what determines whether they keep reading or leave.
+
+Give Claude Code this prompt (fill in the bracketed sections with your actual content):
+
+```text
+Build a hero section in src/app/page.tsx.
+
+Product name: [Your Product Name]
+Headline: [One sentence that names what you do and who it's for]
+Subheadline: [One sentence that names the key benefit]
+CTA button text: [e.g., "Get Early Access" or "Start Free"]
+CTA target: # (placeholder for now)
+
+Design requirements:
+- Full viewport height on desktop, auto height on mobile
+- Dark background (#0a0a0a or similar), white text
+- Headline should be large — 56px on desktop, 36px on mobile
+- CTA button: solid white background, black text, pill shape, no rounded corners
+- Add a subtle gradient or noise texture to the background
+- No hero image for now — typography-first
+- The layout should feel premium and modern, not startup-generic
+```
+
+You'll get a working hero section. Open your browser. Look at it critically. Does the hierarchy feel right? Is the headline actually the first thing you read?
+
+---
+
+## Step 4: Iterate on Design
+
+The first output is always a draft. Here's where you earn the result.
+
+Open your browser and your terminal side by side. Make these iterations one at a time:
+
+**Iteration 1 — Fix the typography:**
+```text
+The headline font feels too thin. 
+Switch to font-weight 800. 
+Also increase letter-spacing on the subheadline slightly — 
+it's too tight right now.
+```
+
+**Iteration 2 — Add visual hierarchy:**
+```text
+Add a small "label" above the headline — 
+something like a pill badge that says "Now in Beta" or 
+the category your product is in. 
+Use a low-opacity white background with white text. 
+It should feel like a status badge, not a tag.
+```
+
+**Iteration 3 — Improve the CTA:**
+```text
+The CTA button needs more presence. 
+Add a secondary CTA link below the button — 
+something like "See how it works →" in a muted text color.
+Give the primary button a subtle hover state with a slight scale transform.
+```
+
+Each iteration is one prompt. You're not writing code — you're describing what you want changed and why. This is the skill this course is building.
+
+---
+
+## Step 5: Add a Features Section
+
+A landing page needs more than a hero. Add a features section:
+
+```text
+Add a features section below the hero in page.tsx.
+
+Features to include:
+- [Feature 1 name]: [one sentence description]
+- [Feature 2 name]: [one sentence description]
+- [Feature 3 name]: [one sentence description]
+
+Layout: 3-column grid on desktop, single column on mobile.
+Each feature card should have: an icon (use a simple SVG or emoji), 
+the feature name in bold, and the description in muted text.
+Background: slightly lighter than the hero, like #111111.
+Don't use any card borders — use spacing and background contrast instead.
+```
+
+After it builds this, look at the icon choices. The AI will often pick placeholder icons. Give it one more prompt:
+
+```text
+Replace the icons with more specific SVGs that actually represent each feature.
+[Describe what each feature does so it can pick appropriate icons]
+```
+
+---
+
+## Step 6: Add Responsive Behavior
+
+Now verify the page works on mobile. In your browser, open DevTools (right-click → Inspect → toggle device mode, or just resize your browser window to 375px wide).
+
+What breaks? Something usually does — text that's too large, spacing that's too tight, a grid that doesn't collapse properly. Describe what you see:
+
+```text
+On mobile (375px wide):
+- The headline is still too large at 36px, make it 28px on small screens
+- The feature grid is not collapsing to single column — fix that
+- There's a horizontal scroll happening — find what's overflowing and constrain it
+```
+
+Be specific about what's wrong. "It doesn't look good on mobile" will produce generic fixes. "The headline is 36px on mobile and it should be 28px" produces an exact fix.
+
+---
+
+## Step 7: Add Final Polish
+
+Two final additions before deploying:
+
+**Add a simple nav:**
+```text
+Add a minimal navigation bar at the top of the page.
+Left side: product name in white, font-weight 700.
+Right side: two links ("Pricing" and "Sign In") and a small CTA button.
+The nav should be sticky — it stays at the top while scrolling.
+Use a semi-transparent background with backdrop blur so page content 
+scrolls underneath it.
+Background: rgba(10, 10, 10, 0.8) with backdrop-filter blur.
+```
+
+**Add metadata:**
+```text
+Update src/app/layout.tsx with proper metadata:
+- title: "[Your Product Name] — [Your Headline]"
+- description: [your subheadline text]
+- Open Graph tags for social sharing (same title and description)
+```
+
+---
+
+## Step 8: Deploy to Vercel
+
+You're ready to ship. Run this sequence:
+
+```text
+Initialize a git repo, add all files, and make the first commit 
+with the message "feat: initial landing page". 
+Then give me the exact commands to push to a new GitHub repo 
+and deploy to Vercel using the Vercel CLI.
+```
+
+Claude Code will walk you through:
+
+```bash
+git init
+git add .
+git commit -m "feat: initial landing page"
+```
+
+For Vercel, install the CLI if you haven't:
+
+```bash
+npm install -g vercel
+vercel
+```
+
+Answer the prompts (link to existing project or create new, confirm settings). Vercel will give you a live URL within 30 seconds of running `vercel --prod`.
+
+---
+
+## What You Built
+
+You went from an empty directory to a deployed landing page with:
+
+- A responsive hero section with headline, subheadline, and CTA
+- A 3-column features section that collapses on mobile
+- A sticky navigation bar with backdrop blur
+- Proper metadata for social sharing
+- A live URL you can share
+
+The code is Next.js with the App Router, TypeScript, and Tailwind. It's production-quality structure — not a prototype. You can iterate on this indefinitely without hitting walls.
+
+The process you used — prompt, review, evaluate, iterate — is the same loop you'll use for every build. The only thing that changes is the complexity of what you're describing.
+
+---
+
+## Next Steps
+
+- Add a waitlist form connected to a service like Resend or Loops
+- Build a pricing section with a comparison table
+- Add scroll animations with Framer Motion
+- Set up a custom domain in Vercel
+
+All of those are one walkthrough away.
