@@ -74,7 +74,7 @@ export function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex h-[500px] w-[380px] flex-col overflow-hidden rounded-xl border border-white/20 bg-black shadow-2xl">
+    <div className="fixed bottom-3 right-3 z-50 flex h-[90vh] max-h-[500px] w-[95vw] max-w-[380px] flex-col overflow-hidden rounded-xl border border-white/20 bg-black shadow-2xl sm:bottom-6 sm:right-6">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
         <div>
