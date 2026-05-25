@@ -4,16 +4,15 @@ import { withSentryConfig } from "@sentry/nextjs";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      {
-        source: "/waitlist",
-        destination: "/pricing",
-        permanent: false,
-      },
-      {
-        source: "/resources",
-        destination: "/library",
-        permanent: true,
-      },
+      { source: "/modules", destination: "/learn", permanent: true },
+      { source: "/modules/:slug", destination: "/learn/:slug", permanent: true },
+      { source: "/library", destination: "/learn", permanent: true },
+      { source: "/library/:slug", destination: "/learn/:slug", permanent: true },
+      { source: "/guides", destination: "/learn", permanent: true },
+      { source: "/guides/:slug", destination: "/learn/:slug", permanent: true },
+      { source: "/agents", destination: "/system", permanent: true },
+      { source: "/waitlist", destination: "/pricing", permanent: false },
+      { source: "/resources", destination: "/learn", permanent: true },
     ];
   },
   images: {
