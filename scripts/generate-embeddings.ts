@@ -22,8 +22,8 @@ async function walkDir(dir: string): Promise<string[]> {
 }
 
 async function main() {
-  if (!process.env.OPENAI_API_KEY) {
-    console.error('OPENAI_API_KEY is required')
+  if (!process.env.GEMINI_API_KEY) {
+    console.error('GEMINI_API_KEY is required')
     process.exit(1)
   }
 

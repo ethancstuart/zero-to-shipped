@@ -58,26 +58,27 @@ export function chunkContent(
 }
 
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const response = await fetch('https://api.openai.com/v1/embeddings', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'models/text-embedding-004',
+        content: { parts: [{ text }] },
+      }),
     },
-    body: JSON.stringify({
-      model: 'text-embedding-3-small',
-      input: text,
-    }),
-  })
+  )
 
   if (!response.ok) {
-    throw new Error(`OpenAI embedding error: ${response.status}`)
+    const err = await response.text()
+    throw new Error(`Gemini embedding error: ${response.status} — ${err}`)
   }
 
   const data = (await response.json()) as {
-    data: Array<{ embedding: number[] }>
+    embedding: { values: number[] }
   }
-  return data.data[0].embedding
+  return data.embedding.values
 }
 
 export async function embedContent(filePath: string) {
