@@ -1,7 +1,7 @@
-# Zero to Ship — AI Coding Course Platform
+# Prototype Studio — AI Prototyping Platform
 
 ## Project Overview
-Course platform teaching non-engineers to build real software with AI coding tools. 16-module curriculum from setup to capstone. Gamified learning with XP, streaks, skill trees, and certificates. Freemium model with premium gating. Built with Claude Code.
+AI prototyping platform with 4 content pillars (Pulse, Build, Learn, System). Features a tool intelligence engine, multi-agent content pipeline, AI assistant, Arena comparisons, showcase, and public API. Built for non-engineers and builders who want to ship with AI tools.
 
 ## Brand Voice
 **Single source of truth:** `docs/brand/voice.md` — read this before writing any copy, emails, or UI text.
@@ -12,66 +12,117 @@ Course platform teaching non-engineers to build real software with AI coding too
 - No hype, no exclamation points, no emoji. Short sentences. Ship is the verb.
 
 ## Tech Stack
-- Next.js 16 (App Router)
-- TypeScript (strict)
-- React 19
+- Next.js 16 (App Router), TypeScript (strict), React 19
 - Tailwind v4 + shadcn/ui
-- Supabase (Postgres + Auth)
-- Shiki (syntax highlighting)
-- Framer Motion (animations)
-- Vercel (hosting + analytics + speed insights)
+- Supabase (Postgres + Auth + pgvector + RLS)
+- Claude API (pipeline agents, assistant, classifier)
+- Gemini API (embeddings)
+- StackBlitz SDK (sandboxes)
+- next-mdx-remote (content rendering)
+- Vercel (hosting + crons)
+- Sentry (error tracking)
+- Vitest (testing)
 
 ## Architecture
-- Route groups: `(marketing)` for public pages, `(app)` for authenticated, `(public)` for shared profiles
+- Content model: MDX files in /content/ (4 pillars: pulse, build, learn, system)
+- Dynamic data: Supabase (tools, releases, ecosystem, pipeline, users, analytics)
+- Route groups: `(marketing)` for public, `(app)` for authenticated, `(public)` for shared profiles
+- Multi-agent pipeline: Watcher → Analyst → Writer → Fact-Checker → Publisher
+- AI assistant: Gemini embeddings + pgvector RAG + Claude generation
+- Public API: /api/v1/* (tools, compare, capabilities, pulse, showcase, stats, benchmarks)
 - Auth: Supabase Auth with Google OAuth, callback at /auth/callback
-- Content pipeline: markdown modules in cursor-for-product-teams repo → synced via `npm run sync-content`
-- Gamification engine: XP, streaks, skill tree graph, reward toasts (src/lib/gamification/)
-- Premium gating: tier-based content access (src/lib/content/tiers.ts)
 - Middleware: protects app routes, allows marketing and public routes
 
 ## Key Commands
 - `npm run dev` — start dev server
-- `npm run build` — production build (runs sync-content first)
+- `npm run build` — production build
 - `npm run lint` — ESLint
-- `npm run sync-content` — pull module content from cursor-for-product-teams repo
-- `vercel` — deploy to Vercel
+- `npx vitest run` — run tests
+- `npx tsx scripts/seed-tools.ts` — seed AI tool data
+- `npx tsx scripts/seed-ecosystem.ts` — seed ecosystem capabilities
+- `npx tsx scripts/sync-content-index.ts` — sync MDX frontmatter to Supabase
+- `npx tsx scripts/generate-embeddings.ts` — generate Gemini embeddings
+- `npx tsx scripts/populate-graph.ts` — populate knowledge graph
+
+## Content System
+- MDX files in /content/{pillar}/{type}/{slug}.mdx
+- Frontmatter schema: title, slug, pillar, type, format, tools, toolVersions, difficulty, estimatedMinutes, tags, isPremium, isFeatured, status, publishedAt
+- Content loader: src/lib/content/loader.ts
+- Custom MDX components: Callout, ToolBadge, CodeBlock, AgentReplay, Sandbox, CostTicker
+
+## Database (Supabase)
+18 migrations in supabase/migrations/
+Key tables: tools, tool_releases, ecosystem_status, pipeline_runs, pipeline_steps, content_index, content_analytics, content_embeddings, knowledge_nodes, knowledge_edges, arena_challenges, arena_entries, arena_votes, showcase_projects, benchmarks, benchmark_results, user_context, bookmarks, platform_costs, profiles
 
 ## File Structure
 ```
 src/
   app/
-    (marketing)/          # Landing page, pricing, waitlist
-    (app)/                # Authenticated: dashboard, modules, skill-tree, profile, certificate, cheat-sheets
-    (public)/             # Public user profiles (/u/[username])
+    (marketing)/          # Public: pulse, build, learn, system, tools, compare, showcase, arena, guides, library, pricing, waitlist
+    (app)/                # Authenticated: dashboard, skill-tree, profile, build-log, cheat-sheets, admin
+    (public)/             # Public user profiles, leaderboard, certificate verify
     auth/callback/        # Supabase OAuth callback
-    api/og/               # OG image generation
+    api/
+      v1/                 # Public API: tools, compare, capabilities, pulse, showcase, stats, benchmarks
+      cron/               # Scheduled jobs: tool-intelligence, benchmarks, email sequences
+      assistant/          # AI assistant endpoint
+      arena/              # Arena voting
+      stripe/             # Payments (checkout, webhook)
+      og/                 # OG image generation
   components/
-    layout/               # Nav, sidebar, topbar, footer, login, theme toggle
-    dashboard/            # Activity feed, streak calendar, completion ring, role recommendations
-    modules/              # Module content, checkpoints, tool toggle, premium gate, capstone
-    profile/              # Profile form, share buttons, certificate download
-    gamification/         # XP popup, skill tree graph, reward toasts
+    layout/               # Nav, sidebar, topbar, footer, theme toggle
+    tools/                # Tool cards, comparison UI
+    assistant/            # AI assistant chat
+    arena/                # Arena challenge UI
+    observatory/          # Ecosystem observatory
+    content/              # Content rendering
+    mdx/                  # Custom MDX component overrides
+    dashboard/            # Activity feed, streak calendar, completion ring
+    profile/              # Profile form, share buttons
+    gamification/         # XP popup, skill tree, reward toasts
     ui/                   # shadcn/ui components
   lib/
     supabase/             # Supabase client (browser + server)
+    content/              # Content loader, tier definitions
+    intelligence/         # Tool intelligence engine
+    assistant/            # RAG + Claude assistant
+    graph/                # Knowledge graph
     gamification/         # XP engine, constants
-    content/              # Tier definitions
-    constants.ts          # App-wide constants
-    utils.ts              # Utility functions
+    api/                  # Public API helpers
+    actions/              # Server actions
+    email/                # Resend email templates
+    experiments/          # A/B testing
+    personalization/      # User personalization
   types/                  # TypeScript interfaces
+  data/                   # Static reference data
+scripts/
+  seed-tools.ts
+  seed-ecosystem.ts
+  sync-content-index.ts
+  generate-embeddings.ts
+  populate-graph.ts
+content/                  # MDX content files by pillar
+supabase/
+  migrations/             # 18 SQL migrations
 ```
 
-## Content
-- 16 modules synced from `~/Projects/cursor-for-product-teams/`
-- Markdown with frontmatter → rendered with remark/rehype pipeline + Shiki
-- Module slugs match filenames (01-setup-and-first-build, etc.)
+## Environment Variables
+Required:
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- `ANTHROPIC_API_KEY` (pipeline agents, assistant, classifier)
+- `GEMINI_API_KEY` (embeddings)
+- `CRON_SECRET` (cron auth)
+- `RESEND_API_KEY` (emails)
+
+Optional:
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` (payments, currently dormant)
+- `GITHUB_TOKEN` (higher GitHub API rate limits)
+- `NEXT_PUBLIC_SENTRY_DSN` (error tracking)
 
 ## Notion Context
 This project is tracked in Notion under Zero to Ship.
 - **Zero to Ship page:** `33945c2d-baf4-8154-a09e-f604d9bb8b18`
 - **Technical Architecture:** `33945c2d-baf4-814c-822f-fb7bfc54b60a`
-
-> ⚠️ **Pre-launch P0 (April 28 deadline):** NEXT_PUBLIC_SENTRY_DSN is blank — Sentry is installed and wired but not capturing. Create a Sentry project and add the DSN to .env.local + Vercel env vars before launch. Refund policy also missing from paywall. Both tracked in Bugs & Issues.
 - **Launch Tracker:** `33945c2d-baf4-81c9-99a1-ce19d0eb395c`
 - **Content Calendar:** `33945c2d-baf4-8110-90e4-f47474f388d8`
 - **Bugs & Issues:** `33945c2d-baf4-8154-81ad-d0dd62c3a7ba`
@@ -99,21 +150,21 @@ Always label new bugs with their severity tier.
 - Append a Launch Tracker entry using this structure:
   `Last updated: YYYY-MM-DD | Days to launch: N | Completed this session: [list] | Still open: [list] | P0 blockers: [list or "none"]`
 - If content was planned or published, update the Content Calendar with: title, type, target channel, publish date, status.
-- If it is post-April 28 launch: replace "Days to launch" with "Days since launch: N | Signups: X | Free→Premium conversions: X | Top source: [channel]".
 
 ## Conventions
-- Dark theme by default (next-themes)
-- Mobile-first responsive design
+- Dark theme default
 - TypeScript strict, never JavaScript
+- Server components by default, `use client` only for interactivity
+- MDX for all content, never hardcoded pages
+- Tailwind v4 prose classes for content rendering
 - Components: PascalCase in feature folders
-- Server components by default, "use client" only when needed
-- Route groups for layout separation (marketing vs app vs public)
+- Mobile-first responsive design
 
 ## Shared Context — home-base
 This project is part of a portfolio managed from ~/Projects/home-base.
 Before planning features or making architectural decisions, reference:
 - `~/Projects/home-base/registry.md` — project registry, status, and cross-project alignment
-- `~/Projects/home-base/apis/catalog.md` — curated API catalog (teaching APIs for course modules)
+- `~/Projects/home-base/apis/catalog.md` — curated API catalog
 - `~/Projects/home-base/standards/quality.md` — shared quality standards
 - `~/Projects/home-base/standards/design-principles.md` — shared design philosophy
 - `~/Projects/home-base/standards/design-toolkit.md` — skills, component libraries, and design references
@@ -123,14 +174,10 @@ When designing UI, consult the design toolkit before building components from sc
 Use `/brand-guidelines` to auto-apply this project's brand identity.
 Use `/frontend-design` for intentional aesthetic direction on new UI work.
 
-When planning new modules or features, check the API catalog for teaching-friendly APIs.
-
 ## Important Notes
-- `.env.local` is gitignored — copy `.env.example` and add Supabase keys
+- `.env.local` is gitignored — copy `.env.local.example` and add keys
 - `CLAUDE.local.md` is gitignored — personal context
-- Content lives in a separate repo (cursor-for-product-teams) and is synced at build time
-- Site URL: zerotoship.app
-- Sentry for error tracking (`NEXT_PUBLIC_SENTRY_DSN` env var, empty = disabled)
 - Email unsubscribe: HMAC-signed tokens via `CRON_SECRET`, `/api/unsubscribe` route (CAN-SPAM compliance)
 - Server action input validation: Zod v4 schemas in actions files
 - Profile-not-found safety net: auto-recovers missing profiles in app layout, fallback to `/setup-error`
+- Sentry for error tracking (`NEXT_PUBLIC_SENTRY_DSN` env var, empty = disabled)
