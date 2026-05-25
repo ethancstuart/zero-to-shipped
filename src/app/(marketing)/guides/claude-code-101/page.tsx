@@ -271,12 +271,6 @@ Add to the sidebar navigation if it's a new page.`}</code></pre>
           </p>
           <ul>
             <li>
-              <strong>MCP plugins</strong> — Connect Claude Code to external tools
-              (databases, APIs, Slack) so it can read and write to your real systems.
-              We curated a directory of the best ones:{" "}
-              <a href="/resources/mcp-plugins">MCP Plugins for Non-Engineers</a>.
-            </li>
-            <li>
               <strong>Building agents</strong> — Create automated workflows where
               Claude Code handles recurring tasks without you prompting it each time.
               We built 4 free templates to get you started:{" "}
