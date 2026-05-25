@@ -1,6 +1,7 @@
 import { Callout } from './callout'
 import { ToolBadge } from './tool-badge'
 import { CodeBlock } from './code-block'
+import { AgentReplay } from './agent-replay'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mdxComponents: Record<string, React.ComponentType<any>> = {
@@ -9,6 +10,6 @@ export const mdxComponents: Record<string, React.ComponentType<any>> = {
   CodeBlock,
   Sandbox: () => null,
   ArenaCompare: () => null,
-  AgentReplay: () => null,
+  AgentReplay,
   CostTicker: () => null,
 }
