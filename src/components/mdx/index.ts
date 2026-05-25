@@ -3,6 +3,7 @@ import { ToolBadge } from './tool-badge'
 import { CodeBlock } from './code-block'
 import { AgentReplay } from './agent-replay'
 import { Sandbox } from './sandbox'
+import { CostTicker } from './cost-ticker'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mdxComponents: Record<string, React.ComponentType<any>> = {
@@ -12,5 +13,5 @@ export const mdxComponents: Record<string, React.ComponentType<any>> = {
   Sandbox,
   ArenaCompare: () => null,
   AgentReplay,
-  CostTicker: () => null,
+  CostTicker,
 }
