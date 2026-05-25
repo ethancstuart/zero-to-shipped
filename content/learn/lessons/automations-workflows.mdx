@@ -1,0 +1,347 @@
+---
+title: "Automations & Workflows"
+slug: automations-workflows
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: advanced
+estimatedMinutes: 60
+tags: [automations, workflows, ai-agents, productivity]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 13: Automations & Workflows
+
+*Tier 3: Advanced | Estimated time: 5-6 hours | Prerequisites: Foundations + at least 2 Intermediate*
+
+---
+
+## What You'll Get Out of This
+
+Every product person has tasks they do manually every week that follow the same pattern. Export a CSV, reformat it, email it. Copy data from one tool to another. Generate the same report with different date ranges. This module teaches you to identify those tasks, scope them as automations, and build Python scripts that eliminate them.
+
+The goal is tangible time savings — not automation for its own sake.
+
+---
+
+## Part 1: The Automation Decision Framework
+
+Before building anything, decide if automation is worth it.
+
+### Automate When:
+- You do the task at least weekly
+- The steps are the same every time (or close)
+- Errors in the manual process are costly (missed data, wrong formatting)
+- The task takes 15+ minutes per occurrence
+- You can describe every step precisely
+
+### Don't Automate When:
+- You do the task twice a year (just do it manually)
+- Every instance is different and requires judgment
+- The tools involved change frequently
+- The automation would take longer to build and maintain than the manual effort saves
+- The task involves sensitive decisions that shouldn't be automated
+
+### The ROI Test
+
+```text
+Time spent manually: ___ minutes × ___ times per month = ___ minutes/month
+Estimated build time: ___ hours
+Estimated maintenance: ___ minutes/month
+
+Breakeven: [build time] ÷ [monthly savings] = ___ months
+```
+
+If breakeven is more than 3 months, question whether it's worth it. If breakeven is less than 1 month, build it immediately.
+
+---
+
+## Part 2: Python for Automation
+
+Python is the best language for automation scripts because it's readable, has libraries for everything, and AI coding tools generate it fluently.
+
+### File Processing
+
+The most common automation: reading a file, transforming the data, and writing a new file.
+
+```text
+Build a Python script called format_report.py that:
+1. Reads a CSV file from an "input" folder
+2. Filters to only rows where status is "Active"
+3. Renames columns: "emp_name" → "Employee Name", "dept" → "Department"
+4. Sorts by Department, then by Employee Name
+5. Adds a "Generated On" column with today's date
+6. Writes the result to an "output" folder as a formatted CSV
+7. Prints a summary: "Processed X records, Y active, saved to [filename]"
+
+Include error handling:
+- If the input folder doesn't exist, create it and print a helpful message
+- If the CSV has unexpected columns, print which columns are missing
+- If the output folder doesn't exist, create it
+```
+
+### Report Generation
+
+```text
+Build a Python script called weekly_summary.py that:
+1. Reads all CSV files in a "weekly-data" folder
+2. For each file, calculates:
+   - Total records
+   - Records by status (count and percentage)
+   - Average processing time
+3. Compiles results into a summary markdown file with:
+   - Date range covered
+   - A table comparing metrics across files
+   - A "highlights" section noting any anomalies 
+     (e.g., files with >20% error rate)
+4. Saves the markdown file to "reports/weekly-summary-[date].md"
+```
+
+### Data Formatting
+
+```text
+Build a Python script called clean_export.py that:
+1. Reads a messy CSV export (inconsistent date formats, extra whitespace, 
+   mixed case in text fields)
+2. Standardizes dates to YYYY-MM-DD format
+3. Trims whitespace from all text fields
+4. Normalizes text to Title Case for name fields
+5. Removes completely empty rows
+6. Validates email format for email columns (flag invalid ones, don't delete)
+7. Writes a clean version and a separate "flagged_records.csv" with issues
+```
+
+---
+
+## Part 3: API Integrations
+
+APIs let your scripts interact with other tools — sending Slack messages, creating tickets, pulling data from services.
+
+### Sending Slack Messages
+
+```text
+Build a Python script that sends a formatted Slack message using
+a webhook URL.
+
+The message should include:
+- A header: "Weekly Metrics Update"
+- 3 key metrics with emoji indicators (green for up, red for down)
+- A link to the full report
+
+The webhook URL should come from an environment variable (SLACK_WEBHOOK_URL), 
+not hardcoded in the script.
+
+Include error handling for network failures.
+```
+
+### The Anatomy of an Automation
+
+Every good automation follows this structure:
+
+```text
+1. TRIGGER    → What starts it (manual run, schedule, file change)
+2. INPUT      → What data it needs (file, API response, user input)
+3. VALIDATE   → Check that the input is good before processing
+4. PROCESS    → The actual transformation or work
+5. OUTPUT     → Where the results go (file, API call, message)
+6. NOTIFY     → Tell someone it finished (log, Slack message, email)
+7. LOG        → Record what happened for debugging
+```
+
+---
+
+## Part 4: Error Handling and Logging
+
+The difference between an automation that works once and one that works reliably is error handling.
+
+### Try/Except Pattern
+
+```python
+import logging
+import pandas as pd
+
+logger = logging.getLogger(__name__)
+
+try:
+    data = pd.read_csv('input/report.csv')
+    processed = data[data['status'] == 'Active']  # your transformation logic
+    processed.to_csv('output/clean_report.csv', index=False)
+    logger.info(f"Successfully processed {len(processed)} records")
+except FileNotFoundError:
+    logger.error("Input file not found. Place the CSV in the input/ folder.")
+except Exception as e:
+    logger.error(f"Unexpected error: {e}")
+```
+
+Tell your AI tool: "Add comprehensive error handling. Every operation that could fail should be wrapped in try/except with a helpful error message."
+
+### Logging
+
+```text
+Add logging to this script using Python's logging module:
+- INFO level for successful operations ("Processed 50 records")
+- WARNING level for non-critical issues ("3 records had missing dates, skipped")
+- ERROR level for failures ("Could not read input file")
+
+Log to both the console and a file called "logs/automation.log".
+Include timestamps in the log format.
+```
+
+---
+
+## Part 5: Scheduling
+
+### Manual Trigger (Simplest)
+
+Run the script when you need it:
+```bash
+python3 weekly_summary.py
+```
+
+### Cron (Mac/Linux)
+
+Schedule scripts to run automatically:
+
+```bash
+# Open cron editor
+crontab -e
+
+# Run every Monday at 9 AM
+0 9 * * 1 cd /path/to/project && python3 weekly_summary.py >> logs/cron.log 2>&1
+```
+
+> **Windows users:** Use Task Scheduler instead of cron. Open Task Scheduler, create a Basic Task, set the trigger to weekly on Monday at 9 AM, and set the action to run `python weekly_summary.py` in your project directory.
+
+### GitHub Actions (Platform-Independent)
+
+Create `.github/workflows/weekly-report.yml`:
+
+```yaml
+name: Weekly Report
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+  workflow_dispatch:  # Also allow manual trigger
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python weekly_summary.py
+```
+
+Tell your AI tool: "Create a GitHub Actions workflow that runs this script every Monday at 9 AM. Include the ability to trigger it manually."
+
+---
+
+## Part 6: Documentation
+
+Every automation needs a README. Future-you (in 6 months, having forgotten this project) will thank present-you.
+
+````markdown
+# Weekly Summary Report Generator
+
+## What it does
+Reads CSV exports from the weekly-data folder, compiles metrics,
+and generates a formatted markdown summary report.
+
+## How to run
+```bash
+python3 weekly_summary.py
+```
+
+## Input
+Place CSV files in the `weekly-data/` folder. Expected columns:
+- id, status, processing_time, created_date
+
+## Output
+Generates `reports/weekly-summary-YYYY-MM-DD.md`
+
+## Schedule
+Runs automatically every Monday at 9 AM via GitHub Actions.
+Can also be triggered manually.
+
+## Configuration
+- SLACK_WEBHOOK_URL: Set in .env for Slack notifications
+- LOG_LEVEL: Set in .env (default: INFO)
+
+## Troubleshooting
+- "File not found": Ensure CSVs are in weekly-data/
+- "Missing columns": Check CSV headers match expected format
+- "Slack notification failed": Verify webhook URL in .env
+````
+
+---
+
+## Lab: Build an Automation
+
+1. **Identify a real manual task** you do at least weekly
+2. **Scope it:** Write the trigger, input, process, output, and notification steps
+3. **Calculate ROI:** How long does it take manually? How long to build?
+4. **Build it** in Python with your AI tool's help
+5. **Add error handling and logging**
+6. **Write a README**
+7. **Run it** on real (or realistic) data and verify the output
+8. **Commit to Git** with blueprints
+
+---
+
+## Critical Evaluation
+
+- Is this automation actually saving time, or did you automate something for fun?
+- What happens when the input format changes? Is the script robust?
+- Could someone else run this without your help (does the README cover it)?
+- What's the failure mode? If the script silently produces wrong output, how would you know?
+
+---
+
+## Go Deeper
+
+Try these prompts in your AI tool to extend your automation skills:
+
+- "Add a --dry-run flag that shows what the script would do without actually changing any files"
+- "Add a progress bar that shows how many records have been processed out of the total"
+- "Make this script accept the input filename as a command-line argument instead of hardcoding it"
+- "Add a summary email that sends the results to a specified address using SMTP"
+
+### If You Get Stuck
+
+**Script runs but produces empty output:** Add print statements at each step: `print(f"Read {len(data)} records")`, `print(f"After filtering: {len(filtered)} records")`. Find where the data disappears. Common cause: the filter condition doesn't match the actual data values (e.g., checking for "active" when the data says "Active").
+
+**"ModuleNotFoundError":** The library isn't installed. Run `pip install [library-name]` or `pip3 install [library-name]`. If you have a `requirements.txt`, run `pip install -r requirements.txt`.
+
+**Script worked yesterday but not today:** Check if the input data changed format. Check if an API endpoint changed. Check if a file path moved. Add logging that records the input state so you can debug retroactively.
+
+**Not sure if the automation is worth it:** Use the ROI calculation from Part 1. If you've spent more time building the automation than it would save in 3 months of manual work, consider whether the learning experience was the real value — and whether you should simplify the automation to just the highest-impact part.
+
+### Try This
+
+Time yourself doing a manual task you do regularly. Then build an automation for it. Time the automation. Calculate the actual time savings — not the theoretical savings. Was it worth it? Write this up honestly, including the time spent building.
+
+---
+
+## Checkpoint
+
+- [ ] Built at least one working automation
+- [ ] Automation has error handling (doesn't crash silently)
+- [ ] Automation has logging (you can see what it did)
+- [ ] Written a README documenting what it does and how to run it
+- [ ] Can estimate time saved per week
+- [ ] Can articulate whether the automation was worth building (ROI)
+
+---
+
+*Previous: [← Module 12: Data Products](12-data-products.md)*
+*Next: [Module 14: Docs, Security, Testing & Shipping →](14-docs-security-testing-shipping.md)*

@@ -1,0 +1,308 @@
+---
+title: "Building Interactive Tools"
+slug: interactive-tools
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 60
+tags: [interactive, tools, ui, build]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 9: Building Interactive Tools
+
+*Tier 2: Intermediate | Estimated time: 6-8 hours | Prerequisites: Foundations (Modules 1-5)*
+
+---
+
+## What You'll Get Out of This
+
+This is where you go from single-page experiments to tools other people actually use. You'll learn component-based thinking (breaking UIs into reusable pieces), state management (how apps remember things), data visualization, and deployment (making your tool accessible via a URL anyone can visit).
+
+---
+
+## Part 1: Component Thinking
+
+Everything you see in a web application is made of components — self-contained pieces that each handle one job.
+
+Take any dashboard you use daily. It probably has:
+- A header (logo, navigation, user menu)
+- A sidebar (navigation links, filters)
+- A data table (rows of information, sortable columns)
+- Cards (summary stats, KPIs)
+- Charts (visualizations of data)
+- Forms (input fields, buttons)
+
+Each of these is a component. When you describe what you want to build, thinking in components makes your prompts dramatically more precise.
+
+### From "Build me a dashboard" to component-level prompting:
+
+```text
+Build a stakeholder request dashboard with these components:
+
+HEADER:
+- App title "Request Tracker" on the left
+- Request count badge on the right showing total open requests
+
+FILTER BAR:
+- Dropdown for Status (All, New, In Review, Approved, Declined)
+- Dropdown for Priority (All, P0, P1, P2, P3)
+- Text search that filters by title and description
+- "Clear filters" button that resets all filters
+
+DATA TABLE:
+- Columns: Title, Submitter, Priority, Status, Date Submitted
+- Sortable by clicking column headers (toggle asc/desc)
+- Click a row to expand and show full description
+- Status is an inline dropdown (changeable directly in the table)
+
+SUMMARY CARDS (above table):
+- Total requests
+- Open requests
+- Approved this month
+- Average time to decision
+
+Each card should show the number prominently with a subtle label below.
+```
+
+This prompt produces better results than "build me a dashboard" because the AI knows exactly what pieces to create and how they relate.
+
+---
+
+## Part 2: React and Tailwind CSS — Through Building
+
+For tools with interactive components, your AI tool will often generate React code (a JavaScript framework for building UIs) styled with Tailwind CSS (a utility-based styling system). You don't need to learn either in depth — you need to recognize what you're looking at and know enough to direct changes.
+
+### React in 60 Seconds
+
+React organizes code into components — functions that return what should appear on screen:
+
+```jsx
+function RequestCard({ title, priority, status }) {
+  return (
+    <div className="card">
+      <h3>{title}</h3>
+      <span className="priority">{priority}</span>
+      <span className="status">{status}</span>
+    </div>
+  );
+}
+```
+
+**What to notice:** The function name (`RequestCard`) is the component. The curly braces `{}` insert dynamic data. `className` is React's version of CSS classes.
+
+### Tailwind in 60 Seconds
+
+Instead of writing CSS in a separate file, Tailwind puts styles directly on elements:
+
+```html
+<button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+  Add Request
+</button>
+```
+
+**What to notice:** Each class does one thing. `bg-blue-600` = blue background. `px-4` = horizontal padding. `rounded` = rounded corners. You don't need to memorize these — the AI writes them for you.
+
+### When You Need to Direct Changes
+
+Your evaluation skills from Module 2 matter here. When reviewing AI-generated output:
+
+- "This card is too wide" → "Reduce the max-width of the RequestCard component to 400px"
+- "The spacing between cards is uneven" → "Add consistent gap-4 spacing between cards in the grid"
+- "The filter isn't updating the table" → "The status filter dropdown onChange handler isn't connected to the filtering function — fix this"
+
+You're pointing the AI to the right component and describing the change in plain English. That's all you need.
+
+---
+
+## Part 3: State Management
+
+"State" is how your application remembers things. When a user selects a filter, types in a search box, or checks a checkbox — the application needs to track that.
+
+You don't need to implement state management. You need to understand the concept so you can debug issues and direct changes.
+
+### Common State Problems (and How to Describe Them)
+
+**"The filter resets when I sort the table"**
+Problem: Sorting is overwriting the filter state. Tell the AI: "The sort function should preserve the current filter state, not reset it."
+
+**"I added a request but it doesn't show in the table until I refresh"**
+Problem: The table isn't re-rendering when data changes. Tell the AI: "After adding a new request, the table should update immediately without requiring a page refresh."
+
+**"The count badge shows the wrong number after filtering"**
+Problem: The count is reading from unfiltered data. Tell the AI: "The summary cards should reflect the currently filtered data, not the total dataset."
+
+Naming the state problem specifically is more helpful than "it's broken."
+
+---
+
+## Part 4: Working with Data
+
+Most internal tools display data — from JSON files, APIs, or user input.
+
+### Loading JSON Data
+
+```text
+Build a dashboard that loads data from a file called sample-data.json.
+The file contains an array of feature requests with these fields:
+- id (number)
+- title (string)
+- description (string)
+- submitter (string)
+- priority (P0/P1/P2/P3)
+- status (New/In Review/Approved/Declined)
+- submittedDate (ISO date string)
+
+Load the data when the app starts and display it in a sortable, 
+filterable table.
+```
+
+### Data Visualization
+
+For charts and graphs, your AI tool commonly uses Chart.js, Recharts, or Plotly:
+
+```text
+Add a chart section above the table with two visualizations:
+1. A bar chart showing request count by status
+2. A line chart showing requests submitted per week over the last 3 months
+
+Use Chart.js. The charts should update when filters are applied.
+```
+
+Be specific about chart type, what data it displays, and whether it responds to filters.
+
+---
+
+## Part 5: Deployment
+
+A tool on your laptop is a prototype. A tool with a URL is a product.
+
+### Option 1: GitHub Pages (Simplest)
+
+For static sites (HTML/CSS/JS with no backend):
+
+1. Push your project to GitHub
+2. Go to Settings → Pages
+3. Set source to "Deploy from a branch" → select `main` → `/ (root)`
+4. Your site is live at `https://your-username.github.io/repo-name`
+
+### Option 2: Vercel (Best for React)
+
+1. Create an account at [vercel.com](https://vercel.com)
+2. Connect your GitHub repository
+3. Vercel auto-detects the framework and deploys
+4. You get a URL like `project-name.vercel.app`
+5. Every push to GitHub automatically redeploys
+
+> **In Claude Code:** You can deploy directly from the terminal with `vercel deploy` — Claude Code can run this for you.
+
+### Option 3: Netlify (Similar to Vercel)
+
+1. Create an account at [netlify.com](https://netlify.com)
+2. Drag-and-drop your project folder, or connect GitHub
+3. You get a URL like `project-name.netlify.app`
+
+### Which to Choose
+
+- Single HTML file → GitHub Pages
+- React or Next.js project → Vercel
+- Anything else → Netlify (most flexible)
+
+---
+
+## Part 6: Build vs. Buy
+
+Not everything should be built with AI. Before building, ask:
+
+| Build with AI when... | Use an existing tool when... |
+|---|---|
+| You need something custom to your workflow | An off-the-shelf tool does 80%+ of what you need |
+| The tool is relatively simple (days, not months) | Building would take weeks and require ongoing maintenance |
+| You want full control over the design and behavior | You need features like permissions, auth, or collaboration |
+| It's a prototype to validate an idea before investing more | The team already uses and likes an existing solution |
+| Nothing on the market solves your specific problem | The problem is well-solved (project tracking → use Jira/Linear) |
+
+**Rule of thumb:** Build when the unique part is the *what* (your specific workflow). Buy when the hard part is the *how* (authentication, permissions, real-time collaboration, mobile apps).
+
+---
+
+## Lab: Build a Multi-Component Tool
+
+1. **Pick a tool idea** relevant to your role. Suggestions:
+   - Stakeholder request tracker
+   - Meeting action item dashboard
+   - Team capacity planner
+   - Competitive feature comparison matrix
+   - Platform adoption scorecard
+
+2. **Plan it in components** before prompting. Write out each component and what it does.
+
+3. **Build iteratively:**
+   - Prompt 1: Basic structure and layout
+   - Prompt 2: Add data loading and display
+   - Prompt 3: Add filtering and sorting
+   - Prompt 4: Add charts or summary stats
+   - Prompt 5: Polish design and handle edge cases
+
+4. **Deploy it** using one of the three options above
+
+5. **Share the URL** with at least one person and ask them to use it. Note their feedback.
+
+6. **Commit everything** to Git with meaningful commit messages.
+
+---
+
+## Critical Evaluation
+
+For interactive tools, evaluate beyond "does it run":
+
+- Would you actually use this daily, or is it a demo?
+- What happens with no data? One record? A thousand records?
+- Is it faster than the process it replaces?
+- Would a stakeholder understand it without explanation?
+- What breaks if someone uses it differently than you expected?
+
+---
+
+## Go Deeper
+
+Once your tool is working, try these prompts to push it further:
+
+- "Add keyboard shortcuts: Escape to close modals, Enter to submit forms, arrow keys to navigate the table"
+- "Add a loading skeleton that shows while data is being processed — never show a blank screen"
+- "What happens if this app has 500 records? Optimize the rendering so it doesn't slow down."
+- "Add an 'Export to CSV' button that downloads the currently filtered data as a spreadsheet"
+
+### If You Get Stuck
+
+**The app runs but looks broken on different screen sizes:** Add basic responsive behavior. Tell the AI: "Make this responsive. On screens narrower than 768px, stack the sidebar below the header and make the table scroll horizontally."
+
+**Filters work individually but not together:** This is the most common bug in interactive tools. The filters are probably overwriting each other instead of combining. Tell the AI: "When multiple filters are active, they should work together (AND logic). Applying a status filter and a priority filter should show only records matching BOTH."
+
+**Can't deploy — build errors:** For a single HTML file, you don't need a build step. Just push the file to GitHub and enable GitHub Pages. For React apps, the most common deploy error is a missing dependency — check that `package.json` lists everything the project imports.
+
+**No one has feedback on your tool:** Ask specific questions: "What's the first thing you noticed? Is anything confusing? What would you change?" Open-ended "what do you think?" gets you polite nods. Specific questions get you useful feedback.
+
+---
+
+## Checkpoint
+
+- [ ] Built a multi-component application (not a single-page experiment)
+- [ ] Deployed it to a live URL
+- [ ] At least one other person has used it and given feedback
+- [ ] Code is in Git with meaningful commits and blueprints
+- [ ] You can explain component thinking in your own words
+- [ ] You've evaluated the build vs. buy tradeoff for your tool
+
+---
+
+*Previous: [← Module 8: Planning & Research with AI](08-planning-and-research.md)*
+*Next: [Module 10: Decks, Diagrams & Visual Assets →](10-decks-and-visuals.md)*

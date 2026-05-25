@@ -1,0 +1,45 @@
+---
+title: "Getting Started with AI Agents"
+slug: getting-started-with-agents
+pillar: system
+type: playbook
+format: written
+tools: [claude-code]
+toolVersions:
+  claude-code: "1.0.32"
+difficulty: beginner
+estimatedMinutes: 20
+tags: [agents, getting-started, claude-code, personas]
+isPremium: false
+isFeatured: true
+status: published
+publishedAt: "2026-05-25"
+---
+
+# Getting Started with AI Agents
+
+## What is an Agent System
+
+An AI agent is a language model with a defined role, a set of tools, and enough context to make decisions and take actions without you hand-holding every step. A single Claude Code session with a well-crafted CLAUDE.md is a basic agent. A network of specialized agents working in parallel — each with its own persona, toolset, and output — is an agent system.
+
+The shift from "AI assistant" to "agent system" is less about technology and more about how you think. When you start treating your AI tools as a team of specialists rather than a single generalist you interrupt constantly, your output quality goes up and your prompt-writing time goes down.
+
+## The Core Concept
+
+Every effective agent has three things: a **persona** (who it is, what it knows, how it communicates), a **context window** (the files, instructions, and history it can see), and a **feedback loop** (how it knows when it's done and whether the output is correct).
+
+Most people get the persona part wrong. They write "You are a helpful assistant" and wonder why the output is generic. A strong persona is specific: "You are a senior product manager with a background in B2B SaaS and a bias toward ruthless prioritization. You communicate in plain language and never hedge without a reason." That single sentence changes the output dramatically.
+
+## Why Specialized Agents
+
+A generalist agent trying to do research, write copy, review code, and manage a project simultaneously will do all four things mediocrely. Specialized agents do one thing well. When you need to analyze a competitor, you spin up the competitive intelligence persona. When you need to write a launch post, you use the content strategist persona. When you need to review a pull request, you use the code reviewer.
+
+The overhead of managing multiple agents is real, but the quality gain is worth it once you have your personas dialed in. The System pillar of Prototype Studio is where we publish the personas and playbooks we actually use.
+
+## Getting Started
+
+The fastest way to start is with Claude Code and a well-structured CLAUDE.md file. This file is the agent's operating manual — it tells Claude who it is, what tools it has, what the project context is, and how it should behave. Think of it as the hiring document for the agent.
+
+Start simple: one agent, one role, one project. Write a CLAUDE.md that explains the project in two paragraphs, defines the agent's specialty, and lists three or four constraints (things the agent should never do). Run a session. Observe what works and what breaks. Refine the persona. Repeat.
+
+Once you have one persona that produces consistently good output, pattern-match it to create a second. That's the beginning of an agent system. The playbooks in this section walk through the specific setups we use — from solo build sessions to multi-agent research pipelines.

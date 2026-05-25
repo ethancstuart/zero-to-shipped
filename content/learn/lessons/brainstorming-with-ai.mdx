@@ -1,0 +1,274 @@
+---
+title: "Brainstorming & Ideation with AI"
+slug: brainstorming-with-ai
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 60
+tags: [brainstorming, ideation, product-thinking, ai]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 7: Brainstorming & Ideation with AI
+
+*Tier 2: Intermediate | Estimated time: 3-4 hours | Prerequisites: Foundations (Modules 1-5)*
+
+---
+
+## What You'll Get Out of This
+
+AI is a powerful divergent thinking partner — it can generate ideas faster than any human and draw connections across domains you might not think to connect. But it has a critical weakness: it gravitates toward the obvious. Left unchecked, AI brainstorming produces ideas that sound creative but are actually the first things anyone would think of.
+
+This module teaches you to use AI for ideation while pushing past its defaults to reach genuinely useful, non-obvious ideas.
+
+---
+
+## Part 1: The Convergence Problem
+
+Ask any AI tool "Give me 10 ideas for improving team productivity" and you'll get:
+1. Daily standups
+2. Task management tools
+3. Automation of repetitive tasks
+4. Clear goal setting
+5. Regular feedback loops
+... and so on.
+
+These aren't wrong. They're the average of every productivity article, management book, and LinkedIn post the AI was trained on. They're the answer that would get a B+ on a business school exam. They're safe, reasonable, and unremarkable.
+
+This is the convergence problem: AI defaults to the center of the distribution. It gives you what most people would say, not what only you could say.
+
+Your job in AI-assisted brainstorming is to push past this center.
+
+---
+
+## Part 2: Techniques for Better Ideation
+
+### Technique 1: The Anti-Obvious Constraint
+
+Explicitly forbid the obvious answers:
+
+```text
+I need ideas for reducing meeting time across a product team.
+
+Do NOT suggest:
+- Shorter meetings
+- Fewer meetings
+- Async standups
+- Meeting-free days
+- Better agendas
+
+These are obvious. Give me 10 ideas that are less conventional, 
+including at least 3 that would make most managers uncomfortable.
+```
+
+By removing the top-of-mind answers, you force the AI into less explored territory. The "make managers uncomfortable" constraint pushes even further.
+
+### Technique 2: Cross-Domain Analogies
+
+```text
+I'm trying to improve how our team triages incoming feature requests 
+(about 30 per week from various stakeholders).
+
+How would these domains solve this problem?
+- An emergency room (triage under pressure)
+- A venture capital firm (evaluating pitches)
+- An air traffic controller (managing competing priorities in real time)
+- A newspaper editor (deciding what makes the front page)
+
+For each analogy, give me one specific, actionable idea I could 
+implement this month.
+```
+
+Cross-domain thinking is where AI genuinely excels — it can pattern-match across fields faster than humans. The key is giving it specific domains to draw from.
+
+### Technique 3: The "Yes, And" Chain
+
+Instead of asking for a list, build ideas iteratively:
+
+```text
+Prompt 1: "Give me one unconventional way to get stakeholder feedback 
+on a product roadmap."
+
+[AI responds with an idea]
+
+Prompt 2: "That's interesting. Push it further — what's the most 
+extreme version of that idea? What if we had no budget constraints?"
+
+[AI responds]
+
+Prompt 3: "Now bring it back to reality. Given a team of 8 and no 
+engineering support, what's the version of this we could actually ship 
+in 2 weeks?"
+```
+
+This pattern — expand, then constrain — produces ideas that are both creative and practical.
+
+### Technique 4: Perspective Shifting
+
+```text
+I'm considering building a self-service data catalog for our organization.
+
+Give me the strongest argument FOR building it from the perspective of:
+1. A frustrated business analyst who can never find the right data
+2. A data engineer who's tired of answering the same questions
+3. A CISO who's worried about data governance
+
+Then give me the strongest argument AGAINST from:
+4. A PM who's seen three internal tools fail
+5. A CFO who needs to justify every headcount
+6. An end user who just wants to do their job
+
+Be specific, not generic. Use realistic concerns, not strawmen.
+```
+
+### Technique 5: Quantity Then Quality
+
+```text
+Give me 20 ideas for automating parts of my weekly workflow as a product 
+manager. Don't filter for quality — include obvious ones, weird ones, 
+impractical ones. Quantity over quality.
+```
+
+Then, in a second pass:
+
+```text
+From that list, which 5 are the most unusual? For each, rate:
+- Feasibility (1-5): Could I build this with my AI tool in a weekend?
+- Impact (1-5): Would this save me meaningful time?
+- Novelty (1-5): Have I probably NOT seen this suggested before?
+```
+
+The two-step process separates generation from evaluation — a critical principle in creative thinking.
+
+---
+
+## Part 3: Multi-File Ideation
+
+Your AI tool's power for brainstorming goes beyond chat. You can load context documents and ask AI to synthesize across them.
+
+### Loading Context
+
+If you have user research notes, competitive analysis, or strategy docs, put them in your project folder and reference them:
+
+> **In Cursor:** Use the `@filename` syntax to reference files: `@user-research-q4.md`. **In Claude Code:** Files in your project are read automatically — just reference them by path.
+
+```text
+I've loaded three files:
+- user-research-q4.md (interview summaries from 12 users)
+- competitor-analysis.md (features comparison across 5 competitors)
+- team-retro-notes.md (last 3 retrospective summaries)
+
+Based on all three sources, identify:
+1. Problems users mentioned that no competitor currently solves
+2. Patterns from the retros that suggest internal process gaps
+3. Three product ideas that address both user needs AND internal pain points
+```
+
+This is where an AI coding tool diverges from a standalone chatbot — you're working with your actual project files, not copy-pasting snippets into a separate window.
+
+### Structured Ideation Sessions
+
+Create a file for your brainstorming session — not just a chat conversation:
+
+```markdown
+# Brainstorming: Q2 Product Initiatives
+Date: [date]
+
+## Context
+[What problem are we trying to solve? What constraints exist?]
+
+## Raw Ideas
+[AI-generated ideas go here — unfiltered]
+
+## Evaluation
+[Your critical assessment of each idea]
+
+## Shortlist
+[The 3-5 ideas worth developing further]
+
+## Next Steps
+[What needs to happen to move the shortlist forward]
+```
+
+Working in a file (rather than just chat) lets you iterate on the document, add your own thinking alongside AI suggestions, and version it in Git.
+
+---
+
+## Part 4: When AI Brainstorming Fails
+
+### It Fails When You Need Original Insight
+
+AI can combine existing ideas in new ways, but it can't have the flash of insight that comes from deeply knowing a specific market, user, or problem. If you need a breakthrough idea that nobody has had before, AI won't give it to you. It can help you get *near* it by generating adjacent ideas that trigger your own thinking.
+
+### It Fails When Context Is Everything
+
+"Ideas for improving onboarding" will produce generic suggestions. AI doesn't know your onboarding flow, your user demographics, your technical constraints, or the three things you tried last quarter that failed. The more context-dependent the ideation, the more you need to front-load context (or accept that the AI's suggestions are starting points, not answers).
+
+### It Fails When You Stop Thinking
+
+The biggest risk: using AI brainstorming as a substitute for your own thinking rather than a supplement. If you generate 50 ideas and pick the best-sounding ones without applying your own judgment, domain expertise, and intuition, you'll end up with ideas that sound good but aren't actually good for your specific situation.
+
+---
+
+## Lab: Structured Brainstorming Session
+
+1. **Pick a real problem** from your work or a domain you know well
+2. **Create a brainstorming file** in your project using the template above
+3. **Generate at least 20 ideas** using at least 3 of the techniques from Part 2
+4. **Critically evaluate each idea:** Mark each as Obvious (O), Interesting (I), or Novel (N)
+5. **Identify convergence:** Which ideas did the AI repeat across different techniques? Those are the "average" — note them
+6. **Pick your top 5** and write one sentence each explaining why — not because the AI ranked them highest, but because your judgment says they're worth pursuing
+7. **Commit the file to Git**
+
+---
+
+## Critical Evaluation
+
+For AI-generated ideas, ask:
+
+- Is this actually novel, or does it just sound novel because it's phrased well?
+- Could I have come up with this without AI? (If yes for most ideas, you're not pushing hard enough)
+- Does this idea survive contact with the constraints of my actual situation?
+- Am I picking ideas because they sound smart or because they solve the problem?
+
+---
+
+## Go Deeper
+
+Try these advanced brainstorming prompts in your AI tool:
+
+- "Take my top 3 ideas and combine them. What's the hybrid version that gets the best of each?"
+- "For each of my 5 shortlisted ideas, list the strongest argument against it. Be harsh."
+- "I think Idea #4 is the best. Convince me I'm wrong. Then convince me I'm right."
+- "Reframe this problem from the perspective of [a completely different industry]. What would they do?"
+
+### If You Get Stuck
+
+**All the ideas sound the same:** Your prompts aren't different enough. Try the Anti-Obvious Constraint (explicitly ban the first 5 ideas that come to mind) or the Cross-Domain Analogies technique. Force the AI into unfamiliar territory.
+
+**Can't evaluate which ideas are "good":** Apply a simple filter — for each idea, ask: "Could I test this in 2 weeks with no engineering help?" Ideas that pass this test are worth exploring further. Ideas that require a 6-month project with a team of 10 might be interesting but aren't actionable.
+
+**The AI just agrees with everything:** AI is a yes-machine by default. Explicitly ask it to disagree: "Play devil's advocate. What's the strongest case that this idea would fail?" Force it into the critic role.
+
+---
+
+## Checkpoint
+
+- [ ] Completed a structured brainstorming session with 20+ ideas
+- [ ] Used at least 3 different ideation techniques
+- [ ] Critically evaluated each idea for originality (Obvious / Interesting / Novel)
+- [ ] Identified which ideas you would NOT have reached without AI
+- [ ] Documented the session in a file, committed to Git
+
+---
+
+*Previous: [← Module 6: Blueprints & Project Architecture](06-blueprints.md)*
+*Next: [Module 8: Planning & Research with AI →](08-planning-and-research.md)*

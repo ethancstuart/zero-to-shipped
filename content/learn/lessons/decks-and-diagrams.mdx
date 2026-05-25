@@ -1,0 +1,278 @@
+---
+title: "Decks, Diagrams & Visual Assets"
+slug: decks-and-diagrams
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 60
+tags: [decks, diagrams, visuals, design]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 10: Decks, Diagrams & Visual Assets
+
+*Tier 2: Intermediate | Estimated time: 4-5 hours | Prerequisites: Foundations (Modules 1-5)*
+
+---
+
+## What You'll Get Out of This
+
+Product people make decks constantly — for stakeholder reviews, executive updates, sprint demos, and strategy presentations. This module teaches you to use AI-assisted coding to create presentations, architecture diagrams, flowcharts, data visualizations, and visual one-pagers that look professional and export to formats your audience expects.
+
+---
+
+## Part 1: Presentations with AI
+
+### Why Build Decks with AI?
+
+You might be thinking: "I already have PowerPoint and Google Slides. Why would I build presentations in a code editor?"
+
+Fair question. You wouldn't for every deck. But AI-assisted coding excels when:
+- You want data-driven slides that pull from real data
+- You need consistent, version-controlled presentations (track changes in Git)
+- You want to generate multiple variants quickly (quarterly report for 5 different stakeholders)
+- You want interactive elements (clickable prototypes, live charts)
+- You're already working in your AI tool and want to stay in flow
+
+### HTML/CSS Presentations
+
+The simplest approach: slides as styled HTML. Each slide is a section, styled with CSS.
+
+```text
+Build a presentation with 8 slides as a single HTML file.
+
+Slide 1: Title slide — "Q1 Product Review" with subtitle "Data & AI Products Team"
+Slide 2: Agenda — 4 bullet points
+Slide 3: Key Metrics — 4 metric cards (number + label + trend arrow)
+Slide 4: Feature Delivery — table showing shipped features, dates, and status
+Slide 5: Stakeholder Feedback — 3 pull quotes with attribution
+Slide 6: Roadmap — horizontal timeline showing Q2-Q4 priorities
+Slide 7: Risks & Dependencies — 2-column layout (risks left, dependencies right)
+Slide 8: Next Steps — numbered list with owners
+
+Design:
+- Dark navy background (#1E293B) with white text
+- Accent color: electric blue (#3B82F6)
+- Font: Inter, clean and modern
+- One idea per slide, generous whitespace
+- Navigate between slides with arrow keys
+
+Export: Include a "Print to PDF" button that formats for landscape PDF output.
+```
+
+### Reveal.js Presentations
+
+For more polished slide transitions and features, your AI tool can use reveal.js (a presentation framework):
+
+```text
+Build a reveal.js presentation. Include the CDN links for reveal.js.
+
+[same slide content as above]
+
+Add:
+- Smooth slide transitions
+- Speaker notes (visible in presenter view with 'S' key)
+- A progress bar at the bottom
+- Print-friendly CSS for PDF export (Ctrl+P)
+```
+
+### When to Use AI-Assisted Coding vs. Traditional Tools
+
+| Use your AI tool | Use PowerPoint/Slides |
+|---|---|
+| Data-driven slides with real numbers | Quick internal deck for a 1:1 |
+| Version-controlled presentations | Heavily branded corporate templates |
+| Interactive or animated content | Decks that multiple people co-edit live |
+| Generating multiple variants | Decks with complex embedded media (video) |
+| You want consistency with your code projects | The audience expects a .pptx file |
+
+---
+
+## Part 2: Architecture Diagrams
+
+Product people frequently need to explain how systems connect. Architecture diagrams are the visual language for this.
+
+### Mermaid Diagrams
+
+Mermaid is a text-based diagramming tool — you describe the diagram in a simple syntax and it renders visually. your AI tool generates Mermaid syntax fluently.
+
+```text
+Create a Mermaid diagram showing our data platform architecture:
+
+Sources (left): "CRM System", "Billing Platform", "Product Analytics", "Support Tickets"
+Ingestion (middle-left): "Data Pipeline" 
+Storage (center): "Data Warehouse" 
+Transformation (middle-right): "dbt Models" with sublayers: "Staging", "Intermediate", "Marts"
+Consumption (right): "BI Dashboards", "Data Products", "ML Models"
+
+Use left-to-right flow. Color-code each layer differently.
+```
+
+Mermaid renders in many tools (GitHub READMEs, Notion, Confluence) and can be exported to SVG or PNG.
+
+### Flowcharts
+
+For process documentation:
+
+```text
+Create a Mermaid flowchart showing our feature request triage process:
+
+1. Request submitted → 2. Auto-categorized by type
+3. If Bug → Priority auto-assigned → Engineering backlog
+4. If Feature → PM reviews within 48hrs
+5. PM decision: Approve / Need More Info / Decline
+6. If Approve → Roadmap placement → Notify submitter
+7. If Need More Info → Return to submitter with questions
+8. If Decline → Decline with reason → Notify submitter
+
+Include decision diamonds, color-code the three outcomes differently.
+```
+
+### SVG Diagrams
+
+For more custom visuals that you want to embed in presentations or documents:
+
+```text
+Create an SVG diagram showing a 3-layer architecture:
+- Top layer: "User Interface" (blue)
+- Middle layer: "Business Logic" (green)  
+- Bottom layer: "Data Storage" (orange)
+
+Show arrows between layers. Each layer should be a rounded rectangle.
+Label the arrows: "API calls" between top and middle, "Queries" 
+between middle and bottom.
+
+Size: 800x400px. Clean, minimal style.
+```
+
+---
+
+## Part 3: Data Visualizations for Presentations
+
+When your deck needs charts, you can generate them as standalone HTML files or embed them directly in your presentation.
+
+```text
+Create a standalone HTML page with 4 charts for my quarterly review.
+Use Chart.js.
+
+Chart 1: Bar chart — Feature requests by category (Engineering: 45, 
+Design: 28, Data: 32, Infrastructure: 15)
+
+Chart 2: Line chart — Requests submitted per month (Jan: 12, Feb: 18, 
+Mar: 25, Apr: 22, May: 30, Jun: 35)
+
+Chart 3: Donut chart — Request status distribution (Approved: 40%, 
+In Review: 25%, Declined: 20%, New: 15%)
+
+Chart 4: Horizontal bar chart — Average days to decision by priority 
+(P0: 2, P1: 5, P2: 12, P3: 21)
+
+Layout: 2x2 grid. Each chart has a title. Color scheme: blues and grays.
+Export: Each chart should be individually screenshot-able for pasting 
+into other tools.
+```
+
+---
+
+## Part 4: Visual One-Pagers
+
+One-pagers are the product PM's Swiss Army knife — a single page that summarizes a project, initiative, or proposal.
+
+```text
+Build an HTML one-pager for a project proposal:
+
+Title: "Self-Service Data Catalog"
+Subtitle: "Enabling teams to find, understand, and trust their data"
+
+Sections (in a clean, printable layout):
+1. Problem: 3 bullet points on the current pain
+2. Proposed Solution: 2-sentence description + a simple diagram
+3. Success Metrics: 3 KPIs with targets
+4. Timeline: 3 phases shown as a horizontal bar (Discovery → Build → Launch)
+5. Resources Needed: Small table (Role, Commitment, Duration)
+6. Risks: 3 risks with mitigations in a 2-column layout
+
+Design: Optimized for printing on a single page (landscape, 11x8.5).
+Professional, minimal, suitable for an executive audience.
+```
+
+---
+
+## Lab: Build a Presentation Deck
+
+1. **Pick a real or realistic project** — something you could present to stakeholders
+2. **Build an 8+ slide deck** using HTML/CSS or reveal.js
+3. **Include at least:**
+   - One data visualization (chart or graph)
+   - One diagram (architecture, flowchart, or process)
+   - A consistent design system across all slides
+4. **Export to PDF** and verify it looks professional
+5. **Commit to Git**
+
+### Lab: Create a Diagram Set
+
+1. **Build 3 different diagrams** using Mermaid or SVG:
+   - A system architecture diagram
+   - A process flowchart
+   - An organizational or relationship diagram
+2. **Export each** as a standalone file (SVG, PNG, or HTML)
+3. **Commit to Git**
+
+---
+
+## Critical Evaluation
+
+For visual assets:
+
+- Is this visual communicating clearly or just looking busy?
+- Does the diagram help someone understand the system, or does it just show that you made a diagram?
+- Would this slide deck hold up in a room of senior stakeholders?
+- Is every visual element earning its place, or are some decorative?
+- Can someone understand the key message in under 10 seconds per slide?
+
+---
+
+## Go Deeper
+
+Try these prompts to expand your visual skills:
+
+- "Convert this Mermaid diagram to an SVG with custom colors and styling"
+- "Create a project timeline as an interactive HTML page with hover details"
+- "Build a one-pager for [your project] optimized for printing on a single landscape page"
+- "Generate a comparison table as a styled HTML file I can screenshot for a slide deck"
+
+### If You Get Stuck
+
+**Mermaid diagrams won't render:** Mermaid syntax is whitespace-sensitive. Paste your Mermaid code into the [Mermaid Live Editor](https://mermaid.live) to debug syntax issues. Then bring the working version back to your editor.
+
+**Slides look amateur:** Focus on one idea per slide, reduce text to key phrases (not sentences), and use the design principles from Module 11 (covered next) — alignment, contrast, spacing, hierarchy. Ask your AI tool: "This slide has too much text. Rewrite it with 50% fewer words and stronger visual hierarchy."
+
+**PDF export looks different from the browser:** Add print-specific CSS. Ask your AI tool: "Add a print stylesheet that formats this presentation for landscape PDF export at standard letter size."
+
+### Try This
+
+Take your last real presentation (from PowerPoint or Google Slides) and rebuild one section (3-4 slides) using AI-assisted coding with HTML/CSS. Compare the results. Which looks better? Which was faster to create? Which is easier to update with new data?
+
+---
+
+## Checkpoint
+
+- [ ] Built a presentation deck with 8+ slides
+- [ ] Deck includes at least one chart and one diagram
+- [ ] Created at least one standalone architecture or process diagram
+- [ ] Exported deliverables to shareable formats (PDF, PNG, SVG)
+- [ ] Committed everything to Git
+- [ ] Can articulate when to use AI-assisted coding vs. traditional presentation tools
+
+---
+
+*Previous: [← Module 9: Building Interactive Tools](09-interactive-tools.md)*
+*Next: [Module 11: UI Design Principles →](11-design-principles.md)*

@@ -1,0 +1,493 @@
+---
+title: "Blueprints & Project Architecture"
+slug: blueprints-architecture
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 90
+tags: [architecture, blueprints, project-structure, planning]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 6: Blueprints & Project Architecture
+
+*Tier 2: Intermediate | Estimated time: 4-6 hours | Prerequisites: Foundations (Modules 1-5)*
+
+---
+
+## What You'll Get Out of This
+
+Without blueprints, every AI session starts from zero. The AI guesses your stack, conventions, and preferences. With blueprints, it knows all of that before you type a word. Output quality jumps and stays consistent across sessions.
+
+This module also covers project structure — how to organize files so projects stay maintainable as they grow.
+
+---
+
+## Part 1: What Blueprints Are
+
+A blueprint is a context file that tells the AI who you are, what you're building, and how you want it built. It lives inside your project and loads automatically.
+
+The concept isn't Cursor-specific. Claude Code uses `CLAUDE.md`. GitHub Copilot uses similar context mechanisms. Learn the pattern once, apply it everywhere.
+
+### The Before/After
+
+**Without a blueprint:**
+```text
+Build me a data table component with filtering and sorting.
+```
+Result: AI guesses your stack, design preferences, conventions. It might use React or Vue or vanilla JS. Output is functional but generic.
+
+**With a blueprint that specifies your stack, design system, and conventions:**
+
+Same prompt produces output that matches your existing project — same fonts, colors, patterns, and structure. No corrections needed.
+
+That's the difference. Blueprints turn the AI from a generic tool into a tool that knows your project.
+
+---
+
+## Part 2: Cursor Rules — The Mechanics
+
+### File Location and Format
+
+Cursor uses rule files in `.cursor/rules/` at the root of your project. Each file ends in `.mdc` (Markdown with Configuration).
+
+```text
+my-project/
+├── .cursor/
+│   └── rules/
+│       ├── project-context.mdc
+│       ├── code-conventions.mdc
+│       └── design-system.mdc
+├── index.html
+└── ...
+```
+
+### Rule File Structure
+
+Every `.mdc` file starts with a frontmatter block:
+
+```
+---
+description: "Project-wide conventions and stack context"
+alwaysApply: true
+---
+
+# Project Context
+
+This is a single-page web application for tracking feature requests.
+
+## Stack
+- HTML, CSS, JavaScript (no frameworks)
+- No external dependencies
+- Local storage for data persistence
+
+## Design
+- White background (#FFFFFF)
+- Primary accent: blue (#2563EB)
+- Font: Inter (from Google Fonts)
+- Maximum border-radius: 4px
+- Generous padding (16px minimum on interactive elements)
+
+## Conventions
+- All JavaScript in a single <script> tag at the bottom of index.html
+- Use semantic HTML elements (header, main, section, footer)
+- CSS custom properties for colors and spacing
+- camelCase for JavaScript variables and functions
+- Comments above every function explaining what it does
+```
+
+### Rule Types
+
+There are four types, controlled by the frontmatter:
+
+**Always (alwaysApply: true)**
+Loaded into every AI interaction in this project. Use for project-wide context: stack, conventions, design system.
+
+**Auto Attached (globs pattern)**
+Loaded when working with specific file types.
+```
+---
+description: "Python script conventions"
+globs: "**/*.py"
+---
+```
+This rule only activates when you're working with Python files.
+
+**Agent Requested**
+Available to the AI but only used when relevant. Good for specialized knowledge the AI can pull in when needed.
+```
+---
+description: "Database schema and query patterns"
+---
+```
+
+**Manual**
+Only applied when you explicitly reference the rule with `@rulename` in your prompt.
+
+---
+
+> **In Claude Code: CLAUDE.md — The Mechanics**
+>
+> Claude Code uses a single `CLAUDE.md` file at your project root instead of `.cursor/rules/`. It's simpler — plain Markdown, no frontmatter, no `.mdc` format.
+>
+> ```text
+> my-project/
+> ├── CLAUDE.md          ← Your blueprint (replaces .cursor/rules/)
+> ├── index.html
+> └── ...
+> ```
+>
+> **Format:** Just Markdown. No `alwaysApply`, no `globs` — Claude Code reads `CLAUDE.md` automatically at the start of every session.
+>
+> **Mapping from Cursor rule types:**
+>
+> | Cursor Rule Type | Claude Code Equivalent |
+> |---|---|
+> | `alwaysApply: true` (.mdc) | Content in `CLAUDE.md` (always loaded) |
+> | Auto Attached (globs) | Not needed — Claude Code reads all project files |
+> | Agent Requested | Content in `CLAUDE.md` (always available) |
+> | Manual (`@rulename`) | Reference files by path in conversation |
+>
+> **Example CLAUDE.md:**
+>
+> ```markdown
+> # Project Context
+> Feature Request Tracker — single-page app for tracking stakeholder requests.
+>
+> ## Tech Stack
+> - HTML, CSS, JavaScript (no frameworks)
+> - No external dependencies
+> - Local storage for data persistence
+>
+> ## Conventions
+> - All JavaScript in a single <script> tag at the bottom of index.html
+> - Use semantic HTML elements (header, main, section, footer)
+> - CSS custom properties for colors and spacing
+> - camelCase for JavaScript variables and functions
+> - Comments above every function explaining what it does
+>
+> ## Design System
+> - White background (#FFFFFF), primary accent: blue (#2563EB)
+> - Font: Inter (Google Fonts)
+> - Maximum border-radius: 4px
+> - Generous padding (16px minimum on interactive elements)
+>
+> ## Anti-patterns
+> - Do NOT use any CSS framework (no Tailwind, Bootstrap)
+> - Do NOT add authentication or user account features
+> - Do NOT use alert() or confirm() — use inline UI
+> - Do NOT add features not explicitly requested
+> ```
+>
+> That's it. One file, plain Markdown, same concepts as Cursor rules — just simpler packaging.
+>
+> **For team projects:** Add a `CLAUDE.local.md` for personal preferences (gitignored), and keep the shared `CLAUDE.md` committed.
+
+---
+
+### What Goes in Blueprints
+
+Think of blueprints as answering five questions:
+
+1. **What is this project?** — One-sentence description, purpose, target user
+2. **What's the stack?** — Languages, frameworks, tools, dependencies
+3. **What are the conventions?** — Naming, structure, patterns to follow
+4. **What are the anti-patterns?** — Things to never do (equally important)
+5. **What does "good" look like?** — Links to reference files, examples, existing patterns
+
+### Anti-Patterns — What to Tell AI NOT to Do
+
+Anti-patterns are powerful. They prevent the most common AI mistakes:
+
+```markdown
+## Anti-Patterns (NEVER do these)
+- Do NOT use any CSS framework (no Tailwind, Bootstrap, etc.)
+- Do NOT add authentication or user account features
+- Do NOT use alert() or confirm() — use inline UI for all feedback
+- Do NOT create separate files for CSS or JS — keep everything in index.html
+- Do NOT add features not explicitly requested
+- Do NOT use placeholder/lorem ipsum content — use realistic sample data
+```
+
+---
+
+## Part 3: Building Your Blueprint Set
+
+Start with three files. You can add more as your project grows.
+
+### Blueprint 1: project-context.mdc
+
+The overview. Always applies.
+
+```
+---
+description: "Core project context and stack"
+alwaysApply: true
+---
+
+# [Your Project Name]
+
+[One sentence: what this project is and who it's for]
+
+## Stack
+- [Languages]
+- [Frameworks, if any]
+- [Key libraries]
+- [Data storage approach]
+
+## Key Decisions
+- [Why you chose this stack]
+- [Constraints from your environment]
+
+## Anti-Patterns
+- [Things to never do in this project]
+```
+
+### Blueprint 2: code-conventions.mdc
+
+How code should be written. Always applies.
+
+```
+---
+description: "Code style and conventions"
+alwaysApply: true
+---
+
+# Code Conventions
+
+## File Structure
+- [How files are organized]
+- [Naming conventions for files]
+
+## JavaScript
+- [Variable naming: camelCase, etc.]
+- [Function patterns]
+- [Comment expectations]
+
+## CSS
+- [Class naming convention]
+- [Color and spacing approach]
+- [Layout patterns]
+
+## HTML
+- [Semantic element expectations]
+- [Accessibility requirements]
+```
+
+### Blueprint 3: design-system.mdc
+
+Visual standards. Always applies.
+
+```
+---
+description: "Design system and visual standards"
+alwaysApply: true
+---
+
+# Design System
+
+## Colors
+- Background: #FFFFFF
+- Text: #1F2937
+- Primary accent: #2563EB
+- Success: #059669
+- Warning: #D97706
+- Error: #DC2626
+
+## Typography
+- Font: Inter (Google Fonts)
+- Body: 14px
+- Headings: 18px / 24px / 32px
+- Monospace: JetBrains Mono for code
+
+## Spacing
+- Base unit: 8px
+- Component padding: 16px
+- Section spacing: 32px
+
+## Components
+- Border radius: 4px (never more)
+- Shadows: 0 1px 3px rgba(0,0,0,0.1) for cards
+- Buttons: filled primary, outlined secondary
+```
+
+---
+
+## Part 4: Team Blueprints
+
+When multiple people on a team use blueprints, you get consistency across everyone's AI output. Team blueprints go in Git so everyone has the same rules.
+
+### Shared vs. Personal Rules
+
+- **Shared rules** (checked into Git): stack, conventions, design system, anti-patterns
+- **Personal rules** (gitignored): individual preferences, local environment specifics
+
+Add to your `.gitignore`:
+```gitignore
+# Personal cursor rules (optional)
+.cursor/rules/personal-*.mdc
+# Personal Claude Code config (optional)
+CLAUDE.local.md
+```
+
+This lets team members have personal rules that don't override the shared ones.
+
+### Blueprint Review
+
+Blueprints should be reviewed periodically — they go stale as projects evolve:
+- Monthly: Are the conventions still accurate?
+- After major changes: Did the stack or design system change?
+- When AI output degrades: Are blueprints conflicting or outdated?
+
+---
+
+## Part 5: Project Architecture
+
+Blueprints tell the AI *how* to build. Project architecture is *where* things go. Good structure makes projects navigable, maintainable, and handoff-ready.
+
+### The README
+
+Every project needs a README.md at the root. It answers:
+- What is this?
+- Who is it for?
+- How do I run it?
+- How is it organized?
+
+```markdown
+# Feature Request Tracker
+
+A single-page application for tracking and triaging stakeholder feature requests.
+
+## Quick Start
+1. Clone this repository
+2. Open `index.html` in your browser
+3. That's it — no build step required
+
+## Project Structure
+- `index.html` — The entire application (HTML + CSS + JS)
+- `.cursor/rules/` — AI context files
+- `data/` — Sample datasets for testing
+- `docs/` — Documentation and design decisions
+
+## Design Decisions
+- Single-file architecture for simplicity
+- Local storage for persistence (no backend)
+- Vanilla JS — no frameworks
+```
+
+### Folder Conventions
+
+As projects grow beyond a single file:
+
+```
+my-project/
+├── .cursor/rules/          # Blueprints
+├── src/                    # Source code
+│   ├── components/         # Reusable UI pieces
+│   ├── utils/              # Helper functions
+│   └── data/               # Data handling
+├── public/                 # Static assets (images, fonts)
+├── docs/                   # Documentation
+├── tests/                  # Test files
+├── .gitignore
+├── package.json            # Dependencies (if using npm)
+└── README.md
+```
+
+Not every project needs all of these. A simple single-file project needs only the HTML file, a README, blueprints, and a `.gitignore`. Add structure as complexity demands it — not before.
+
+---
+
+## Lab: Build Your Blueprint Set
+
+1. Pick one of your existing projects (Module 1 or Module 2)
+
+> **In Cursor:** Create a `.cursor/rules/` directory. Write three blueprint files: `project-context.mdc`, `code-conventions.mdc`, `design-system.mdc` (with the frontmatter format shown in Part 2).
+
+> **In Claude Code:** Create a single `CLAUDE.md` file at the project root covering project context, code conventions, and design system (use the example template from the Claude Code section above).
+
+3. Test: open a new AI session and give it a prompt for a new feature. Does the output match your conventions without you specifying them?
+4. If not, adjust your blueprints and try again
+
+### Lab: Before/After Comparison
+
+1. Start a new project with NO blueprints
+2. Prompt: "Build a task board with columns for To Do, In Progress, and Done. Tasks can be dragged between columns."
+3. Save the result as `version-without-blueprints.html`
+4. Now add blueprints specifying your stack, design system, and conventions
+5. Start a new AI session (so it loads the blueprints fresh)
+6. Give the exact same prompt
+7. Save as `version-with-blueprints.html`
+8. Compare side-by-side. Document what's different.
+
+### Lab: Commit Your Blueprints
+
+```bash
+# For Cursor:
+git add .cursor/rules/
+# For Claude Code:
+git add CLAUDE.md
+
+git commit -m "Add project blueprints: context, conventions, and design system"
+git push
+```
+
+Your blueprints are now versioned and shareable.
+
+---
+
+## Critical Evaluation
+
+When evaluating AI output in blueprint-driven projects, ask:
+
+- Did the AI follow the blueprint conventions? (Check colors, fonts, structure)
+- Did it introduce anything the blueprints explicitly prohibit?
+- Is the output consistent with the rest of the project?
+- Would a teammate working with the same blueprints produce compatible output?
+
+If the AI ignores your blueprints, try: making the relevant rule `alwaysApply: true`, simplifying contradictory rules, or explicitly referencing the rule with `@rulename` in your prompt.
+
+---
+
+## Go Deeper
+
+Want to explore blueprints further? Try these prompts in your AI tool:
+
+- "Explain what each rule in my blueprints does and suggest improvements"
+- "Review my blueprints for contradictions or gaps"
+- "What conventions am I NOT specifying that I should be?"
+
+### If You Get Stuck
+
+**Blueprints aren't being followed:** Start a fresh AI session (blueprints load at session start). In Cursor, check that `alwaysApply: true` is in the frontmatter. In Claude Code, make sure `CLAUDE.md` is at the project root.
+
+**Not sure what to put in blueprints:** Start small. After your next AI session, notice every time you corrected the output — that correction should be a rule. Build blueprints from pain, not from theory.
+
+**Rules seem to conflict:** Keep rules organized by concern (one section for stack, one for design, one for anti-patterns). If two rules say different things about the same topic, the AI will pick one unpredictably.
+
+### Try This
+
+Create a "style test" file — a simple HTML page that uses all your design system elements (colors, fonts, spacing, buttons, cards, tables). If it looks consistent, your blueprint is working. If elements look mismatched, your blueprint has gaps.
+
+---
+
+## Checkpoint
+
+- [ ] You have blueprints set up (`.cursor/rules/` with 3+ rule files, or a `CLAUDE.md`)
+- [ ] You've completed the before/after comparison and documented the differences
+- [ ] Your blueprints are committed to Git
+- [ ] You can explain what blueprints do and why they matter to a non-technical colleague
+- [ ] You've tested that the AI follows your conventions without explicit prompting
+
+---
+
+*Previous: [← Module 5: Version Control with Git](05-version-control.md)*
+*Next: [Module 7: Brainstorming & Ideation with AI →](07-brainstorming-and-ideation.md)*

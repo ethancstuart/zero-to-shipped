@@ -1,0 +1,275 @@
+---
+title: "Planning & Research with AI"
+slug: planning-and-research
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 60
+tags: [planning, research, specs, ai]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 8: Planning & Research with AI
+
+*Tier 2: Intermediate | Estimated time: 4-5 hours | Prerequisites: Foundations (Modules 1-5)*
+
+---
+
+## What You'll Get Out of This
+
+Where Module 7 is about generating ideas, this module is about structuring and validating them. You'll learn to use AI for the analytical side of product work: scoping projects, breaking down tasks, conducting competitive research, synthesizing documents, and stress-testing your own plans.
+
+---
+
+## Part 1: Planning with AI
+
+### Project Scoping
+
+One of the hardest PM skills is scoping — defining what's in, what's out, and why. AI is useful here because it can quickly generate a complete scope that you then edit down, rather than you trying to think of everything from scratch.
+
+```text
+I want to build an internal tool that helps my team track and triage 
+stakeholder feature requests.
+
+Help me scope this as a v1 with the following framework:
+- Must Have: Core features for the tool to be useful at all
+- Should Have: Features that make it significantly better but aren't blocking
+- Won't Have (v1): Features we explicitly exclude to keep scope manageable
+
+For each item, give me a one-sentence justification.
+Also flag any Must Haves that seem risky or complex.
+```
+
+Your job: review the AI's scope and apply your judgment. It will likely include things that sound good but aren't necessary, and miss things that are critical because they're specific to your situation.
+
+### Task Breakdown
+
+After scoping, break the work into discrete tasks:
+
+```text
+Based on the Must Haves we defined, break this into a task list that 
+I could work through sequentially. Each task should be:
+- Completable in 1-3 hours
+- Independently testable (I can verify it works before moving to the next)
+- Ordered by dependency (things that depend on other things come later)
+
+Format: numbered list with estimated time and a one-line description.
+```
+
+### Planning Before Coding
+
+When building something complex, ask your AI tool to plan before coding:
+
+```text
+Before writing any code, outline your approach:
+1. What files will you create or modify?
+2. What's the data model?
+3. What's the component structure?
+4. What order will you build things in?
+
+Show me the plan. I'll approve before you start.
+```
+
+This is invaluable. Reviewing a plan takes 2 minutes. Debugging a wrong implementation takes 2 hours. Always plan complex builds.
+
+### Stress-Testing Plans
+
+AI is excellent at poking holes in your thinking:
+
+```text
+Here's my plan for building a data product catalog:
+[paste your plan]
+
+Stress-test this plan:
+1. What are the 3 most likely failure modes?
+2. What assumptions am I making that might be wrong?
+3. What's the most common reason projects like this fail?
+4. If I could only build ONE feature, which should it be and why?
+5. What will I wish I'd thought about in 3 months?
+```
+
+The answers won't always be right, but they'll prompt you to think about dimensions you might have missed.
+
+---
+
+## Part 2: Research & Synthesis with AI
+
+### Document Analysis
+
+Load documents into your project and ask AI to analyze them:
+
+> **In Cursor:** Use `@filename` to reference files. **In Claude Code:** Just reference files by path — they're read automatically.
+
+> **Tip:** Modern AI coding tools can also search the web for current information. Ask your tool to research a topic and it can pull in up-to-date sources.
+
+```text
+I've loaded these files:
+- competitor-a-features.md
+- competitor-b-features.md
+- competitor-c-features.md
+
+Create a comparison matrix:
+- Rows: feature categories (identify these from the documents)
+- Columns: each competitor + "Our product (planned)"
+- Cells: Yes/No/Partial with brief notes
+
+Then identify:
+1. Features all competitors have (table stakes)
+2. Features only one competitor has (potential differentiators)
+3. Gaps none of them address (our opportunity)
+```
+
+### Research Synthesis
+
+When you have multiple information sources:
+
+```text
+I have 8 user interview transcripts loaded in the /research folder.
+
+Synthesize across all interviews:
+1. Top 5 pain points (with frequency — how many interviewees mentioned each)
+2. Top 3 requested features (with direct quotes where available)
+3. Contradictions: places where interviewees disagreed with each other
+4. Surprises: insights that appeared in fewer than 3 interviews but seem significant
+5. Gaps: questions we should have asked but didn't
+```
+
+### Structured Research Prompts
+
+For competitive or market research:
+
+```text
+I need to understand the landscape for [topic/product category].
+
+Structure your research as:
+1. Market overview (2-3 sentences)
+2. Key players (name, positioning, notable strengths)
+3. Common patterns (what most solutions do similarly)
+4. Emerging trends (what's changing)
+5. Underserved segments (who's not well served by existing solutions)
+
+Be specific with names and details. If you're uncertain about something, 
+flag it as "needs verification" rather than guessing.
+```
+
+---
+
+## Part 3: Fact-Checking AI Research
+
+This is where the "AI is average" principle matters most. AI-generated research sounds authoritative. It uses confident language, cites specifics, and structures information clearly. And it's sometimes completely wrong.
+
+### Common Research Failures
+
+**Hallucinated citations.** AI will invent sources, statistics, and quotes. "According to a 2024 Gartner report..." — that report may not exist. Always verify specific claims.
+
+**Outdated information.** AI's training data has a cutoff. Company details, market data, and competitive landscapes change. Anything time-sensitive needs independent verification.
+
+**Confident synthesis of thin evidence.** AI might say "The market is shifting toward X" based on one or two data points it's pattern-matching from training data. That's not a market trend — it's a guess presented as analysis.
+
+### The Verification Protocol
+
+For any AI-generated research you plan to use in a decision or share with others:
+
+1. **Flag specific claims.** Identify every statement that includes a number, a name, a date, or a causal claim ("X leads to Y").
+2. **Verify independently.** Can you find the source? Does the number check out? Is the company still doing what the AI says they're doing?
+3. **Distinguish synthesis from fabrication.** AI synthesizing patterns across real information is valuable. AI inventing specifics is dangerous. The difference is in verifiable details.
+4. **Add your own knowledge.** You know your market, your users, and your organization better than the AI. Overlay your domain expertise on the AI's output.
+
+### When to Trust vs. When to Verify
+
+**Generally trustworthy:** High-level frameworks, structural thinking, common patterns, comparison structures, brainstorming output
+**Always verify:** Specific numbers, named sources, market claims, competitive details, anything you'd put in a slide deck
+
+---
+
+## Part 4: When to Plan with AI vs. with Humans
+
+AI is good at:
+- Generating comprehensive task lists quickly
+- Identifying risks and dependencies you might miss
+- Structuring information into frameworks
+- Playing devil's advocate on your plan
+
+AI is bad at:
+- Understanding organizational politics and dynamics
+- Reading the room on what stakeholders will actually support
+- Generating buy-in (people support plans they helped create)
+- Accounting for team dynamics, morale, and unspoken constraints
+
+**The practical rule:** Use AI to create a strong first draft of a plan, then bring that draft to humans for pressure-testing, refinement, and commitment. Never present an AI-generated plan as the final plan without human review and input.
+
+---
+
+## Lab: Planning Exercise
+
+1. **Pick a project** — real or hypothetical — that you might build in this course
+2. **Scope it** using the Must Have / Should Have / Won't Have framework with AI assistance
+3. **Break it into tasks** with estimates and dependencies
+4. **Stress-test** the plan using the stress-test prompt
+5. **Document everything** in a planning file
+
+### Lab: Research Synthesis
+
+1. **Find 3+ articles or documents** about a topic relevant to your work (can be public articles, saved as markdown files in your project)
+2. **Load them into your project** and run a structured synthesis
+3. **Fact-check** at least 3 specific claims from the AI's output
+4. **Document what was accurate, what was wrong, and what was unverifiable**
+5. **Commit both the plan and the research** to Git
+
+---
+
+## Critical Evaluation
+
+For AI-generated plans and research:
+
+- Does this plan account for the things only I know about my situation?
+- Are the task estimates realistic or AI-optimistic? (AI consistently underestimates complexity)
+- Did I verify the specific claims, or am I trusting the confident tone?
+- Would I be comfortable presenting this to my team as the basis for a decision?
+
+---
+
+## Go Deeper
+
+Try these prompts in your AI tool to push your planning and research skills:
+
+- "Poke holes in this plan. What are the 3 most likely reasons it fails?"
+- "I have these 5 sources loaded. Where do they contradict each other?"
+- "Rewrite this scope as if we had half the time. What gets cut and why?"
+- "What questions should I be asking about this problem that I haven't thought of?"
+
+### If You Get Stuck
+
+**AI-generated plans feel generic:** You're probably not giving enough context about your specific situation. Front-load constraints: team size, timeline, technical limitations, stakeholder dynamics. The more specific your context, the more specific the plan.
+
+**Research synthesis is shallow:** Try the "so what" test after each finding. Ask your AI tool: "For each insight, explain why it matters for [my specific decision]. If it doesn't matter, remove it."
+
+**Can't tell if AI research is accurate:** When in doubt, search for the specific claim independently. If you can't find a source for a statistic or quote within 2 minutes of searching, treat it as unverified and flag it.
+
+### Try This
+
+Take a real decision you're currently facing at work. Use the planning framework from this module to scope it, break it into options, and stress-test each option. Don't share the AI output — use it as input for your own thinking, then write your recommendation in your own words.
+
+---
+
+## Checkpoint
+
+- [ ] Completed a project scoping exercise with Must Have / Should Have / Won't Have
+- [ ] Created a task breakdown with estimates and dependencies
+- [ ] Stress-tested a plan and documented the results
+- [ ] Completed a research synthesis from multiple sources
+- [ ] Fact-checked at least 3 specific claims and documented accuracy
+- [ ] Can articulate when to use AI for planning vs. when to plan with humans
+
+---
+
+*Previous: [← Module 7: Brainstorming & Ideation with AI](07-brainstorming-and-ideation.md)*
+*Next: [Module 9: Building Interactive Tools →](09-interactive-tools.md)*

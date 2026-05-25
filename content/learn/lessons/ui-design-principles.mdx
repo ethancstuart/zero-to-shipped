@@ -1,0 +1,290 @@
+---
+title: "UI Design Principles for Builders"
+slug: ui-design-principles
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: intermediate
+estimatedMinutes: 60
+tags: [design, ui, ux, design-principles]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 11: UI Design Principles for Builders
+
+*Tier 3: Advanced | Estimated time: 4-5 hours | Prerequisites: Foundations + at least 2 Intermediate*
+
+---
+
+## What You'll Get Out of This
+
+Everything you build reflects on you. The difference between "a PM hacked this together" and "this looks like a real product" comes down to a small number of learnable principles. You don't need to become a designer. You need to stop making the mistakes that make things look amateur.
+
+---
+
+## Part 1: The Four Principles
+
+Almost every design improvement comes back to four things: alignment, contrast, spacing, and hierarchy. Master these four and everything you build looks 10x more professional.
+
+### Alignment
+
+Every element on the screen should be visually aligned with something else. When things are aligned, the layout feels intentional. When they're not, it feels random — even if you can't articulate why.
+
+**Common mistake:** Text, buttons, and cards at slightly different left margins. The eye notices misalignment of even 2-3 pixels.
+
+**Fix:** Use a grid. Tell your AI tool: "Align all content to a 12-column grid with 24px gutters." Or more simply: "Make sure all left edges of content sections are aligned."
+
+### Contrast
+
+Important things should look different from less important things. If everything is the same size, weight, and color, nothing stands out — and the user doesn't know where to look.
+
+**Common mistake:** All text is the same size and weight. Buttons blend into the background. Headers don't stand out from body text.
+
+**Fix:** Use size, weight, and color to create visual hierarchy. Primary actions should be bold and prominent. Secondary actions should be muted. Headers should be visually distinct from body text.
+
+### Spacing
+
+The space between elements communicates relationships. Things that are close together are related. Things that are far apart are separate. Consistent spacing creates rhythm; inconsistent spacing creates visual noise.
+
+**Common mistake:** Different amounts of space between similar elements. Cards with 16px padding on top but 8px on the sides. Sections jammed together without breathing room.
+
+**Fix:** Use a spacing scale. Pick a base unit (8px is standard) and only use multiples: 8, 16, 24, 32, 48, 64. Tell your AI tool: "Use an 8px spacing scale throughout. Related elements get 8-16px gap. Separate sections get 32-48px gap."
+
+### Hierarchy
+
+The viewer should instantly know what's most important, what's secondary, and what's supporting detail. Visual hierarchy is created through size, weight, color, and position.
+
+**Common mistake:** The page title is the same size as section headers. All buttons look equally important. The key metric is the same visual weight as a label.
+
+**Fix:** Create 3-4 levels of importance and stick to them:
+- Level 1: Page title, key metric — largest, boldest
+- Level 2: Section headers, primary buttons — prominent but not dominant
+- Level 3: Body text, secondary actions — standard
+- Level 4: Captions, metadata, muted labels — smallest, lightest
+
+---
+
+## Part 2: Color
+
+### Picking a Palette
+
+You need 5 colors maximum for most applications:
+
+1. **Background** — Usually white or near-white (#FFFFFF, #F9FAFB)
+2. **Text** — Dark gray, not pure black (#1F2937 reads better than #000000)
+3. **Primary accent** — Your main brand/action color (one color, like #2563EB)
+4. **Success/Error** — Green for good, red for bad (#059669, #DC2626)
+5. **Muted** — For borders, dividers, disabled states (#E5E7EB)
+
+**Common mistake:** Using 8+ colors with no system. Each component uses a different shade of blue. Buttons are orange, links are teal, badges are purple — chaos.
+
+**Fix:** Pick your 5 colors and use them consistently. Tell your AI tool your palette in a blueprint (Module 6). When in doubt, use fewer colors, not more.
+
+### Quick Palette Tools
+
+If you need help picking colors:
+- [tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors) — Excellent pre-built scales
+- Copy a palette from a tool you admire — if Linear's colors work, use similar ones
+
+---
+
+## Part 3: Typography
+
+### Font Choice
+
+Pick one font for your application. Two at most (one for headings, one for body). Good safe choices:
+- **Inter** — Clean, modern, great for interfaces
+- **System fonts** — `font-family: -apple-system, system-ui, sans-serif` — uses whatever looks native on the user's device
+
+**Common mistake:** Using decorative or unusual fonts that look great in isolation but are hard to read at small sizes in data-dense interfaces.
+
+### Size Scale
+
+Use a consistent type scale:
+- 12px — Small labels, metadata
+- 14px — Body text, table cells
+- 16px — Slightly emphasized body text
+- 18px — Section headers
+- 24px — Page section titles
+- 32px — Main page title
+
+**Common mistake:** Body text at 16px, a nearby label at 15px, another at 13px. The inconsistency is subtle but makes everything feel slightly off.
+
+---
+
+## Part 4: Layout Patterns
+
+### Sidebar + Content
+
+The most common internal tool layout. Sidebar for navigation or filters, main area for content.
+
+```text
+Tell your AI tool: "Use a sidebar + content layout. Sidebar is 256px wide, 
+fixed position, dark background. Content area fills the remaining space 
+with 24px padding."
+```
+
+### Card Grid
+
+For displaying collections of similar items (projects, requests, team members).
+
+```text
+Tell your AI tool: "Display items in a responsive card grid. 3 columns on 
+desktop, 2 on tablet, 1 on mobile. Cards have consistent padding, 
+a subtle border, and 16px gap between them."
+```
+
+### Data Table
+
+For structured data with sorting and filtering.
+
+```text
+Tell your AI tool: "Use a clean data table with alternating row backgrounds, 
+sticky header, and generous row height (48px minimum). Left-align text 
+columns, right-align number columns."
+```
+
+---
+
+## Part 5: Responsive Design
+
+"Responsive" means your application adjusts to different screen sizes — desktop, tablet, mobile.
+
+For internal tools, you can often skip mobile optimization (your team uses laptops). But basic responsiveness — not breaking on smaller laptop screens or when the browser window is resized — matters.
+
+```text
+Tell your AI tool: "Make this responsive. It should work well at screen widths 
+from 1024px to 1920px. Below 1024px, the sidebar should collapse to a 
+hamburger menu. Tables should scroll horizontally if they exceed the 
+viewport width."
+```
+
+---
+
+## Part 6: Stealing Well
+
+The fastest way to improve your design skills is to study tools you admire and figure out what they're doing.
+
+### Process
+
+1. Find a tool or app with a design you like (Linear, Notion, Vercel, Stripe)
+2. Screenshot a specific page
+3. Analyze it: What makes it look good? (Spacing? Color restraint? Typography hierarchy?)
+4. Tell your AI tool: "Style this page similar to [reference]. Specifically: [list the things you identified]"
+
+You're not copying their brand. You're learning the principles and applying them to your own work.
+
+### What to Study
+
+- **Spacing and breathing room** — Good designs have more whitespace than you expect
+- **Color restraint** — The best interfaces use 2-3 colors, not 8
+- **Typography hierarchy** — Notice how different text sizes and weights guide your eye
+- **Alignment** — Everything lines up with something else
+- **Detail** — Subtle borders, shadows, hover states, transitions
+
+---
+
+## Lab: The Before/After Restyle
+
+1. **Pick one of your previous projects** (Module 1, Module 9, or anything you've built)
+2. **Screenshot it** — this is your "before"
+3. **Apply the four principles** from this module:
+   - Fix alignment issues
+   - Create clear contrast and hierarchy
+   - Implement consistent spacing (8px base unit)
+   - Establish a type scale
+4. **Apply a color palette** (5 colors maximum)
+5. **Screenshot the result** — this is your "after"
+6. **Document what changed and why** — be specific about each change
+
+Write the changes as a prompt to your AI tool:
+
+```text
+Restyle this application using these design principles:
+
+Colors: 
+- Background: #FFFFFF
+- Text: #1F2937
+- Primary: #2563EB
+- Success: #059669
+- Muted borders: #E5E7EB
+
+Typography:
+- Font: Inter from Google Fonts
+- Body: 14px
+- Section headers: 18px semibold
+- Page title: 24px bold
+- Small labels: 12px, color #6B7280
+
+Spacing:
+- Base unit: 8px
+- Component internal padding: 16px
+- Section gaps: 32px
+- Card gaps: 16px
+
+Layout:
+- All content aligned to left margin
+- Maximum content width: 1200px, centered
+- Tables: alternating row backgrounds, 48px row height
+
+Fix any alignment, contrast, spacing, or hierarchy issues in the 
+current design.
+```
+
+---
+
+## Critical Evaluation
+
+For design, ask:
+
+- Would you present this to a VP without apologizing for how it looks?
+- Is every visual element intentional, or are some defaults you never changed?
+- Does a first-time viewer know where to look first?
+- Would a designer nod or cringe?
+- What would you fix if you had 30 more minutes?
+
+---
+
+## Go Deeper
+
+Try these prompts to develop your design eye:
+
+- "Audit this page for alignment issues. List every element that isn't aligned with the grid."
+- "This design uses 7 colors. Simplify it to use only 3 while maintaining visual hierarchy."
+- "Suggest 3 different layout approaches for this content. Show the pros and cons of each."
+- "This table is hard to scan. Improve the readability using typography and spacing — don't change the data."
+
+### If You Get Stuck
+
+**Everything looks the same after restyling:** You're probably not creating enough contrast between hierarchy levels. Make the difference more dramatic — try doubling the size gap between headings and body text, or making secondary text much lighter.
+
+**Can't figure out what looks "off":** Take a screenshot and compare it side-by-side with a tool you admire (Linear, Notion, Stripe's dashboard). Look at specific elements: how much padding do they use? How big is the gap between sections? How many colors appear on one screen?
+
+**Your AI tool keeps reverting your design choices:** Add your design decisions to a blueprint (Module 6). Specify exact hex values, pixel sizes, and font weights. The more specific your design system blueprint, the more consistently your AI tool follows it.
+
+### Try This
+
+Pick any internal tool your team uses daily. Screenshot it. List 5 specific design improvements using the four principles. Then open your AI tool and build a restyled version of just one screen — apply your improvements and compare.
+
+---
+
+## Checkpoint
+
+- [ ] Restyled a previous project using the four design principles
+- [ ] Documented before/after with specific explanations for each change
+- [ ] Can name the four principles (alignment, contrast, spacing, hierarchy)
+- [ ] Applied a consistent color palette (5 or fewer colors)
+- [ ] Applied a consistent typography scale
+- [ ] The restyled project looks noticeably more professional
+
+---
+
+*Previous: [← Module 10: Decks, Diagrams & Visual Assets](10-decks-and-visuals.md)*
+*Next: [Module 12: Data Products →](12-data-products.md)*

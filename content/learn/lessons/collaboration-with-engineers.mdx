@@ -1,0 +1,255 @@
+---
+title: "Collaboration & Working with Engineers"
+slug: collaboration-with-engineers
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: advanced
+estimatedMinutes: 60
+tags: [collaboration, engineering, communication, teamwork]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 15: Collaboration & Working with Engineers
+
+*Tier 3: Advanced | Estimated time: 4-5 hours | Prerequisites: Foundations + at least 2 Intermediate*
+
+---
+
+## What You'll Get Out of This
+
+Building alone gets you far. Building with others — especially alongside engineering teams — gets you further. This module covers collaborative Git workflows, code review, prototype handoff, and how your new technical literacy changes the dynamic with engineers.
+
+---
+
+## Part 1: Collaborative Git Workflows
+
+Module 5 taught Git for solo work. Collaboration adds these patterns:
+
+### The Feature Branch Workflow
+
+1. `main` is always stable — no one pushes to it directly
+2. Every change happens on a feature branch
+3. All changes go through pull requests with review
+4. After approval, merge and delete the branch
+
+**Start every work session with:**
+```bash
+git checkout main
+git pull
+git checkout -b feature/my-new-thing
+```
+
+**Pull main into your branch regularly:**
+```bash
+git merge main
+```
+This catches conflicts early instead of at PR time.
+
+**Communicate.** A quick "I'm working on the filter component" in Slack prevents two people editing the same file.
+
+---
+
+## Part 2: Code Review
+
+### Reviewing Someone Else's PR
+
+Look for four things:
+
+1. **Does it do what it claims?** Read the PR description, then the code. Do they match?
+2. **Is it understandable?** Can you follow the logic without the author explaining it?
+3. **Does it break anything?** Did it touch shared components? Test the affected areas.
+4. **Is it the right scope?** One PR should do one thing. Suggest splitting if it does three.
+
+### Writing Review Comments
+
+Distinguish levels:
+- **Blocking:** "This crashes if the data array is empty. Must fix." (Prevent merge)
+- **Suggestion:** "Consider a dropdown instead of text input here." (Take it or leave it)
+- **Nit:** "Spacing on line 18." (Minor)
+
+Be specific and constructive. "The filter on line 42 checks `status === 'active'` but the data uses `'Active'` with a capital A" is useful. "This doesn't look right" is not.
+
+### Getting Your PR Reviewed
+
+Make it easy for your reviewer:
+- **Write a clear description:** What, why, and how to test
+- **Keep PRs small:** 50-200 lines of changes is ideal. 500+ is overwhelming.
+- **Self-review first:** Read your own diff before requesting review. Catch the obvious stuff.
+- **Respond to feedback gracefully:** Questions are learning opportunities, not criticism.
+
+---
+
+## Part 3: Handing Off Prototypes to Engineering
+
+You built a prototype with an AI coding tool. Now engineering needs to take it to production. The quality of your handoff determines whether this takes a week or a month.
+
+### What Engineers Need from You
+
+**1. A working demo.** Deploy your prototype (Vercel, Netlify, GitHub Pages) so they can see and interact with it. Don't describe it — show it.
+
+**2. A clear scope document.**
+```markdown
+# Handoff: Feature Request Dashboard
+
+## What it does
+[2-3 sentences describing the tool and who uses it]
+
+## What's implemented (prototype)
+- Filterable data table with sort
+- Summary metric cards
+- Status distribution chart
+- Local storage persistence
+
+## What's NOT implemented (needs engineering)
+- Authentication (who can access this)
+- Real database connection (currently uses sample JSON)
+- Data refresh pipeline
+- Mobile responsiveness
+- Error monitoring
+
+## Data Requirements
+- Table: feature_requests
+- Columns needed: [list]
+- Refresh cadence: daily
+- Estimated volume: ~5,000 records
+
+## Design decisions and why
+- Single-page app (stakeholders wanted bookmark-able URL)
+- Chart.js for visualizations (lightweight, no server needed)
+- Status editable inline (stakeholders rejected a separate edit form)
+```
+
+**3. The code.** In a Git repo with a README, blueprints (project context files -- see Module 6), and meaningful commit history. Engineers assess code quality by looking at your repo — make it clean.
+
+**4. Context on decisions.** Why did you choose this layout? Why these filters and not others? What did stakeholders say during feedback? This context prevents engineers from unknowingly reversing your product decisions.
+
+### What Frustrates Engineers (and How to Avoid It)
+
+- **Vague requirements:** "Make it look like the prototype but better" → Instead: specify exactly what should change
+- **Moving targets:** Changing requirements after handoff → Finalize scope before handing off
+- **No success criteria:** "Just make it work" → Define what "done" means
+- **Ignoring technical constraints:** "I don't care how, just make it fast" → Ask about constraints and incorporate them into your scope
+- **Not testing your own prototype:** Handing off something broken → Test thoroughly before handoff
+
+---
+
+## Part 4: Contributing to Existing Projects
+
+Sometimes you won't start from scratch — you'll modify or add to an existing codebase.
+
+### Understanding Someone Else's Code
+
+1. **Read the README first.** What is this project? How do you run it?
+2. **Look at the file structure.** Where are components? Where's the data logic? Where are styles?
+3. **Find the area you need to change.** Use your editor's search to find relevant code.
+4. **Read the blueprints** (if they exist). They tell you the conventions.
+5. **Run it locally.** Make sure it works before you change anything.
+
+### Making Targeted Changes
+
+When contributing to an existing project:
+- Change as little as possible to achieve your goal
+- Follow the existing patterns, even if you'd do it differently
+- Test that your change works AND that you didn't break existing functionality
+- Write a clear PR description explaining what you changed and why
+
+---
+
+## Part 5: How Technical Literacy Changes the Dynamic
+
+Something shifts when you can build things and speak Git, code, and architecture. Your relationship with engineering changes in ways that compound over time.
+
+**You stop being a bottleneck.** Instead of writing a spec and waiting, you can prototype the idea, validate it with stakeholders, and hand engineers a working example of what "done" looks like.
+
+**You ask better questions.** "How long will this take?" becomes "I see the data model needs three new columns and a migration — is there anything else blocking this?" Engineers notice the difference.
+
+**You earn technical respect.** Not because you can code as well as they can (you can't), but because you've done the work to understand their world. You speak their language from experience.
+
+**You make better product decisions.** Understanding technical constraints — what's easy, what's hard, what's risky — makes your prioritization sharper and your stakeholder negotiations more grounded.
+
+**You can build things they wouldn't prioritize.** Internal tools, team dashboards, automations — the things that never make it to the top of the engineering backlog but make everyone's day better. You can just build them.
+
+---
+
+## Lab: Contribute via Pull Request
+
+**Option A: Contribute to a classmate's or colleague's project**
+1. Fork or clone their repo
+2. Read their README and blueprints
+3. Identify one improvement (bug fix, new feature, better documentation)
+4. Create a branch, make the change, submit a PR
+5. Write a clear PR description
+
+**Option B: Contribute to an open-source project**
+1. Find a beginner-friendly open-source repo (look for "good first issue" labels)
+2. Read the CONTRIBUTING.md
+3. Pick an issue, make the change, submit a PR
+
+**Option C: Simulated team exercise**
+1. Create a project with intentional issues (missing README sections, no `.gitignore`, a bug)
+2. Have a colleague fork it, find the issues, and submit PRs to fix them
+3. Review their PRs and merge
+
+### Lab: Write a Handoff Document
+
+1. Pick your best project from the course
+2. Write a complete handoff document using the template from Part 3
+3. Have someone read it and tell you what's unclear
+4. Revise based on their feedback
+5. Commit to Git
+
+---
+
+## Go Deeper
+
+Try these prompts in your AI tool to practice collaboration skills:
+
+- "Review this code diff and write PR review comments — flag anything that looks like a bug, a style inconsistency, or a missing edge case"
+- "Write a handoff document for this project that covers what it does, how to run it, what data it needs, and what's left to build"
+- "This project was built by someone else. Read the code and explain the architecture — what are the main components and how do they interact?"
+- "Convert this prototype into a technical spec that an engineering team could use to estimate the work"
+
+### If You Get Stuck
+
+**Merge conflicts are overwhelming:** Conflicts happen when two people changed the same lines. Read both versions carefully. If you don't understand the other person's changes, ask them before resolving — don't just pick one blindly. Your AI tool can help: select the conflict markers and tell it which version to keep and why.
+
+**PR got rejected or has lots of comments:** This is normal and healthy — it means someone cared enough to review carefully. Read each comment, ask questions if something is unclear, and make the requested changes. Don't take it personally. Engineers review each other's code aggressively; they're doing the same for you.
+
+**Not sure what to write in a handoff document:** Imagine an engineer picking up your project for the first time on a Monday morning. What would they need to know to start working by lunch? That's your handoff doc. If you're unsure, ask an engineer on your team: "If I were handing you a prototype, what information would you need?"
+
+### Try This
+
+Find an open-source project on GitHub with "good first issue" labels (many beginner-friendly repos exist). Read their CONTRIBUTING.md, understand their codebase structure, and submit a small PR — even fixing a typo in documentation counts. This experience of contributing to someone else's project is different from building your own, and it's the closest simulation of working with an engineering team.
+
+---
+
+## Critical Evaluation
+
+- Would an engineer want to work with this codebase?
+- Is your PR description clear enough for someone who wasn't in the room?
+- Does your handoff document enable the engineering team to move forward without a 45-minute meeting?
+- Are you contributing to collaboration or creating more work for others?
+
+---
+
+## Checkpoint
+
+- [ ] Contributed to someone else's project via a pull request
+- [ ] Reviewed at least one PR (real or simulated) with specific, constructive feedback
+- [ ] Written a handoff document for one of your projects
+- [ ] Had someone read your handoff doc and incorporated their feedback
+- [ ] Can describe the feature branch workflow
+- [ ] Can articulate how your technical literacy changes the product-engineering dynamic
+
+---
+
+*Previous: [← Module 14: Docs, Security, Testing & Shipping](14-docs-security-testing-shipping.md)*
+*Next: [Module 16: Put It All Together (Capstone) →](16-capstone.md)*

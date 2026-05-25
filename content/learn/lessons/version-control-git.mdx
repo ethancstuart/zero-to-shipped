@@ -1,0 +1,551 @@
+---
+title: "Version Control with Git"
+slug: version-control-git
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: beginner
+estimatedMinutes: 90
+tags: [git, github, version-control, foundations]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 5: Version Control with Git
+
+*Tier 1: Foundations | Estimated time: 5–7 hours | Prerequisites: Modules 1–4*
+
+---
+
+## What You'll Get Out of This
+
+Git is how professionals save, track, and collaborate on projects. After this module, you'll have a GitHub profile with your work on it, you'll understand the workflow your engineering team uses every day, and you'll never again lose work to an accidental deletion or a broken "undo."
+
+More importantly: when you speak about commits, branches, and pull requests with engineers, you'll be speaking from experience — not parroting terminology from a meeting.
+
+---
+
+## Part 1: Why Version Control Matters
+
+### The Problem Git Solves
+
+You've been building things for four modules. What happens if you:
+- Make a change that breaks everything and can't remember what you changed?
+- Want to try an experimental approach without risking your working version?
+- Want to share your project with a colleague and work on it together?
+- Accidentally delete a file?
+
+Without version control, the answer to all of these is "you're in trouble." With Git, every change you make is recorded, reversible, and shareable.
+
+### The Mental Model
+
+Think of Git as a timeline of snapshots. Every time you "commit," you save a snapshot of your entire project. You can jump back to any previous snapshot, create parallel timelines (branches), and merge them together.
+
+```
+Snapshot 1 → Snapshot 2 → Snapshot 3 → Snapshot 4
+"Initial      "Added        "Fixed        "Added
+ setup"        table"        sorting"      filters"
+```
+
+Each snapshot has a message explaining what changed. You can always go back.
+
+---
+
+## Part 2: Local Git — Working on Your Machine
+
+### 2.1 Configure Git (One-Time Setup)
+
+Before your first commit, tell Git who you are:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+This information appears in every commit you make. Use the same email you'll use for GitHub.
+
+### 2.2 Initialize a Repository
+
+A "repository" (repo) is just a project folder that Git is tracking. Navigate to your Module 1 project:
+
+```bash
+cd ~/my-first-app
+git init
+```
+
+`git init` tells Git: "Start tracking this folder." You'll see: `Initialized empty Git repository in /Users/you/my-first-app/.git/`
+
+A hidden `.git` folder was created — this is where Git stores all its tracking data. Don't touch it.
+
+### 2.2 Check Status
+
+```bash
+git status
+```
+
+This shows you what Git sees: new files (untracked), modified files, and files ready to be committed. Run `git status` constantly — it's your orientation tool.
+
+### 2.3 Stage Files
+
+Before saving a snapshot, you choose which files to include. This is called "staging."
+
+```bash
+git add index.html          # Stage one specific file
+git add .                   # Stage everything in the current folder
+```
+
+"Staging" means "I want these files included in my next snapshot." Think of it as putting items on a table before taking a photo — only what's on the table gets captured.
+
+### 2.4 Commit — Save a Snapshot
+
+```bash
+git commit -m "Initial version of habit tracker with basic add and complete functionality"
+```
+
+The `-m` flag lets you write a message describing what this snapshot contains. This message matters — it's how you (and others) understand what changed and why.
+
+**Good commit messages:**
+- "Add weekly view grid showing 7-day habit history"
+- "Fix streak counter resetting on page refresh"
+- "Remove unused CSS styles and clean up layout spacing"
+
+**Bad commit messages:**
+- "update"
+- "fixed stuff"
+- "asdfgh"
+
+Write messages that future-you (in 3 months, having forgotten this project) would find helpful.
+
+### 2.5 View History
+
+```bash
+git log
+```
+
+Shows all your commits, newest first. Each has a unique ID (a long string of letters and numbers), the author, date, and message.
+
+```bash
+git log --oneline
+```
+
+A more compact view — just the ID and message. Useful when your history gets long.
+
+### 2.6 See What Changed
+
+```bash
+git diff
+```
+
+Shows the differences between your current files and the last commit. Added lines show in green with `+`, removed lines in red with `-`.
+
+This is useful before committing — it lets you review exactly what you're about to save.
+
+---
+
+## Part 3: Remote Git — GitHub
+
+Local Git is great for tracking your own work. But your project only exists on your computer. GitHub puts it in the cloud — backed up, shareable, and collaborative.
+
+### 3.1 Create a GitHub Account
+
+1. Go to [github.com](https://github.com) and sign up (free)
+2. Choose a username that's professional — this becomes your public profile
+
+### 3.2 Authenticate with GitHub
+
+Before you can push code, GitHub needs to know who you are. The easiest way is the GitHub CLI:
+
+```bash
+gh auth login
+```
+
+Follow the prompts to authenticate via browser. If you don't have the `gh` CLI, install it from [cli.github.com](https://cli.github.com). Alternatively, GitHub will prompt you for credentials on your first `git push`.
+
+### 3.3 Create a Repository on GitHub
+
+1. Click the `+` icon in the top right → "New repository"
+2. Name it `habit-tracker` (or whatever your project is)
+3. Leave it as **Public** (or Private if you prefer)
+4. Do NOT check "Add a README" or any other initialization options — you already have files
+5. Click "Create repository"
+
+GitHub will show you setup instructions. You want the section for "push an existing repository from the command line."
+
+### 3.4 Connect and Push
+
+```bash
+git remote add origin https://github.com/YOUR-USERNAME/habit-tracker.git
+git branch -M main
+git push -u origin main
+```
+
+Translation:
+- `git remote add origin` — "Link my local repo to this GitHub address"
+- `git branch -M main` — "Call my primary branch 'main'"
+- `git push -u origin main` — "Upload my commits to GitHub"
+
+Refresh your GitHub repo page. Your files are there.
+
+### 3.5 The Push/Pull Workflow
+
+From now on, after making commits locally:
+
+```bash
+git push
+```
+
+Uploads your new commits to GitHub.
+
+If someone else made changes (or you made changes on another computer):
+
+```bash
+git pull
+```
+
+Downloads the latest changes from GitHub to your local copy.
+
+---
+
+## Part 4: Branching — Safe Experimentation
+
+Branches are parallel versions of your project. You create a branch, make changes, and if the changes work, you merge them back. If they don't work, you delete the branch and your main version is untouched.
+
+### 4.1 Create a Branch
+
+```bash
+git checkout -b feature/dark-mode
+```
+
+Or using the modern command (Git 2.23+):
+```bash
+git switch -c feature/dark-mode
+```
+
+This creates a new branch called `feature/dark-mode` and switches to it. Any changes you make now happen on this branch, not on `main`.
+
+**Naming convention:** Use descriptive names with prefixes:
+- `feature/dark-mode` — adding something new
+- `fix/streak-counter` — fixing a bug
+- `experiment/new-layout` — trying something uncertain
+
+### 4.2 Work on the Branch
+
+Make your changes normally. Add files, edit code, test in the browser. Then:
+
+```bash
+git add .
+git commit -m "Add dark mode toggle with system preference detection"
+```
+
+These commits only exist on the `feature/dark-mode` branch.
+
+### 4.3 Switch Between Branches
+
+```bash
+git checkout main                # Switch back to main
+git checkout feature/dark-mode   # Switch back to the feature branch
+```
+
+When you switch, your files change to match that branch. It's like teleporting between parallel universes of your project.
+
+### 4.4 See All Branches
+
+```bash
+git branch
+```
+
+The one with `*` is your current branch.
+
+---
+
+## Part 5: Merging — Bringing Work Together
+
+When your branch work is done and tested, you bring it back into `main`.
+
+### 5.1 The Simple Merge
+
+```bash
+git checkout main              # Switch to main first
+git merge feature/dark-mode    # Merge the feature branch into main
+```
+
+If there are no conflicts, Git handles this automatically. Your main branch now has all the changes from the feature branch.
+
+### 5.2 Merge Conflicts
+
+A merge conflict happens when two branches changed the same part of the same file. Git can't decide which version to keep, so it asks you.
+
+When a conflict occurs, Git marks the file:
+
+```
+<<<<<<< HEAD
+<h1>Habit Tracker</h1>
+=======
+<h1>Daily Habit Tracker Pro</h1>
+>>>>>>> feature/dark-mode
+```
+
+Translation:
+- Between `<<<<<<< HEAD` and `=======` is the version on your current branch (main)
+- Between `=======` and `>>>>>>>` is the version from the branch you're merging
+
+**To resolve:**
+1. Open the conflicted file
+2. Choose which version you want (or combine them)
+3. Delete the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
+4. Save the file
+5. Stage and commit:
+
+```bash
+git add .
+git commit -m "Resolve merge conflict in index.html header"
+```
+
+Your AI tool can help resolve conflicts:
+
+> **In Cursor:** Select the conflict markers and press Cmd+K with "resolve this merge conflict, keep the version from the feature branch." Or ask the Agent to resolve it.
+
+> **In Claude Code:** Just ask "resolve the merge conflict in index.html, keeping the feature branch version" — Claude Code will read the file, resolve the markers, and show you the diff.
+
+### 5.3 Practice Merge Conflict
+
+Don't wait until a real conflict surprises you. Let's create one intentionally:
+
+1. Create a branch: `git checkout -b experiment/header-change`
+2. Change the `<h1>` text in `index.html` to something new. Commit it.
+3. Switch back to main: `git checkout main`
+4. Change the same `<h1>` to something different. Commit it.
+5. Merge: `git merge experiment/header-change`
+6. You'll get a conflict. Resolve it.
+
+Now you know what conflicts look like and how to handle them. They're not scary — they're a normal part of working with branches.
+
+### 5.4 Delete Merged Branches
+
+After merging, clean up:
+
+```bash
+git branch -d feature/dark-mode
+```
+
+This deletes the branch locally (the commits are preserved in main). Keep your branch list clean.
+
+---
+
+## Part 6: Pull Requests — The Collaboration Workflow
+
+In professional teams, you don't merge branches directly. You create a **pull request** (PR) — a proposal to merge your branch that others can review and approve.
+
+### Why Pull Requests Matter
+
+Even if you're working alone, PRs create a documented history of what changed and why. In teams, they're the primary mechanism for code review, discussion, and quality control.
+
+### 6.1 Create a Pull Request
+
+1. Push your branch to GitHub:
+```bash
+git push -u origin feature/dark-mode
+```
+
+2. Go to your repository on GitHub
+3. You'll see a yellow banner: "feature/dark-mode had recent pushes — Compare & pull request"
+4. Click "Compare & pull request"
+5. Write a title and description explaining what you did and why
+6. Click "Create pull request"
+
+### 6.2 What Goes in a PR Description
+
+A good PR description has:
+- **What:** What did you change?
+- **Why:** What problem does this solve?
+- **How to test:** How can someone verify this works?
+
+Example:
+```
+## What
+Added dark mode toggle that respects system preferences and 
+allows manual override.
+
+## Why
+Several stakeholders requested dark mode for late-night use. 
+System preference detection means it "just works" for most users.
+
+## How to test
+1. Open the app
+2. Click the moon icon in the header
+3. App should switch to dark theme
+4. Refresh — setting should persist
+5. Change your system to dark mode — app should follow automatically
+```
+
+### 6.3 Merge the PR
+
+On GitHub, click "Merge pull request" → "Confirm merge." Then locally:
+
+```bash
+git checkout main
+git pull
+```
+
+This downloads the merged changes to your local copy.
+
+---
+
+## Part 7: .gitignore — What to Keep Out
+
+Not everything belongs in Git. Some files are secrets, some are generated automatically, and some are too large.
+
+Create a file called `.gitignore` in your project root:
+
+```
+# Secrets — NEVER commit these
+.env
+.env.local
+*.key
+
+# Dependencies — installed via package manager, not tracked
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# IDE settings (optional — depends on team preference)
+.vscode/
+.idea/
+```
+
+**The critical rule: never commit secrets.** API keys, passwords, tokens, database credentials — these go in `.env` files which are listed in `.gitignore`. Module 14 covers this in depth. For now, just make sure `.env` is in your `.gitignore` and commit the `.gitignore` file itself.
+
+```bash
+git add .gitignore
+git commit -m "Add .gitignore to exclude secrets and system files"
+```
+
+---
+
+## Part 8: Recovering from Mistakes
+
+Git's safety net is its best feature.
+
+### Undo Unstaged Changes
+
+Changed a file and want to revert it to the last commit:
+```bash
+git checkout -- filename.html
+# Or the modern equivalent:
+git restore filename.html
+```
+
+### Undo a Staged File
+
+Added a file to staging but want to unstage it:
+```bash
+git reset HEAD filename.html
+# Or the modern equivalent:
+git restore --staged filename.html
+```
+
+### Undo the Last Commit (Keep Changes)
+
+Committed too early or with the wrong message:
+```bash
+git reset --soft HEAD~1
+```
+This undoes the commit but keeps your changes staged.
+
+### Undo the Last Commit (Discard Changes)
+
+Nuclear option — undo the commit and throw away the changes:
+```bash
+git reset --hard HEAD~1
+```
+**Be careful with `--hard`.** Those changes are gone.
+
+### See What a File Looked Like Before
+
+```bash
+git show HEAD~3:index.html
+```
+Shows what `index.html` looked like 3 commits ago.
+
+---
+
+## Lab: The Full Git Workflow
+
+This lab walks through the complete Git lifecycle. Every step uses the terminal.
+
+1. **Initialize:** Create a new project folder, `git init`, create an `index.html`, add a `.gitignore`
+2. **First commit:** `git add .`, `git commit -m "Initial project setup with index.html and .gitignore"`
+3. **Build something:** Use your AI tool to add a feature. Make 3 separate commits as you go (not one big commit at the end).
+4. **Push to GitHub:** Create a repo on GitHub, connect it, push.
+5. **Branch:** Create a feature branch, make changes, commit.
+6. **Create a merge conflict:** Follow the instructions from Part 5.3. Resolve it.
+7. **Pull request:** Push your branch to GitHub, create a PR with a proper description, merge it.
+8. **Clean up:** Delete the merged branch locally and on GitHub.
+9. **Verify:** Run `git log --oneline` and confirm you have 5+ meaningful commits.
+
+---
+
+## Go Deeper
+
+Once you're comfortable with the basics, explore these:
+
+- `git stash` — temporarily save uncommitted changes without committing them. Useful when you need to switch branches but aren't ready to commit.
+- `git log --graph --oneline` — visual representation of your branch history
+- `git blame filename` — shows who last edited each line of a file (useful in team projects)
+- Try asking your AI tool: "Explain the Git history of this project and what each commit changed"
+
+### If You Get Stuck
+
+**"detached HEAD state":** This sounds scary but just means you're looking at an old commit instead of a branch. Run `git checkout main` to get back to normal.
+
+**Accidentally committed to main instead of a branch:** `git reset --soft HEAD~1` undoes the last commit but keeps your changes. Then create a branch, switch to it, and commit there.
+
+**Merge conflict is confusing:** Look for the `<<<<<<<`, `=======`, and `>>>>>>>` markers. Everything between `<<<<<<<` and `=======` is your version. Everything between `=======` and `>>>>>>>` is the other version. Delete the markers and keep whichever code is correct (or combine them). If you're unsure, ask your AI tool: "I have this merge conflict. Explain both versions and help me resolve it."
+
+**Push was rejected:** Run `git pull` first to get the latest changes from GitHub, then `git push` again. If there are conflicts, resolve them (see above) and then push.
+
+**Made a mess and want to start fresh:** `git log --oneline` shows your recent commits. Find the last good one and run `git reset --hard [commit-hash]`. This is the nuclear option — it discards everything after that commit. Only use it on your own branches, never on shared ones.
+
+---
+
+## Checkpoint
+
+You've completed Module 5 when:
+
+- [ ] Your Module 1 project (or a new project) is in a GitHub repository
+- [ ] You have 5+ commits with meaningful messages
+- [ ] You've created at least one branch and merged it via pull request
+- [ ] You've resolved at least one merge conflict
+- [ ] Your repo has a `.gitignore` that excludes `.env` and system files
+- [ ] You can explain commits, branches, merging, and pull requests to a colleague without jargon
+- [ ] You run `git status` instinctively when something seems off
+
+---
+
+## What's Next
+
+You've completed the Foundations tier. You can build things (Module 1), prompt well (Module 2), read code (Module 3), use the terminal (Module 4), and version your work (Module 5).
+
+From here, you enter the **Intermediate tier** — Modules 6–10, which can be completed in any order. Start with whichever interests you most:
+
+- **Module 6: Blueprints & Project Architecture** — making AI output consistent and team-scalable
+- **Module 7: Brainstorming & Ideation** — using AI as a divergent thinking partner
+- **Module 8: Planning & Research** — project scoping, competitive analysis, document synthesis
+- **Module 9: Building Interactive Tools** — multi-component apps deployed to live URLs
+- **Module 10: Decks, Diagrams & Visual Assets** — presentations and visual communication
+
+---
+
+*Previous: [← Module 4: The Terminal & Command Line](04-terminal-and-cli.md)*

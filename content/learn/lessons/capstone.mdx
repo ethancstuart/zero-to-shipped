@@ -1,0 +1,284 @@
+---
+title: "Put It All Together (Capstone)"
+slug: capstone
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: advanced
+estimatedMinutes: 120
+tags: [capstone, project, portfolio, shipping]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 16: Put It All Together (Capstone)
+
+*Capstone | Estimated time: 10-15 hours | Prerequisites: All Foundations + at least 3 Intermediate + at least 1 Advanced*
+
+---
+
+## What This Is
+
+Pick a real problem. Plan it. Research it. Build it. Design it well. Test it. Version it. Document it. Ship it.
+
+This module has no new concepts. It's the integration of everything — a project that exercises Foundations, Intermediate, and Advanced skills in a single coherent effort.
+
+This is your portfolio piece. It demonstrates that you can go from problem to shipped product using everything you've learned.
+
+---
+
+## The Capstone Process
+
+### Step 1: Identify a Real Problem (1-2 hours)
+
+The best capstone solves a problem you actually have. Not a toy example — something that, if it worked, you or your team would use.
+
+**Good capstone problems:**
+- A workflow that's manual, repetitive, and error-prone
+- Information that's scattered across tools and needs a single view
+- A question your team asks regularly that requires pulling data from multiple sources
+- A stakeholder communication that you manually create every week/month
+- A tool that exists but doesn't fit your specific workflow
+
+**Bad capstone problems:**
+- Something you'll never use after this course
+- Something that requires access to production systems you can't use
+- Something so complex it would take an engineering team a quarter to build
+- A clone of an existing tool that already works fine
+
+### Step 2: Research and Plan (2-3 hours)
+
+Use Module 7 (Brainstorming) and Module 8 (Planning & Research) skills:
+
+1. **Brainstorm approaches.** Don't jump to the first solution.
+2. **Research existing solutions.** What's already out there? Why doesn't it work for you?
+3. **Scope it.** Must Have / Should Have / Won't Have.
+4. **Break it into tasks** with estimates.
+5. **Stress-test the plan.** What could go wrong?
+6. **Document the plan** in your project repo.
+
+### Step 3: Set Up the Project (1 hour)
+
+1. Create a Git repo
+2. Set up blueprints (project context files — see Module 6)
+3. Create the project structure
+4. Write an initial README
+5. Make your first commit
+
+### Step 4: Build It (4-6 hours)
+
+Use Module 9 (Interactive Tools), Module 12 (Data Products), and/or Module 13 (Automations) skills:
+
+- Build iteratively — small commits, test after each change
+- Use the build loop: prompt → review → evaluate → iterate
+- Apply the prompt engineering principles from Module 2
+- Don't try to build everything at once — get the core working first, then add features
+
+### Step 5: Design It (1-2 hours)
+
+Use Module 10 (Decks & Visuals) and Module 11 (Design Principles) skills:
+
+- Apply the four principles: alignment, contrast, spacing, hierarchy
+- Use a consistent color palette and typography scale
+- Handle empty states, loading states, and error states gracefully
+- Make it something you'd present to a senior stakeholder without apologizing
+
+### Step 6: Test It (1-2 hours)
+
+Use Module 14 (Testing) skills:
+
+- Test the happy path end-to-end
+- Test edge cases (empty data, lots of data, unexpected inputs)
+- Test in at least one other browser
+- Fix what you find
+
+### Step 7: Document and Ship (1-2 hours)
+
+Use Module 14 (Shipping) and Module 15 (Collaboration) skills:
+
+- Write user-facing documentation
+- Deploy to a live URL (if web-based) or include clear run instructions (if a script)
+- Write a handoff document (if applicable)
+- Share it with at least one person and incorporate their feedback
+
+### Step 8: Write About It (1 hour)
+
+Write a reflection that covers:
+- What problem you solved and why it matters
+- How you approached it (planning, research, technical decisions)
+- What worked and what you'd do differently
+- Which course skills were most valuable
+- What you'd add in v2
+
+This can be a section in your README, a standalone markdown file, or a blog post.
+
+---
+
+### If You Get Stuck at Any Stage
+
+**Can't pick a problem:** Ask yourself: "What did I do manually this week that annoyed me?" or "What tool do I wish existed for my team?" The best capstones come from real frustration, not theoretical ideas.
+
+**Scope keeps growing:** Revisit your Must Have list. If you've been building for 6+ hours and you're not close to the core functionality, you probably scoped too big. Cut the Should Haves ruthlessly. A polished small tool beats an unfinished ambitious one.
+
+**Code is broken and you can't fix it:** Go back to the Module 1 debugging protocol. Copy the error. Paste it into your AI tool. Describe what you were doing. If you're going in circles, start a fresh conversation — long conversations degrade AI quality. If you're truly stuck, step back and ask your AI tool: "I'm trying to build [X] and it's not working. Here's what I have so far. What's the simplest approach to get this working?"
+
+**Design looks bad:** Apply the Module 11 checklist: alignment, contrast, spacing, hierarchy. Pick one thing that's off and fix it. Then the next thing. Don't try to redesign everything at once.
+
+**Not sure if it's "done":** Run through the evaluation criteria below. If you've checked most boxes, it's done. Ship it. You can always improve it later — shipping an imperfect version beats perfecting something forever.
+
+### Go Deeper
+
+During your capstone, try these prompts to push your work further:
+
+- "Stress-test this application: what happens with empty data, 500 records, special characters, and very long text inputs?"
+- "Review my code for security issues, performance problems, and maintainability concerns"
+- "Write a 2-minute demo script for presenting this to stakeholders — what should I show and in what order?"
+- "If I had to hand this to an engineer to take to production, what would they need to change?"
+
+---
+
+## Suggested Capstone Projects by Role
+
+These are starting points, not prescriptions. The best capstone is one that solves a problem you actually have.
+
+### For Product Managers
+
+| Project | Description | Primary Skills |
+|---------|-------------|----------------|
+| Stakeholder Request Tracker | Form + auto-categorization + formatted handoff tickets | Interactive Tools, Automations |
+| Roadmap Visualizer | Interactive timeline with status, dependencies, milestones | Interactive Tools, Decks & Visuals, Design |
+| Competitive Intelligence Dashboard | Research synthesis in a browsable, filterable interface | Planning & Research, Interactive Tools, Data Products |
+| Meeting Prep Automator | Script compiling context into formatted pre-read documents | Planning & Research, Automations |
+| Feature Prioritization Tool | Scoring matrix with RICE/MoSCoW frameworks and visual output | Interactive Tools, Design, Data Products |
+
+### For BI Engineers
+
+| Project | Description | Primary Skills |
+|---------|-------------|----------------|
+| Self-Service Query Builder | Stakeholders select dimensions/metrics, app generates SQL + results | Interactive Tools, Data Products |
+| Data Product Catalog | Browsable directory with descriptions, lineage, quality indicators | Interactive Tools, Design, Data Products |
+| Automated Report Suite | Pipeline generating formatted reports, distributed via email/Slack | Data Products, Automations |
+| Data Quality Scorecard | Dashboard showing quality metrics, trends, alerting thresholds | Interactive Tools, Data Products, Design |
+| Query Performance Monitor | Dashboard showing slow queries, patterns, optimization suggestions | Data Products, Interactive Tools |
+
+### For Business Analysts
+
+| Project | Description | Primary Skills |
+|---------|-------------|----------------|
+| Requirements Tracker | Track requirements across projects with dependencies and stakeholders | Interactive Tools, Design |
+| Process Flow Documenter | Turn process descriptions into visual flowcharts and diagrams | Decks & Visuals, Design |
+| Data Dictionary Builder | Interactive tool for business terms, definitions, data source mappings | Interactive Tools, Data Products |
+| Stakeholder Communication Hub | Central view of communications, decisions, action items | Interactive Tools, Automations |
+
+### For Technical Program Managers
+
+| Project | Description | Primary Skills |
+|---------|-------------|----------------|
+| Cross-Team Status Aggregator | Single view of multiple teams' status, blockers, deliverables | Interactive Tools, Data Products |
+| Release Notes Generator | Automation formatting changelog into stakeholder communications | Decks & Visuals, Automations |
+| Onboarding Checklist App | Interactive checklist with progress tracking and resource links | Interactive Tools, Design |
+| Dependency Tracker | Visual map of cross-team dependencies with status and risk flags | Interactive Tools, Decks & Visuals |
+
+---
+
+## Evaluation Criteria
+
+Your capstone isn't graded. But it should meet these standards. Use this as a self-assessment rubric.
+
+### Problem & Purpose
+- [ ] Solves a real, clearly articulated problem
+- [ ] Target user/audience is defined
+- [ ] You can explain in one sentence why this exists
+
+### Planning & Research
+- [ ] Evidence of planning: scope document, task breakdown, or project plan
+- [ ] Research or analysis informed the approach
+- [ ] Scope is appropriate — neither trivially simple nor impossibly ambitious
+
+### Technical Execution
+- [ ] Application runs without errors
+- [ ] Core functionality works as intended
+- [ ] Edge cases are handled (empty states, errors, unexpected inputs)
+- [ ] Code is in a Git repository with meaningful commit history (10+ commits)
+
+### Architecture & Blueprints
+- [ ] Project has a logical folder structure
+- [ ] Blueprints are present and effective
+- [ ] Dependencies are documented
+- [ ] Credentials and secrets are handled securely
+
+### Design
+- [ ] Visual design is clean and intentional
+- [ ] Layout is logical and consistent
+- [ ] Works on standard screen sizes
+- [ ] You would be comfortable showing this to a senior stakeholder
+
+### Documentation
+- [ ] README explains what, who, and how
+- [ ] Setup steps are documented
+- [ ] User-facing documentation exists if applicable
+
+### Reflection
+- [ ] Write-up explains your approach and decisions
+- [ ] Honest assessment of what worked and what didn't
+- [ ] Identifies which course skills were most valuable
+
+### Scoring Yourself
+
+Count your checkmarks:
+- **21-24:** Exceptional. This is portfolio-ready and demonstrates real competency.
+- **16-20:** Strong. Solid execution with room to polish.
+- **11-15:** Good foundation. The core is there — invest time in the gaps.
+- **Below 11:** Consider revisiting the modules for the areas where you're short.
+
+---
+
+## Sharing Your Capstone
+
+Your capstone is proof of what you can do. Make it visible:
+
+**At minimum:** A clean GitHub repo with a README and a deployed URL (if web-based).
+
+**Better:** A short write-up (500-1000 words) explaining the problem, your approach, and what you learned. Post it on LinkedIn, your team's Slack, or a blog.
+
+**Best:** A 5-minute demo. Problem → solution → live walkthrough → learnings → what's next. Record it or present it live.
+
+---
+
+## Checkpoint
+
+- [ ] Solve a real, clearly articulated problem with a defined target user
+- [ ] Plan and scope the project (scope document, task breakdown, or project plan)
+- [ ] Set up project with blueprints, logical structure, and version control (10+ commits)
+- [ ] Build core functionality that runs without errors and handles edge cases
+- [ ] Apply design principles — clean, consistent, stakeholder-ready
+- [ ] Ship to a live URL with user-facing documentation and README
+- [ ] Write a reflection covering approach, decisions, what worked, and what didn't
+
+---
+
+## What Comes After This Course
+
+You've built real things. You've learned engineering literacy, prompt engineering, version control, project architecture, design, data products, automation, security, testing, and collaboration. That's a new professional skill set.
+
+Here's how to keep compounding:
+
+**Keep building.** The skills decay if you don't use them. Build one thing a month, even if it's small.
+
+**Ship to real users.** Internal tools, automations, data products — the ones that solve actual problems and that people actually use. Shipped work > portfolio work.
+
+**Go deeper where it matters.** If data products are your focus, learn more SQL and understand your organization's data stack. If automations are your thing, learn more Python. Don't try to learn everything — go deep in your lane.
+
+**Teach someone else.** The best way to solidify what you know is to help someone else learn it. When a colleague asks "how did you build that?" — show them.
+
+**Stay current.** AI coding tools evolve rapidly. Follow the changelogs. Try new features. The principles (clear thinking, critical evaluation, version control) are permanent. The specific tools will keep changing.
+
+---
+
+*Previous: [← Module 15: Collaboration & Working with Engineers](15-collaboration.md)*

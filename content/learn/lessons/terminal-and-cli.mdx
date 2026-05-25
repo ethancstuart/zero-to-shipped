@@ -1,0 +1,365 @@
+---
+title: "The Terminal & Command Line"
+slug: terminal-and-cli
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: beginner
+estimatedMinutes: 60
+tags: [terminal, cli, command-line, foundations]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 4: The Terminal & Command Line
+
+*Tier 1: Foundations | Estimated time: 2–3 hours | Prerequisites: Modules 1–3*
+
+---
+
+## What You'll Get Out of This
+
+The terminal is the text-based interface to your computer. It's how you run Git commands (Module 5), execute Python scripts (Modules 12–13), install packages, and navigate projects. Most PM courses skip the terminal entirely, and people hit a wall the moment instructions say "run this command."
+
+Fifteen minutes of comfort here prevents hours of frustration later. And your AI tool has a cheat code: you can ask it to write terminal commands for you.
+
+---
+
+## Part 1: What the Terminal Is
+
+You already use a graphical interface to interact with your computer — clicking folders, dragging files, opening applications. The terminal does all of the same things, but with typed commands instead of mouse clicks.
+
+Why does it still exist? Two reasons:
+
+1. **It's faster for certain tasks.** Renaming 50 files, moving a folder, installing a package, running a script — one command vs. many clicks.
+2. **Many developer tools only work through the terminal.** Git, Node.js, Python, package managers — they're all terminal-first tools. There's no way around this.
+
+### Opening the Terminal
+
+> **In Cursor:** Use `` Ctrl+` `` (backtick, the key above Tab) or View → Terminal. A panel appears at the bottom.
+
+> **In Claude Code:** You're already in the terminal — Claude Code runs directly in it. Just open your system terminal (Terminal app on Mac, PowerShell on Windows) and navigate to your project folder.
+
+> **Windows note:** Windows ships with both PowerShell and Command Prompt. Use **PowerShell** — it supports more commands and is what Cursor opens by default.
+
+### What You're Looking At
+
+You'll see something like:
+
+```bash
+ethan@macbook my-first-app %
+```
+
+or on Windows:
+
+```powershell
+PS C:\Users\ethan\my-first-app>
+```
+
+This is the **prompt** (different from an AI prompt). It tells you:
+- Who you are (`ethan`)
+- What computer you're on (`macbook`)
+- What folder you're currently in (`my-first-app`)
+
+The blinking cursor after it is where you type commands.
+
+---
+
+## Part 2: Essential Commands
+
+You need about 10 commands for this entire course. Here they are.
+
+### Navigating
+
+**`pwd`** — Print Working Directory. Shows you where you are.
+```bash
+$ pwd
+/Users/ethan/projects/my-first-app
+```
+
+**`ls`** — List. Shows what's in the current folder.
+```bash
+$ ls
+index.html    style.css    script.js    README.md
+```
+
+On Windows, `dir` does the same thing as `ls`, but `ls` usually works too if you installed Git Bash.
+
+**`cd`** — Change Directory. Move to a different folder.
+```bash
+$ cd projects          # Go into the "projects" folder
+$ cd ..                # Go up one level (back to parent folder)
+$ cd ~                 # Go to your home folder
+$ cd ~/projects/my-app # Go to a specific path
+```
+
+**Quick tip:** Press Tab while typing a folder name and the terminal will auto-complete it. Type `cd pro` then Tab → it becomes `cd projects/`.
+
+### Creating Things
+
+**`mkdir`** — Make Directory. Create a new folder.
+```bash
+$ mkdir my-new-project
+```
+
+**`touch`** — Create an empty file (Mac/Linux). On Windows PowerShell, use `New-Item filename`.
+```bash
+$ touch notes.md
+```
+
+### Moving and Copying
+
+**`cp`** — Copy a file.
+```bash
+$ cp index.html backup.html
+```
+
+**`mv`** — Move (or rename) a file.
+```bash
+$ mv old-name.html new-name.html    # Rename
+$ mv file.html ../other-folder/     # Move to another folder
+```
+
+### Deleting
+
+**`rm`** — Remove a file. **Be careful — there's no trash can. It's gone.**
+```bash
+$ rm unwanted-file.html
+```
+
+**`rm -r`** — Remove a folder and everything inside it. **Use with caution.**
+```bash
+$ rm -r old-project
+```
+
+### Running Programs
+
+**`node`** — Run a JavaScript file.
+```bash
+$ node script.js
+```
+
+**`python3`** — Run a Python file (use `python` on Windows).
+```bash
+$ python3 process.py
+```
+
+**`git`** — Run Git commands (you'll learn these in Module 5).
+```bash
+$ git status
+```
+
+### Viewing File Contents
+
+**`cat`** — Print a file's contents to the terminal.
+```bash
+$ cat README.md
+```
+
+### Stopping Things
+
+**`Ctrl+C`** — Stop whatever's running. If a process is stuck or you want to cancel, press `Ctrl+C`. This is the "get me out of here" command.
+
+---
+
+## Part 3: AI-Assisted Terminal Commands
+
+Here's why AI coding tools make the terminal dramatically less intimidating: you can ask the AI to write commands for you.
+
+> **In Cursor:** Press **Cmd+K** (Mac) or **Ctrl+K** (Windows) in the terminal. A text input appears — type what you want in plain English.
+
+> **In Claude Code:** You're already in a conversational terminal. Just describe what you want — "list all HTML files in this folder and its subfolders" — and Claude Code will run the right command for you. No special shortcut needed.
+
+For example, asking "List all HTML files in this folder and its subfolders" generates:
+```bash
+find . -name "*.html"
+```
+
+You can review it before running. This means you never need to memorize obscure commands — you just need to describe what you want.
+
+Try these:
+- "Show me the 10 largest files in this folder"
+- "Count how many lines are in each JavaScript file"
+- "Create a folder called 'backup' and copy all CSS files into it"
+- "Find all files modified in the last 24 hours"
+
+Use AI-assisted commands liberally. Over time, you'll start remembering the common commands naturally.
+
+---
+
+## Part 4: Terminal Patterns You'll Use Repeatedly
+
+### The "Navigate and Run" Pattern
+
+This is the most common terminal workflow in the course:
+
+```bash
+$ cd my-project        # Go to your project folder
+$ ls                   # See what's there
+$ python3 script.py    # Run a script
+```
+
+### The "Install and Run" Pattern
+
+For JavaScript projects that use packages:
+
+```
+$ npm install          # Install all dependencies listed in package.json
+$ npm start            # Run the project
+```
+
+For Python projects:
+
+```
+$ pip install -r requirements.txt    # Install all dependencies
+$ python3 main.py                    # Run the project
+```
+
+### The "Check and Fix" Pattern
+
+When something isn't working:
+
+```bash
+$ pwd                  # Am I in the right folder?
+$ ls                   # Do I see the files I expect?
+$ node --version       # Is Node.js installed?
+$ python3 --version    # Is Python installed?
+```
+
+Nine times out of ten, "it's not working" means you're in the wrong folder. `pwd` and `ls` are your diagnostic tools.
+
+---
+
+## Part 5: Terminal Fluency Tips
+
+### Use the Up Arrow
+
+Press the up arrow key to cycle through your previous commands. If you just ran a command and want to run it again (or modify it slightly), up arrow is faster than retyping.
+
+### Clear the Screen
+
+If the terminal gets cluttered:
+```bash
+$ clear
+```
+Or press **Ctrl+L** to clear the terminal screen.
+
+### Multiple Terminals
+
+You can have multiple terminal tabs. In Cursor, click the `+` icon in the terminal panel. Useful when you want one terminal running a server and another for commands.
+
+### Don't Panic About Permissions
+
+If you see "Permission denied" when installing npm packages globally, check the [Troubleshooting Guide](../resources/troubleshooting.md) for fixing npm permissions properly rather than using `sudo`.
+
+On Windows, right-click your terminal and select "Run as administrator" if you encounter permission issues.
+
+---
+
+## Lab: Terminal Navigation Exercise
+
+Complete these 10 tasks using only the terminal (no mouse file browser). Time yourself — the goal is comfort, not speed.
+
+1. Open your terminal
+2. Navigate to your home folder (`cd ~`)
+3. Create a folder called `terminal-practice`
+4. Navigate into it
+5. Create three files: `notes.md`, `data.csv`, `script.py`
+6. List the files to confirm they exist
+7. Create a subfolder called `backup`
+8. Copy `notes.md` into the `backup` folder
+9. Navigate into `backup` and verify the file is there
+10. Navigate back to `terminal-practice` and delete the `backup` folder
+
+If you get stuck on any step, ask your AI tool for help.
+
+### Lab: npm from Scratch
+
+Run these commands in order to experience the JavaScript package ecosystem:
+
+```bash
+$ mkdir npm-test && cd npm-test
+$ npm init -y                    # Creates a package.json
+$ npm install cowsay             # Installs a fun package
+$ npx cowsay "Hello from npm!"  # Runs the package
+```
+
+You should see an ASCII cow saying your message. This is trivial, but the pattern — `npm install` then `npx` or `npm start` — is how every JavaScript project works.
+
+### Lab: Reading Terminal Errors
+
+Try running a command that doesn't exist:
+
+```bash
+$ thiswontwork
+```
+
+You'll see something like: `thiswontwork: command not found`
+
+Now try:
+```bash
+$ node nonexistent-file.js
+```
+
+You'll see: `Error: Cannot find module '/path/to/nonexistent-file.js'`
+
+Practice reading these errors. The terminal is telling you exactly what's wrong — a missing command vs. a missing file. This is the same pattern you'll see with real errors.
+
+### Bonus: Terminal in Context
+
+Navigate to your Module 1 project folder and:
+- List all files
+- View the contents of `index.html` using `cat`
+- Count the number of lines in the file: `wc -l index.html`
+- Open the file in your browser from the terminal: `open index.html` (Mac) or `start index.html` (Windows)
+
+---
+
+## Go Deeper
+
+Once the basics feel natural, try these in the terminal:
+
+- `history` — shows every command you've run in this session. Useful for retracing your steps.
+- `cat file1.md file2.md > combined.md` — combine two files into one
+- `grep "search term" filename.md` — search inside a file for specific text
+- Ask your AI tool: "Show me the 5 largest files in this folder sorted by size"
+
+### If You Get Stuck
+
+**"command not found":** You're either misspelling the command or the program isn't installed. Try `which node` or `which python3` to check if the program exists on your system. If it returns nothing, the program isn't installed or isn't in your PATH.
+
+**You're in the wrong folder:** Run `pwd` (where am I?) and `ls` (what's here?). These two commands orient you instantly. If you're not where you expect, use `cd ~` to go home, then navigate from there.
+
+**Terminal looks frozen:** The program might still be running. Press `Ctrl+C` to cancel it. If that doesn't work, close the terminal tab and open a new one.
+
+**Commands from the module don't work on Windows:** Some commands differ between Mac/Linux and Windows PowerShell. `cat` → `Get-Content`, `open` → `start`, `touch` → `New-Item`. When in doubt, ask your AI tool in plain English — it generates the right command for your operating system.
+
+---
+
+## Checkpoint
+
+You've completed Module 4 when:
+
+- [ ] You can open the terminal in your AI tool without looking up how
+- [ ] You completed the 10-task navigation exercise
+- [ ] You can navigate to any folder on your computer using `cd`
+- [ ] You can list files, create folders, and create files from the terminal
+- [ ] You've used AI in the terminal to generate at least 3 commands you didn't know
+- [ ] When something isn't working, your first instinct is to check `pwd` and `ls`
+
+---
+
+## What's Next
+
+You can navigate your project from the terminal. Now it's time to learn the most important tool you'll run from it: **Git**. Module 5 teaches version control — how to save, track, branch, merge, and collaborate on your work like a professional.
+
+---
+
+*Previous: [← Module 3: How Code Actually Works](03-how-code-works.md)*
+*Next: [Module 5: Version Control with Git →](05-version-control.md)*

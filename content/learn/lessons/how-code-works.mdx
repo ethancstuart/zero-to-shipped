@@ -1,0 +1,426 @@
+---
+title: "How Code Actually Works"
+slug: how-code-works
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: beginner
+estimatedMinutes: 90
+tags: [html, css, javascript, foundations, code-literacy]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 3: How Code Actually Works
+
+*Tier 1: Foundations | Estimated time: 3–5 hours | Prerequisites: Modules 1–2*
+
+---
+
+## What You'll Get Out of This
+
+You don't need to write code. But you do need to read it — enough to evaluate whether what the AI generated is reasonable, understand why something broke, and point the AI in the right direction when you need changes.
+
+This module gives you code literacy: the ability to look at a file, understand its structure, identify what different sections do, and read error messages without panic.
+
+---
+
+## Part 1: The Three Layers
+
+Almost everything you build in this course for the browser is made of three languages working together. You don't need to memorize syntax — you need to recognize patterns.
+
+### HTML — The Structure
+
+HTML is the skeleton. It defines what's on the page: headings, paragraphs, buttons, forms, tables, images. Every element is wrapped in "tags" — pairs of angle brackets.
+
+```html
+<h1>Feature Request Tracker</h1>
+<p>Submit and track feature requests from stakeholders.</p>
+<button>Add Request</button>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Priority</th>
+    <th>Status</th>
+  </tr>
+</table>
+```
+
+**How to recognize HTML:** Angle brackets everywhere. Tags like `<div>`, `<p>`, `<h1>`, `<button>`, `<table>`. If you see `< >`, you're looking at HTML.
+
+**What to look for when evaluating:** Does the structure match what you asked for? If you wanted a table with 5 columns but you see only 3 `<th>` tags, that's a gap. If you wanted a form but don't see any `<input>` or `<form>` tags, something's missing.
+
+### CSS — The Style
+
+CSS controls how things look: colors, fonts, spacing, layout, animations. It's the paint and furniture — the same room (HTML) can look completely different depending on the CSS.
+
+```css
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+  color: #1F2937;
+}
+
+button {
+  background-color: #2563EB;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+```
+
+**How to recognize CSS:** Curly braces `{ }` with property-value pairs inside. Properties like `color`, `font-size`, `padding`, `margin`, `display`, `background`. Usually in a `<style>` tag or a `.css` file.
+
+**What to look for when evaluating:** Do the colors match what you specified? Is the spacing reasonable? Are elements aligned? If something looks "off" in the browser, the answer is almost always in the CSS.
+
+### JavaScript — The Behavior
+
+JavaScript makes things interactive. Clicking buttons, submitting forms, filtering data, animating elements, saving data — anything that *happens* on the page is JavaScript.
+
+```javascript
+function addRequest(title, priority) {
+  const request = {
+    id: Date.now(),
+    title: title,
+    priority: priority,
+    status: 'New',
+    createdAt: new Date()
+  };
+  requests.push(request);
+  saveToLocalStorage();
+  renderTable();
+}
+
+document.getElementById('submit-btn').addEventListener('click', function() {
+  const title = document.getElementById('title-input').value;
+  addRequest(title, 'Medium');
+});
+```
+
+**How to recognize JavaScript:** `function`, `const`, `let`, `var`, `if`, `for`, `=>`, `.addEventListener`, `document.getElementById`. Usually in a `<script>` tag or a `.js` file.
+
+**What to look for when evaluating:** The logic flow. If a button is supposed to add a row to a table, there should be a function that creates the row data and a function that updates the table. If filtering doesn't work, look for the filter function — is it checking the right field?
+
+### Try It: Predict the Output
+
+Read this function and predict what it returns before running it:
+
+```javascript
+function summarize(items) {
+  let total = 0;
+  for (const item of items) {
+    if (item.status === 'complete') {
+      total += 1;
+    }
+  }
+  return total + ' out of ' + items.length + ' done';
+}
+```
+
+What would `summarize([{status:'complete'}, {status:'open'}, {status:'complete'}])` return? Work it out, then verify by pasting it into your browser console (Right-click → Inspect → Console).
+
+### Try It: Trace the Data Flow
+
+Look at the `addEventListener` example above. Trace what happens when a user clicks the submit button:
+
+1. The browser detects the click on the element with id `submit-btn`
+2. It runs the function inside `addEventListener`
+3. That function reads the value from the `title-input` element
+4. It calls `addRequest()` with that value
+5. `addRequest` creates an object, pushes it to an array, saves to storage, and re-renders the table
+
+Now open your own Module 1 project and trace a similar flow — pick any button and follow the code path from click to result.
+
+### How They Work Together
+
+```text
+HTML         → What's on the page (structure)
+CSS          → How it looks (style)
+JavaScript   → What it does (behavior)
+```
+
+### Try It: CSS Modification Exercise
+
+Open your Module 1 project and find the CSS section (inside a `<style>` tag or in a `.css` file). Try these changes one at a time — save and refresh the browser after each:
+
+1. Change a `background-color` value to a different color (try `#FEF3C7` for a warm yellow)
+2. Change a `font-size` value — make it bigger or smaller and see the effect
+3. Change a `padding` value from `16px` to `4px` — notice how cramped things get
+
+The point: CSS changes are safe, visual, and immediately visible. This builds your confidence to read and tweak AI output.
+
+In your Module 1 project (the habit tracker), all three were probably in a single `index.html` file — HTML at the top, CSS in a `<style>` block, JavaScript in a `<script>` block. As projects get more complex, these often split into separate files (Module 6 covers project architecture).
+
+---
+
+## Part 2: Python — The Other Language You'll See
+
+Python isn't used in the browser. It's used on your computer for scripting, automation, data processing, and backend work. You'll use it heavily in Modules 12 (Data Products) and 13 (Automations).
+
+```python
+import csv
+
+def read_requests(filename):
+    requests = []
+    with open(filename, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            requests.append(row)
+    return requests
+
+data = read_requests('requests.csv')
+print(f"Found {len(data)} requests")
+```
+
+**How to recognize Python:** Indentation defines structure (no curly braces). Keywords like `def`, `import`, `for`, `if`, `with`, `print`. File extensions are `.py`.
+
+**What to look for when evaluating:** Does the script do what you asked? If it's processing a CSV file, does it read the right columns? If it's calling an API, is it using the correct endpoint? Python errors are generally more readable than JavaScript errors — they tell you the line number and what went wrong.
+
+---
+
+## Part 3: Reading Error Messages
+
+Error messages are not punishments. They're the application telling you exactly what's wrong. Learning to read them is the single most valuable technical skill in this course.
+
+### Anatomy of an Error Message
+
+Every error message has (at minimum) two things: **what went wrong** and **where it went wrong**.
+
+**Browser JavaScript error:**
+```text
+Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
+    at script.js:42:28
+```
+
+Breaking this down:
+- `TypeError` — the type of error (in this case, something is the wrong type)
+- `Cannot read properties of null` — it tried to do something with a thing that doesn't exist
+- `reading 'addEventListener'` — specifically, it tried to add an event listener to something
+- `at script.js:42:28` — it happened in `script.js`, line 42, character 28
+
+Translation: On line 42, the code tried to attach a click handler to an element that doesn't exist. Probably the HTML element ID doesn't match what the JavaScript is looking for.
+
+**Python error:**
+```text
+Traceback (most recent call last):
+  File "process.py", line 15, in read_data
+    data = json.loads(content)
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 3 column 5
+```
+
+Breaking this down:
+- Read from the bottom up (the last line is the actual error)
+- `JSONDecodeError` — it failed to read JSON data
+- `Expecting property name enclosed in double quotes` — the JSON file is malformed
+- `line 3 column 5` — the problem is on line 3 of the JSON data
+- `File "process.py", line 15` — your code that triggered this is on line 15
+
+Translation: The JSON data you're trying to read has a formatting error on line 3.
+
+### The Three Types of Errors
+
+**Syntax errors** — The code is written incorrectly. Missing brackets, typos, wrong punctuation. Like a grammatical error in a sentence. These prevent the code from running at all.
+
+**Runtime errors** — The code is written correctly but fails when it runs. Trying to access something that doesn't exist, dividing by zero, reading a file that isn't there. These crash the application mid-execution.
+
+**Logic errors** — The code runs without crashing but produces wrong results. The filter shows the wrong records, the calculation is off, the sort order is reversed. These are the hardest to catch because there's no error message — everything *looks* fine.
+
+### What to Do with an Error
+
+You do not need to fix errors yourself. Your job is to:
+
+1. **Copy the entire error message** — not just the last line, the whole thing
+2. **Paste it into your AI tool** with context about what you were doing
+3. **Describe the situation:** "I clicked the 'Add' button and this error appeared in the console"
+
+AI coding tools are excellent at fixing errors when you give them the full error message and context.
+
+---
+
+## Part 4: File and Folder Structure
+
+As projects grow, they split from one file into many. Understanding why files are organized the way they are helps you navigate projects and point Cursor to the right place when requesting changes.
+
+### Common Web Project Structure
+
+```text
+my-project/
+├── index.html          ← The main page
+├── style.css           ← Styles (could also be in a styles/ folder)
+├── script.js           ← JavaScript behavior
+├── assets/
+│   ├── logo.png        ← Images
+│   └── icon.svg
+├── data/
+│   └── sample.json     ← Data files
+└── README.md           ← Documentation about the project
+```
+
+### Common Python Project Structure
+
+```text
+my-automation/
+├── main.py             ← The main script
+├── utils.py            ← Helper functions
+├── config.py           ← Configuration settings
+├── requirements.txt    ← List of packages the project needs
+├── data/
+│   ├── input.csv       ← Input data
+│   └── output/         ← Where results go
+├── .env                ← Secrets (API keys, passwords — NEVER commit this)
+└── README.md           ← Documentation
+```
+
+### Key Files to Recognize
+
+- **README.md** — Documentation. What the project does, how to run it, who made it.
+- **package.json** — For JavaScript projects: lists dependencies and scripts
+- **requirements.txt** — For Python projects: lists packages needed
+- **.env** — Environment variables (secrets, credentials). You'll learn about this in Modules 12 and 14.
+- **.gitignore** — Tells Git which files NOT to track (covered in Module 5)
+
+---
+
+## Part 5: What APIs Are and Why They Matter
+
+You'll hear the word "API" constantly. It stands for Application Programming Interface, but that definition doesn't help anyone. Here's what it actually means for you:
+
+**An API is a way for one piece of software to talk to another piece of software.**
+
+When your habit tracker saves data to local storage — that's using the browser's storage API. When an application sends a Slack message — that's using Slack's API. When a dashboard pulls data from a database — that's using the database's API.
+
+### The Restaurant Analogy
+
+Think of an API as a restaurant:
+- You (the application) are the customer
+- The menu is the API documentation (tells you what's available)
+- Your order is the API request (you ask for something specific)
+- The food is the API response (you get back what you asked for)
+- The kitchen is the other system (you don't see how it works, you just get results)
+
+You don't need to build APIs in this course. But you need to understand that when Cursor writes code that "calls an API" or "fetches data from an endpoint," it's asking another service for information — like placing an order at a restaurant.
+
+### What to Look For
+
+When you see code like this:
+
+```javascript
+const response = await fetch('https://api.example.com/data');
+const data = await response.json();
+```
+
+That's an API call. It's asking `api.example.com` for data and waiting for the response. If this fails, common causes are: the URL is wrong, the service is down, or you need an API key (authentication).
+
+---
+
+## Lab: Code Annotation Exercise
+
+Open your Module 1 habit tracker (or whichever project you built). You're going to read the code and annotate it with comments.
+
+### How Comments Work
+
+In HTML: `<!-- This is a comment -->`
+In CSS: `/* This is a comment */`
+In JavaScript: `// This is a comment` or `/* Multi-line comment */`
+In Python: `# This is a comment`
+
+### The Exercise
+
+1. Open your project file(s) in your editor
+2. Go through the code section by section
+3. Add comments above each section explaining what it does **in your own words**
+4. Aim for at least 10 comments across the file
+
+You can ask your AI tool for help: select a block of code and ask "explain what this section does in plain English." But write the comment yourself based on the explanation — don't just paste what the AI says.
+
+> **In Cursor:** Select code, press Cmd+K, and type your question. **In Claude Code:** Paste the code or reference the file and ask your question directly.
+
+Example:
+
+```html
+<!-- This is the main container that holds the whole app -->
+<div class="container">
+  <!-- The header section with the app title -->
+  <h1>Habit Tracker</h1>
+  
+  <!-- Form where users type in a new habit name and submit it -->
+  <div class="add-habit">
+    <input type="text" id="habit-input" placeholder="Enter a habit...">
+    <button onclick="addHabit()">Add</button>
+  </div>
+  
+  <!-- This is where the list of habits gets rendered by JavaScript -->
+  <div id="habit-list"></div>
+</div>
+```
+
+The goal isn't to understand every line. It's to understand the structure — what each major section does and how they relate to each other.
+
+### Lab: Error Reading Practice
+
+Create a new file called `errors.html` and intentionally break things:
+
+1. Ask your AI tool to build a simple to-do list
+2. Once it works, manually introduce 3 errors (delete a closing tag, misspell a function name, reference an element ID that doesn't exist)
+3. Open the file in the browser
+4. Open the browser console (Right-click → Inspect → Console)
+5. Read each error message and write down: what type of error, what went wrong, and where
+6. Fix each error by telling your AI tool what you found
+
+This builds the habit of reading error messages calmly and systematically — a skill that will save you hours over the rest of this course.
+
+---
+
+## Go Deeper
+
+Once you're comfortable recognizing code, try these prompts in your AI tool to build understanding:
+
+- Select any function in your project and ask: "Explain what this function does step by step in plain English"
+- "Show me which parts of this file handle the visual layout and which parts handle the logic"
+- "What would break if I deleted lines 45-50? Explain what they do and what depends on them."
+- "Rewrite the JavaScript in this file with a comment above every line explaining what it does"
+
+### If You Get Stuck
+
+**Code looks like gibberish:** That's normal at this stage. Focus on the structure, not the details. Can you identify the HTML section? The CSS section? The JavaScript section? Start there. Understanding will build over time with exposure — you don't need to read every line.
+
+**Can't find where to make a change:** Use your editor's project-wide search (Cmd+Shift+F in Cursor, or ask Claude Code to search for you) and search for text that appears in the UI. If a button says "Add Request," search for "Add Request" — it will take you to the HTML. From there, look for nearby JavaScript that handles the click.
+
+**Error messages are overwhelming:** Read from the bottom up. The last line is the actual problem. Everything above it is the path the code took to get there. You only need the last line and the file/line number.
+
+---
+
+## Checkpoint
+
+You've completed Module 3 when:
+
+- [ ] You can identify HTML, CSS, JavaScript, and Python by sight
+- [ ] You can explain what each of the three web layers does (structure, style, behavior)
+- [ ] You've annotated your Module 1 project with 10+ comments explaining code sections
+- [ ] You can read an error message and identify the error type and location
+- [ ] You've completed the error reading practice (introduced and diagnosed 3 errors)
+- [ ] You can explain what an API is in your own words without using the phrase "Application Programming Interface"
+
+---
+
+## What's Next
+
+You can read code and error messages. But navigating your project still requires clicking around in the file explorer. Module 4 teaches you the tool that engineers use to navigate files, run programs, and execute commands: **The Terminal & Command Line.**
+
+---
+
+*Previous: [← Module 2: Prompt Engineering & Critical Thinking](02-prompt-engineering.md)*
+*Next: [Module 4: The Terminal & Command Line →](04-terminal-and-cli.md)*

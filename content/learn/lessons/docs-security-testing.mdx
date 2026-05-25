@@ -1,0 +1,346 @@
+---
+title: "Documentation, Security, Testing & Shipping"
+slug: docs-security-testing
+pillar: learn
+type: lesson
+format: written
+tools: [claude-code, cursor]
+toolVersions:
+  claude-code: "1.0.32"
+  cursor: "0.48"
+difficulty: advanced
+estimatedMinutes: 90
+tags: [documentation, security, testing, shipping, deployment]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+# Module 14: Documentation, Security, Testing & Shipping
+
+*Tier 3: Advanced | Estimated time: 5-6 hours | Prerequisites: Foundations + at least 2 Intermediate*
+
+---
+
+## What You'll Get Out of This
+
+Four skills that separate someone who built a thing once from someone who builds reliably. Each of these has been referenced in earlier modules — this module consolidates them into a comprehensive treatment.
+
+---
+
+## Part 1: Reading Documentation
+
+Every library, tool, and API you use has documentation. Being able to navigate docs independently — without asking your AI tool to figure it out for you — is what makes you self-sufficient.
+
+### How Technical Docs Are Structured
+
+Most documentation follows this pattern:
+
+- **Getting Started / Quickstart** — Install it and run the simplest example
+- **Guides / Tutorials** — Step-by-step walkthroughs of common use cases
+- **API Reference** — Every function, parameter, and option listed exhaustively
+- **Examples** — Real-world code samples
+- **Changelog** — What's new in each version
+
+### Finding What You Need
+
+You don't need to read all the docs. You need to find the right section.
+
+**"I need to start using this"** → Read the Quickstart. Skip everything else until you have it running.
+
+**"I know the basics but need a specific feature"** → Search the API Reference. Look for the function name or parameter.
+
+**"I don't understand how X works"** → Read the relevant Guide. These are explanatory, not reference.
+
+**"Something broke after updating"** → Read the Changelog for breaking changes.
+
+### Evaluating Libraries and Tools
+
+Before using a library your AI tool suggests, check:
+
+- **Maintenance:** When was the last commit? (More than a year ago is a red flag)
+- **Downloads/Stars:** Popular libraries have more community support and fewer undiscovered bugs
+- **Documentation quality:** If the docs are sparse, you'll struggle when your AI tool can't help
+- **Size:** Does this library do one thing you need or does it add 500KB of code for one function?
+
+### Feeding Docs to Your AI Tool
+
+When your AI tool doesn't know about a library or gets it wrong, feed it the documentation:
+
+1. Find the relevant doc page
+2. Copy the content into a file in your project (e.g., `docs/chart-js-reference.md`)
+3. Reference it in your prompt: "Using the Chart.js documentation in @docs/chart-js-reference.md, build a..."
+
+In Cursor, you can use `@docs/` syntax to reference documentation files in your project. In Claude Code, you can use web search or paste documentation directly into the conversation.
+
+Or paste the relevant section directly into your prompt. Any AI tool with good documentation context produces dramatically better output than one that's guessing.
+
+---
+
+## Part 2: Security Thinking for Non-Engineers
+
+You don't need to be a security expert. You need to not make the mistakes that create vulnerabilities.
+
+### The Mental Model
+
+**Assume everything in your code is visible.** Even if your repo is private, even if the file is on your laptop — act as if anyone could read it at any time. This one rule prevents 90% of security mistakes.
+
+### Credentials Management
+
+**The #1 rule: Never put secrets in code.**
+
+Secrets include: API keys, passwords, tokens, database credentials, webhook URLs, encryption keys.
+
+**Where secrets go:**
+
+1. In a `.env` file at the root of your project:
+```text
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/xxx/yyy/zzz
+DATABASE_URL=postgresql://user:pass@host:5432/db
+API_KEY=your_api_key_here
+```
+
+2. In your `.gitignore`:
+```text
+.env
+.env.local
+.env.production
+```
+
+3. Read them in code via environment variables:
+```python
+import os
+api_key = os.environ.get('API_KEY')
+```
+
+```javascript
+const apiKey = process.env.API_KEY;
+```
+
+**Never:** Hardcode secrets in code files. Paste them into AI tool prompts. Commit them to Git. Share them in Slack messages.
+
+### The "Oh No I Committed a Secret" Protocol
+
+If you accidentally commit a secret to Git:
+
+1. **Immediately rotate the secret.** Generate a new API key, change the password. The old one is compromised the moment it hits a remote repo.
+2. **Remove it from the code** and commit the fix.
+3. **Add it to `.gitignore`** so it doesn't happen again.
+4. Note: Removing the file in a new commit does NOT erase it from history. The secret is still visible in old commits. For public repos, assume the secret is compromised. For private repos, rotating the secret is still the safe move.
+
+### Dependency Awareness
+
+When your AI tool adds `npm install something` or `pip install something`, you're adding someone else's code to your project. Most of the time this is fine. Occasionally it's not.
+
+**Before installing a dependency:**
+- Does it come from the official package registry (npm, PyPI)?
+- Does it have a reasonable number of downloads?
+- Is it maintained?
+- Does your project actually need it, or could you accomplish the same thing in 10 lines of code?
+
+**Red flags:**
+- Packages with similar names to popular ones (typosquatting)
+- Packages that request unusual permissions
+- Packages with no documentation or very few downloads
+
+### Common Mistakes Product-Builders Make
+
+1. **Committing `.env` files** — Always check `.gitignore` before pushing
+2. **Hardcoding credentials in prompts** — AI coding tools send prompts to remote servers. Don't include secrets.
+3. **Using HTTP instead of HTTPS** — Always use HTTPS for API calls
+4. **Not updating dependencies** — Old versions may have known vulnerabilities
+5. **Storing sensitive user data without thinking about it** — Even for internal tools, consider what data you're collecting and who can access it
+
+---
+
+## Part 3: Testing
+
+Testing is how you verify that what you built actually works — not just today, but after changes.
+
+### Manual Testing Methodology
+
+Most of what you build in this course can be tested manually. But "clicking around" isn't testing — it's hoping. Systematic manual testing follows a pattern:
+
+**1. Test the happy path:** Does the core workflow work as expected? (Add a request, change its status, filter the table)
+
+**2. Test edge cases:**
+- Empty state: What happens with no data?
+- One item: Does it look right with a single record?
+- Many items: What happens with 100 or 1,000 records?
+- Long text: What happens when a title is 200 characters?
+- Special characters: Does it handle quotes, ampersands, emoji?
+- Missing data: What if a required field is blank?
+
+**3. Test error states:**
+- What happens if the data file is missing?
+- What happens if the API is down?
+- What happens if the user enters invalid input?
+
+**4. Test across environments:**
+- Different browsers (Chrome, Firefox, Safari)
+- Different screen sizes (resize your browser window)
+- With JavaScript disabled (does it fail gracefully?)
+
+### Writing Basic Automated Tests
+
+For Python scripts, your AI tool can write test files:
+
+```text
+Write tests for format_report.py using pytest:
+1. Test that it correctly filters active records
+2. Test that it renames columns correctly
+3. Test that it handles an empty CSV gracefully
+4. Test that it handles missing columns with a clear error
+5. Test that the output file is created in the right location
+
+Use a small test CSV (5 records) created in the test setup.
+```
+
+### When Testing Is Critical vs. Optional
+
+**Critical (always test rigorously):**
+- Anything involving data calculations people will act on
+- Automations that run unattended
+- Tools used by people outside your immediate team
+
+**Good practice (test the happy path and major edge cases):**
+- Internal tools for your team
+- Prototypes you'll demo to stakeholders
+
+**Optional (spot-check is fine):**
+- Personal tools only you use
+- One-off scripts you'll run once
+
+---
+
+## Part 4: Shipping
+
+Building is only half the work. Shipping means getting your work into people's hands.
+
+### Deployment Options
+
+**Static sites (HTML/CSS/JS):** GitHub Pages, Netlify, Vercel — free, simple, push-to-deploy.
+
+**Python scripts:** Share via Git repo with a README. Or package as a CLI tool.
+
+**Data products:** Depends on your organization's infrastructure. Often starts as a prototype you demo, then engineering deploys properly.
+
+### User Documentation
+
+Every shipped project needs documentation for the people who use it:
+
+````markdown
+# [Tool Name]
+
+## What this does
+[One paragraph explaining the purpose]
+
+## How to use it
+[Step-by-step instructions for the most common workflow]
+
+## FAQ
+[Common questions and answers]
+
+## Known issues
+[Anything that doesn't work perfectly yet]
+
+## Contact
+[Who to reach out to with questions or bugs]
+````
+
+### Maintenance Mindset
+
+Things that break over time:
+- **Dependencies update** and introduce breaking changes
+- **APIs change** their endpoints or authentication
+- **Data schemas evolve** and your queries stop working
+- **Browsers update** and CSS renders differently
+
+Plan for it: check your shipped projects quarterly. Note the last-verified date in your README.
+
+### Sharing Your Work
+
+Beyond deploying, tell people about what you built:
+- **README** — The minimum. Every project has one.
+- **Internal demo** — Show your team. 5 minutes, live demo, Q&A.
+- **Blog post or write-up** — What you built, why, what you learned.
+- **Portfolio piece** — Screenshot, description, link. Demonstrates your capabilities.
+
+---
+
+## Go Deeper
+
+Try these prompts in your AI tool to build your docs/security/testing instincts:
+
+- "Read the documentation at [paste a docs URL or file] and show me how to implement [specific feature]"
+- "Audit this project for security issues. Check for hardcoded secrets, missing .gitignore entries, and unsafe input handling."
+- "Write a test plan for this application: list every user action that should be tested and what the expected result is"
+- "Generate pytest tests for this Python script that cover the happy path, edge cases, and error conditions"
+
+### If You Get Stuck
+
+**Can't find what you need in documentation:** Most docs have a search function — use it with specific terms, not vague ones. "date picker onChange" beats "how to use dates." If the official docs are sparse, search for "[library name] examples" or "[library name] tutorial."
+
+**Accidentally committed a secret:** Don't panic, but act fast. (1) Rotate the secret immediately — generate a new API key or password. (2) Remove it from the code. (3) Add the file to `.gitignore`. (4) Commit the fix. The old secret is compromised — even deleting the file doesn't remove it from Git history.
+
+**Tests feel like busywork:** Focus on testing the things that would be embarrassing if they broke. If the dashboard shows the wrong number to a stakeholder, test that calculation. If the filter silently excludes records, test the filter logic. You don't need 100% coverage — you need coverage where it matters.
+
+### Try This
+
+Pick a library you've never used. Set a timer for 30 minutes. Using only the library's documentation (not your AI tool, not Stack Overflow), try to implement one basic feature. Note what was easy, what was hard, and what was missing from the docs. This builds the muscle of reading docs independently — a skill that makes you faster with every new tool you encounter.
+
+---
+
+## Critical Evaluation
+
+For documentation, security, testing, and shipping:
+
+- Could someone new run your project using only the README?
+- If a secret leaked from your project, would you know which ones and how to rotate them?
+- Are you testing systematically or just clicking around and hoping?
+- Would you trust this tool if someone else built it and handed it to you?
+
+---
+
+## Lab: Security Audit
+
+1. Open every project you've built in this course
+2. For each, check:
+   - [ ] Is there a `.gitignore` that excludes `.env`?
+   - [ ] Are there any hardcoded credentials, API keys, or tokens?
+   - [ ] Are there any sensitive data files committed to Git?
+   - [ ] Are dependencies from reputable sources?
+3. Fix any issues you find
+4. Commit the fixes
+
+### Lab: Documentation Exercise
+
+1. Pick a library or tool you haven't used before
+2. Read only its documentation (not your AI tool, not Google)
+3. Integrate it into one of your existing projects
+4. Document what was easy to find, what was hard, and what was missing from the docs
+
+### Lab: Ship Something
+
+1. Pick your best project from the course
+2. Deploy it (if not already deployed)
+3. Write user-facing documentation
+4. Share it with at least one person who wasn't involved in building it
+5. Collect their feedback and make one improvement based on it
+
+---
+
+## Checkpoint
+
+- [ ] Completed security audit on all course projects
+- [ ] Fixed any security issues found (credentials, `.gitignore` gaps)
+- [ ] Read documentation for a new library and integrated it without relying solely on your AI tool
+- [ ] Shipped at least one project with user-facing documentation
+- [ ] Can walk through the security checklist for any project you've built
+- [ ] Can describe the difference between manual testing and hoping
+
+---
+
+*Previous: [← Module 13: Automations & Workflows](13-automations.md)*
+*Next: [Module 15: Collaboration & Working with Engineers →](15-collaboration.md)*
