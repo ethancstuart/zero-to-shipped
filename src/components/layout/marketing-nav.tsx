@@ -5,6 +5,13 @@ import { LoginButtonOutline } from "./login-button";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 
+const navItems = [
+  { label: 'Pulse', href: '/pulse' },
+  { label: 'Build', href: '/build' },
+  { label: 'Learn', href: '/learn' },
+  { label: 'System', href: '/system' },
+]
+
 export async function MarketingNav() {
   const supabase = await createClient();
   const {
@@ -16,21 +23,18 @@ export async function MarketingNav() {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
           <Rocket className="size-5 text-primary" />
-          Zero to Ship
+          Prototype Studio
         </Link>
         <div className="hidden items-center gap-1 sm:flex">
-          <Link
-            href="/library"
-            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            Library
-          </Link>
-          <Link
-            href="/pricing"
-            className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            Pricing
-          </Link>
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
