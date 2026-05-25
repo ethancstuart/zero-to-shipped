@@ -35,6 +35,10 @@
     {
       "path": "/api/cron/tool-intelligence",
       "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/retrospective",
+      "schedule": "0 0 1 * *"
     }
   ]
 }
