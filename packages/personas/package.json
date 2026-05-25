@@ -1,0 +1,14 @@
+{
+  "name": "@prototype-studio/personas",
+  "version": "0.1.0",
+  "description": "AI agent persona library for Prototype Studio",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["ai", "agents", "personas", "claude-code"],
+  "license": "MIT"
+}

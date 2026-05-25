@@ -1,0 +1,17 @@
+{
+  "name": "@prototype-studio/agent-starter",
+  "version": "0.1.0",
+  "description": "Scaffold an agent-first project with AI coding tools",
+  "bin": {
+    "prototype-studio": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["ai", "agents", "claude-code", "cursor", "scaffolding"],
+  "license": "MIT"
+}
