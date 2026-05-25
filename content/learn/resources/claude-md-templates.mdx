@@ -1,0 +1,199 @@
+---
+title: "CLAUDE.md Templates"
+slug: claude-md-templates
+pillar: learn
+type: resource
+format: written
+tools: [claude-code]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 10
+tags: [claude-md, templates, setup, workflow, context-engineering]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+`CLAUDE.md` is the instruction file you put at the root of every project — it tells Claude Code everything it needs to know so you don't re-explain it every session. These templates are production-ready starting points. Pick the one that matches your stack, fill in the gaps, and you're set.
+
+## Which template is right for you?
+
+- **Not sure?** → Start with **Blank Canvas** — it works for any project type
+- **Building a web app** → **Next.js + Supabase** (login, data, payments, deploy)
+- **Analyzing or visualizing data** → **Data Dashboard** (best for BAs and BI Engineers)
+- **Building scripts or scheduled jobs** → **Automation Project** (reports, pipelines, crons)
+
+## How to use these templates
+
+1. Copy the template that matches your project type
+2. Create a file called `CLAUDE.md` at the root of your project
+3. Paste and fill in the `[TODO]` sections with your project details
+4. Open Claude Code with `claude` — it reads the file automatically at the start of every session
+
+---
+
+## Template 1: Blank Canvas (Free)
+
+Works for any project type. Fill in your stack and go.
+
+```markdown
+# Project Overview
+[TODO: Brief description of this project — what it does, who it's for]
+
+# Tech Stack
+[TODO: e.g., Next.js 14, TypeScript, Tailwind CSS, Vercel]
+
+# Architecture
+[TODO: Describe the high-level architecture — routing strategy, data flow, key abstractions]
+
+# Key Commands
+- `npm run dev` — start development server
+- `npm run build` — production build
+- `vercel` — deploy to Vercel
+
+# Conventions
+[TODO: Naming conventions, patterns, or project-specific rules to follow]
+
+# File Structure
+[TODO: Describe the important directories and their purpose]
+
+# Important Notes
+- `.env.local` is gitignored — copy `.env.example` and fill in real values
+- Add any constraints or "never do this" rules here
+```
+
+---
+
+## Template 2: Next.js + Supabase
+
+Full-stack production stack with auth, database, Stripe, and Vercel.
+
+```markdown
+# [Project Name] — Next.js + Supabase App
+
+## Project Overview
+[One paragraph: what this app does, who uses it, what problem it solves]
+
+## Tech Stack
+- Next.js 15 (App Router)
+- TypeScript (strict)
+- Tailwind CSS v4 + shadcn/ui
+- Supabase (Postgres + Auth + Storage)
+- Stripe (payments)
+- Vercel (hosting + analytics)
+- Resend (transactional email)
+
+## Architecture
+- Route groups: `(marketing)` for public pages, `(app)` for authenticated, `(public)` for shared
+- Auth: Supabase Auth with Google OAuth, callback at `/auth/callback`
+- Middleware: protects `(app)` routes, passes through `(marketing)` and `(public)`
+- Server components by default; "use client" only when you need interactivity or browser APIs
+
+## Key Commands
+- `npm run dev` — start dev server (localhost:3000)
+- `npm run build` — production build
+- `npm run lint` — ESLint
+- `vercel` — deploy to Vercel
+
+## File Structure
+src/
+  app/
+    (marketing)/     # Landing page, pricing, waitlist — no auth required
+    (app)/           # Dashboard, settings, core features — auth required
+    (public)/        # Public-facing user pages
+    auth/callback/   # Supabase OAuth callback
+    api/             # API routes (Stripe webhooks, crons, etc.)
+  components/
+    layout/          # Nav, sidebar, footer, theme toggle
+    ui/              # shadcn/ui components
+  lib/
+    supabase/        # Supabase client (browser + server)
+    stripe.ts        # Stripe client singleton
+    constants.ts     # App-wide constants
+    utils.ts         # Shared utility functions
+
+## Conventions
+- Server components by default — use "use client" only when needed
+- All DB queries through src/lib/supabase/
+- Never instantiate the Supabase client inline
+- Migrations in supabase/migrations/
+```
+
+---
+
+## Template 3: Data Dashboard
+
+Best for BAs, BI Engineers, and anyone building analytics views.
+
+```markdown
+# [Project Name] — Data Dashboard
+
+## Project Overview
+[What data does this dashboard show? Who uses it? What decisions does it support?]
+
+## Tech Stack
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS + shadcn/ui
+- Recharts or Chart.js (data visualization)
+- [Your database: Supabase / BigQuery / Postgres]
+- Vercel (hosting)
+
+## Architecture
+- Server components fetch data at request time (no client-side fetching unless interactive)
+- Charts are client components ("use client") wrapping server-fetched data
+- Filters and date pickers are URL params — state lives in the URL, not component state
+
+## Key Commands
+- `npm run dev` — start dev server
+- `npm run build` — production build
+
+## Data Sources
+[TODO: List your data sources — database tables, APIs, CSV files]
+
+## Conventions
+- All queries go through src/lib/db.ts
+- Always add LIMIT on exploratory queries
+- Verify one number by hand before sharing results
+- Date ranges are always explicit — never use open-ended queries in prod
+```
+
+---
+
+## Template 4: Automation Project
+
+For scripts, scheduled jobs, and data pipelines.
+
+```markdown
+# [Project Name] — Automation
+
+## Project Overview
+[What does this automation do? What triggers it? What does it produce?]
+
+## Tech Stack
+- TypeScript / Node.js
+- [Task runner: ts-node / tsx / bun]
+- Resend (email output, if applicable)
+- [Your data sources: APIs, databases, files]
+
+## Architecture
+- Entry point: src/index.ts
+- Trigger: [cron / webhook / manual / event]
+- Output: [email / Slack / database / file]
+
+## Key Commands
+- `npm start` — run the automation once
+- `npm run dev` — run with watch mode
+- `npm test` — run tests
+
+## Environment Variables
+- `ANTHROPIC_API_KEY` — Anthropic API key
+- [TODO: list other required env vars]
+
+## Conventions
+- Never hardcode API keys — always use .env
+- Add minimum polling intervals on any cron that calls external APIs
+- Log the start and end of every run for debugging
+- Store results to a log file or database for auditability
+```

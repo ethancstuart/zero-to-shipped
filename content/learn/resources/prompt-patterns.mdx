@@ -1,0 +1,138 @@
+---
+title: "Prompt Patterns Cheat Sheet"
+slug: prompt-patterns
+pillar: learn
+type: resource
+format: written
+tools: [claude-code, cursor]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 15
+tags: [prompts, prompting, patterns, workflow, productivity]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+Most people use AI like a search engine — type a question, get an answer. These 5 patterns change the dynamic: you're directing an expert, not querying a database. The difference in output quality is immediate and significant.
+
+## Pattern 1: Role Assignment
+
+**Tagline:** Tell Claude who it is before you tell it what to do  
+**When to use:** Always. Use this at the start of any prompt that needs expertise.
+
+**Template:**
+```
+You are an expert [role] who specializes in [domain]. Your task is to [goal]. [Additional constraints here.]
+```
+
+**Example:**
+> "You are an expert Next.js developer who specializes in building SaaS apps for non-technical founders. Your task is to write a Supabase query that returns all users who signed up in the last 30 days and have not yet completed onboarding. Return only the SQL, no explanation."
+
+**Why it works:** Claude plays the role you assign. 'Expert Next.js developer' gets you expert output. No role assignment gets you average output. This single change is responsible for 80% of quality improvement for most users.
+
+---
+
+## Pattern 2: Plan Before Build
+
+**Tagline:** Make Claude think before it codes  
+**When to use:** Any task that involves writing more than ~20 lines of code.
+
+**Template:**
+```
+Before writing any code, write out your plan: what files you will create or edit, what each function does, and any edge cases you anticipate. Then write the code.
+```
+
+**Example:**
+> "Before writing any code, write out your plan for adding email verification to our Next.js app using Supabase Auth. List: which files you'll create or modify, what each route does, and any edge cases. Then implement it."
+
+**Why it works:** When you ask Claude to plan first, it catches design problems before they become code problems. Planning takes 10 seconds. Debugging bad architecture takes hours.
+
+---
+
+## Pattern 3: Step-by-Step Decomposition
+
+**Tagline:** Break big tasks into numbered steps  
+**When to use:** Complex multi-file changes, setup tasks, debugging sessions.
+
+**Template:**
+```
+Break this into numbered steps. After each step, pause and confirm before continuing.
+```
+
+**Example:**
+> "Break adding Stripe subscription payments into numbered steps. Include: schema changes needed, API routes to create, frontend components, and webhook handling. After listing all steps, implement step 1 only."
+
+**Why it works:** Big requests produce big walls of code. Decomposed requests produce testable, debuggable chunks. You can stop after any step, verify it works, and continue — which is how real engineers work.
+
+---
+
+## Pattern 4: The Improve Pattern
+
+**Tagline:** Show Claude what you have, ask what's wrong  
+**When to use:** Reviewing code, writing, specs, or any artifact you want to make better.
+
+**Template:**
+```
+Here is my current [thing]. What's wrong with it and how would you improve it? Be specific about what to change and why.
+```
+
+**Example:**
+> "Here is my current PRD for the notification system. What's wrong with it and how would you improve it? Be specific — I want to know what's missing, what's vague, and what would confuse an engineer reading this."
+
+**Why it works:** Asking 'is this good?' gets you a polite 'yes, but...'. Asking 'what's wrong?' gets you a real critique. The Improve Pattern unlocks Claude's critical thinking. Use it on everything before you ship.
+
+---
+
+## Pattern 5: Anti-Obvious Brainstorm
+
+**Tagline:** Explicitly ask Claude to skip the generic ideas  
+**When to use:** Ideation, naming, feature brainstorming, marketing copy.
+
+**Template:**
+```
+Give me [N] ideas for [X]. Avoid the obvious ones everyone else would suggest. I want ideas that are specific, surprising, or counterintuitive.
+```
+
+**Example:**
+> "Give me 8 name ideas for a SaaS tool that helps product managers track feature adoption. Avoid generic names like 'ProdMetrics' or 'FeatureFlow.' I want names that feel specific, memorable, and a little unexpected."
+
+**Why it works:** Left to its own devices, Claude will give you the median response — the average of everything it's seen. Explicitly banning the obvious forces it to explore the edges, which is where the interesting ideas live.
+
+---
+
+## Power Phrases
+
+Short phrases you can add to any prompt to dramatically improve the output.
+
+| Phrase | Effect |
+|---|---|
+| `Think step by step.` | Forces structured reasoning instead of guessing |
+| `Be specific.` | Eliminates vague advice like "handle edge cases" |
+| `Show your work.` | Surfaces assumptions you can catch and correct |
+| `What are you uncertain about?` | Surfaces the gaps Claude is filling in with assumptions |
+| `Assume I have no engineering background.` | Gets you explanations you can actually follow |
+| `Don't write code yet.` | Forces planning before implementation |
+| `What would make this worse?` | Pre-mortem thinking — catches failure modes early |
+| `Give me the short version.` | Stops Claude from writing an essay when you need a sentence |
+| `What am I missing?` | Opens the door to things you didn't know to ask about |
+| `Here's what I've already tried:` | Prevents Claude from suggesting things you've ruled out |
+
+---
+
+## 5-Question Evaluation Framework
+
+Before you copy-paste AI output into your code or share it with a stakeholder, run it through these 5 questions. They catch 90% of the problems.
+
+1. Did it answer the question I actually asked, or a slightly different one?
+2. Is there anything in this response I can't verify or don't understand?
+3. What assumption is this response making that might be wrong?
+4. If this advice is wrong, what's the worst that happens?
+5. What would a skeptical senior engineer say about this?
+
+---
+
+## The meta-pattern behind all of these
+
+Every pattern on this page does the same thing: it gives Claude more context about who you are, what you want, and what you don't want. AI output quality is almost entirely a function of how well you specify the problem. Better prompts don't require technical knowledge — they require clarity about what you actually want.

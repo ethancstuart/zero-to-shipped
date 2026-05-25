@@ -1,0 +1,335 @@
+---
+title: "AI Workflow OS"
+slug: ai-workflow-os
+pillar: learn
+type: resource
+format: written
+tools: [claude-code, cursor]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 30
+tags: [workflow, claude-code, cursor, mcp, build-loop, anti-patterns]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+Most people use AI coding tools like a slightly smarter Google. They ask a question, get an answer, move on. That's the wrong model — and it's why most people feel like AI "doesn't really help." This guide shows you how to structure your entire development world so AI actually works for you.
+
+**Choose your starting point:**
+
+- **New to AI tools** → Read everything from section 1
+- **Know ChatGPT, new to coding agents** → Start at section 2 (CLAUDE.md) and section 5 (Build Loop)
+- **Already use Cursor or Claude Code** → Skip to section 9 (Advanced Orchestration) — that's what you're missing
+
+## 1. The philosophy
+
+You're not using a chatbot. You're operating an agent.
+
+A chatbot answers questions. An agent does work — it reads files, runs commands, makes decisions, and iterates until the task is done. Claude Code and Cursor are agents. The mental model shift is this: **your job is to give the agent context and direction, not to answer every question step-by-step.**
+
+The more context an agent has — about your project, your preferences, your constraints — the better it performs. That's what the rest of this guide is about.
+
+## 2. CLAUDE.md: your project's brain
+
+`CLAUDE.md` is a Markdown file you put at the root of every project. Claude Code reads it at the start of every session. It's how you teach the AI about your project so you don't have to re-explain it every time.
+
+### What to put in it
+
+- **Project overview** — what this project does, who it's for
+- **Tech stack** — framework, database, hosting, key libraries
+- **Key commands** — how to start the dev server, run tests, deploy
+- **File structure** — where things live and why
+- **Conventions** — naming rules, patterns to follow, things to avoid
+- **Constraints** — "never modify the auth middleware directly" level rules
+
+### Real example
+
+```markdown
+# My Dashboard App
+
+## Overview
+Internal analytics dashboard for the product team.
+Shows weekly metrics from our Postgres database.
+
+## Tech Stack
+- Next.js 15 (App Router)
+- Supabase (Postgres + Auth)
+- Tailwind CSS
+- Vercel (hosting)
+
+## Key Commands
+- `npm run dev` — start dev server (localhost:3000)
+- `npm run build` — production build
+- `vercel` — deploy
+
+## File Structure
+src/app/          # Pages (App Router)
+src/components/   # Reusable UI components
+src/lib/          # Database queries, utilities
+
+## Conventions
+- Server components by default — use "use client" only when needed
+- All DB queries go through src/lib/db.ts
+- Never inline SQL — always use the query functions in db.ts
+```
+
+### Guidelines
+
+- Keep it under 500 lines — Claude reads the whole thing every session
+- Put the most important rules at the top
+- Start a new project with `claude /init` — it generates a starter for you
+- Update it whenever you make a significant architectural decision
+
+Ready to start? Grab a [CLAUDE.md template](/learn/claude-md-templates) from the library.
+
+## 3. MCP servers: connecting your AI to the world
+
+MCP (Model Context Protocol) servers extend what Claude Code can do. Without them, Claude works with files and your terminal. With them, it can interact with GitHub, browse the web, query your database, and more.
+
+These are the four you should install on day one:
+
+### 1. Filesystem (built-in)
+
+This comes with Claude Code — no setup needed. It lets Claude read and write files anywhere on your system. Already active.
+
+### 2. GitHub
+
+Lets Claude create branches, open PRs, read issues, and manage your repos.
+
+```bash
+claude mcp add github -- npx -y @modelcontextprotocol/server-github
+```
+
+You'll need a GitHub personal access token (Settings → Developer Settings → Personal access tokens). Set it as `GITHUB_PERSONAL_ACCESS_TOKEN` in your environment.
+
+### 3. Browser (Puppeteer)
+
+Lets Claude open web pages, fill forms, take screenshots, and test your UI. Essential for verifying that your app actually works.
+
+```bash
+claude mcp add puppeteer -- npx -y @modelcontextprotocol/server-puppeteer
+```
+
+### 4. Supabase
+
+Lets Claude query your database, run migrations, and inspect your schema. If you're building with Supabase, this one's a game-changer.
+
+```bash
+claude mcp add supabase -- npx -y @supabase/mcp-server-supabase@latest --access-token YOUR_TOKEN
+```
+
+Get your access token at **app.supabase.com** → Account → Access Tokens.
+
+## 4. Cursor vs. Claude Code
+
+Both tools use Claude. The difference is *where* they work and what they're optimized for.
+
+|  | Cursor | Claude Code |
+|---|---|---|
+| **Where it lives** | Inside the code editor | In the terminal |
+| **Best for** | In-file edits, quick changes, reading code | Multi-file agents, running commands, complex tasks |
+| **Use it when** | You're in a file and want to change it | You're giving a multi-step task that spans files |
+
+**Rule of thumb:** Start in Cursor for quick edits. Switch to Claude Code when you're saying things like "add this feature across the whole codebase" or "run the tests and fix what fails."
+
+## 5. The build loop
+
+Every AI-assisted build session follows the same loop. Understanding each step makes you dramatically faster.
+
+1. **Prompt** — describe what you want. Be specific about the outcome, not the implementation. "Add a settings page where users can update their display name" is better than instructions about which files to create.
+2. **Review** — read the output before running it. Look for: changes that go beyond what you asked for, new files you didn't expect, or anything that looks off.
+3. **Run** — execute it. `npm run dev`, open the browser, click through the feature.
+4. **Evaluate** — does it work? Ask: does it solve the real problem? Are the numbers correct? Would you put your name on it?
+5. **Iterate** — if something's off, describe specifically what needs to change. "The form works but the error message doesn't show" is better than "it's broken."
+
+Two or three iterations is normal. You're pair-programming, not ordering from a menu. Let it fail and fix — Claude Code can read error output and self-correct.
+
+## 6. Anti-patterns that break non-engineers
+
+These are the mistakes that slow everyone down. Avoid them.
+
+### 1. Asking for too much at once
+
+"Build me a CRM system with email integration, Stripe billing, and an analytics dashboard." The output will be overwhelming and wrong in multiple ways at once. Start with one feature, ship it, then add the next.
+
+### 2. Not reviewing before running
+
+Clicking "approve all" on every change without reading the diff. Five minutes of review saves an hour of debugging.
+
+### 3. Adding frameworks and dependencies without asking
+
+If you didn't ask for a new library, you probably don't need it. AI agents sometimes add complexity out of habit. Add constraints to your prompt: "do not add any new npm packages."
+
+### 4. Not using CLAUDE.md
+
+Starting every session from scratch means re-explaining your project every time. A CLAUDE.md cuts setup time to zero.
+
+### 5. Ignoring the error output
+
+"It's broken." is not useful. "Here is the error message." is. Paste the full error output and let Claude diagnose it.
+
+### 6. Clearing the session too early
+
+Claude Code has context about what it already tried. Clearing the session (/clear) when things aren't working often makes things worse. Use /compact to summarize and continue instead.
+
+### 7. Building without version control
+
+Run `git init` before you start. Commit after every meaningful change. If something breaks, you can always go back.
+
+### 8. Asking for features instead of outcomes
+
+"Add a button that calls the API." is a feature. "Let users save their progress." is an outcome. Outcome prompts produce better results because the AI can figure out the right implementation.
+
+## 7. Cursor shortcuts
+
+The 12 shortcuts you'll use every session:
+
+| Action | Mac | Windows |
+|---|---|---|
+| Open Agent (Composer) | Cmd+I | Ctrl+I |
+| Inline Edit | Cmd+K | Ctrl+K |
+| Accept AI suggestion | Tab | Tab |
+| Reject AI suggestion | Escape | Escape |
+| Toggle AI chat panel | Cmd+L | Ctrl+L |
+| Quick file open | Cmd+P | Ctrl+P |
+| Search across files | Cmd+Shift+F | Ctrl+Shift+F |
+| Toggle terminal | Ctrl+` | Ctrl+` |
+| Undo | Cmd+Z | Ctrl+Z |
+| Duplicate line | Cmd+Shift+D | Ctrl+Shift+D |
+| Comment / uncomment | Cmd+/ | Ctrl+/ |
+| Select all occurrences | Cmd+Shift+L | Ctrl+Shift+L |
+
+## 8. Power moves
+
+Once you have the basics down, these unlock the next level.
+
+### /compact
+
+When a Claude Code session gets long, context fills up and responses slow down. `/compact` summarizes the conversation and keeps working — you don't lose context, you compress it.
+
+### /clear
+
+Resets the session completely. Use when you're starting a genuinely new task that has nothing to do with what you were just doing.
+
+### Memory files
+
+Create a `~/.claude/CLAUDE.md` (global) to give Claude context that applies across all your projects — your name, your preferred stack, your working style.
+
+### Multi-step tasks
+
+Claude Code handles multi-step tasks natively. Give it the full picture:
+
+```text
+"Add a /settings page where users can update their display name.
+Wire it up to the Supabase profiles table.
+Add a nav link to the sidebar.
+Write a test for the update function."
+```
+
+It will handle all four steps in sequence, reviewing its own output as it goes.
+
+### @-mentioning files
+
+In Cursor's Agent mode, type `@` and mention specific files to give the AI focused context. Instead of "fix the auth", try "look at @src/lib/auth.ts and fix the session expiry."
+
+---
+
+## 9. Advanced orchestration (for experienced builders)
+
+You've mastered the basics. This section is about running Claude Code as a coordinated system — not just a smart assistant for single tasks.
+
+### Decompose before you build
+
+For any feature larger than "one file, one function," do a planning pass first:
+
+```text
+"Before writing any code, outline how you would add Stripe subscriptions
+to this app. What files will change? What new files will you create?
+What are the dependencies? Show me the plan — don't start building yet."
+```
+
+Review the plan. If something's wrong, correct it before any code is written. This one habit eliminates 80% of the rework in complex builds.
+
+### Cursor for the in-file layer, Claude Code for the system layer
+
+A mature AI build workflow uses both tools in the same session:
+
+- **Cursor (Cmd+I)** for targeted changes where you need to stay in context — editing a specific component, adjusting logic in a function, reviewing a diff line-by-line
+- **Claude Code (terminal)** for system-level tasks — running tests and fixing what fails, applying a schema migration, renaming a pattern across 30 files, wiring a new API endpoint end-to-end
+
+The pattern: use Claude Code to build the scaffold and the system plumbing, then switch to Cursor to refine the UI and review specific logic. Don't try to do both in one tool.
+
+### Chain tasks, don't interrupt
+
+Claude Code handles multi-step tasks natively. Instead of approving each action one at a time, give it the full acceptance criteria:
+
+```text
+"Add a /settings page where users can update their display name.
+Wire it up to the profiles table in Supabase.
+Add a nav link in the sidebar.
+Write a Vitest test that verifies the update endpoint.
+When done, run the tests and fix anything that fails."
+```
+
+This is five steps, but it's one prompt. Claude Code executes all five in sequence, checking its own output as it goes. Let it run — interrupt only if it's visibly going off-track.
+
+### Use CLAUDE.md for team conventions
+
+If you're building with a team (or expect to share the repo), CLAUDE.md becomes the team's shared rulebook. Every developer who runs Claude Code gets the same context — the same conventions, the same constraints.
+
+Structure your team CLAUDE.md to include:
+
+- The patterns you've already decided on (database query location, auth conventions)
+- What *not* to touch without discussion ("never modify the payment webhook handler")
+- How to run the test suite and what "passing" looks like
+- Which MCP servers are installed and what each one is for
+
+### MCP chaining
+
+The real power of MCP servers is chaining them in a single task. Example:
+
+```text
+"Read the open GitHub issues labeled 'bug'. For each one, search
+the codebase for the relevant code. Then open the browser and test
+whether the described behavior actually breaks. Create a prioritized
+fix list based on what you find."
+```
+
+This task uses three MCP servers: GitHub (read issues), Filesystem (search code), and Puppeteer (test in browser). Claude Code orchestrates all three in sequence. The more MCP servers you have installed, the more of your real development workflow you can hand off.
+
+### Memory files
+
+Two kinds of memory extend Claude's context across sessions:
+
+- **Project memory:** `CLAUDE.md` in the project root — everything Claude needs to know about this specific project
+- **Global memory:** `~/.claude/CLAUDE.md` — your personal preferences that apply across every project (your name, your preferred stack, your working style, your rules about when to ask before acting)
+
+Your global CLAUDE.md is one of the most high-leverage things you can invest 30 minutes in. Write it once, and every new project benefits immediately.
+
+### Custom slash commands
+
+Create a `.claude/commands/` folder in your project. Each Markdown file becomes a slash command you can call from any session:
+
+```bash
+.claude/commands/
+  pr-review.md     # /pr-review — reviews the current branch for issues
+  test-fix.md      # /test-fix — runs tests and fixes all failures
+  deploy-check.md  # /deploy-check — pre-deploy checklist for this project
+```
+
+These commands encode your project-specific workflows. A PM who does weekly status updates can have `/weekly-update` that pulls the week's commits, extracts the themes, and drafts the stakeholder email automatically.
+
+### The oversight layer — review what AI builds, don't just accept it
+
+The April 2026 narrative shift in AI development: "raw vibe coding is over." PMs and non-engineers who prompt AI and copy-paste the output without reviewing it are producing apps with security holes, broken edge cases, and code no one can maintain. The skill that separates competent builders from dangerous ones is **oversight** — knowing what to check after AI writes something.
+
+You don't need to understand every line of code. You need four checks:
+
+- **Ask Claude to critique its own output.** After it writes something, say: "Review what you just wrote. What could go wrong? What edge cases did you miss? What would a senior engineer flag?" This is called a self-review pass, and it catches 60–70% of the problems.
+- **Run the tests.** If you have tests, run them after every significant change: `npm test`. If all tests pass and the feature works, you have structural evidence the code is correct — not just Claude's word for it.
+- **Read the diff, not the whole file.** After a big Claude Code session, run `git diff` and read what actually changed. You don't need to understand every line — you're looking for: did it touch files it wasn't supposed to? Did it delete something? Does anything look completely wrong?
+- **Test the edges, not just the happy path.** AI almost always builds the "it works when everything goes right" version first. Manually test: what happens if I submit an empty form? What if I enter a very long string? What if I lose internet halfway through? These are the cases that break in production.
+
+The builders who succeed with AI in 2026 aren't the ones who prompt fastest — they're the ones who direct AI confidently and then verify rigorously. This is the same skill great PMs already have: they're not the ones who write the code, they're the ones who define "done" and hold the bar.

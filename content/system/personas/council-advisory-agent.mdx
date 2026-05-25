@@ -1,0 +1,166 @@
+---
+title: "Council Advisory Agent"
+slug: council-advisory-agent
+pillar: system
+type: persona
+format: config
+tools: [claude-code]
+toolVersions: {}
+difficulty: intermediate
+estimatedMinutes: 5
+tags: [agents, personas, decision-making, advisory, multi-persona, strategy]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-05-25"
+---
+
+A multi-persona decision review system. Define a board of AI advisors with different expertise, submit a proposal, and get a structured review from every angle — then a unified verdict.
+
+## Role Description
+
+The Council Advisory Agent runs any proposal or decision through a configured set of AI advisor personas, each bringing a distinct perspective. It produces a structured review document: domain reviews, tensions between advisors, and a synthesized verdict.
+
+**Difficulty:** Intermediate  
+**Build time:** ~45 minutes to fork and customize personas  
+**Stack:** TypeScript, Anthropic SDK, Structured Output
+
+## When to Use
+
+Use this agent when you:
+- Are making a significant product, business, or career decision
+- Want multiple perspectives before committing to a direction
+- Need to anticipate objections from different stakeholders
+- Are writing a proposal and want to pressure-test it before sharing
+
+## How It Works
+
+**Trigger → Context → Intelligence → Action:**
+
+1. **Trigger:** On-demand (you submit a proposal via CLI or API)
+2. **Context:** Your proposal text + defined advisor personas
+3. **Intelligence:** Claude role-plays each persona in sequence, then synthesizes a cross-persona discussion and final verdict
+4. **Action:** Outputs a structured markdown document
+
+## System Prompt / Key Instructions
+
+Each advisor persona is defined with a role, expertise domain, and characteristic lens:
+
+```typescript
+// personas.ts
+export const DEFAULT_PERSONAS = [
+  {
+    id: 'technical',
+    name: 'Technical Reviewer',
+    role: 'Senior Engineer',
+    lens: 'Evaluate technical feasibility, implementation complexity, and architectural implications. Flag any technical risks or dependencies that could derail execution.',
+    tone: 'precise and skeptical',
+  },
+  {
+    id: 'business',
+    name: 'Business Strategist', 
+    role: 'Experienced Operator',
+    lens: 'Evaluate business model viability, market dynamics, competitive positioning, and revenue implications. Focus on what this means for growth and defensibility.',
+    tone: 'strategic and pragmatic',
+  },
+  {
+    id: 'user',
+    name: 'User Advocate',
+    role: 'UX Researcher',
+    lens: 'Evaluate user impact, adoption friction, and whether this solves a real problem for real people. Challenge assumptions about user behavior.',
+    tone: 'empathetic and direct',
+  },
+  {
+    id: 'risk',
+    name: 'Risk Officer',
+    role: 'Legal and Compliance Advisor',
+    lens: 'Identify legal, regulatory, reputational, or operational risks. What could go catastrophically wrong? What are the second-order effects?',
+    tone: 'cautious and thorough',
+  },
+];
+```
+
+**Synthesis prompt:**
+```
+You have just reviewed a proposal from four perspectives: Technical, Business, User, and Risk.
+
+Now synthesize:
+1. Where do the advisors agree? What is the consensus view?
+2. Where are the key tensions? Which disagreements matter most?
+3. What is the single most important thing the proposal gets right?
+4. What is the single most important thing the proposal needs to change?
+5. VERDICT: On a scale of 1-5, how ready is this proposal to move forward?
+   - 5: Ship it. Strong consensus, risks manageable.
+   - 4: Ship with changes. Clear path forward.
+   - 3: More work needed. Specific gaps to address.
+   - 2: Significant concerns. Revisit fundamentals.
+   - 1: Do not proceed. Critical flaws.
+
+Be direct. This is a decision-making tool, not a reassurance machine.
+```
+
+## Example Output Structure
+
+```markdown
+# Council Review — [Proposal Title]
+Reviewed: 2026-05-25 | Verdict: 4/5 — Ship with changes
+
+## Technical Reviewer
+[Domain assessment...]
+
+## Business Strategist  
+[Domain assessment...]
+
+## User Advocate
+[Domain assessment...]
+
+## Risk Officer
+[Domain assessment...]
+
+---
+
+## Council Discussion
+
+### Where advisors agree:
+[Consensus points...]
+
+### Key tensions:
+[Disagreements that matter...]
+
+### Most important strength:
+[What the proposal gets right...]
+
+### Most important gap:
+[What needs to change...]
+
+## Verdict: 4/5 — Ship with changes
+
+[Final synthesis and specific recommended changes before moving forward]
+```
+
+## Example Usage
+
+```bash
+# Run the council on a proposal
+npm start -- --proposal "docs/my-proposal.md"
+
+# Or pipe in text directly
+echo "We should add a freemium tier to our pricing..." | npm start
+
+# Output goes to stdout and optionally a file
+npm start -- --proposal "proposal.md" --output "review.md"
+```
+
+**Customizing personas:**
+- Edit `personas.ts` to match your domain (replace "User Advocate" with "Customer Success" for B2B, add "Financial Analyst" for revenue-heavy decisions)
+- Adjust `tone` and `lens` to match how you want each advisor to push back
+- Add 1-2 domain-specific personas for your industry
+
+## Features
+
+- Multi-persona evaluation (3+ advisors, configurable)
+- Structured review phases: domain review → discussion → verdict
+- Customizable persona definitions
+- Markdown-formatted output with clear recommendations
+- Works with any domain — product, career, business, technical
+- Scored verdict (1-5) for quick calibration

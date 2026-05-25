@@ -1,0 +1,212 @@
+---
+title: "The Agent Builder Guide — AI Agents for Non-Engineers"
+slug: agent-builder
+pillar: learn
+type: guide
+format: written
+tools: [claude-code]
+toolVersions: {}
+difficulty: intermediate
+estimatedMinutes: 30
+tags: [agents, automation, typescript, cron, webhooks, non-engineers]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+You've used ChatGPT. You've tried Claude. Maybe you've even built something with Claude Code. But there's a level beyond chatting with AI — building agents that work for you while you sleep. This guide shows you what agents are, why they matter, and how to build your first one today.
+
+## What is an AI Agent?
+
+An AI agent is a program that takes action on your behalf. Not just answering questions — actually doing things. Checking your metrics. Scanning the news. Reviewing code. Sending you a summary.
+
+The difference between a prompt and an agent is the difference between asking someone a question and hiring someone to do a job. A prompt gives you one answer. An agent gives you an ongoing process.
+
+Here's a concrete example:
+
+- **Prompt:** "Summarize today's AI news." → You get one summary. Tomorrow you ask again.
+- **Agent:** Every morning at 7am, scan 5 RSS feeds, extract the top stories, generate a digest, and email it to you. → You get a summary every day without asking.
+
+That's the shift. Agents are AI that runs without you prompting it. They have triggers (a schedule, a webhook, a threshold), they have access to tools (APIs, databases, email), and they have a defined output (an email, a Slack message, a review comment).
+
+## Why Non-Engineers Should Care Right Now
+
+If you're a PM, analyst, project manager, or anyone who works with data and decisions, agents are about to change your workflow more than any other AI tool.
+
+Here's why:
+
+1. **Agents eliminate repetitive knowledge work.** Checking dashboards, compiling reports, monitoring metrics, reviewing documents — these are tasks that eat hours every week. An agent does them in seconds, on schedule, without forgetting.
+2. **Agents let you think in systems.** Instead of reacting to information as it arrives, you define the system once: what to monitor, what matters, and what action to take. Then the agent runs the system while you focus on decisions.
+3. **The barrier to building agents just disappeared.** Six months ago, building an agent required deep programming knowledge. Today, with Claude Code and TypeScript templates, you can fork a working agent and have it running in 30 minutes.
+
+## The Anatomy of an Agent
+
+Every agent has four parts:
+
+1. **Trigger** — what starts the agent. A cron schedule ("every morning at 7am"), a webhook ("when a PR is opened"), or a threshold ("when revenue drops 10%").
+2. **Context** — what the agent knows. RSS feeds, database queries, API responses, file contents. The agent gathers this information before making decisions.
+3. **Intelligence** — the AI model that processes the context. This is where Claude (or any LLM) analyzes, summarizes, evaluates, or decides.
+4. **Action** — what the agent does with its output. Send an email, post a Slack message, write a GitHub comment, update a database, trigger another agent.
+
+That's it. Trigger → Context → Intelligence → Action. Every agent you'll ever build follows this pattern.
+
+---
+
+## The 4 Templates — What Each One Does
+
+We've built 4 free, open-source agent templates that you can fork and customize. Each one is a real, production-quality TypeScript project — not a toy demo.
+
+### 1. Daily AI News Digest
+
+**Difficulty:** Beginner
+
+**What it does:** Scans RSS feeds every morning, summarizes the top AI stories, and emails you a clean digest.
+
+**Who it's for:** PMs who need to brief stakeholders on AI trends without spending an hour reading.
+
+**How it works:**
+1. **Trigger:** Cron schedule (daily at 7am)
+2. **Context:** Fetches 5-10 RSS feeds (TechCrunch AI, The Verge, Anthropic blog, etc.)
+3. **Intelligence:** Claude analyzes all articles, ranks by relevance, generates 2-3 sentence summaries for the top 5-8 stories
+4. **Action:** Sends a formatted HTML email via Resend
+
+Fork it, swap the RSS feeds for your industry, adjust the summary length, and you have a personalized news agent running in under 30 minutes.
+
+### 2. Council Advisory Agent
+
+**Difficulty:** Intermediate
+
+**What it does:** Takes a proposal or decision and runs it through a board of AI advisors — each with a different expertise and perspective. Delivers a structured review with tensions, agreements, and a unified verdict.
+
+**Who it's for:** Founders, PMs, or anyone making strategic decisions who wants multiple perspectives before committing.
+
+**How it works:**
+1. **Trigger:** On-demand (you submit a proposal)
+2. **Context:** Your proposal text + persona definitions (e.g., "Technical Reviewer," "Business Strategist," "User Advocate")
+3. **Intelligence:** Claude role-plays each persona sequentially, then synthesizes a cross-persona discussion and final verdict
+4. **Action:** Outputs a structured markdown document with domain reviews, tensions, and recommendations
+
+This template is based on a real advisory board system used to make every strategic decision for the platform. The personas in the template are generic examples — customize them to match your domain.
+
+### 3. Data Monitor Agent
+
+**Difficulty:** Intermediate
+
+**What it does:** Watches metrics you care about — API response times, database row counts, Stripe revenue, social followers — and alerts you when thresholds are crossed.
+
+**Who it's for:** Anyone who checks dashboards manually and wants to be notified only when something actually needs attention.
+
+**How it works:**
+1. **Trigger:** Cron schedule (configurable interval, minimum 1 minute)
+2. **Context:** Queries configured data sources (APIs, databases, Stripe)
+3. **Intelligence:** Claude compares current values to thresholds, generates context on why a metric changed
+4. **Action:** Sends an alert email with the anomaly and AI-generated explanation
+
+The template includes a minimum polling interval safeguard — it won't let you accidentally run it every 5 seconds and burn your API quota.
+
+### 4. PR Review Agent
+
+**Difficulty:** Advanced
+
+**What it does:** Reviews GitHub pull requests automatically — checking for security issues, code quality, missing tests, and unclear naming. Posts a structured review comment directly on the PR.
+
+**Who it's for:** Solo builders and small teams without dedicated code reviewers.
+
+**How it works:**
+1. **Trigger:** GitHub webhook (fires when a PR is opened or updated)
+2. **Context:** PR diff, file changes, commit messages via GitHub API
+3. **Intelligence:** Claude analyzes the diff for security vulnerabilities, quality issues, missing tests, and naming conventions
+4. **Action:** Posts a structured review comment on the PR via GitHub API
+
+---
+
+## Getting Started — Fork to Running Agent
+
+Every template follows the same setup pattern. Here's how to go from zero to running agent:
+
+### Prerequisites
+
+- Node.js 18+ installed (`node --version` to check)
+- An Anthropic API key (sign up at [console.anthropic.com](https://console.anthropic.com))
+- A Resend API key for email-sending templates (free tier works)
+
+### Step 1: Fork and Clone
+
+```bash
+# Fork the repo on GitHub first, then:
+git clone https://github.com/YOUR_USERNAME/zts-agent-templates.git
+cd zts-agent-templates/templates/daily-ai-news-digest
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+### Step 3: Configure Environment
+
+```bash
+# Copy the example env file
+cp .env.example .env
+
+# Edit .env with your API keys
+# ANTHROPIC_API_KEY=sk-ant-...
+# RESEND_API_KEY=re_...
+# (see each template's README for required variables)
+```
+
+### Step 4: Run
+
+```bash
+npm start
+```
+
+That's it. The agent runs once. To schedule it, deploy to Vercel with a cron trigger, or use a local cron job:
+
+```bash
+# Run every morning at 7am (add to crontab -e)
+0 7 * * * cd /path/to/template && npm start
+```
+
+### Understanding DATA_FLOW.md
+
+Every template includes a `DATA_FLOW.md` file that explains exactly what data goes where:
+
+```
+Your RSS feeds → Template fetches articles
+Articles → Sent to Anthropic API for summarization
+Summary → Sent to Resend API for email delivery
+Email → Delivered to your inbox
+```
+
+Read this file before running any template. Know what data leaves your machine and where it goes.
+
+---
+
+## Responsible Use — What Every Agent Builder Should Know
+
+### Protect Your API Keys
+
+Every template uses `.env` files for secrets. The `.gitignore` excludes them from version control. But mistakes happen — especially if you're new to git.
+
+- **Never commit your `.env` file.** If you see it in `git status`, something is wrong.
+- **If you accidentally push an API key,** rotate it immediately. Go to the provider's dashboard and generate a new one. The old one should be considered compromised.
+- **Use minimal permissions.** If an API key only needs read access, don't give it write access.
+
+### Understand Your Data Flow
+
+When your agent calls the Anthropic API, the full prompt — including any data you've gathered — is sent to Anthropic's servers for processing. Be mindful of what business information you include in proposals, especially with the Council Agent. Don't paste confidential company data into an agent that sends it to an external API.
+
+### Respect Rate Limits
+
+Every API has limits on how often you can call it. The templates include safeguards (like minimum polling intervals on the Data Monitor), but if you customize the schedules, be thoughtful:
+
+- A cron running every minute burns 1,440 API calls per day
+- Most free tiers have daily or monthly limits — check your provider's pricing page
+- When in doubt, start with a daily schedule and increase frequency only if needed
+
+### Test Locally First
+
+Run `npm start` locally before deploying to a cron. Check the output. Make sure the email looks right, the data is accurate, and the agent doesn't error out. Then schedule it.

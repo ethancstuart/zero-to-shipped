@@ -1,0 +1,164 @@
+---
+title: "Data Monitor Agent"
+slug: data-monitor-agent
+pillar: system
+type: persona
+format: config
+tools: [claude-code]
+toolVersions: {}
+difficulty: intermediate
+estimatedMinutes: 5
+tags: [agents, personas, monitoring, alerts, metrics, data, automation]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-05-25"
+---
+
+A configurable agent that watches metrics you care about — API response times, database row counts, Stripe revenue — and alerts you when thresholds are crossed.
+
+## Role Description
+
+The Data Monitor Agent polls configured data sources on a schedule, compares current values against defined thresholds, and sends alert emails with AI-generated context when anomalies are detected.
+
+**Difficulty:** Intermediate  
+**Build time:** ~1 hour to configure data sources  
+**Stack:** TypeScript, Anthropic SDK, Supabase, Resend
+
+## When to Use
+
+Use this agent when you:
+- Check dashboards manually multiple times a day
+- Want to be notified when a metric drops below a threshold (signups, revenue, uptime)
+- Need to monitor metrics across multiple systems without building a full observability stack
+- Want AI-generated context on *why* a metric changed, not just that it changed
+
+## How It Works
+
+**Trigger → Context → Intelligence → Action:**
+
+1. **Trigger:** Cron schedule (configurable interval, minimum 1 minute)
+2. **Context:** Queries configured data sources — APIs, Supabase, Stripe
+3. **Intelligence:** Claude compares current values to thresholds, generates context on why a metric may have changed
+4. **Action:** Sends an alert email with the anomaly and AI-generated explanation
+
+## System Prompt / Key Instructions
+
+```
+You are a data monitoring analyst. You will receive:
+1. A set of metrics with their current values
+2. Their historical context (last 7 days of data)
+3. Their configured thresholds
+
+Your job:
+1. Identify which metrics have crossed their alert thresholds
+2. For each alert, write a 2-3 sentence explanation:
+   - What happened (the specific anomaly)
+   - Likely cause (based on historical patterns and context)
+   - Recommended action (what to check or do)
+3. Assign a severity: LOW | MEDIUM | HIGH | CRITICAL
+4. Return structured JSON
+
+Only alert on real anomalies. Don't alert if a metric is within normal variance.
+Use the historical data to distinguish "this is just normal fluctuation" from 
+"this is actually unusual."
+```
+
+## Key Configuration
+
+```typescript
+// monitors.ts
+export const MONITORS = [
+  {
+    id: 'daily-signups',
+    name: 'Daily Signups',
+    description: 'New user registrations in the last 24 hours',
+    query: async () => {
+      const { count } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', new Date(Date.now() - 86400000).toISOString());
+      return count ?? 0;
+    },
+    thresholds: {
+      critical: { below: 5 },   // Alert if fewer than 5 signups/day
+      warning: { below: 15 },   // Warning if fewer than 15
+    },
+    unit: 'signups',
+  },
+  {
+    id: 'stripe-mrr',
+    name: 'Active Subscriptions',
+    description: 'Current count of active Stripe subscriptions',
+    query: async () => {
+      const subscriptions = await stripe.subscriptions.list({ status: 'active' });
+      return subscriptions.data.length;
+    },
+    thresholds: {
+      critical: { below: 10, changePercent: -20 }, // Alert if drops 20%
+    },
+    unit: 'subscriptions',
+  },
+  {
+    id: 'api-latency',
+    name: 'API P95 Latency',
+    description: 'P95 response time for critical API endpoints',
+    query: async () => {
+      // Query your logging service
+      return await getP95Latency('/api/v1/');
+    },
+    thresholds: {
+      warning: { above: 500 },   // 500ms warning
+      critical: { above: 2000 }, // 2s critical
+    },
+    unit: 'ms',
+  },
+];
+```
+
+## Safeguards Built In
+
+The template includes a minimum polling interval safeguard:
+
+```typescript
+// Prevents running more frequently than once per minute
+const MIN_INTERVAL_MS = 60_000;
+
+// Cooldown period — won't re-alert the same metric within 4 hours
+const ALERT_COOLDOWN_MS = 4 * 60 * 60 * 1000;
+
+// Historical data tracked to distinguish noise from anomalies
+const HISTORY_DAYS = 7;
+```
+
+## Example Usage
+
+```bash
+npm install
+cp .env.example .env
+# Configure: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY, RESEND_API_KEY
+
+# Test run (checks thresholds once)
+npm start
+
+# Run on schedule (local cron)
+# Add to crontab: */15 * * * * cd /path/to/monitor && npm start
+
+# Deploy to Vercel with cron
+vercel deploy
+```
+
+**Adding a new monitor:**
+1. Add a new object to `MONITORS` in `monitors.ts`
+2. Define the `query` function (async, returns a number)
+3. Set `thresholds` for warning and critical levels
+4. Specify `unit` for readable alerts
+
+## Features
+
+- Configurable metric sources (API, Supabase database, Stripe)
+- Threshold-based alerting with cooldown periods
+- AI-generated context for why a metric changed
+- Minimum polling interval safeguard (prevents API abuse)
+- Historical trend tracking (7-day rolling window)
+- Multi-severity levels: LOW, MEDIUM, HIGH, CRITICAL

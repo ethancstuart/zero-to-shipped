@@ -1,0 +1,132 @@
+---
+title: "Debugging with AI"
+slug: debugging
+pillar: learn
+type: resource
+format: written
+tools: [claude-code, cursor]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 15
+tags: [debugging, workflow, errors, troubleshooting]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+Something broke. The AI gave you code that doesn't work. You're staring at a red error message that means nothing to you. Here's exactly what to do — step by step, no engineering background required.
+
+## The 5-Step Debugging Loop
+
+### Step 1: Read the error message. Actually read it.
+
+This sounds obvious. It isn't. Most beginners see a red wall of text and immediately ask Claude to fix it without reading a word. The error message almost always tells you what's wrong — often with a file name and line number. Before you do anything else: read the last 5–10 lines of the error. Find the sentence that starts with 'Error:' or the line that says 'Cannot find module' or 'TypeError: x is not a function.'
+
+**Prompt to use:**
+```
+Explain this error message to me in plain English. What went wrong and where? Error: [paste the full error]
+```
+
+**Tip:** The first 'Error:' in the stack trace is usually the real one. Everything after it is where it bubbled up through.
+
+---
+
+### Step 2: Give Claude the full error — not a description of it
+
+One of the most common debugging mistakes: telling Claude 'I'm getting a TypeScript error on the login page' instead of pasting the actual error. Claude needs the exact error text, the stack trace, and ideally the file it points to. The more specific you are, the faster you get unstuck.
+
+**Prompt to use:**
+```
+Here is the full error I'm seeing: [paste error]
+
+Here is the code it's pointing to: [paste relevant code]
+
+What's causing this and how do I fix it?
+```
+
+**Tip:** Open your browser's developer console (F12 or Cmd+Option+I) and copy the full red error text. Don't screenshot it — paste it.
+
+---
+
+### Step 3: Add context: what changed right before this broke?
+
+Bugs almost always appear right after something changes — you installed a package, edited a file, renamed a variable, or followed an AI suggestion. If you can tell Claude 'this was working, then I [did X], and now I'm seeing [error]' — you've given it 80% of what it needs. The most useful question in debugging: 'What changed?'
+
+**Prompt to use:**
+```
+My app was working fine. I then [describe what you changed or did]. Now I'm seeing this error: [paste error]. What's most likely causing this given what I changed?
+```
+
+**Tip:** If you used version control (git), run `git diff` to see exactly what changed. Paste that diff into Claude.
+
+---
+
+### Step 4: Ask Claude to explain before it fixes
+
+If Claude just gives you code to copy-paste and you apply it without understanding, you'll hit the same class of bug again in 3 days. Ask it to explain what went wrong and why the fix works. This takes an extra 30 seconds and saves you hours over the next month. You don't need to become an expert — but understanding the shape of the bug stops you from reintroducing it.
+
+**Prompt to use:**
+```
+Before you fix it, explain: what exactly went wrong here, and why does your fix solve it? I want to understand this so I don't hit the same issue again.
+```
+
+**Tip:** If the explanation confuses you, say "explain that as if I'm not a developer." Keep going until you get it.
+
+---
+
+### Step 5: Verify the fix didn't break something else
+
+Patches cause regressions. Always test the thing you fixed — but also test the two or three things that are related. If you fixed the login flow, check that signup still works. If you fixed a database query, check that the UI that reads that data still renders correctly. Claude can help you write a quick verification checklist.
+
+**Prompt to use:**
+```
+I applied your fix for [describe the bug]. What should I test to make sure this fix didn't break anything else? Give me a 5-point checklist.
+```
+
+**Tip:** If you have tests, run them now: `npm test` or `npx vitest`. A passing test suite after a fix is the fastest confidence check.
+
+---
+
+## When the 5-step loop isn't working
+
+Sometimes you go through all 5 steps and you're still stuck. Here's what to do next:
+
+1. **Start a fresh conversation** — Sometimes Claude gets confused by a long back-and-forth. Start fresh with a clean problem statement.
+2. **Reproduce it from scratch** — Create a minimal example of the broken thing — the fewest lines of code that show the problem. This often reveals the issue.
+3. **Ask Claude what it would need to solve it** — "What additional information would help you diagnose this?" — Claude will tell you what's missing.
+4. **Search the error message** — Paste the error into Google. Stack Overflow answers from real humans often catch edge cases Claude misses.
+5. **Roll back the change** — If you used git, `git stash` or `git revert` your last change and try a different approach.
+
+## 5 Anti-Patterns That Keep You Stuck
+
+These are the habits that make debugging take 4 hours instead of 20 minutes.
+
+### Asking Claude to "just fix it"
+
+**Problem:** Claude may apply a fix that works for the error but breaks the underlying logic. Always ask for explanation.  
+**Instead:** Ask what the bug is before asking for the fix.
+
+### Applying multiple fixes at once
+
+**Problem:** If Claude suggests 3 changes and you apply all 3 at once, and something breaks, you don't know which one caused it.  
+**Instead:** Apply one change at a time. Test after each one.
+
+### Restarting the conversation when stuck
+
+**Problem:** Starting a new chat loses all context. Claude doesn't know what you've already tried.  
+**Instead:** Stay in the same conversation. If really stuck, say "let's approach this differently" and redirect.
+
+### Ignoring warnings
+
+**Problem:** Warnings aren't errors — they won't stop your app — but they predict future errors. Especially TypeScript warnings.  
+**Instead:** Fix warnings early. Run `npm run typecheck` or `npx tsc --noEmit` and resolve what you can.
+
+### Asking Claude to fix code it hasn't seen
+
+**Problem:** "My button doesn't work" gives Claude nothing to work with. It will guess — and guess wrong.  
+**Instead:** Always paste the relevant code, the error, and what behavior you expected vs. what you got.
+
+## The debugging mindset shift
+
+Most non-engineers treat bugs as proof they shouldn't be building. That's backwards. Every engineer — senior, junior, 10 years in — hits bugs daily. The difference is speed: experienced builders have a loop and they run it. Now you have the loop. Run it.

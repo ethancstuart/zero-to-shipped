@@ -1,0 +1,139 @@
+---
+title: "Builder's Tool Stack"
+slug: builder-tools
+pillar: learn
+type: resource
+format: written
+tools: [claude-code, cursor]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 20
+tags: [tools, cursor, vercel, supabase, github, stripe, resend, setup]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+Every tool in the modern builder stack — what it does, why you need it, and what's free. You don't need all of these on day one. Start with the essentials and add the rest as your project grows.
+
+## Cursor — Primary
+
+**Category:** Code Editor  
+**Tagline:** "Where you write code with AI built in"  
+**Free tier:** 2,000 AI completions/month
+
+Cursor is a code editor (built on VS Code) with Claude and GPT-4 wired directly into it. You write code, Cursor suggests what comes next, and you can highlight any block and say 'explain this' or 'refactor this' in plain English. It's the app you'll spend the most time in.
+
+**Why non-engineers use it:** Cursor's 'Composer' mode lets you describe a feature in English and it writes the files, imports, and wiring. For non-engineers, this is where the magic happens — you direct, Cursor implements.
+
+Visit: [cursor.sh](https://cursor.sh)
+
+---
+
+## Claude Code — Recommended
+
+**Category:** Terminal AI Agent  
+**Tagline:** "An AI that can read and edit your whole project"  
+**Pricing:** Billed per token — no free tier, but pay-as-you-go
+
+Claude Code runs in your terminal and has access to your entire codebase. Unlike Cursor (which works file-by-file), Claude Code can read multiple files, run commands, and make coordinated changes across your project. Think of it as your senior engineer who understands the whole system.
+
+**Why non-engineers use it:** Use Claude Code for big, multi-file tasks: setting up a new feature end-to-end, migrating a database, or refactoring across components. Use Cursor for smaller, in-file edits.
+
+Visit: [claude.ai/code](https://claude.ai/code)
+
+---
+
+## GitHub — Essential
+
+**Category:** Version Control  
+**Tagline:** "Where your code lives and how you save progress"  
+**Free tier:** Unlimited public + private repos
+
+GitHub stores your code and tracks every change you make. It's your project's save history — if something breaks, you can go back. It also makes it possible for Vercel to auto-deploy when you push new code, which is how modern deployment works.
+
+**Why non-engineers use it:** You don't need to understand Git deeply to start. The three commands you'll use daily: `git add`, `git commit`, `git push`. Everything else you can ask Claude.
+
+Visit: [github.com](https://github.com)
+
+---
+
+## Vercel — Essential
+
+**Category:** Hosting & Deployment  
+**Tagline:** "How your app gets on the internet"  
+**Free tier:** Unlimited personal projects, 100GB bandwidth/month
+
+Vercel takes your GitHub repo and turns it into a live URL in under a minute. Every time you push code, it redeploys automatically. It also handles custom domains, environment variables (secret keys), and serverless API routes. No servers to manage.
+
+**Why non-engineers use it:** The workflow is: write code → push to GitHub → Vercel builds and deploys → your URL updates. That loop happens in under 2 minutes. It's the fastest way to go from idea to live.
+
+Visit: [vercel.com](https://vercel.com)
+
+---
+
+## Supabase — Recommended
+
+**Category:** Database & Auth  
+**Tagline:** "Your app's memory and login system"  
+**Free tier:** 500MB database, 50,000 monthly active users
+
+Supabase gives you a Postgres database, user authentication (email + Google login), and file storage — all with a dashboard that looks like a spreadsheet. You don't write SQL to get started. The JavaScript SDK handles it for you.
+
+**Why non-engineers use it:** Most apps need two things: somewhere to store data and a way for users to log in. Supabase does both. Row-Level Security means your data is protected by default — you define who can see what.
+
+Visit: [supabase.com](https://supabase.com)
+
+---
+
+## Resend — Recommended
+
+**Category:** Transactional Email  
+**Tagline:** "How your app sends emails"  
+**Free tier:** 100 emails/day, 3,000/month
+
+Resend is an API for sending email from your app — confirmation emails, password resets, notifications, newsletters. It's developer-first (one line of JavaScript to send), with a dashboard to track opens and bounces.
+
+**Why non-engineers use it:** If your app needs to email users at all — welcome emails, purchase confirmations, daily digests — Resend is the simplest integration. It takes about 20 minutes to set up end-to-end.
+
+Visit: [resend.com](https://resend.com)
+
+---
+
+## Warp — Optional
+
+**Category:** Terminal  
+**Tagline:** "A terminal that doesn't feel like 1980"  
+**Free tier:** Full-featured, AI commands included
+
+Warp is a modern terminal app with AI built in. You can type natural language ('list all files modified in the last 3 days') and it translates to a shell command. It also has command history search, tab completion, and blocks instead of raw text output.
+
+**Why non-engineers use it:** You'll run commands in the terminal daily — installing packages, running tests, deploying. Warp makes it less intimidating. The AI command lookup alone saves hours of googling obscure flags.
+
+Visit: [warp.dev](https://warp.dev)
+
+---
+
+## Stripe — When needed
+
+**Category:** Payments  
+**Tagline:** "How your app takes money"  
+**Pricing:** 2.9% + 30¢ per transaction (no monthly fee)
+
+Stripe handles everything payment-related: credit cards, subscriptions, invoices, refunds, and tax compliance. It's used by most SaaS companies. The dashboard shows all your revenue in one place.
+
+**Why non-engineers use it:** You don't need to understand payments infrastructure to get Stripe working. Paste a few API keys, implement a checkout session (Claude will write it), and you're taking real money within a few hours.
+
+Visit: [stripe.com](https://stripe.com)
+
+---
+
+## Start with this, in this order
+
+1. **Cursor + GitHub** — Your editor and your save system. Get these first.
+2. **Vercel** — Connect your GitHub repo. You'll have a live URL within 10 minutes.
+3. **Supabase** — Add this when your app needs to store data or log users in.
+4. **Claude Code** — Add this when you need to make big, cross-file changes.
+5. **Resend** — Add this when your app needs to send emails.
+6. **Stripe** — Add this when you're ready to charge money.

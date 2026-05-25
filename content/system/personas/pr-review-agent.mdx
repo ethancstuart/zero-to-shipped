@@ -1,0 +1,201 @@
+---
+title: "PR Review Agent"
+slug: pr-review-agent
+pillar: system
+type: persona
+format: config
+tools: [claude-code]
+toolVersions: {}
+difficulty: intermediate
+estimatedMinutes: 5
+tags: [agents, personas, github, code-review, pr, security, quality]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-05-25"
+---
+
+An agent that reviews GitHub pull requests automatically — checks for security issues, code quality, missing tests, and unclear naming — then posts a structured review comment directly on the PR.
+
+## Role Description
+
+The PR Review Agent listens for GitHub webhook events, fetches PR diffs via the GitHub API, runs them through a structured code review prompt, and posts the results as a formatted review comment on the PR.
+
+**Difficulty:** Advanced  
+**Build time:** ~1.5 hours to configure and connect to GitHub  
+**Stack:** TypeScript, Anthropic SDK, GitHub API, Octokit
+
+## When to Use
+
+Use this agent when you:
+- Are building solo and want a second pair of eyes on every change
+- Run a small team without dedicated code reviewers
+- Want consistent, structured review criteria applied to every PR
+- Need to catch security issues or missing tests before they reach production
+
+## How It Works
+
+**Trigger → Context → Intelligence → Action:**
+
+1. **Trigger:** GitHub webhook (fires when a PR is opened or updated)
+2. **Context:** PR diff, changed files, commit messages via GitHub API
+3. **Intelligence:** Claude analyzes the diff across 5 review dimensions
+4. **Action:** Posts a structured review comment on the PR via GitHub API
+
+## System Prompt / Key Instructions
+
+```
+You are a senior software engineer conducting a code review. You will receive:
+1. The PR title and description
+2. The diff (changed files and lines)
+3. The list of files modified
+
+Review the PR across these 5 dimensions:
+
+## 1. Security (HIGH PRIORITY)
+- SQL injection vulnerabilities
+- Hardcoded secrets or API keys
+- Missing input validation
+- Authentication/authorization gaps
+- Dependencies with known vulnerabilities
+
+## 2. Code Quality
+- Functions longer than 50 lines (suggest splitting)
+- Unclear variable/function names
+- Duplicated logic that should be extracted
+- Missing error handling for async operations
+- Overly complex conditional logic
+
+## 3. Test Coverage
+- New functionality without corresponding tests
+- Edge cases not covered by existing tests
+- Tests that only cover the happy path
+
+## 4. Documentation
+- Public functions without docstrings
+- Complex logic without explanatory comments
+- README changes needed for new features
+
+## 5. Performance
+- N+1 query patterns
+- Missing database indexes for new queries
+- Unnecessary re-renders in React components
+- Large bundle imports where tree-shaking would help
+
+Output format:
+- One section per dimension
+- Each finding: SEVERITY (CRITICAL/HIGH/MEDIUM/LOW), file:line reference, specific issue, suggested fix
+- Overall verdict: APPROVE / REQUEST_CHANGES / COMMENT
+- Summary (2-3 sentences): what the PR does well, what needs attention
+
+Be specific. Reference exact file names and line numbers. 
+Don't flag things that are just stylistic preferences.
+```
+
+## Configuration
+
+```typescript
+// config.ts
+export const reviewConfig = {
+  // Customize what gets flagged
+  rules: {
+    maxFunctionLines: 50,
+    requireTests: true,
+    securityChecks: true,
+    performanceChecks: true,
+  },
+  
+  // Files/patterns to skip
+  ignore: [
+    '*.md',
+    '*.json',
+    'package-lock.json',
+    '*.generated.ts',
+  ],
+  
+  // Severity thresholds
+  autoRequestChanges: ['CRITICAL', 'HIGH'], // Auto-block these
+  autoApprove: false, // Never auto-approve — always post as a comment
+  
+  // GitHub settings
+  reviewerName: 'AI Reviewer',
+  labelOnReview: 'ai-reviewed',
+};
+```
+
+## Setup
+
+### Step 1: Configure GitHub Webhook
+
+1. Go to your GitHub repo → Settings → Webhooks → Add webhook
+2. Payload URL: `https://your-app.vercel.app/api/webhook/github`
+3. Content type: `application/json`
+4. Events: Pull request (opened, synchronize, reopened)
+5. Add a webhook secret and save it as `GITHUB_WEBHOOK_SECRET`
+
+### Step 2: Create a GitHub App or Personal Access Token
+
+For posting review comments, you need:
+- A GitHub Personal Access Token with `repo` scope, OR
+- A GitHub App with `pull_requests: write` permission
+
+```bash
+# .env
+GITHUB_TOKEN=ghp_...
+GITHUB_WEBHOOK_SECRET=your-secret
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+### Step 3: Deploy
+
+```bash
+vercel deploy
+# The webhook endpoint is: /api/webhook/github
+```
+
+### Step 4: Test
+
+Open a PR in your repo. The agent should post a review comment within ~30 seconds.
+
+## Example Review Output
+
+```markdown
+## AI Code Review
+
+**PR:** Add user settings page  
+**Files changed:** 4 | **Lines added:** 127 | **Lines removed:** 8
+
+---
+
+### Security ✓
+No security issues found.
+
+### Code Quality ⚠️
+- **MEDIUM** `src/app/settings/page.tsx:45` — `handleUpdate` function is 67 lines. Consider splitting into `handleProfileUpdate` and `handlePasswordUpdate`.
+- **LOW** `src/lib/user.ts:12` — Variable `d` should be named `userData` for clarity.
+
+### Test Coverage ❌
+- **HIGH** `src/app/api/settings/route.ts` — New PATCH endpoint has no corresponding test. Edge cases to test: invalid email format, duplicate username, concurrent updates.
+
+### Documentation ✓  
+No documentation gaps.
+
+### Performance ✓  
+No performance issues found.
+
+---
+
+**Verdict: REQUEST_CHANGES**
+
+The settings page implementation is clean and follows project patterns. One new API endpoint needs tests before merging — this is the main blocker. The long `handleUpdate` function is worth splitting but isn't blocking.
+```
+
+## Features
+
+- Automated PR analysis on webhook trigger
+- Security vulnerability scanning
+- Code quality and naming convention checks
+- Missing test detection
+- Structured GitHub review comments with file/line references
+- Configurable review strictness levels
+- Auto-label reviewed PRs

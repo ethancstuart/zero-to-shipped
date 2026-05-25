@@ -1,0 +1,288 @@
+---
+title: "Prompt Library"
+slug: prompts
+pillar: learn
+type: resource
+format: written
+tools: [claude-code, cursor]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 10
+tags: [prompts, prompt-library, copy-paste, pm, ba, productivity]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+40+ prompts across 6 categories — ready to copy, customize, and paste into Cursor or Claude Code. Select your role below to see the most relevant prompts first. PRDs, stakeholder updates, brainstorming, building, debugging, and more.
+
+## How to use this library
+
+These prompts are starting points, not scripts. The pattern for every one:
+
+1. Copy the prompt
+2. Replace the bracketed parts `[like this]` with your specific context
+3. Paste into Cursor (Cmd+I) or Claude Code
+4. Iterate from the first response
+
+The more specific your context, the better the output.
+
+---
+
+## Category 1: Product Management
+
+### Write a PRD from a one-liner
+
+```
+You are an expert product manager. Write a complete PRD for the following feature:
+
+Feature: [one sentence description]
+User: [who this is for]
+Context: [existing product context]
+
+Include: problem statement, user stories (3-5), success metrics, out of scope, open questions.
+Format it as a clean markdown document.
+```
+
+### Stakeholder update email
+
+```
+I need to write a brief stakeholder update on [project/feature name].
+
+Status: [on track / at risk / blocked]
+Key progress this week: [2-3 bullet points]
+Blockers: [list or "none"]
+Next milestone: [date and what it is]
+
+Write a 5-sentence email. Tone: clear and direct, no corporate jargon. Subject line included.
+```
+
+### Turn meeting notes into action items
+
+```
+Here are my raw meeting notes from [meeting name]:
+
+[paste notes]
+
+Extract: 
+1. Decisions made (bulleted list)
+2. Action items with owner and due date
+3. Open questions that still need answers
+
+Format cleanly. Don't add context that wasn't in the notes.
+```
+
+### Feature brief for engineering
+
+```
+Write a technical handoff brief for the following feature:
+
+Feature: [name]
+What it does: [user-facing description]
+Why we're building it: [business context]
+
+Include: high-level technical approach, data requirements, API changes needed, edge cases to handle, acceptance criteria.
+Assume the audience is senior engineers who haven't heard about this feature yet.
+```
+
+---
+
+## Category 2: Business Analysis
+
+### Analyze data for a stakeholder question
+
+```
+I have data from [source — spreadsheet/database/export]. Here's the question I need to answer:
+
+Question: [business question]
+Data: [paste the data or describe the structure]
+
+Analyze this and give me: the direct answer, the key pattern in the data, and 1-2 caveats or limitations of this analysis.
+```
+
+### Requirements gathering
+
+```
+I need to write business requirements for [system/process/feature].
+
+Context: [what the system does today]
+Problem: [what's broken or missing]
+Stakeholders: [who's affected]
+
+Give me a complete requirements document with: functional requirements, non-functional requirements (performance, security, compliance), assumptions, and dependencies. Keep language business-readable, not technical.
+```
+
+### Process mapping
+
+```
+Map out the current [process name] as a step-by-step flow.
+
+Here's what I know about it: [describe the process in plain English]
+
+Output: numbered steps with the actor (who does it) for each step, decision points marked clearly, and a short note on where friction typically occurs.
+```
+
+---
+
+## Category 3: Building & Coding
+
+### Start a new feature
+
+```
+I'm building a [feature name] for my [app description].
+
+Tech stack: [Next.js/React/Vue + database + hosting]
+What the feature should do: [user-facing description]
+
+Before writing any code: outline what files you'll create or modify, what each piece does, and any edge cases. Then implement it.
+```
+
+### Add to an existing codebase
+
+```
+I have an existing [language/framework] project. Here's the relevant context:
+
+[paste CLAUDE.md or relevant file contents]
+
+Task: [what I need to add or change]
+
+Follow the existing patterns in the codebase. Don't introduce new dependencies unless necessary.
+```
+
+### Debug an error
+
+```
+I'm getting this error in my [language/framework] project:
+
+Error: [paste full error message]
+
+Here's the relevant code: [paste the file or function it's pointing to]
+
+What's causing this and how do I fix it? Explain what went wrong before giving me the fix.
+```
+
+### Write a test
+
+```
+Write a [Vitest/Jest/pytest] test for the following function:
+
+[paste function code]
+
+Test: the happy path, 2-3 edge cases, and an error case. Use the existing patterns in [testing framework]. Don't mock more than necessary.
+```
+
+---
+
+## Category 4: Debugging
+
+### TypeScript error
+
+```
+I'm getting a TypeScript error. Here's the error:
+
+[paste exact error]
+
+Here's the code: [paste relevant code]
+
+Explain: what the type error means in plain English, what caused it, and the correct fix. Don't just suppress the error — fix the underlying type mismatch.
+```
+
+### API not responding
+
+```
+My API call is failing. Here's what I know:
+
+Endpoint: [URL]
+Method: [GET/POST/etc]
+Request body: [paste request]
+Response: [paste error response or status code]
+Expected behavior: [what should happen]
+
+What's most likely wrong and how do I fix it?
+```
+
+### Something broke after a change
+
+```
+My app was working fine. I then [describe what you changed]. Now I'm seeing [describe what's broken].
+
+Here's the error (if any): [paste error]
+Here's the code I changed: [paste diff or modified code]
+
+What's the most likely cause given what I changed, and how do I fix it?
+```
+
+---
+
+## Category 5: Brainstorming
+
+### Anti-obvious feature ideas
+
+```
+I'm building [product description]. Give me 8 feature ideas that would genuinely surprise users.
+
+Avoid the obvious features everyone in this space builds. I want ideas that are specific, memorable, and create real value — not table stakes.
+```
+
+### Name ideas
+
+```
+I need a name for [product/feature/project]. Here's the context:
+
+What it does: [description]
+Who uses it: [audience]
+Tone: [professional/playful/technical/etc]
+
+Give me 10 name ideas. Avoid generic portmanteaus and initialism names. I want names that are specific, pronounceable, and memorable.
+```
+
+### Marketing angles
+
+```
+I need to write about [product/feature]. Here are the facts:
+
+[paste product description or feature list]
+
+Give me 5 different angles I could take — not the features themselves, but the outcomes, the feelings, or the worldview shift this creates for users. Avoid hype words.
+```
+
+---
+
+## Category 6: Writing & Communication
+
+### Rewrite for clarity
+
+```
+Here is a piece of writing that needs to be clearer:
+
+[paste the text]
+
+Rewrite it. Rules: shorter sentences, no jargon, active voice, cut anything that doesn't add information. Preserve all the facts — don't cut content, cut complexity.
+```
+
+### Write from a brief
+
+```
+Write a [document type — email/announcement/post/etc] based on this brief:
+
+Audience: [who's reading this]
+Goal: [what you want them to think, feel, or do after reading]
+Key points to include: [bullet list]
+Tone: [formal/casual/direct/etc]
+Length: [short/medium/long]
+```
+
+### Make a decision recommendation
+
+```
+I need to make a decision: [describe the choice]
+
+Here's the context:
+- Option A: [describe]
+- Option B: [describe]
+- Constraints: [time/budget/team/other constraints]
+- What I care most about: [criteria]
+
+Give me your recommendation and the 3 most important reasons for it. Then give me the 2 strongest arguments against your recommendation.
+```

@@ -1,0 +1,186 @@
+---
+title: "Claude Code for Non-Engineers — A Beginner's Guide"
+slug: claude-code-101
+pillar: learn
+type: guide
+format: written
+tools: [claude-code]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 20
+tags: [claude-code, beginner, getting-started, non-engineers, pm, ba]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-03-15"
+---
+
+Claude Code is the tool that makes building real software accessible to non-engineers. It's an AI coding assistant that lives in your terminal and can build entire features from a plain-English description. Here's how to go from "I have an idea" to "here's the live URL" — even if you've never opened a terminal before.
+
+## What is Claude Code?
+
+Claude Code is Anthropic's AI coding tool. You type what you want in plain English, and it writes the code, edits your files, runs commands, and helps you ship a working product. It's not a chatbot that gives you code to copy-paste — it actually makes the changes directly in your project.
+
+Think of it as having a senior software engineer sitting next to you who never gets tired, never judges your questions, and works at the speed of thought.
+
+**Why should you care?** If you're a PM, BA, Project Manager, or BI Engineer, Claude Code is the difference between "I need engineering to build this" and "I built it this afternoon." Internal tools, dashboards, prototypes, automations — all things you can now ship yourself.
+
+## Getting Started (5 Minutes)
+
+### Step 1: Install Claude Code
+
+Open your terminal and paste this:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+On Windows, use PowerShell:
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+That's it. It installs in about 30 seconds and auto-updates in the background.
+
+### Step 2: Navigate to Your Project
+
+```bash
+cd ~/Projects/my-first-app
+claude
+```
+
+The first time you run `claude`, it asks you to log in. After that, you're in an interactive session where you can type anything.
+
+### Step 3: Start Building
+
+Once Claude Code is running, just describe what you want. Here are real examples:
+
+```
+> Create a Next.js app with a landing page that has a hero section,
+  pricing cards, and a contact form
+
+> Add a dashboard page that shows a bar chart of monthly revenue
+
+> Fix the mobile layout — the nav menu overlaps the content on small screens
+
+> Set up Supabase authentication with Google OAuth
+```
+
+Claude Code reads your project, understands the context, makes the changes, and tells you what it did. You review the changes and keep going.
+
+## 5 Things You Can Build Today
+
+These aren't hypothetical. These are projects that non-engineers have built with Claude Code in a single afternoon:
+
+1. **An internal status dashboard** — Pull data from an API, display it in charts, auto-refresh every 5 minutes. Total time: ~2 hours.
+2. **A customer feedback tool** — Form submission, Supabase database, email notifications. Total time: ~3 hours.
+3. **A landing page for your side project** — Hero, features, pricing, deployed to Vercel. Total time: ~1 hour.
+4. **An automated report generator** — Connect to a data source, format the output, schedule it with a cron job. Total time: ~2 hours.
+5. **A prototype to pitch to your eng team** — Working app that demonstrates the feature you've been requesting for 3 sprints. Total time: ~4 hours.
+
+---
+
+## The CLAUDE.md File — Your Secret Weapon
+
+This is the single most important concept in Claude Code. A `CLAUDE.md` file lives in your project root and tells Claude everything it needs to know about your project: the tech stack, file structure, coding conventions, and key commands.
+
+Think of it as a briefing document. Without it, Claude Code works fine. With it, Claude Code works *like it built your project from scratch*.
+
+```markdown
+# My Dashboard App
+
+## Tech Stack
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS + shadcn/ui
+- Supabase (database + auth)
+
+## Key Commands
+- npm run dev — start dev server
+- npm run build — production build
+
+## Conventions
+- Server components by default
+- Use @/ path alias for imports
+- Mobile-first responsive design
+
+## File Structure
+src/
+  app/          # Pages and API routes
+  components/   # React components
+  lib/          # Utilities and helpers
+```
+
+With this file in place, every prompt you give Claude Code produces code that matches your project perfectly. No more "that's not how we do it here."
+
+## 6 Power Moves for Non-Engineers
+
+### 1. "Give me an overview of this codebase"
+
+When you inherit a project or open someone else's code, start here. Claude Code reads every file and gives you a plain-English explanation of how the app works, what the key files are, and how data flows through the system. You'll understand more in 2 minutes than you would in 2 hours of reading code.
+
+### 2. "Explain this file like I'm a PM"
+
+Point Claude Code at any file and ask for a role-specific explanation. It skips the computer science and tells you what the code *does for users*.
+
+### 3. Use slash commands for repeated tasks
+
+If you find yourself asking Claude Code the same thing repeatedly, create a slash command. It's just a markdown file in your project:
+
+```markdown
+# .claude/commands/add-feature.md
+---
+description: Add a new feature to the app
+argument-hint: [feature description]
+---
+
+Build the following feature: $ARGUMENTS
+
+Follow the existing patterns in the codebase.
+Use server components by default.
+Add to the sidebar navigation if it's a new page.
+```
+
+Now you type `/add-feature user settings page` and Claude Code knows exactly what to do.
+
+### 4. "Commit and push this"
+
+Claude Code handles Git for you. It writes clear commit messages, stages the right files, and pushes to GitHub. No memorizing Git commands.
+
+### 5. "Make this work on mobile"
+
+Point Claude Code at any page and ask it to fix the mobile layout. It reads the CSS, identifies the breakpoint issues, and fixes them. This alone saves hours on every project.
+
+### 6. "What would you change about this?"
+
+Ask Claude Code to review your project. It'll flag performance issues, security vulnerabilities, accessibility problems, and opportunities to simplify the code. It's like a free code review from a senior engineer.
+
+## Common Mistakes (and How to Avoid Them)
+
+### Prompting too broadly
+
+**Bad:** "Build me a dashboard."
+
+**Good:** "Create a dashboard page at /dashboard that shows three stat cards (total users, revenue this month, active projects) and a line chart of signups over the past 30 days. Use the existing Card component from @/components/ui/card."
+
+Specific prompts produce specific results. Vague prompts produce vague results that need 5 rounds of revisions.
+
+### Not testing between changes
+
+After every change Claude Code makes, open your browser and check the result. If you stack 10 changes without testing, you won't know which one broke things.
+
+### Skipping the CLAUDE.md
+
+Spend 10 minutes writing a CLAUDE.md before you start building. It saves hours of correcting Claude Code's assumptions about your tech stack and conventions.
+
+### Not committing frequently
+
+Commit after every working feature. If something breaks later, you can always go back. Tell Claude Code: "commit this with a clear message" — it handles the rest.
+
+## What's Next: From Tool User to Builder
+
+Claude Code is the starting point. Once you're comfortable with it, the next steps are:
+
+- **Building agents** — Create automated workflows where Claude Code handles recurring tasks without you prompting it each time. See [The Agent Builder Guide](/learn/agent-builder).
+- **Context engineering** — The art of structuring your project so AI tools understand it deeply. This is the skill that separates people who use AI from people who build with AI.

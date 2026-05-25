@@ -1,0 +1,131 @@
+---
+title: "Daily AI News Digest Agent"
+slug: daily-ai-news-digest
+pillar: system
+type: persona
+format: config
+tools: [claude-code]
+toolVersions: {}
+difficulty: beginner
+estimatedMinutes: 5
+tags: [agents, personas, automation, news, rss, email, cron]
+isPremium: false
+isFeatured: false
+status: published
+publishedAt: "2026-05-25"
+---
+
+An agent that scans RSS feeds and news APIs every morning, summarizes the top AI stories, and emails you a clean digest before your first meeting.
+
+## Role Description
+
+The Daily AI News Digest agent is a scheduled automation that monitors a configurable set of RSS feeds, applies AI summarization to extract the most relevant stories, and delivers a clean email digest on a cron schedule.
+
+**Difficulty:** Beginner  
+**Build time:** ~30 minutes to fork and configure  
+**Stack:** TypeScript, Anthropic SDK, Resend, RSS Parser
+
+## When to Use
+
+Use this agent when you:
+- Need to stay current on a fast-moving topic (AI, your industry, competitor news) without spending an hour reading
+- Brief stakeholders on trends and want a reliable daily input
+- Want to automate a manual "read the news, pick what matters" workflow
+
+## How It Works
+
+**Trigger → Context → Intelligence → Action:**
+
+1. **Trigger:** Cron schedule (daily at 7am, configurable)
+2. **Context:** Fetches articles from 5-10 configured RSS feeds
+3. **Intelligence:** Claude analyzes all articles, ranks by relevance to your configured topic, generates 2-3 sentence summaries for the top 5-8 stories
+4. **Action:** Sends a formatted HTML email via Resend
+
+## System Prompt / Key Instructions
+
+```
+You are an AI news analyst. Your job is to:
+
+1. Review the following articles fetched from RSS feeds
+2. Select the 5-8 most significant stories for [YOUR TOPIC]
+3. For each story, write a 2-3 sentence summary that:
+   - States what happened
+   - Explains why it matters
+   - Notes any implications for [YOUR AUDIENCE]
+4. Order stories by significance (most important first)
+5. Return structured JSON matching the digest schema
+
+Criteria for "significant":
+- Announcements from major companies in the space
+- Research breakthroughs with practical implications
+- Industry shifts or regulatory changes
+- Stories that will be discussed in meetings this week
+
+Skip:
+- Duplicate coverage of the same story
+- Opinion pieces without new information
+- Listicles or roundups
+- Stories older than 24 hours
+```
+
+## Key Configuration
+
+```typescript
+// config.ts
+export const config = {
+  // RSS feeds to monitor
+  feeds: [
+    'https://techcrunch.com/category/artificial-intelligence/feed/',
+    'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml',
+    'https://www.anthropic.com/blog/rss.xml',
+    // Add your own feeds here
+  ],
+  
+  // Email settings
+  emailTo: 'you@example.com',
+  emailFrom: 'digest@yourdomain.com',
+  digestSubject: 'AI News Digest — {date}',
+  
+  // Digest settings
+  maxStories: 8,
+  minStories: 5,
+  summaryLength: 'brief', // 'brief' | 'detailed'
+  
+  // Schedule (cron syntax)
+  schedule: '0 7 * * *', // 7am daily
+};
+```
+
+## Example Usage
+
+**Setup:**
+```bash
+git clone https://github.com/ethancstuart/zts-agent-templates.git
+cd zts-agent-templates/templates/daily-ai-news-digest
+npm install
+cp .env.example .env
+# Add ANTHROPIC_API_KEY and RESEND_API_KEY to .env
+npm start  # Run once to test
+```
+
+**Customizing for your use case:**
+- Swap the RSS feeds in `config.ts` for your industry
+- Adjust `maxStories` and summary length for your email style
+- Change the schedule to match your morning routine
+- Add a topic filter to focus on specific themes
+
+**Deploy to Vercel (for scheduled runs):**
+```bash
+vercel deploy
+# Add cron in vercel.json:
+# { "crons": [{ "path": "/api/digest", "schedule": "0 7 * * *" }] }
+```
+
+## Features
+
+- Configurable RSS feed sources
+- AI-powered summarization with key takeaways
+- Clean HTML email template
+- Cron-scheduled via Vercel or local crontab
+- Customizable digest format and length
+- Deduplication — won't surface the same story twice in a week
