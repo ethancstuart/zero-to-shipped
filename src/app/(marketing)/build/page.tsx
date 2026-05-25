@@ -17,6 +17,7 @@ export default async function BuildPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-12">
+        <div className="mb-4 h-1 w-16 rounded-full bg-amber-500" />
         <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Build</h1>
         <p className="max-w-2xl text-lg text-white/60">
           Watch someone build, then do it yourself. Live sessions, step-by-step

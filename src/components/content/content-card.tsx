@@ -5,6 +5,13 @@ interface ContentCardProps {
   content: ContentFrontmatter
 }
 
+const pillarColors = {
+  pulse: 'border-l-blue-500',
+  build: 'border-l-amber-500',
+  learn: 'border-l-green-500',
+  system: 'border-l-purple-500',
+} as const
+
 const difficultyColors = {
   beginner: 'text-green-400 border-green-400/20 bg-green-400/5',
   intermediate: 'text-yellow-400 border-yellow-400/20 bg-yellow-400/5',
@@ -24,7 +31,7 @@ export function ContentCard({ content }: ContentCardProps) {
   return (
     <Link
       href={href}
-      className="group block rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all hover:border-white/20 hover:bg-white/[0.04]"
+      className={`group block rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all hover:border-white/20 hover:bg-white/[0.04] border-l-4 ${pillarColors[content.pillar as keyof typeof pillarColors] ?? ''}`}
     >
       <div className="mb-3 flex items-center gap-2">
         <span className="text-sm">{formatIcons[content.format]}</span>

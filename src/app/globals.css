@@ -119,6 +119,29 @@
 }
 
 @layer base {
+  :root {
+    --brand-primary: 210 100% 60%;
+    --brand-secondary: 280 80% 65%;
+    --brand-accent: 160 84% 45%;
+
+    --surface-0: 0 0% 4%;
+    --surface-1: 0 0% 7%;
+    --surface-2: 0 0% 10%;
+    --surface-3: 0 0% 14%;
+
+    --text-primary: 0 0% 100%;
+    --text-secondary: 0 0% 70%;
+    --text-muted: 0 0% 45%;
+
+    --border-subtle: 0 0% 15%;
+    --border-default: 0 0% 20%;
+
+    --pillar-pulse: 200 95% 55%;
+    --pillar-build: 35 95% 55%;
+    --pillar-learn: 145 80% 45%;
+    --pillar-system: 275 85% 60%;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }

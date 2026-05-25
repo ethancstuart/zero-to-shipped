@@ -19,21 +19,24 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6">
-      <section className="py-24 text-center">
-        <h1 className="mx-auto mb-6 max-w-3xl text-5xl font-bold tracking-tight text-white sm:text-6xl">
-          Build real products with AI
-        </h1>
-        <p className="mx-auto mb-10 max-w-xl text-lg text-white/50">
-          Watch sessions. Follow guides. Set up your own agent system.
-          Everything you need to go from idea to shipped product.
-        </p>
-        <div className="flex items-center justify-center gap-4">
-          <Link href="/learn" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-90">
-            Start learning
-          </Link>
-          <Link href="/pulse" className="rounded-lg border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5">
-            See what&apos;s new
-          </Link>
+      <section className="relative py-24 text-center">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-purple-500/5 to-transparent" />
+        <div className="relative">
+          <h1 className="mx-auto mb-6 max-w-3xl text-5xl font-bold tracking-tight text-white sm:text-6xl">
+            Build real products with AI
+          </h1>
+          <p className="mx-auto mb-10 max-w-xl text-lg text-white/50">
+            Watch sessions. Follow guides. Set up your own agent system.
+            Everything you need to go from idea to shipped product.
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <Link href="/learn" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-90">
+              Start learning
+            </Link>
+            <Link href="/pulse" className="rounded-lg border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5">
+              See what&apos;s new
+            </Link>
+          </div>
         </div>
       </section>
 

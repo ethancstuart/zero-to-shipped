@@ -23,7 +23,9 @@ export async function MarketingNav() {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
           <Rocket className="size-5 text-primary" />
-          Prototype Studio
+          <span className="bg-gradient-to-r from-white to-white/70 bg-clip-text text-lg font-bold text-transparent">
+            Prototype Studio
+          </span>
         </Link>
         <div className="hidden items-center gap-1 sm:flex">
           {navItems.map((item) => (
