@@ -43,9 +43,9 @@ export async function toggleCheckpoint(
   }
 
   if (mod.slug) {
-    revalidatePath(`/modules/${mod.slug}`, "page");
+    revalidatePath(`/learn/${mod.slug}`, "page");
   }
-  revalidatePath(`/modules`, "page");
+  revalidatePath(`/learn`, "page");
   revalidatePath(`/dashboard`, "page");
 
   return result;
@@ -63,5 +63,5 @@ export async function updateToolPreference(tool: "claude-code" | "cursor") {
     .update({ tool_preference: tool })
     .eq("id", user.id);
 
-  revalidatePath("/modules");
+  revalidatePath("/learn");
 }

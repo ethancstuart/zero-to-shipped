@@ -561,7 +561,7 @@ fix list based on what you find.&quot;</code></pre>
             Module 1 of Prototype Studio walks you through your first real build — using everything in this guide.
           </p>
           <Link
-            href="/preview/module-1"
+            href="/learn/setup-and-first-build"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
             Try Module 1 Free

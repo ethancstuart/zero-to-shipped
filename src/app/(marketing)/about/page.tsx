@@ -52,7 +52,7 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-12 flex flex-col gap-3 sm:flex-row">
-        <Button render={<Link href="/preview/module-1" />}>
+        <Button render={<Link href="/learn/setup-and-first-build" />}>
           Start building — Module 1 is free
           <ArrowRight className="ml-2 size-4" />
         </Button>

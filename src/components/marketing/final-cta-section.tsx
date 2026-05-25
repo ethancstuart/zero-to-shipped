@@ -16,7 +16,7 @@ export function FinalCtaSection() {
         Module 1 is free. No sign-up. You&apos;ll ship a working app in 40 minutes.
       </p>
       <Link
-        href="/preview/module-1"
+        href="/learn/setup-and-first-build"
         className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 px-7 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition-opacity hover:opacity-90"
       >
         Try Module 1 free →

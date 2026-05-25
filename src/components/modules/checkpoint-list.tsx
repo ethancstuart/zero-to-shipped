@@ -2,7 +2,7 @@
 
 import { useOptimistic, useTransition, useState, useRef } from "react";
 import { CheckCircle2, Circle } from "lucide-react";
-import { toggleCheckpoint } from "@/app/(app)/modules/[slug]/actions";
+import { toggleCheckpoint } from "@/lib/actions/learn-actions";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { XPPopup } from "@/components/gamification/xp-popup";

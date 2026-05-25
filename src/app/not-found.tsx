@@ -16,9 +16,9 @@ export default function NotFound() {
             <Home className="mr-2 size-4" />
             Home
           </Button>
-          <Button variant="outline" render={<Link href="/modules" />}>
+          <Button variant="outline" render={<Link href="/learn" />}>
             <BookOpen className="mr-2 size-4" />
-            Browse Modules
+            Browse Lessons
           </Button>
         </div>
       </div>

@@ -62,9 +62,9 @@ export default async function WelcomePage() {
           <div className="flex items-start gap-3">
             <BookOpen className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
             <div>
-              <p className="font-medium">16 hands-on modules</p>
+              <p className="font-medium">Hands-on lessons across 4 pillars</p>
               <p className="text-sm text-muted-foreground">
-                From setup to shipping a capstone project — each module ends
+                From setup to shipping a capstone project — each lesson ends
                 with something you built.
               </p>
             </div>
@@ -84,7 +84,7 @@ export default async function WelcomePage() {
             <div>
               <p className="font-medium">Certificate of completion</p>
               <p className="text-sm text-muted-foreground">
-                Finish all 16 modules and earn a shareable certificate for your
+                Complete the curriculum and earn a shareable certificate for your
                 LinkedIn profile.
               </p>
             </div>
@@ -94,15 +94,15 @@ export default async function WelcomePage() {
 
       {/* CTA */}
       <Button
-        render={<Link href="/modules/01-setup-and-first-build" />}
+        render={<Link href="/learn/setup-and-first-build" />}
         size="lg"
         className="px-8 text-base"
       >
-        Start Module 1
+        Start Learning
       </Button>
 
       <p className="mt-4 text-sm text-muted-foreground">
-        Module 1 takes about 3 hours. You&apos;ll have your first build by the
+        The first lesson takes about 3 hours. You&apos;ll have your first build by the
         end.
       </p>
     </div>

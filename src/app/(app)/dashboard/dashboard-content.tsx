@@ -6,27 +6,53 @@ import {
   Flame,
   Trophy,
   ArrowRight,
-  Clock,
+  Zap,
+  Layers,
+  BookOpen,
+  Wrench,
   Users,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MODULE_METADATA } from "@/lib/content/modules";
 import { getXPProgress, getBadgeBySlug } from "@/lib/gamification/constants";
-import { CompletionRing } from "@/components/dashboard/completion-ring";
 import { ActivityFeed } from "@/components/dashboard/activity-feed";
 import { StreakCalendar } from "@/components/dashboard/streak-calendar";
-import { RoleRecommendations } from "@/components/dashboard/role-recommendations";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CopyReferralLink } from "./copy-referral-link";
-import type { ModuleProgress, Badge, XPEvent, RoleTrack } from "@/types";
+import type { Badge, XPEvent } from "@/types";
+
+const PILLARS = [
+  {
+    href: "/pulse",
+    label: "Pulse",
+    description: "AI tool news and weekly releases",
+    icon: Zap,
+  },
+  {
+    href: "/build",
+    label: "Build",
+    description: "Project walkthroughs and build challenges",
+    icon: Layers,
+  },
+  {
+    href: "/learn",
+    label: "Learn",
+    description: "Lessons and structured curriculum",
+    icon: BookOpen,
+  },
+  {
+    href: "/system",
+    label: "System",
+    description: "Workflows, templates, and cheat sheets",
+    icon: Wrench,
+  },
+];
 
 export async function DashboardContent({ userId }: { userId: string }) {
   const supabase = await createClient();
 
-  const [profile, progressRes, badgesRes, eventsRes] = await Promise.all([
+  const [profile, badgesRes, eventsRes] = await Promise.all([
     getProfile(userId),
-    supabase.from("module_progress").select("module_number, status").eq("user_id", userId),
     supabase.from("badges").select("id, badge_slug").eq("user_id", userId),
     supabase
       .from("xp_events")
@@ -37,19 +63,10 @@ export async function DashboardContent({ userId }: { userId: string }) {
   ]);
 
   if (!profile) redirect("/");
-  const progress = (progressRes.data ?? []) as ModuleProgress[];
   const badges = (badgesRes.data ?? []) as Badge[];
   const events = (eventsRes.data ?? []) as XPEvent[];
 
-  const completedModules = progress.filter((p) => p.status === "completed");
-  const inProgressModules = progress.filter((p) => p.status === "in_progress");
-  const availableModules = progress.filter((p) => p.status === "available");
   const { current, next, progressPercent } = getXPProgress(profile.xp);
-
-  const nextModule = inProgressModules[0] ?? availableModules[0];
-  const nextModuleMeta = nextModule
-    ? MODULE_METADATA.find((m) => m.number === nextModule.module_number)
-    : null;
 
   const activityMap: Record<string, number> = {};
   for (const event of events) {
@@ -59,40 +76,35 @@ export async function DashboardContent({ userId }: { userId: string }) {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8">
-      {/* Welcome + Completion Ring */}
-      <div className="flex flex-wrap items-center gap-6">
-        <CompletionRing completed={completedModules.length} total={16} />
-        <div>
-          <h1 className="text-2xl font-bold">
-            Welcome back, {profile.display_name?.split(" ")[0] ?? "Builder"}
-          </h1>
-          <p className="text-muted-foreground">
-            Keep building. You&apos;re doing great.
-          </p>
-          <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Trophy className="size-4 text-primary" />
-              {current.title} &middot; {profile.xp} XP
-            </span>
-            <span className="flex items-center gap-1">
-              <Flame className="size-4 text-orange-500" />
-              {profile.current_streak}d streak
+      {/* Welcome header */}
+      <div>
+        <h1 className="text-2xl font-bold">
+          Welcome back, {profile.display_name?.split(" ")[0] ?? "Builder"}
+        </h1>
+        <p className="text-muted-foreground">Keep building.</p>
+        <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <Trophy className="size-4 text-primary" />
+            {current.title} &middot; {profile.xp} XP
+          </span>
+          <span className="flex items-center gap-1">
+            <Flame className="size-4 text-orange-500" />
+            {profile.current_streak}d streak
+          </span>
+        </div>
+        {next && (
+          <div className="mt-2 flex items-center gap-2">
+            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-all"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {next.xpRequired - profile.xp} XP to {next.title}
             </span>
           </div>
-          {next && (
-            <div className="mt-2 flex items-center gap-2">
-              <div className="h-1.5 w-32 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <span className="text-xs text-muted-foreground">
-                {next.xpRequired - profile.xp} XP to {next.title}
-              </span>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Upgrade CTA for free users */}
@@ -101,7 +113,7 @@ export async function DashboardContent({ userId }: { userId: string }) {
           <div>
             <p className="font-medium">Unlock the full curriculum</p>
             <p className="text-sm text-muted-foreground">
-              Get access to all 16 modules, capstone templates, and certificates.
+              Get access to all lessons, capstone templates, and certificates.
             </p>
           </div>
           <Button className="w-full shrink-0 sm:w-auto" render={<Link href="/pricing" />}>
@@ -119,7 +131,7 @@ export async function DashboardContent({ userId }: { userId: string }) {
             <div>
               <p className="font-medium">Share &amp; Earn</p>
               <p className="text-sm text-muted-foreground">
-                Invite a friend &mdash; you both earn 100 XP when they complete Module 1
+                Invite a friend &mdash; you both earn 100 XP when they start learning
               </p>
             </div>
           </div>
@@ -127,48 +139,56 @@ export async function DashboardContent({ userId }: { userId: string }) {
         </div>
       )}
 
+      {/* Pillar links */}
+      <div>
+        <h2 className="mb-4 font-semibold">Explore</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PILLARS.map((pillar) => (
+            <Link
+              key={pillar.href}
+              href={pillar.href}
+              className="group flex flex-col gap-2 rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-primary/5"
+            >
+              <pillar.icon className="size-5 text-primary" />
+              <div>
+                <p className="font-semibold text-sm group-hover:text-primary">
+                  {pillar.label}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {pillar.description}
+                </p>
+              </div>
+              <ArrowRight className="mt-auto size-3.5 text-muted-foreground/40 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Main Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Next Module */}
+        {/* Stats */}
         <div className="rounded-xl border border-border bg-card p-6">
-          <h2 className="mb-4 font-semibold">Next Up</h2>
-          {nextModuleMeta ? (
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 font-bold text-primary">
-                  {nextModuleMeta.number}
-                </div>
-                <div>
-                  <h3 className="font-medium">{nextModuleMeta.title}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {nextModuleMeta.description}
-                  </p>
-                  <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                    <Clock className="size-3" />
-                    {nextModuleMeta.estimatedHours} hours
-                  </div>
-                </div>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                You&apos;re {16 - completedModules.length} modules from your capstone project
-              </p>
-              <Button
-                size="sm"
-                render={<Link href={`/modules/${nextModuleMeta.slug}`} />}
-              >
-                {nextModule?.status === "in_progress"
-                  ? "Continue"
-                  : "Start Module"}
-                <ArrowRight className="ml-1 size-4" />
-              </Button>
+          <h2 className="mb-4 font-semibold">Your Progress</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="rounded-lg bg-muted/50 p-4 text-center">
+              <div className="text-2xl font-bold text-primary">{profile.xp}</div>
+              <div className="mt-1 text-xs text-muted-foreground">Total XP</div>
             </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              {completedModules.length === 16
-                ? "You've completed all modules! Amazing work."
-                : "No modules available yet. Complete prerequisites to unlock more."}
-            </p>
-          )}
+            <div className="rounded-lg bg-muted/50 p-4 text-center">
+              <div className="text-2xl font-bold text-primary">
+                {profile.current_streak}
+              </div>
+              <div className="mt-1 text-xs text-muted-foreground">Day streak</div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4 text-center">
+              <div className="text-2xl font-bold text-primary">{current.level}</div>
+              <div className="mt-1 text-xs text-muted-foreground">Level</div>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4 text-center">
+              <div className="text-2xl font-bold text-primary">{badges.length}</div>
+              <div className="mt-1 text-xs text-muted-foreground">Badges</div>
+            </div>
+          </div>
         </div>
 
         {/* Recent Activity */}
@@ -177,14 +197,6 @@ export async function DashboardContent({ userId }: { userId: string }) {
           <ActivityFeed events={events.slice(0, 8)} />
         </div>
       </div>
-
-      {/* Role Recommendations */}
-      {profile.role_track && (
-        <RoleRecommendations
-          roleTrack={profile.role_track as RoleTrack}
-          progress={progress}
-        />
-      )}
 
       {/* Streak Calendar */}
       <div className="rounded-xl border border-border bg-card p-6">
@@ -222,7 +234,7 @@ export async function DashboardContent({ userId }: { userId: string }) {
           <EmptyState
             icon={Award}
             title="No badges yet"
-            description="Complete modules and hit streaks to earn badges."
+            description="Complete lessons and hit streaks to earn badges."
           />
         )}
       </div>

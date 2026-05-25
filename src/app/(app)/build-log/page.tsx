@@ -85,9 +85,9 @@ export default async function BuildLogPage() {
           <Button
             className="mt-4"
             variant="outline"
-            render={<Link href="/modules" />}
+            render={<Link href="/learn" />}
           >
-            Go to Modules
+            Go to Learn
           </Button>
         </div>
       ) : (

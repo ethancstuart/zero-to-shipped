@@ -251,7 +251,7 @@ export default function PromptPatternsPage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/preview/module-1"
+              href="/learn/setup-and-first-build"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold transition-colors hover:bg-muted"
             >
               Try Module 1 Free

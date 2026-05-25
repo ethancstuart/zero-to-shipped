@@ -28,7 +28,7 @@ import { getXPProgress } from "@/lib/gamification/constants";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/modules", label: "Modules", icon: BookOpen },
+  { href: "/learn", label: "Learn", icon: BookOpen },
   { href: "/learning-path", label: "Learning Path", icon: Route },
   { href: "/skill-tree", label: "Skill Tree", icon: GitBranch },
   { href: "/cheat-sheets", label: "Cheat Sheets", icon: FileText },

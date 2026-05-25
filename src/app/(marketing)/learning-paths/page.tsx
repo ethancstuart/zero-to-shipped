@@ -305,7 +305,7 @@ export default function LearningPathsPage() {
               {/* Role CTA */}
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="/preview/module-1"
+                  href="/learn/setup-and-first-build"
                   className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                 >
                   Try Module 1 free →
@@ -323,17 +323,17 @@ export default function LearningPathsPage() {
 
         {/* Bottom CTA */}
         <div className="mt-16 rounded-xl border border-border bg-card p-8 text-center">
-          <h2 className="mb-2 text-xl font-bold">Not sure which path? Start with Module 1.</h2>
+          <h2 className="mb-2 text-xl font-bold">Not sure which path? Start with Setup &amp; First Build.</h2>
           <p className="mb-6 text-sm text-muted-foreground">
-            Module 1 is the same for every role. It takes 40 minutes and you&apos;ll ship
+            The first lesson is the same for every role. It takes 40 minutes and you&apos;ll ship
             something real. After that, you&apos;ll know whether this approach works for you —
             before you pay for anything.
           </p>
           <Link
-            href="/preview/module-1"
+            href="/learn/setup-and-first-build"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Try Module 1 free — no sign-up
+            Try Setup &amp; First Build free
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

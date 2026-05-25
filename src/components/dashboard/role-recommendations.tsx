@@ -61,7 +61,7 @@ export function RoleRecommendations({
             <Button
               size="sm"
               variant="outline"
-              render={<Link href={`/modules/${mod!.slug}`} />}
+              render={<Link href={`/learn/${mod!.slug}`} />}
             >
               <ArrowRight className="size-3" />
             </Button>

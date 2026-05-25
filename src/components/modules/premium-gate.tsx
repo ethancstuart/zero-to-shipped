@@ -228,10 +228,10 @@ export function PremiumGate({
                   . No questions asked.
                 </p>
                 <Link
-                  href="/modules"
+                  href="/learn"
                   className="text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"
                 >
-                  Not ready yet? Continue with free modules &rarr;
+                  Not ready yet? Continue with free lessons &rarr;
                 </Link>
               </CardFooter>
             </Card>

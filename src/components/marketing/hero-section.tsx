@@ -44,7 +44,7 @@ export function HeroSection() {
           {/* CTAs */}
           <div className="mb-4 flex flex-wrap gap-3">
             <Link
-              href="/preview/module-1"
+              href="/learn/setup-and-first-build"
               className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition-opacity hover:opacity-90"
             >
               Try Module 1 free →

@@ -267,7 +267,7 @@ git push         # Push to GitHub</code></pre>
               MCP servers, and the build loop.
             </li>
             <li>
-              <Link href="/preview/module-1">
+              <Link href="/learn/setup-and-first-build">
                 <strong>Module 1 of Prototype Studio</strong>
               </Link>{" "}
               — build your first real app in a single session. Free, no account required.
@@ -282,7 +282,7 @@ git push         # Push to GitHub</code></pre>
             Module 1 walks you through building your first real app — step by step.
           </p>
           <Link
-            href="/preview/module-1"
+            href="/learn/setup-and-first-build"
             className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
             Try Module 1 Free

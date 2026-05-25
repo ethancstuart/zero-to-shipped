@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { updateToolPreference } from "@/app/(app)/modules/[slug]/actions";
+import { updateToolPreference } from "@/lib/actions/learn-actions";
 import { cn } from "@/lib/utils";
 import type { ToolPreference } from "@/types";
 import { TOOL_LABELS } from "@/lib/constants";

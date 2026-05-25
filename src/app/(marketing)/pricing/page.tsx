@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { LoginButton } from "@/components/layout/login-button";
 import { CheckoutButton } from "@/components/pricing/checkout-button";
@@ -212,12 +213,12 @@ export default async function PricingPage() {
             Module 1 is completely free — no account required. See how the
             method works before you pay anything.
           </p>
-          <a
-            href="/preview/module-1"
+          <Link
+            href="/learn/setup-and-first-build"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Try Module 1 free →
-          </a>
+            Try Setup &amp; First Build free →
+          </Link>
         </div>
       </div>
     </div>

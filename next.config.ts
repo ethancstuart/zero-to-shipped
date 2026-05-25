@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/modules", destination: "/learn", permanent: true },
       { source: "/modules/:slug", destination: "/learn/:slug", permanent: true },
+      { source: "/preview/module-1", destination: "/learn/setup-and-first-build", permanent: true },
+      { source: "/preview/:slug", destination: "/learn", permanent: true },
       { source: "/library", destination: "/learn", permanent: true },
       { source: "/library/:slug", destination: "/learn/:slug", permanent: true },
       { source: "/guides", destination: "/learn", permanent: true },

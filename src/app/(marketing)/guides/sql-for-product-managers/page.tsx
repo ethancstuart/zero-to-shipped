@@ -412,7 +412,7 @@ ORDER BY table_name, ordinal_position;`}
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="/preview/module-1"
+              href="/learn/setup-and-first-build"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
             >
               Start with Module 1 — free
