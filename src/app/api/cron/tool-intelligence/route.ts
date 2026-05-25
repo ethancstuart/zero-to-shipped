@@ -94,6 +94,11 @@ export async function GET(request: Request) {
 
         await checkContentStaleness(tool.slug, release.version)
 
+        // Pipeline integration point: for major releases, the multi-agent content
+        // pipeline can be triggered here via runPipeline('release_detected', { ... }).
+        // Not called inline to keep this cron fast and avoid Vercel timeout limits.
+        // Use POST /api/admin/trigger-pipeline or a dedicated pipeline cron instead.
+
         newReleases++
       }
 
