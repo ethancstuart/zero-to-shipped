@@ -43,6 +43,35 @@ export interface EcosystemStatus {
   verified_by: 'automated' | 'manual'
 }
 
+export interface PipelineRun {
+  id: string
+  trigger_type: 'release_detected' | 'manual' | 'scheduled'
+  trigger_data: Record<string, unknown> | null
+  status: 'running' | 'completed' | 'failed' | 'needs_review'
+  total_tokens: number
+  total_cost_cents: number
+  started_at: string
+  completed_at: string | null
+  pipeline_steps?: PipelineStep[]
+}
+
+export interface PipelineStep {
+  id: string
+  run_id: string
+  step_order: number
+  agent_role: 'watcher' | 'analyst' | 'writer' | 'fact_checker' | 'publisher'
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'
+  input_summary: string | null
+  output_summary: string | null
+  full_transcript: Record<string, unknown> | null
+  tokens_used: number
+  cost_cents: number
+  duration_ms: number | null
+  error_message: string | null
+  started_at: string | null
+  completed_at: string | null
+}
+
 export interface ContentIndexEntry {
   slug: string
   pillar: string
