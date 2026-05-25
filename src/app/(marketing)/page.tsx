@@ -1,78 +1,65 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-import { siteConfig } from "@/lib/constants";
-import { HeroSection } from "@/components/marketing/hero-section";
-import { WhatYouBuildStrip } from "@/components/marketing/what-you-build-strip";
-import { FreeContentHub } from "@/components/marketing/free-content-hub";
-import { FinalCtaSection } from "@/components/marketing/final-cta-section";
-import { AuthErrorBanner } from "@/components/marketing/auth-error-banner";
+import Link from 'next/link'
+import { listContentByPillar, listAllContent } from '@/lib/content/loader'
+import { PillarSection } from '@/components/marketing/pillar-section'
+import type { Metadata } from 'next'
 
-// Below-fold sections: code-split to reduce initial bundle
-const CurriculumSection = dynamic(
-  () =>
-    import("@/components/marketing/curriculum-section").then(
-      (m) => ({ default: m.CurriculumSection })
-    ),
-  { ssr: true, loading: () => <div className="min-h-[200px]" /> }
-);
-const PricingSection = dynamic(
-  () =>
-    import("@/components/marketing/pricing-section").then(
-      (m) => ({ default: m.PricingSection })
-    ),
-  { ssr: true, loading: () => <div className="min-h-[200px]" /> }
-);
-const RoleTracksSection = dynamic(
-  () =>
-    import("@/components/marketing/role-tracks-section").then(
-      (m) => ({ default: m.RoleTracksSection })
-    ),
-  { ssr: true, loading: () => <div className="min-h-[100px]" /> }
-);
+export const metadata: Metadata = {
+  title: 'Prototype Studio — Build Real Products with AI',
+  description: 'Learn to build real products with AI. Watch sessions. Follow guides. Set up your own agent system.',
+}
 
-export const dynamic_rendering = "force-static";
+export default async function HomePage() {
+  const [pulseItems, buildItems, learnItems, systemItems, allItems] = await Promise.all([
+    listContentByPillar('pulse', { limit: 3 }),
+    listContentByPillar('build', { limit: 3 }),
+    listContentByPillar('learn', { featured: true, limit: 3 }),
+    listContentByPillar('system', { limit: 3 }),
+    listAllContent(),
+  ])
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Course",
-  name: "Zero to Ship",
-  description:
-    "A gamified learning platform teaching PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools.",
-  provider: {
-    "@type": "Organization",
-    name: "Zero to Ship",
-    url: siteConfig.url,
-  },
-  numberOfCredits: 16,
-  educationalLevel: "Beginner to Advanced",
-  isAccessibleForFree: true,
-  hasCourseInstance: {
-    "@type": "CourseInstance",
-    courseMode: "Online",
-    courseWorkload: "PT70H",
-  },
-};
-
-export default function LandingPage() {
   return (
-    <div className="bg-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <div className="mx-auto max-w-6xl px-6">
+      <section className="py-24 text-center">
+        <h1 className="mx-auto mb-6 max-w-3xl text-5xl font-bold tracking-tight text-white sm:text-6xl">
+          Build real products with AI
+        </h1>
+        <p className="mx-auto mb-10 max-w-xl text-lg text-white/50">
+          Watch sessions. Follow guides. Set up your own agent system.
+          Everything you need to go from idea to shipped product.
+        </p>
+        <div className="flex items-center justify-center gap-4">
+          <Link href="/learn" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-90">
+            Start learning
+          </Link>
+          <Link href="/pulse" className="rounded-lg border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5">
+            See what&apos;s new
+          </Link>
+        </div>
+      </section>
 
-      {/* Error banner reads ?error=auth client-side so the page can stay static */}
-      <Suspense>
-        <AuthErrorBanner />
-      </Suspense>
+      <section className="mb-20 grid grid-cols-2 gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-6 sm:grid-cols-4">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">9</div>
+          <div className="text-xs text-white/40">AI tools tracked</div>
+        </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">{allItems.length}</div>
+          <div className="text-xs text-white/40">resources</div>
+        </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">4</div>
+          <div className="text-xs text-white/40">content pillars</div>
+        </div>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-white">Free</div>
+          <div className="text-xs text-white/40">to start</div>
+        </div>
+      </section>
 
-      <HeroSection />
-      <WhatYouBuildStrip />
-      <FreeContentHub />
-      <CurriculumSection />
-      <PricingSection />
-      <RoleTracksSection />
-      <FinalCtaSection />
+      <PillarSection title="Pulse" description="What's happening across AI coding tools" href="/pulse" items={pulseItems} />
+      <PillarSection title="Build" description="Watch someone take an idea to a working app" href="/build" items={buildItems} />
+      <PillarSection title="Learn" description="Pick up the skills you need" href="/learn" items={learnItems} />
+      <PillarSection title="System" description="Set up AI agents as your operating system" href="/system" items={systemItems} />
     </div>
-  );
+  )
 }
