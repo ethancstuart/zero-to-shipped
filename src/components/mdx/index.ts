@@ -2,6 +2,7 @@ import { Callout } from './callout'
 import { ToolBadge } from './tool-badge'
 import { CodeBlock } from './code-block'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mdxComponents: Record<string, React.ComponentType<any>> = {
   Callout,
   ToolBadge,

@@ -1,12 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   type ContentFrontmatter,
-  type Pillar,
-  type ContentType,
   PILLARS,
   CONTENT_TYPES,
-  DIFFICULTIES,
-  FORMATS,
 } from '@/types/content'
 
 describe('Content types', () => {
