@@ -154,19 +154,19 @@ export async function GET(request: NextRequest) {
     eventInserts.push({ id: eventId, event_type: "premium_reengagement" });
 
     emails.push({
-      from: "Zero to Ship <hello@zerotoship.app>",
+      from: "Prototype Studio <hello@prototypestudio.dev>",
       to: email,
       subject: `You're ${progressPct}% through — pick up where you left off`,
       html: emailWrapper(
         `<p>Hey ${name},</p>
-          <p>You've completed <strong>${completedCount} of ${TOTAL_MODULES} modules</strong> on Zero to Ship — that's real progress. But it's been a little while since your last session.</p>
+          <p>You've completed <strong>${completedCount} of ${TOTAL_MODULES} modules</strong> on Prototype Studio — that's real progress. But it's been a little while since your last session.</p>
           <p>Your next module is ready:</p>
           <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 16px 0;">
             <p style="margin: 0; font-weight: 600; color: #6366f1;">Module ${nextModule.number}: ${nextModule.title}</p>
           </div>
           <p>Most modules take 2-3 hours. Even 30 minutes of progress keeps momentum going.</p>
-          <p>${emailButton(`Continue Module ${nextModule.number}`, `https://zerotoship.app/modules/${nextModule.slug}?utm_source=reengagement&utm_medium=email&utm_campaign=premium-inactive`)}</p>`,
-        { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+          <p>${emailButton(`Continue Module ${nextModule.number}`, `https://prototypestudio.dev/modules/${nextModule.slug}?utm_source=reengagement&utm_medium=email&utm_campaign=premium-inactive`)}</p>`,
+        { unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}` }
       ),
     });
   }

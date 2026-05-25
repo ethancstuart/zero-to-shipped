@@ -13,17 +13,17 @@ import {
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Builder's Library — Zero to Ship",
+  title: "Builder's Library — Prototype Studio",
   description:
     "Free Cursor and Claude Code prompts, guides, and templates for product managers, business analysts, and BI engineers. Build real software with AI tools — no engineering background required.",
   openGraph: {
-    title: "Builder's Library — Zero to Ship",
+    title: "Builder's Library — Prototype Studio",
     description:
       "Free resources to go from idea to working product — without an engineering background.",
     url: `${siteConfig.url}/library`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Builder's Library")}&subtitle=${encodeURIComponent("Free resources for non-engineers — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Builder's Library")}&subtitle=${encodeURIComponent("Free resources for non-engineers — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -275,7 +275,7 @@ export default function LibraryPage() {
             Ready to build your first real product?
           </h2>
           <p className="mb-6 text-muted-foreground">
-            Module 1 of Zero to Ship is completely free — no account required.
+            Module 1 of Prototype Studio is completely free — no account required.
             Go from zero to a working app in one session.
           </p>
           <Link

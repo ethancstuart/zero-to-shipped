@@ -161,10 +161,10 @@ export default async function PricingPage() {
                 14-day money-back guarantee, no questions asked. If you&apos;re
                 not satisfied within 14 days of purchase, email{" "}
                 <a
-                  href="mailto:hello@zerotoship.app"
+                  href="mailto:hello@prototypestudio.dev"
                   className="text-primary hover:underline"
                 >
-                  hello@zerotoship.app
+                  hello@prototypestudio.dev
                 </a>{" "}
                 for a full refund.
               </p>
@@ -172,7 +172,7 @@ export default async function PricingPage() {
             <div className="rounded-lg border border-border bg-card p-5">
               <h3 className="mb-1 font-semibold">Do I need any coding experience?</h3>
               <p className="text-sm text-muted-foreground">
-                None. Zero to Ship is built for Product Managers, Business
+                None. Prototype Studio is built for Product Managers, Business
                 Analysts, Project Managers, and BI Engineers — people with
                 strong product instincts who have never written production code.
                 Module 1 starts from scratch and you&apos;ll have a working app

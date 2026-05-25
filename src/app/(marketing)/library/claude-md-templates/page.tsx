@@ -6,17 +6,17 @@ import { TemplateCard } from "@/components/library/TemplateCard";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "CLAUDE.md Templates — Builder's Library — Zero to Ship",
+  title: "CLAUDE.md Templates — Builder's Library — Prototype Studio",
   description:
     "Ready-to-use CLAUDE.md project instruction files for Claude Code. Blank Canvas (free), Next.js + Supabase, Data Dashboard, and Automation Project templates.",
   openGraph: {
-    title: "CLAUDE.md Templates — Zero to Ship",
+    title: "CLAUDE.md Templates — Prototype Studio",
     description:
       "4 CLAUDE.md templates for different project types. Blank Canvas is free — the rest unlock with your email.",
     url: `${siteConfig.url}/library/claude-md-templates`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("CLAUDE.md Templates")}&subtitle=${encodeURIComponent("Project Instruction Files for Claude Code — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("CLAUDE.md Templates")}&subtitle=${encodeURIComponent("Project Instruction Files for Claude Code — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -101,7 +101,7 @@ export default function ClaudeMdTemplatesPage() {
         <div className="mt-14 rounded-xl border border-border bg-card p-7 text-center">
           <h2 className="mb-2 text-lg font-bold">Want to build this yourself?</h2>
           <p className="mb-5 text-sm text-muted-foreground">
-            Module 1 of Zero to Ship walks you through setting up CLAUDE.md for your first real project.
+            Module 1 of Prototype Studio walks you through setting up CLAUDE.md for your first real project.
           </p>
           <Link
             href="/preview/module-1"

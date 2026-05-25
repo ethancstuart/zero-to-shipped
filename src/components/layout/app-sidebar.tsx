@@ -54,7 +54,7 @@ export function AppSidebar({ profile }: { profile: Profile }) {
       {/* Logo */}
       <div className="flex h-16 items-center gap-2 px-6">
         <Rocket className="size-5 text-primary" />
-        <span className="font-bold">Zero to Ship</span>
+        <span className="font-bold">Prototype Studio</span>
         {profile.subscription_tier === "premium" && (
           <Badge variant="secondary" className="ml-auto text-[10px]">
             Premium

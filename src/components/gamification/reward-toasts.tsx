@@ -42,7 +42,7 @@ export function showRewardToasts(result: CheckpointResult) {
           </div>
         </div>
         <ShareButton
-          text={`I just earned the ${badge.name} badge on Zero to Ship!`}
+          text={`I just earned the ${badge.name} badge on Prototype Studio!`}
           url={shareUrl}
         />
       </div>,
@@ -64,7 +64,7 @@ export function showRewardToasts(result: CheckpointResult) {
           </div>
         </div>
         <ShareButton
-          text={`I just leveled up to ${result.newLevel} on Zero to Ship!`}
+          text={`I just leveled up to ${result.newLevel} on Prototype Studio!`}
           url={shareUrl}
         />
       </div>,
@@ -87,7 +87,7 @@ export function showRewardToasts(result: CheckpointResult) {
           </div>
         </div>
         <ShareButton
-          text={`${result.streakMilestone}-day learning streak on Zero to Ship!`}
+          text={`${result.streakMilestone}-day learning streak on Prototype Studio!`}
           url={shareUrl}
         />
       </div>,

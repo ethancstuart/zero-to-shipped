@@ -102,12 +102,12 @@ export async function POST(request: NextRequest) {
           const unsubToken = generateUnsubscribeToken(userId);
 
           await resend.emails.send({
-            from: "Zero to Ship <hello@zerotoship.app>",
+            from: "Prototype Studio <hello@prototypestudio.dev>",
             to: session.customer_email!,
-            subject: "Welcome to Full Access — Zero to Ship",
+            subject: "Welcome to Full Access — Prototype Studio",
             html: emailWrapper(
               `<p>Hey ${name},</p>
-                <p>You now have <strong>Full Access</strong> to Zero to Ship. Here's what's unlocked:</p>
+                <p>You now have <strong>Full Access</strong> to Prototype Studio. Here's what's unlocked:</p>
                 <ul>
                   <li>Modules 6–16 (intermediate, advanced, and capstone)</li>
                   <li>Capstone project with guided prompts</li>
@@ -115,9 +115,9 @@ export async function POST(request: NextRequest) {
                   <li>Build log and learning path</li>
                   <li>Leaderboard eligibility</li>
                 </ul>
-                <p>${emailButton("Go to Dashboard", "https://zerotoship.app/dashboard")}</p>
+                <p>${emailButton("Go to Dashboard", "https://prototypestudio.dev/dashboard")}</p>
                 <p style="color: #666; font-size: 14px;">Stripe will send your payment receipt separately.</p>`,
-              { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+              { unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}` }
             ),
           });
         } catch (error) {

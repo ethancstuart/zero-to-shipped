@@ -110,10 +110,10 @@ export default async function Module1PreviewPage() {
       <p className="mt-12 text-center text-sm text-muted-foreground">
         Got stuck?{" "}
         <a
-          href="mailto:ethan@zerotoship.app"
+          href="mailto:ethan@prototypestudio.dev"
           className="text-foreground underline-offset-4 hover:underline"
         >
-          ethan@zerotoship.app
+          ethan@prototypestudio.dev
         </a>{" "}
         — I read every email.
       </p>

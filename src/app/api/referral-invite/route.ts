@@ -67,12 +67,12 @@ export async function POST(request: NextRequest) {
       const unsubscribeUrl = `${siteConfig.url}/api/unsubscribe?token=${unsubToken}&type=email`;
 
       await resend.emails.send({
-        from: "Zero to Ship <hello@zerotoship.app>",
+        from: "Prototype Studio <hello@prototypestudio.dev>",
         to: email,
-        subject: `${senderName} invited you to Zero to Ship`,
+        subject: `${senderName} invited you to Prototype Studio`,
         html: emailWrapper(
           `<p>Hey!</p>
-            <p><strong>${senderName}</strong> thinks you'd enjoy Zero to Ship — a hands-on course where non-engineers learn to build real products with AI coding tools.</p>
+            <p><strong>${senderName}</strong> thinks you'd enjoy Prototype Studio — a hands-on course where non-engineers learn to build real products with AI coding tools.</p>
             <p>The first 5 modules are free. No credit card required.</p>
             <p>${emailButton("Check it out", referralUrl)}</p>
             <p style="color: #666; font-size: 14px;">16 modules · Gamified progress · Certificate of completion</p>`,

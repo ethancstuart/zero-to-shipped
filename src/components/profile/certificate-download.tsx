@@ -84,13 +84,13 @@ export function CertificateDownload({ name, date }: CertificateDownloadProps) {
           <Page size="A4" orientation="landscape" style={styles.page}>
             <View style={styles.border}>
               <Text style={styles.header}>Certificate of Completion</Text>
-              <Text style={styles.title}>Zero to Ship</Text>
+              <Text style={styles.title}>Prototype Studio</Text>
               <Text style={styles.subtitle}>
                 Build with AI, No Engineering Degree Required
               </Text>
               <Text style={styles.name}>{name}</Text>
               <Text style={styles.description}>
-                has successfully completed all 16 modules of the Zero to Ship
+                has successfully completed all 16 modules of the Prototype Studio
                 curriculum, including the capstone project.
               </Text>
               <Text style={styles.date}>{formattedDate}</Text>
@@ -103,7 +103,7 @@ export function CertificateDownload({ name, date }: CertificateDownloadProps) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `zero-to-shipped-certificate-${name.toLowerCase().replace(/\s+/g, "-")}.pdf`;
+      a.download = `prototype-studioped-certificate-${name.toLowerCase().replace(/\s+/g, "-")}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
     } catch {

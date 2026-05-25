@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@/lib/supabase/server";
 
-const ADMIN_EMAIL = "ethan@zerotoship.app";
+const ADMIN_EMAIL = "ethan@prototypestudio.dev";
 
 /**
  * Admin-only endpoint that deliberately throws so we can verify Sentry is

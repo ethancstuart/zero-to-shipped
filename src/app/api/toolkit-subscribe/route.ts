@@ -34,11 +34,11 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY)
   const unsubToken = generateEmailUnsubscribeToken(email)
-  const unsubUrl = `https://zerotoship.app/api/unsubscribe?token=${unsubToken}&type=library`
+  const unsubUrl = `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}&type=library`
 
   try {
     await resend.emails.send({
-      from: 'Zero to Ship <hello@zerotoship.app>',
+      from: 'Prototype Studio <hello@prototypestudio.dev>',
       to: email,
       subject: "Your Builder's Library is unlocked",
       html: emailWrapper(
@@ -56,10 +56,10 @@ export async function POST(req: NextRequest) {
         </ul>
 
         <p style="text-align: center; margin: 28px 0;">
-          ${emailButton("Go to the Library", "https://zerotoship.app/library", { large: true })}
+          ${emailButton("Go to the Library", "https://prototypestudio.dev/library", { large: true })}
         </p>
 
-        <p>If you want to go further and actually build something — <a href="https://zerotoship.app/preview/module-1" style="color: #6366f1;">Module 1 is free</a>. No sign-up. Takes about an hour.</p>`,
+        <p>If you want to go further and actually build something — <a href="https://prototypestudio.dev/preview/module-1" style="color: #6366f1;">Module 1 is free</a>. No sign-up. Takes about an hour.</p>`,
         {
           unsubscribeUrl: unsubUrl,
           footerNote: "You're receiving this because you unlocked the Builder's Library.",

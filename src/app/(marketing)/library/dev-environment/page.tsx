@@ -4,17 +4,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Dev Environment Setup — Builder's Library — Zero to Ship",
+  title: "Dev Environment Setup — Builder's Library — Prototype Studio",
   description:
     "Step-by-step guide to set up your full development environment on Mac or Windows. Homebrew, Node.js, Git, Cursor, Claude Code, GitHub CLI, Vercel CLI.",
   openGraph: {
-    title: "Dev Environment Setup — Zero to Ship",
+    title: "Dev Environment Setup — Prototype Studio",
     description:
       "Mac and Windows setup guide for non-engineers. From zero to a working dev environment in 45 minutes.",
     url: `${siteConfig.url}/library/dev-environment`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Dev Environment Setup")}&subtitle=${encodeURIComponent("Mac + Windows Guide for Non-Engineers — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Dev Environment Setup")}&subtitle=${encodeURIComponent("Mac + Windows Guide for Non-Engineers — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -268,7 +268,7 @@ git push         # Push to GitHub</code></pre>
             </li>
             <li>
               <Link href="/preview/module-1">
-                <strong>Module 1 of Zero to Ship</strong>
+                <strong>Module 1 of Prototype Studio</strong>
               </Link>{" "}
               — build your first real app in a single session. Free, no account required.
             </li>

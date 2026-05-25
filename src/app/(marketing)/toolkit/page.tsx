@@ -21,7 +21,7 @@ export default function ToolkitPage() {
       <div className="max-w-md w-full">
         <h1 className="text-2xl font-bold mb-2">PM AI Toolkit</h1>
         <p className="text-zinc-400 mb-6">
-          The exact AI build loop, tools, and prompts from Zero to Ship Module 1 — in one page.
+          The exact AI build loop, tools, and prompts from Prototype Studio Module 1 — in one page.
           Free. No course purchase needed.
         </p>
 
@@ -53,7 +53,7 @@ export default function ToolkitPage() {
         )}
 
         <p className="text-xs text-zinc-600 mt-4">
-          You&apos;ll also get the Zero to Ship weekly newsletter. Unsubscribe anytime.
+          You&apos;ll also get the Prototype Studio weekly newsletter. Unsubscribe anytime.
         </p>
       </div>
     </main>

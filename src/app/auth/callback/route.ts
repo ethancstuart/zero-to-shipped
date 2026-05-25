@@ -65,12 +65,12 @@ export async function GET(request: Request) {
             const resend = new Resend(process.env.RESEND_API_KEY);
 
             await resend.emails.send({
-              from: "Zero to Ship <hello@zerotoship.app>",
+              from: "Prototype Studio <hello@prototypestudio.dev>",
               to: data.user.email!,
-              subject: "Welcome to Zero to Ship",
+              subject: "Welcome to Prototype Studio",
               html: emailWrapper(
                 `<p>Hey ${name},</p>
-                  <p>Welcome to <strong>Zero to Ship</strong> — you just took the first step toward building real software with AI.</p>
+                  <p>Welcome to <strong>Prototype Studio</strong> — you just took the first step toward building real software with AI.</p>
                   <p>Here's what to expect:</p>
                   <ul>
                     <li><strong>16 modules</strong> from setup to shipping a capstone project</li>
@@ -78,8 +78,8 @@ export async function GET(request: Request) {
                     <li><strong>Streaks & XP</strong> — stay consistent and climb the leaderboard</li>
                   </ul>
                   <p>Module 1 takes about 3 hours, and you'll have your first build by the end.</p>
-                  <p>${emailButton("Go to Dashboard", "https://zerotoship.app/dashboard")}</p>`,
-                { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+                  <p>${emailButton("Go to Dashboard", "https://prototypestudio.dev/dashboard")}</p>`,
+                { unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}` }
               ),
             });
 

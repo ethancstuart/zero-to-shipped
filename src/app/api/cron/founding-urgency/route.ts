@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
 
   const subject = remaining <= 10
     ? `Only ${remaining} founding member spots left`
-    : `${remaining} founding member spots remaining — Zero to Ship`;
+    : `${remaining} founding member spots remaining — Prototype Studio`;
 
   // Collect all emails for batch sending
   const emailPayloads = freeUsers
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
       const unsubToken = generateUnsubscribeToken(user.id);
 
       return {
-        from: "Zero to Ship <hello@zerotoship.app>",
+        from: "Prototype Studio <hello@prototypestudio.dev>",
         to: emailMap.get(user.id)!,
         subject,
         html: emailWrapper(
@@ -108,8 +108,8 @@ export async function GET(request: NextRequest) {
 
             ${remaining <= 25 ? `<p style="color: #f59e0b; font-weight: 600;">Founding pricing ends April 30 or when spots run out — whichever comes first.</p>` : ""}
 
-            <p>${emailButton("Get Founding Member Access — $99", "https://zerotoship.app/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding", { large: true })}</p>`,
-          { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}` }
+            <p>${emailButton("Get Founding Member Access — $99", "https://prototypestudio.dev/pricing?utm_source=urgency&utm_medium=email&utm_campaign=founding", { large: true })}</p>`,
+          { unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}` }
         ),
       };
     });

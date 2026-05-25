@@ -4,17 +4,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Prompt Patterns Cheat Sheet — Builder's Library — Zero to Ship",
+  title: "Prompt Patterns Cheat Sheet — Builder's Library — Prototype Studio",
   description:
     "5 core patterns that separate good AI output from great — Role Assignment, Plan Before Build, Step-by-Step, The Improve Pattern, and Anti-Obvious Brainstorm — plus power phrases and an evaluation framework.",
   openGraph: {
-    title: "Prompt Patterns Cheat Sheet — Zero to Ship",
+    title: "Prompt Patterns Cheat Sheet — Prototype Studio",
     description:
       "5 core prompt patterns, power phrases, and a 5-question evaluation framework for non-engineers building with AI.",
     url: `${siteConfig.url}/library/prompt-patterns`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Prompt Patterns Cheat Sheet")}&subtitle=${encodeURIComponent("5 Patterns · Power Phrases · Evaluation Framework — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Prompt Patterns Cheat Sheet")}&subtitle=${encodeURIComponent("5 Patterns · Power Phrases · Evaluation Framework — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },

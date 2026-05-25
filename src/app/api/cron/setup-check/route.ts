@@ -85,15 +85,15 @@ export async function GET(request: NextRequest) {
       .filter((user) => emailMap.has(user.id))
       .map((user) => {
         const firstName = user.display_name?.split(" ")[0] ?? "there";
-        const unsubscribeUrl = `https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}`;
+        const unsubscribeUrl = `https://prototypestudio.dev/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}`;
 
         return {
-          from: "Zero to Ship <hello@zerotoship.app>",
+          from: "Prototype Studio <hello@prototypestudio.dev>",
           to: emailMap.get(user.id)!,
           subject: "Did you get set up okay?",
           html: emailWrapper(
             `<p>Hey ${firstName},</p>
-            <p>You signed up for Zero to Ship yesterday. Just checking — did you get everything installed?</p>
+            <p>You signed up for Prototype Studio yesterday. Just checking — did you get everything installed?</p>
             <p>If you hit any snags with Node.js, the terminal, or anything else, <strong>reply to this email</strong>. A real person reads these.</p>
             <p>Here are the 3 most common setup issues:</p>
             <ol>
@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
               <li><strong>Not sure which AI tool to pick</strong> — start with ${emailLink("Claude Code", "https://docs.anthropic.com/en/docs/claude-code/overview")}. It's free and it's what the course is built around.</li>
             </ol>
             <p>If everything's working, dive into Module 1:</p>
-            <p>${emailButton("Start Module 1", "https://zerotoship.app/modules/01-setup-and-first-build")}</p>
+            <p>${emailButton("Start Module 1", "https://prototypestudio.dev/modules/01-setup-and-first-build")}</p>
             <p>You've got this.</p>`,
             { unsubscribeUrl }
           ),

@@ -47,7 +47,7 @@ export default async function CertificatePage() {
       <Award className="mx-auto mb-4 size-16 text-primary" />
       <h1 className="mb-2 text-2xl font-bold">Congratulations!</h1>
       <p className="mb-8 text-muted-foreground">
-        You&apos;ve completed the Zero to Ship curriculum. Download your
+        You&apos;ve completed the Prototype Studio curriculum. Download your
         certificate below.
       </p>
 
@@ -56,7 +56,7 @@ export default async function CertificatePage() {
         <p className="mb-2 text-sm uppercase tracking-widest text-primary">
           Certificate of Completion
         </p>
-        <h2 className="mb-1 text-3xl font-bold">Zero to Ship</h2>
+        <h2 className="mb-1 text-3xl font-bold">Prototype Studio</h2>
         <p className="mb-6 text-muted-foreground">
           Build with AI, No Engineering Degree Required
         </p>
@@ -85,7 +85,7 @@ export default async function CertificatePage() {
         <div className="mt-6 flex justify-center">
           <ShareButtons
             url={`${siteConfig.url}/u/${user.id}`}
-            title={`I just completed Zero to Ship! 🚀 All 16 modules done.`}
+            title={`I just completed Prototype Studio! 🚀 All 16 modules done.`}
           />
         </div>
       )}

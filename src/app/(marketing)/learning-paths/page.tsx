@@ -4,11 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Learning Paths by Role — Zero to Ship",
+  title: "Learning Paths by Role — Prototype Studio",
   description:
     "Personalized learning paths for Product Managers, Business Analysts, Project Managers, and BI Engineers. Free resources + the exact modules that matter most for your role.",
   openGraph: {
-    title: "Learning Paths — Zero to Ship",
+    title: "Learning Paths — Prototype Studio",
     description:
       "Start with free guides. Know exactly when the paid course adds value. Four paths: PM, BA, Project Manager, BI Engineer.",
     url: `${siteConfig.url}/learning-paths`,

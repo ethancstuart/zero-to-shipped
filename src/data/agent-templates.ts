@@ -52,7 +52,7 @@ export const AGENT_TEMPLATES: AgentTemplate[] = [
     description:
       "A multi-persona decision review system. Define a board of AI advisors with different expertise, submit a proposal, and get a structured review from every angle — then a unified verdict.",
     useCase:
-      "Run strategic decisions through a diverse advisory board before committing. Based on a real system used to make every decision for Zero to Ship.",
+      "Run strategic decisions through a diverse advisory board before committing. Based on a real system used to make every decision for Prototype Studio.",
     difficulty: "intermediate",
     tier: "polished",
     buildTime: "~45 minutes to fork and customize personas",

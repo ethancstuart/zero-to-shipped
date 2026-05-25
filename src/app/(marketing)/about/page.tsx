@@ -4,9 +4,9 @@ import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About — Zero to Ship",
+  title: "About — Prototype Studio",
   description:
-    "Zero to Ship is built by builders, for builders. A course for people who think in products and want to ship them.",
+    "Prototype Studio is built by builders, for builders. A course for people who think in products and want to ship them.",
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-2xl px-4 py-20">
       <h1 className="mb-3 text-3xl font-bold">Built by builders, for builders</h1>
       <p className="mb-10 text-lg text-muted-foreground">
-        Zero to Ship exists because the people who understand products best
+        Prototype Studio exists because the people who understand products best
         have always had to wait for someone else to build them.
       </p>
 
@@ -30,8 +30,8 @@ export default function AboutPage() {
         <p>
           AI coding tools changed that. For the first time, the gap between
           knowing what to build and actually building it is closeable — without
-          a CS degree, without a co-founder, without a sprint cycle. Zero to
-          Ship teaches the workflow that makes that possible.
+          a CS degree, without a co-founder, without a sprint cycle. Prototype
+          Studio teaches the workflow that makes that possible.
         </p>
 
         <p>
@@ -64,10 +64,10 @@ export default function AboutPage() {
       <p className="mt-8 text-sm text-muted-foreground">
         Questions?{" "}
         <a
-          href="mailto:ethan@zerotoship.app"
+          href="mailto:hello@prototypestudio.dev"
           className="text-foreground underline-offset-4 hover:underline"
         >
-          ethan@zerotoship.app
+          hello@prototypestudio.dev
         </a>
       </p>
     </div>

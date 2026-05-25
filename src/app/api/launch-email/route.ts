@@ -28,17 +28,17 @@ export async function GET(request: NextRequest) {
 
   for (const user of waitlistUsers) {
     const unsubToken = generateEmailUnsubscribeToken(user.email);
-    const unsubUrl = `https://zerotoship.app/api/unsubscribe?token=${unsubToken}&type=email`;
+    const unsubUrl = `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}&type=email`;
 
     try {
       await resend.emails.send({
-        from: "Ethan Stuart <ethan@zerotoship.app>",
+        from: "Ethan Stuart <ethan@prototypestudio.dev>",
         to: user.email,
         subject: "Your founding member spot is ready",
         html: emailWrapper(
           `<p>Six months ago I told a handful of people I was going to build a course that teaches non-engineers to ship real software with AI tools. Today that course is live.</p>
 
-            <p><strong>Zero to Ship is open.</strong> → <a href="https://zerotoship.app?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">zerotoship.app</a></p>
+            <p><strong>Prototype Studio is open.</strong> → <a href="https://prototypestudio.dev?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">prototypestudio.dev</a></p>
 
             <p>Here's what you're getting:</p>
             <ul>
@@ -57,12 +57,12 @@ export async function GET(request: NextRequest) {
             <p>If you want to start right now without committing to anything:</p>
 
             <p style="text-align: center;">
-              ${emailButton("Try Module 1 Free — No Sign-Up Required", "https://zerotoship.app/preview/module-1?utm_source=waitlist&utm_medium=email&utm_campaign=launch", { large: true })}
+              ${emailButton("Try Module 1 Free — No Sign-Up Required", "https://prototypestudio.dev/preview/module-1?utm_source=waitlist&utm_medium=email&utm_campaign=launch", { large: true })}
             </p>
 
             <p>You'll build a working web app from a natural language prompt in the first 40 minutes. That's how you know the method works before you pay for anything.</p>
 
-            <p>If you like how it feels: <a href="https://zerotoship.app/pricing?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">claim your founding spot here</a>.</p>
+            <p>If you like how it feels: <a href="https://prototypestudio.dev/pricing?utm_source=waitlist&utm_medium=email&utm_campaign=launch" style="color: #6366f1;">claim your founding spot here</a>.</p>
 
             <p>I'll send one follow-up in a couple of days if you don't act on this. No drip sequence, no countdown timer, no pressure.</p>
 
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
             <p style="font-size: 13px; color: #888;">PS: If you try Module 1 and something breaks, reply to this email. I read every response personally. Launch-day feedback is the most valuable feedback I'll get.</p>`,
           {
             unsubscribeUrl: unsubUrl,
-            footerNote: "You're receiving this because you signed up for the Zero to Ship waitlist.",
+            footerNote: "You're receiving this because you signed up for the Prototype Studio waitlist.",
           }
         ),
       });

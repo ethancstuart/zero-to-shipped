@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/guides/claude-code-101`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Claude Code for Non-Engineers")}&subtitle=${encodeURIComponent("A Beginner's Guide — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Claude Code for Non-Engineers")}&subtitle=${encodeURIComponent("A Beginner's Guide — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -30,7 +30,7 @@ export default function ClaudeCode101Page() {
       <article className="prose prose-lg mx-auto max-w-3xl px-4 dark:prose-invert">
         <h1>Claude Code for Non-Engineers — A Beginner&apos;s Guide</h1>
         <p className="lead">
-          Claude Code is the tool that makes Zero to Ship possible. It&apos;s an AI
+          Claude Code is the tool that makes Prototype Studio possible. It&apos;s an AI
           coding assistant that lives in your terminal and can build entire features
           from a plain-English description. Here&apos;s how to go from &ldquo;I have
           an idea&rdquo; to &ldquo;here&apos;s the live URL&rdquo; — even if you&apos;ve
@@ -290,7 +290,7 @@ Add to the sidebar navigation if it's a new page.`}</code></pre>
             </li>
           </ul>
           <p>
-            These are topics we&apos;re building into Zero to Ship&apos;s upcoming
+            These are topics we&apos;re building into Prototype Studio&apos;s upcoming
             modules. If you want to go deeper, the course takes you from
             &ldquo;first terminal command&rdquo; to &ldquo;shipped capstone
             project.&rdquo;
@@ -301,7 +301,7 @@ Add to the sidebar navigation if it's a new page.`}</code></pre>
         <div className="not-prose mt-12 rounded-xl border border-border bg-card p-8 text-center">
           <h3 className="mb-2 text-xl font-bold">Ready to build something real?</h3>
           <p className="mb-6 text-muted-foreground">
-            Zero to Ship takes you from Claude Code basics to shipping a live product.
+            Prototype Studio takes you from Claude Code basics to shipping a live product.
             16 modules, hands-on projects, and a certificate.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">

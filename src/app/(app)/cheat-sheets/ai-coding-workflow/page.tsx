@@ -64,7 +64,7 @@ export default async function AICodingWorkflowPage() {
       <div className="prose prose-lg dark:prose-invert">
         <h2>The 5-Step AI Coding Workflow</h2>
         <p>
-          This is the workflow that Zero to Ship students use to build real features
+          This is the workflow that Prototype Studio students use to build real features
           with AI coding tools. It works with Claude Code, Cursor, or any AI
           assistant.
         </p>

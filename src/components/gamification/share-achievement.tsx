@@ -32,9 +32,9 @@ export function ShareAchievement({
   const shareUrl = `${siteConfig.url}?og=${encodeURIComponent(ogParams.toString())}`;
 
   const shareTextMap = {
-    badge: `I just earned the ${title} badge on Zero to Ship!`,
-    level: `I just leveled up to ${title} on Zero to Ship!`,
-    streak: `${title} on Zero to Ship!`,
+    badge: `I just earned the ${title} badge on Prototype Studio!`,
+    level: `I just leveled up to ${title} on Prototype Studio!`,
+    streak: `${title} on Prototype Studio!`,
   };
 
   if (!isVisible) return null;

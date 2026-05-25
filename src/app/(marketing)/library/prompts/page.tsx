@@ -6,17 +6,17 @@ import { PromptLibraryClient } from "@/components/library/PromptLibraryClient";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Prompt Library — Builder's Library — Zero to Ship",
+  title: "Prompt Library — Builder's Library — Prototype Studio",
   description:
     "40+ copy-paste Cursor and Claude Code prompts for product managers, business analysts, and BI engineers. PRDs, stakeholder updates, debugging, building apps, and shipping — organized by role.",
   openGraph: {
-    title: "Prompt Library — Zero to Ship",
+    title: "Prompt Library — Prototype Studio",
     description:
       "40+ copy-paste prompts for PMs, BAs, and non-engineers building with AI tools.",
     url: `${siteConfig.url}/library/prompts`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Prompt Library")}&subtitle=${encodeURIComponent("40+ Copy-Paste Prompts for Builders — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Prompt Library")}&subtitle=${encodeURIComponent("40+ Copy-Paste Prompts for Builders — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -63,7 +63,7 @@ export default function PromptsPage() {
         <div className="mt-16 rounded-xl border border-border bg-card p-7 text-center">
           <h2 className="mb-2 text-lg font-bold">Want to build this yourself?</h2>
           <p className="mb-5 text-sm text-muted-foreground">
-            Module 1 of Zero to Ship walks you through building your first real app — step by step.
+            Module 1 of Prototype Studio walks you through building your first real app — step by step.
           </p>
           <Link
             href="/preview/module-1"

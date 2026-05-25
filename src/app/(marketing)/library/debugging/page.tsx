@@ -4,17 +4,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Debugging with AI — Builder's Library — Zero to Ship",
+  title: "Debugging with AI — Builder's Library — Prototype Studio",
   description:
     "The 5-step loop for when the AI breaks your code. How to read error messages, isolate the problem, and get back on track — without an engineering background.",
   openGraph: {
-    title: "Debugging with AI — Zero to Ship",
+    title: "Debugging with AI — Prototype Studio",
     description:
       "The 5-step debugging loop for non-engineers. How to read errors, isolate the problem, and get back on track fast.",
     url: `${siteConfig.url}/library/debugging`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Debugging with AI")}&subtitle=${encodeURIComponent("The 5-Step Loop for Non-Engineers — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Debugging with AI")}&subtitle=${encodeURIComponent("The 5-Step Loop for Non-Engineers — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/guides/agent-builder`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("The Agent Builder Guide")}&subtitle=${encodeURIComponent("AI Agents for Non-Engineers — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("The Agent Builder Guide")}&subtitle=${encodeURIComponent("AI Agents for Non-Engineers — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -209,7 +209,7 @@ export default function AgentBuilderGuidePage() {
           </ol>
           <p>
             This template is based on a real advisory board system used to make
-            every strategic decision for Zero to Ship. The personas in the
+            every strategic decision for Prototype Studio. The personas in the
             template are generic examples — customize them to match your domain.
           </p>
 

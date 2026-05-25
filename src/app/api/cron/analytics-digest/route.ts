@@ -114,8 +114,8 @@ export async function GET(request: NextRequest) {
 
   try {
     await resend.emails.send({
-      from: "ZTS Analytics <hello@zerotoship.app>",
-      to: "ethan@zerotoship.app",
+      from: "ZTS Analytics <hello@prototypestudio.dev>",
+      to: "ethan@prototypestudio.dev",
       subject: `📊 ZTS Daily Digest — ${digest.date}`,
       html: emailWrapperDark(
         `<h2 style="color: #fff; margin-top: 0;">ZTS Daily Digest</h2>
@@ -163,7 +163,7 @@ export async function GET(request: NextRequest) {
             `).join("")}
           </table>
           ` : ""}`,
-        { footerNote: "Automated digest from Zero to Ship analytics agent." }
+        { footerNote: "Automated digest from Prototype Studio analytics agent." }
       ),
     });
   } catch (error) {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Account Setup Error — Zero to Ship",
+  title: "Account Setup Error — Prototype Studio",
 };
 
 export default function SetupErrorPage() {
@@ -18,10 +18,10 @@ export default function SetupErrorPage() {
           Something went wrong while creating your profile. Try logging out and
           back in. If the problem persists, email us at{" "}
           <a
-            href="mailto:hello@zerotoship.app"
+            href="mailto:hello@prototypestudio.dev"
             className="text-primary underline"
           >
-            hello@zerotoship.app
+            hello@prototypestudio.dev
           </a>
           .
         </p>

@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "SQL for Product Managers and Business Analysts — Zero to Ship",
+  title: "SQL for Product Managers and Business Analysts — Prototype Studio",
   description:
     "The 4 SQL queries that cover 90% of what PMs and BAs actually need — retention, feature usage, cohort analysis, and funnel drop-off. No engineering background required.",
   openGraph: {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/guides/sql-for-product-managers`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("SQL for Product Managers")}&subtitle=${encodeURIComponent("4 Queries That Cover 90% of PM Work — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("SQL for Product Managers")}&subtitle=${encodeURIComponent("4 Queries That Cover 90% of PM Work — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -395,7 +395,7 @@ ORDER BY table_name, ordinal_position;`}
           <p className="text-sm text-muted-foreground">
             This skill — reading schemas, understanding data models, knowing what&apos;s
             possible — is what separates PMs who wait for dashboards from PMs who build
-            them. Zero to Ship Module 12 covers the full data product stack: schema design,
+            them. Prototype Studio Module 12 covers the full data product stack: schema design,
             query patterns, and shipping interactive data apps to real URLs.
           </p>
         </div>

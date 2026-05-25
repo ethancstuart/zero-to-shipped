@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: ogUrl,
           width: 1200,
           height: 630,
-          alt: `Zero to Ship for ${config.rolePlural}`,
+          alt: `Prototype Studio for ${config.rolePlural}`,
         },
       ],
     },
@@ -73,7 +73,7 @@ export default async function RoleLandingPage({ params }: Props) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
-    name: `Zero to Ship — ${config.rolePlural}`,
+    name: `Prototype Studio — ${config.rolePlural}`,
     description: config.metaDescription,
     provider: {
       "@type": "Organization",

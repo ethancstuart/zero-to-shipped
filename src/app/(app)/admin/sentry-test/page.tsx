@@ -13,7 +13,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
-const ADMIN_EMAIL = "ethan@zerotoship.app";
+const ADMIN_EMAIL = "ethan@prototypestudio.dev";
 
 interface ServerTestResult {
   ok: boolean;

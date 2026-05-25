@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Privacy Policy",
-  description: "How Zero to Ship collects, uses, and protects your data.",
+  description: "How Prototype Studio collects, uses, and protects your data.",
 };
 
 export default function PrivacyPage() {
@@ -59,10 +59,10 @@ export default function PrivacyPage() {
           <p>
             Questions about this policy? Email us at{" "}
             <a
-              href="mailto:hello@zerotoship.app"
+              href="mailto:hello@prototypestudio.dev"
               className="text-primary hover:underline"
             >
-              hello@zerotoship.app
+              hello@prototypestudio.dev
             </a>
             .
           </p>

@@ -1,7 +1,7 @@
 /**
  * Role-targeted SEO landing pages.
  *
- * Four indexable pages, one per role Zero to Ship serves. URL slugs are
+ * Four indexable pages, one per role Prototype Studio serves. URL slugs are
  * long-form for search quality. Each entry maps to a ROLE_LABELS key from
  * @/lib/constants so the rest of the app stays in sync with a single source
  * of truth.
@@ -84,7 +84,7 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         },
         {
           title: "AI coding feels like a black box",
-          body: "You've heard about Cursor and Claude Code but every tutorial assumes you're already a developer. Zero to Ship doesn't.",
+          body: "You've heard about Cursor and Claude Code but every tutorial assumes you're already a developer. Prototype Studio doesn't.",
         },
       ],
       outcomes: [
@@ -129,7 +129,7 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         {
           question: "How is this different from Bubble or no-code tools?",
           answer:
-            "No-code tools lock you into their platform. Zero to Ship teaches you to use real AI coding tools (Cursor, Claude Code) to build on standard web tech. Your projects are yours — hosted anywhere, editable by any engineer who joins your team later.",
+            "No-code tools lock you into their platform. Prototype Studio teaches you to use real AI coding tools (Cursor, Claude Code) to build on standard web tech. Your projects are yours — hosted anywhere, editable by any engineer who joins your team later.",
         },
         {
           question: "Will this replace my engineering team?",
@@ -311,7 +311,7 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         {
           question: "How does this differ from getting a certification like CBAP?",
           answer:
-            "Certifications prove you know the BA discipline. Zero to Ship gives you a shipped tool you can demo. Both have value — this is complementary evidence of impact.",
+            "Certifications prove you know the BA discipline. Prototype Studio gives you a shipped tool you can demo. Both have value — this is complementary evidence of impact.",
         },
         {
           question: "Will I be able to work with my company's existing systems?",
@@ -397,7 +397,7 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         {
           question: "Why not just use Streamlit or Metabase?",
           answer:
-            "Those are fine for rapid prototypes. Zero to Ship teaches you to build on real web tech so your data apps can do things no Streamlit can — auth, custom UX, third-party integrations, mobile responsiveness. You own the whole stack.",
+            "Those are fine for rapid prototypes. Prototype Studio teaches you to build on real web tech so your data apps can do things no Streamlit can — auth, custom UX, third-party integrations, mobile responsiveness. You own the whole stack.",
         },
         {
           question: "I already write Python and SQL. What's new here?",

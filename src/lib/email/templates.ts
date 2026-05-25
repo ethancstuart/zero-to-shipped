@@ -16,7 +16,7 @@ export function emailWrapper(
   content: string,
   options?: { unsubscribeUrl?: string; footerNote?: string }
 ): string {
-  const signoff = `<p style="color: ${MUTED_COLOR}; font-size: 14px;">— Zero to Ship</p>`;
+  const signoff = `<p style="color: ${MUTED_COLOR}; font-size: 14px;">— Prototype Studio</p>`;
 
   const footer = options?.unsubscribeUrl
     ? `<p style="color: ${FOOTER_COLOR}; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
@@ -44,7 +44,7 @@ export function emailWrapperDark(
   content: string,
   options?: { unsubscribeUrl?: string; footerNote?: string }
 ): string {
-  const signoff = `<p style="color: #888; font-size: 14px; margin-top: 24px;">— Zero to Ship</p>`;
+  const signoff = `<p style="color: #888; font-size: 14px; margin-top: 24px;">— Prototype Studio</p>`;
 
   const footer = options?.unsubscribeUrl
     ? `<p style="color: #666; font-size: 12px; margin-top: 24px; border-top: 1px solid #333; padding-top: 12px;">

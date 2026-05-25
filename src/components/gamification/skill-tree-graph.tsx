@@ -199,7 +199,7 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
         role="img"
         aria-label="Skill tree showing 16 learning modules across four tiers: Foundations, Intermediate, Advanced, and Capstone"
       >
-        <title>Zero to Ship Skill Tree</title>
+        <title>Prototype Studio Skill Tree</title>
         {/* Tier labels */}
         <text x="20" y="60" className="fill-primary text-[11px] font-semibold">
           FOUNDATIONS

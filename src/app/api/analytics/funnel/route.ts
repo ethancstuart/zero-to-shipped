@@ -7,7 +7,7 @@ import {
   type PaywallVariant,
 } from "@/lib/experiments/paywall-variant";
 
-const ADMIN_EMAIL = "ethan@zerotoship.app";
+const ADMIN_EMAIL = "ethan@prototypestudio.dev";
 
 export async function GET(request: NextRequest) {
   // Auth: accept either CRON_SECRET bearer token or admin session cookie

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/guides/git-101`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Git for Product Managers")}&subtitle=${encodeURIComponent("A Beginner's Guide — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Git for Product Managers")}&subtitle=${encodeURIComponent("A Beginner's Guide — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -173,7 +173,7 @@ git push -u origin new-feature  # push the branch to GitHub`}</code></pre>
         <div className="not-prose mt-12 rounded-xl border border-border bg-card p-8 text-center">
           <h3 className="mb-2 text-xl font-bold">Ready to build something real?</h3>
           <p className="mb-6 text-muted-foreground">
-            Zero to Ship takes you from Git basics to shipping a live product — with AI
+            Prototype Studio takes you from Git basics to shipping a live product — with AI
             doing the heavy lifting. 16 modules, hands-on projects, and a certificate.
           </p>
           <Button render={<Link href="/pricing" />} size="lg">

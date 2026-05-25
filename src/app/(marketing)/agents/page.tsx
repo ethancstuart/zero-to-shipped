@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/agents`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("AI Agent Templates")}&subtitle=${encodeURIComponent("Fork. Customize. Ship. — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("AI Agent Templates")}&subtitle=${encodeURIComponent("Fork. Customize. Ship. — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -281,7 +281,7 @@ export default function AgentsPage() {
           <h2 className="mb-2 text-xl font-bold">
             These templates show you what&apos;s possible.
             <br />
-            Zero to Ship teaches you how to build your own.
+            Prototype Studio teaches you how to build your own.
           </h2>
           <p className="mb-6 text-muted-foreground">
             16 hands-on modules. From first terminal command to deployed

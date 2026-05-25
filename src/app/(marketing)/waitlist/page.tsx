@@ -3,9 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { WaitlistForm } from "./waitlist-form";
 
 export const metadata = {
-  title: "Join the Waitlist — Zero to Ship",
+  title: "Join the Waitlist — Prototype Studio",
   description:
-    "Zero to Ship opens April 28. Founding member pricing: $99 one-time (200 spots). Join the waitlist to get notified when doors open.",
+    "Prototype Studio opens April 28. Founding member pricing: $99 one-time (200 spots). Join the waitlist to get notified when doors open.",
 };
 
 export default function WaitlistPage() {
@@ -18,7 +18,7 @@ export default function WaitlistPage() {
 
         <h1 className="mb-4 text-3xl font-bold">Get notified at launch</h1>
         <p className="mb-2 text-muted-foreground">
-          Zero to Ship opens Monday, April 28. Founding member pricing is{" "}
+          Prototype Studio opens Monday, April 28. Founding member pricing is{" "}
           <strong className="text-foreground">$99 one-time</strong> for the
           first 200 students — then $199.
         </p>

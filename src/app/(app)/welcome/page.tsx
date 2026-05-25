@@ -5,7 +5,7 @@ import { Rocket, Star, BookOpen, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Profile } from "@/types";
 
-export const metadata = { title: "Welcome to Zero to Ship" };
+export const metadata = { title: "Welcome to Prototype Studio" };
 
 export default async function WelcomePage() {
   const supabase = await createClient();
@@ -36,7 +36,7 @@ export default async function WelcomePage() {
           <Rocket className="size-10 text-primary" />
         </div>
         <h1 className="mb-3 text-3xl font-bold tracking-tight">
-          Welcome to Zero to Ship{name !== "there" ? `, ${name}` : ""}!
+          Welcome to Prototype Studio{name !== "there" ? `, ${name}` : ""}!
         </h1>
         <p className="text-lg text-muted-foreground">
           You&apos;re in. Let&apos;s build something real.

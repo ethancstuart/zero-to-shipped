@@ -4,17 +4,17 @@ import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Builder's Tool Stack — Builder's Library — Zero to Ship",
+  title: "Builder's Tool Stack — Builder's Library — Prototype Studio",
   description:
     "Every tool a modern non-engineer builder needs — Cursor, Claude Code, GitHub, Vercel, Supabase, Resend — with free tier notes and what each one actually does.",
   openGraph: {
-    title: "Builder's Tool Stack — Zero to Ship",
+    title: "Builder's Tool Stack — Prototype Studio",
     description:
       "The modern builder stack — Cursor, Claude Code, GitHub, Vercel, Supabase, Resend. Free tier notes and honest explanations.",
     url: `${siteConfig.url}/library/builder-tools`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("Builder's Tool Stack")}&subtitle=${encodeURIComponent("Cursor · Claude Code · Vercel · Supabase — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("Builder's Tool Stack")}&subtitle=${encodeURIComponent("Cursor · Claude Code · Vercel · Supabase — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -244,7 +244,7 @@ export default function BuilderToolsPage() {
         <div className="mt-12 rounded-xl border border-border bg-card p-7 text-center">
           <h2 className="mb-2 text-lg font-bold">Ready to put the stack to work?</h2>
           <p className="mb-5 text-sm text-muted-foreground">
-            Module 1 of Zero to Ship walks you through setting up all of this and building your first real app.
+            Module 1 of Prototype Studio walks you through setting up all of this and building your first real app.
           </p>
           <Link
             href="/preview/module-1"

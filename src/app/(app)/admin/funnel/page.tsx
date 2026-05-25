@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const ADMIN_EMAIL = "ethan@zerotoship.app";
+const ADMIN_EMAIL = "ethan@prototypestudio.dev";
 const REFRESH_INTERVAL = 60_000; // 1 minute
 
 interface FunnelStep {

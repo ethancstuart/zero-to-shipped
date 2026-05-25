@@ -91,7 +91,7 @@ function renderRoleLanding(searchParams: URLSearchParams) {
               fontWeight: 600,
             }}
           >
-            ZERO TO SHIP
+            PROTOTYPE STUDIO
           </div>
           <div
             style={{
@@ -191,7 +191,7 @@ function renderModule(searchParams: URLSearchParams) {
               marginBottom: 32,
             }}
           >
-            ZERO TO SHIPPED
+            PROTOTYPE STUDIOPED
           </div>
           <div
             style={{
@@ -281,7 +281,7 @@ function renderProfile(searchParams: URLSearchParams) {
               marginBottom: 16,
             }}
           >
-            ZERO TO SHIPPED
+            PROTOTYPE STUDIOPED
           </div>
           <div
             style={{
@@ -370,7 +370,7 @@ function renderSite() {
               marginBottom: 24,
             }}
           >
-            ZERO TO SHIP
+            PROTOTYPE STUDIO
           </div>
           <div
             style={{
@@ -415,7 +415,7 @@ function renderSite() {
 
 function renderGuide(searchParams: URLSearchParams) {
   const title = searchParams.get("title") ?? "Guide";
-  const subtitle = searchParams.get("subtitle") ?? "Zero to Ship";
+  const subtitle = searchParams.get("subtitle") ?? "Prototype Studio";
 
   return new ImageResponse(
     (
@@ -448,7 +448,7 @@ function renderGuide(searchParams: URLSearchParams) {
               marginBottom: 16,
             }}
           >
-            ZERO TO SHIP — GUIDE
+            PROTOTYPE STUDIO · GUIDE
           </div>
           <div
             style={{
@@ -513,7 +513,7 @@ function renderAchievement(searchParams: URLSearchParams) {
               marginBottom: 32,
             }}
           >
-            ZERO TO SHIP
+            PROTOTYPE STUDIO
           </div>
           <div style={{ fontSize: 72, marginBottom: 16 }}>{icon}</div>
           <div
@@ -579,7 +579,7 @@ function renderModuleComplete(searchParams: URLSearchParams) {
               marginBottom: 24,
             }}
           >
-            ZERO TO SHIPPED
+            PROTOTYPE STUDIOPED
           </div>
           <div
             style={{

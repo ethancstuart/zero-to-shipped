@@ -18,31 +18,31 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
   {
     id: "launch-email-1",
     date: "2026-04-22",
-    subject: "Zero to Ship opens Monday — founding member pricing",
+    subject: "Prototype Studio opens Monday — founding member pricing",
     body: `
-      <h2 style="color: #fff; margin-top: 0;">Zero to Ship opens in 6 days.</h2>
+      <h2 style="color: #fff; margin-top: 0;">Prototype Studio opens in 6 days.</h2>
 
       <p>I'm a PM. A few months ago I realized I could describe what I wanted to build in plain English, and Claude Code would write the code, wire up the database, deploy it to a live URL — all while I watched and directed. No CS degree required.</p>
 
-      <p>I built Zero to Ship because I wanted to teach the workflow, not just show it off. <strong style="color: #fff;">16 modules</strong> — from setting up your environment to shipping a capstone project you can actually put on your resume. Built for PMs, Project Managers, BAs, and BI Engineers.</p>
+      <p>I built Prototype Studio because I wanted to teach the workflow, not just show it off. <strong style="color: #fff;">16 modules</strong> — from setting up your environment to shipping a capstone project you can actually put on your resume. Built for PMs, Project Managers, BAs, and BI Engineers.</p>
 
       <p>Gamified progress (XP, streaks, badges, skill tree). Role-specific learning paths. Certificate of completion. And founding members get <strong style="color: #fff;">Season 2 free</strong> — covering Claude Code mastery, MCP servers, and agent building.</p>
 
       <p>Founding member pricing: <strong style="color: #22c55e;">$99 one-time</strong> (standard: $199). 200 spots. Opens Monday April 28.</p>
 
-      <p style="color: #888; font-size: 14px;">Not ready to commit? The <a href="https://zerotoship.app/library?utm_source=launch&utm_medium=email&utm_campaign=email1" style="color: #6366f1;">Builder's Library</a> is free — 40+ prompts, guides, and templates, no account required.</p>
+      <p style="color: #888; font-size: 14px;">Not ready to commit? The <a href="https://prototypestudio.dev/library?utm_source=launch&utm_medium=email&utm_campaign=email1" style="color: #6366f1;">Builder's Library</a> is free — 40+ prompts, guides, and templates, no account required.</p>
 
-      ${emailButtonCentered("Preview Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email1")}
+      ${emailButtonCentered("Preview Module 1 Free", "https://prototypestudio.dev/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email1")}
     `,
   },
   {
     id: "launch-email-2",
     date: "2026-04-25",
-    subject: "What 16 modules looks like — Zero to Ship",
+    subject: "What 16 modules looks like — Prototype Studio",
     body: `
       <h2 style="color: #fff; margin-top: 0;">Here's what's inside.</h2>
 
-      <p>Zero to Ship has 16 modules. Here are 5 that people ask about most:</p>
+      <p>Prototype Studio has 16 modules. Here are 5 that people ask about most:</p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
         <tr>
@@ -71,18 +71,18 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p style="color: #f59e0b;">Founding member pricing: $99 (200 spots, ends April 30)</p>
 
-      ${emailButtonCentered("See Full Pricing", "https://zerotoship.app/pricing?utm_source=launch&utm_medium=email&utm_campaign=email2")}
+      ${emailButtonCentered("See Full Pricing", "https://prototypestudio.dev/pricing?utm_source=launch&utm_medium=email&utm_campaign=email2")}
     `,
   },
   {
     id: "launch-email-3",
     date: "2026-04-27",
     subject: (remaining: number) =>
-      `Zero to Ship opens tomorrow — ${remaining} founding spots left`,
+      `Prototype Studio opens tomorrow — ${remaining} founding spots left`,
     body: (remaining: number) => `
       <h2 style="color: #fff; margin-top: 0;">Tomorrow.</h2>
 
-      <p>Zero to Ship opens tomorrow, Monday April 28.</p>
+      <p>Prototype Studio opens tomorrow, Monday April 28.</p>
 
       <p>There are <strong style="color: #f59e0b;">${remaining} of 200 founding member spots</strong> remaining at the $99 founding price. Standard price after that is $199.</p>
 
@@ -90,7 +90,7 @@ const LAUNCH_EMAILS: LaunchEmail[] = [
 
       <p>If you want to try before you commit, Module 1 is completely free — no account required.</p>
 
-      ${emailButtonCentered("Try Module 1 Free", "https://zerotoship.app/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email3")}
+      ${emailButtonCentered("Try Module 1 Free", "https://prototypestudio.dev/preview/module-1?utm_source=launch&utm_medium=email&utm_campaign=email3")}
     `,
   },
 ];
@@ -170,15 +170,15 @@ export async function GET(request: NextRequest) {
   // Collect all emails for batch sending
   const emailPayloads = waitlistUsers.map((user) => {
     const unsubToken = generateEmailUnsubscribeToken(user.email);
-    const unsubUrl = `https://zerotoship.app/api/unsubscribe?token=${unsubToken}&type=email`;
+    const unsubUrl = `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}&type=email`;
 
     return {
-      from: "Zero to Ship <hello@zerotoship.app>",
+      from: "Prototype Studio <hello@prototypestudio.dev>",
       to: user.email,
       subject,
       html: emailWrapperDark(bodyContent, {
         unsubscribeUrl: unsubUrl,
-        footerNote: "You're receiving this because you signed up for the Zero to Ship waitlist.",
+        footerNote: "You're receiving this because you signed up for the Prototype Studio waitlist.",
       }),
     };
   });

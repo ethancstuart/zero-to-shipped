@@ -4,17 +4,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "AI Workflow OS — Builder's Library — Zero to Ship",
+  title: "AI Workflow OS — Builder's Library — Prototype Studio",
   description:
     "How to structure your AI development world — CLAUDE.md, MCP servers, Cursor vs Claude Code, the build loop, and the top anti-patterns that break non-engineers.",
   openGraph: {
-    title: "AI Workflow OS — Zero to Ship",
+    title: "AI Workflow OS — Prototype Studio",
     description:
       "How to structure your AI development world. CLAUDE.md, MCP servers, the build loop — all in one guide.",
     url: `${siteConfig.url}/library/ai-workflow-os`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("AI Workflow OS")}&subtitle=${encodeURIComponent("CLAUDE.md · MCP Servers · The Build Loop — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("AI Workflow OS")}&subtitle=${encodeURIComponent("CLAUDE.md · MCP Servers · The Build Loop — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -558,7 +558,7 @@ fix list based on what you find.&quot;</code></pre>
         <div className="mt-14 rounded-xl border border-border bg-card p-7 text-center">
           <h2 className="mb-2 text-lg font-bold">Want to build this yourself?</h2>
           <p className="mb-5 text-sm text-muted-foreground">
-            Module 1 of Zero to Ship walks you through your first real build — using everything in this guide.
+            Module 1 of Prototype Studio walks you through your first real build — using everything in this guide.
           </p>
           <Link
             href="/preview/module-1"

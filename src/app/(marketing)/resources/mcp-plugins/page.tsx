@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/resources/mcp-plugins`,
     images: [
       {
-        url: `/api/og?template=guide&title=${encodeURIComponent("MCP Plugins for Non-Engineers")}&subtitle=${encodeURIComponent("The Non-Engineer's MCP Toolkit — Zero to Ship")}`,
+        url: `/api/og?template=guide&title=${encodeURIComponent("MCP Plugins for Non-Engineers")}&subtitle=${encodeURIComponent("The Non-Engineer's MCP Toolkit — Prototype Studio")}`,
         width: 1200,
         height: 630,
       },
@@ -99,7 +99,7 @@ export default function MCPPluginsPage() {
             </p>
             <p className="text-sm text-muted-foreground">
               These plugins connect AI tools to external services. Review what data
-              each plugin accesses before installing. Zero to Ship does not audit the
+              each plugin accesses before installing. Prototype Studio does not audit the
               security or data practices of third-party MCP servers. Plugins marked
               &ldquo;Verified by ZTS&rdquo; have been tested by us but are still
               maintained by their respective authors.
@@ -113,7 +113,7 @@ export default function MCPPluginsPage() {
             Learn to build with these tools
           </h2>
           <p className="mb-6 text-muted-foreground">
-            Zero to Ship teaches non-engineers to build real products with AI coding
+            Prototype Studio teaches non-engineers to build real products with AI coding
             tools. 16 modules, hands-on projects, and a certificate.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">

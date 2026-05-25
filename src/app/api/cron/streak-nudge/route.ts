@@ -59,15 +59,15 @@ export async function GET(request: NextRequest) {
   const emailPayloads = users
     .filter((user) => emailMap.has(user.id))
     .map((user) => ({
-      from: "Zero to Ship <hello@zerotoship.app>",
+      from: "Prototype Studio <hello@prototypestudio.dev>",
       to: emailMap.get(user.id)!,
       subject: `Don't lose your ${user.current_streak}-day streak!`,
       html: emailWrapper(
         `<p>Hey ${user.display_name?.split(" ")[0] ?? "there"},</p>
-          <p>You've got a <strong>${user.current_streak}-day streak</strong> on Zero to Ship — don't let it slip!</p>
+          <p>You've got a <strong>${user.current_streak}-day streak</strong> on Prototype Studio — don't let it slip!</p>
           <p>Even one checkpoint keeps the streak alive.</p>
-          <p>${emailButton("Continue Learning", "https://zerotoship.app/dashboard")}</p>`,
-        { unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}` }
+          <p>${emailButton("Continue Learning", "https://prototypestudio.dev/dashboard")}</p>`,
+        { unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}` }
       ),
     }));
 

@@ -22,7 +22,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You completed Module 1. That means you've built something, seen it run, and iterated on it. Most people never get this far.</p>
       <p>Module 2 teaches you how to give AI tools better instructions — the prompts that separate "meh" output from "wow, that's exactly what I needed."</p>
-      <p>${emailButton("Start Module 2", "https://zerotoship.app/modules/02-prompt-engineering?utm_source=milestone&utm_medium=email&utm_campaign=module1")}</p>
+      <p>${emailButton("Start Module 2", "https://prototypestudio.dev/modules/02-prompt-engineering?utm_source=milestone&utm_medium=email&utm_campaign=module1")}</p>
     `,
   },
   {
@@ -33,7 +33,7 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You just finished all 5 foundation modules. You can set up projects, write effective prompts, understand code, use the terminal, and manage version control. That's a real skill set.</p>
       <p>The next 11 modules are where you build real things — interactive tools, data products, automations, and your capstone project.</p>
-      <p>${emailButton("Unlock Full Access — $199", "https://zerotoship.app/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5")}</p>
+      <p>${emailButton("Unlock Full Access — $199", "https://prototypestudio.dev/pricing?utm_source=milestone&utm_medium=email&utm_campaign=module5")}</p>
       <p style="color: #22c55e; font-size: 14px; font-weight: 600;">Founding member price: $99 (limited spots)</p>
     `,
   },
@@ -43,9 +43,9 @@ const MILESTONES: Milestone[] = [
     subject: "You earned your first badge",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>You just earned your first badge on Zero to Ship. Badges track your progress and show up on your public profile.</p>
+      <p>You just earned your first badge on Prototype Studio. Badges track your progress and show up on your public profile.</p>
       <p>Keep building — there are 20+ badges to collect, from streak milestones to role-specific achievements.</p>
-      <p>${emailButton("View Your Progress", "https://zerotoship.app/dashboard?utm_source=milestone&utm_medium=email&utm_campaign=firstbadge")}</p>
+      <p>${emailButton("View Your Progress", "https://prototypestudio.dev/dashboard?utm_source=milestone&utm_medium=email&utm_campaign=firstbadge")}</p>
     `,
   },
   {
@@ -56,9 +56,9 @@ const MILESTONES: Milestone[] = [
       <p>Hey ${name},</p>
       <p>You completed all 16 modules and shipped your capstone project. That's incredible.</p>
       <p>Your certificate is ready. Share it on LinkedIn — you earned it.</p>
-      <p>${emailButton("Download Your Certificate", "https://zerotoship.app/certificate?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
+      <p>${emailButton("Download Your Certificate", "https://prototypestudio.dev/certificate?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
       <p>One more thing: if you know a PM, analyst, or project manager who'd benefit from this, share your referral link. You both earn 100 XP.</p>
-      <p>${emailLink("Your referral dashboard →", "https://zerotoship.app/referrals?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
+      <p>${emailLink("Your referral dashboard →", "https://prototypestudio.dev/referrals?utm_source=milestone&utm_medium=email&utm_campaign=capstone")}</p>
     `,
   },
 ];
@@ -150,11 +150,11 @@ export async function GET(request: NextRequest) {
       eventInserts.push({ id: eventId, event_type: "milestone_email" });
 
       emailPayloads.push({
-        from: "Zero to Ship <hello@zerotoship.app>",
+        from: "Prototype Studio <hello@prototypestudio.dev>",
         to: email,
         subject: milestone.subject,
         html: emailWrapper(milestone.body(name), {
-          unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${unsubToken}`,
+          unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${unsubToken}`,
         }),
       });
 

@@ -17,9 +17,9 @@ const NURTURE_SCHEDULE: {
     subject: "How's Module 1 going?",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>You signed up for Zero to Ship a few days ago — nice move.</p>
+      <p>You signed up for Prototype Studio a few days ago — nice move.</p>
       <p>If you haven't started yet, Module 1 takes about 3 hours and you'll have your first build by the end. Plus, completing checkpoints every day earns you streak bonuses.</p>
-      <p>${emailButton("Continue Learning", "https://zerotoship.app/dashboard")}</p>
+      <p>${emailButton("Continue Learning", "https://prototypestudio.dev/dashboard")}</p>
     `,
   },
   {
@@ -27,9 +27,9 @@ const NURTURE_SCHEDULE: {
     subject: "Here's what builders are shipping",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>Builders on Zero to Ship are creating dashboards, internal tools, automated reports, and more — all without engineering backgrounds.</p>
+      <p>Builders on Prototype Studio are creating dashboards, internal tools, automated reports, and more — all without engineering backgrounds.</p>
       <p>The premium modules (6–16) are where things get real: interactive tools, data products, automations, and your capstone project.</p>
-      <p>${emailButton("See What You'll Build", "https://zerotoship.app/pricing")}</p>
+      <p>${emailButton("See What You'll Build", "https://prototypestudio.dev/pricing")}</p>
     `,
   },
   {
@@ -39,7 +39,7 @@ const NURTURE_SCHEDULE: {
       <p>Hey ${name},</p>
       <p>You're ${progressPct}% through the foundations. The first 5 modules give you the building blocks — the next 11 modules are where you ship real things.</p>
       <p>Upgrade to Full Access to unlock your capstone project, earn your certificate, and get on the leaderboard.</p>
-      <p>${emailButton("Upgrade — $99", "https://zerotoship.app/pricing")}</p>
+      <p>${emailButton("Upgrade — $99", "https://prototypestudio.dev/pricing")}</p>
     `,
   },
   {
@@ -47,9 +47,9 @@ const NURTURE_SCHEDULE: {
     subject: "Your modules are waiting",
     body: (name) => `
       <p>Hey ${name},</p>
-      <p>Just a friendly nudge — your Zero to Ship modules are still waiting for you.</p>
+      <p>Just a friendly nudge — your Prototype Studio modules are still waiting for you.</p>
       <p>At $99, Full Access is under most L&D approval thresholds. We'll send you a receipt you can expense.</p>
-      <p>${emailButton("Get Full Access", "https://zerotoship.app/pricing")}</p>
+      <p>${emailButton("Get Full Access", "https://prototypestudio.dev/pricing")}</p>
       <p style="color: #666; font-size: 14px;">This is the last email in this series. You can always come back when you're ready.</p>
     `,
   },
@@ -135,11 +135,11 @@ export async function GET(request: NextRequest) {
         const name = user.display_name?.split(" ")[0] ?? "there";
 
         emailPayloads.push({
-          from: "Zero to Ship <hello@zerotoship.app>",
+          from: "Prototype Studio <hello@prototypestudio.dev>",
           to: auth.email,
           subject: email.subject,
           html: emailWrapper(email.body(name, progressPct), {
-            unsubscribeUrl: `https://zerotoship.app/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}`,
+            unsubscribeUrl: `https://prototypestudio.dev/api/unsubscribe?token=${generateUnsubscribeToken(user.id)}`,
           }),
         });
 

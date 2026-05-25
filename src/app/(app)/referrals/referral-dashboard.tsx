@@ -48,7 +48,7 @@ export function ReferralDashboard({
   };
 
   const shareText = encodeURIComponent(
-    "I'm learning to build real products with AI tools on Zero to Ship. Check it out:"
+    "I'm learning to build real products with AI tools on Prototype Studio. Check it out:"
   );
   const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(referralUrl)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(referralUrl)}`;

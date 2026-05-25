@@ -82,7 +82,7 @@ export function BuildLogPDF({
             <View style={styles.header}>
               <Text style={styles.title}>{displayName}</Text>
               <Text style={styles.subtitle}>
-                Zero to Ship Build Log
+                Prototype Studio Build Log
                 {roleTrack ? ` · ${ROLE_LABELS[roleTrack]} Track` : ""}
               </Text>
             </View>
@@ -119,7 +119,7 @@ export function BuildLogPDF({
             ))}
 
             <Text style={styles.footer}>
-              Generated from zerotoship.app ·{" "}
+              Generated from prototypestudio.dev ·{" "}
               {new Date().toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
