@@ -1,10 +1,18 @@
 export const siteConfig = {
-  name: "Zero to Ship",
-  title: "Zero to Ship — Build with AI, No Engineering Degree Required",
-  description:
-    "A gamified learning platform teaching PMs, Project Managers, BAs, and BI Engineers to build real products with AI coding tools.",
-  url: "https://zerotoship.app",
-  ogImage: "/og.png",
+  name: 'Prototype Studio',
+  description: 'Learn to build real products with AI. Watch sessions. Follow guides. Set up your own agent system.',
+  url: 'https://prototypestudio.dev',
+  ogImage: '/og-default.png',
+  creator: 'Prototype Studio',
+  keywords: [
+    'AI prototyping',
+    'vibe coding',
+    'claude code',
+    'cursor',
+    'gemini cli',
+    'AI agents',
+    'build with AI',
+  ],
 };
 
 export const TIER_LABELS = {
