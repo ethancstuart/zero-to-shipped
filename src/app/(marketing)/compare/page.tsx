@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Side-by-side capability comparison of AI coding tools.',
 }
 
+export const revalidate = 3600
+
 export default async function ComparePage({
   searchParams,
 }: {

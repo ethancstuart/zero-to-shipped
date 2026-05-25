@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: 'See what people are building with AI coding tools.',
 }
 
+export const revalidate = 3600
+
 export default async function ShowcasePage({
   searchParams,
 }: {

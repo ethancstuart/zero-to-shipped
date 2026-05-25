@@ -8,6 +8,8 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
+export const revalidate = 3600
+
 export async function generateStaticParams() {
   const slugs = await getContentSlugs('system')
   return slugs.map((slug) => ({ slug }))

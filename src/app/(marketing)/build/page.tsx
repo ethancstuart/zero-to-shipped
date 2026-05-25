@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Watch someone build, then do it yourself.',
 }
 
+export const revalidate = 3600
+
 export default async function BuildPage() {
   const sessions = await listContentByPillar('build', { type: 'session' })
   const challenges = await listContentByPillar('build', { type: 'challenge' })

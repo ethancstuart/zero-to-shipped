@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Guides, lessons, design patterns, and resources for building with AI.',
 }
 
+export const revalidate = 3600
+
 export default async function LearnPage() {
   const lessons = await listContentByPillar('learn', { type: 'lesson' })
   const guides = await listContentByPillar('learn', { type: 'guide' })

@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Set up AI agents as your operating system.',
 }
 
+export const revalidate = 3600
+
 export default async function SystemPage() {
   const playbooks = await listContentByPillar('system', { type: 'playbook' })
   const personas = await listContentByPillar('system', { type: 'persona' })

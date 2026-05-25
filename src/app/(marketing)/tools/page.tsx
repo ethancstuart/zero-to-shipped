@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Track 9 AI coding tools — releases, capabilities, and comparisons.',
 }
 
+export const revalidate = 3600
+
 export default async function ToolsPage() {
   const supabase = await createClient()
   const { data: tools } = await supabase

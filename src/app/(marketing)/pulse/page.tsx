@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "What's happening across AI coding tools.",
 }
 
+export const revalidate = 900
+
 export default async function PulsePage() {
   const briefs = await listContentByPillar('pulse', { type: 'brief' })
   const comparisons = await listContentByPillar('pulse', { type: 'comparison' })

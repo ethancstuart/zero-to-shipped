@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: 'Build costs, platform stats, and pipeline metrics. Full transparency.',
 }
 
+export const revalidate = 3600
+
 interface BuildStats {
   loc: number
   files: number

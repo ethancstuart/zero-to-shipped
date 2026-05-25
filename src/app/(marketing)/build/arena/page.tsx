@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Side-by-side AI tool comparisons. Same task, different tools, real results.',
 }
 
+export const revalidate = 3600
+
 export default async function ArenaPage() {
   const supabase = await createClient()
 
