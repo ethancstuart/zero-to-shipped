@@ -9,17 +9,18 @@ const CONTENT_DIR = path.join(process.cwd(), 'content')
 
 async function walkDir(dir: string): Promise<string[]> {
   const results: string[] = []
-  let entries: Awaited<ReturnType<typeof fs.readdir>>
+  let names: string[]
   try {
-    entries = await fs.readdir(dir, { withFileTypes: true })
+    names = await fs.readdir(dir)
   } catch {
     return results
   }
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name)
-    if (entry.isDirectory()) {
+  for (const name of names) {
+    const fullPath = path.join(dir, name)
+    const stat = await fs.stat(fullPath)
+    if (stat.isDirectory()) {
       results.push(...(await walkDir(fullPath)))
-    } else if (entry.name.endsWith('.mdx')) {
+    } else if (name.endsWith('.mdx')) {
       results.push(fullPath)
     }
   }
