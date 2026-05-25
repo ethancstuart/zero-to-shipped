@@ -9,7 +9,7 @@ interface GitHubReleaseResponse {
 
 export const githubReleasesAdapter: SourceAdapter = {
   async fetch(config: AdapterConfig): Promise<RawRelease[]> {
-    const { owner, repo } = config as { owner: string; repo: string }
+    const { owner, repo } = config as unknown as { owner: string; repo: string }
     const url = `https://api.github.com/repos/${owner}/${repo}/releases?per_page=5`
 
     const response = await fetch(url, {

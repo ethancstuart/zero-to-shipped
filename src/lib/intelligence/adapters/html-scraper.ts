@@ -2,7 +2,7 @@ import type { RawRelease, AdapterConfig, SourceAdapter } from './types'
 
 export const htmlScraperAdapter: SourceAdapter = {
   async fetch(config: AdapterConfig): Promise<RawRelease[]> {
-    const { url } = config as { url: string }
+    const { url } = config as unknown as { url: string }
 
     const response = await fetch(url, { next: { revalidate: 0 } })
     if (!response.ok) {
