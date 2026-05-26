@@ -1,5 +1,6 @@
 import { listContentByPillar } from '@/lib/content/loader'
-import { ContentCard } from '@/components/content/content-card'
+import { FilterableContentGrid } from '@/components/content/filterable-content-grid'
+import { LearningPath } from '@/components/content/learning-path'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,65 +11,42 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function LearnPage() {
-  const lessons = await listContentByPillar('learn', { type: 'lesson' })
-  const guides = await listContentByPillar('learn', { type: 'guide' })
-  const resources = await listContentByPillar('learn', { type: 'resource' })
-  const patterns = await listContentByPillar('learn', { type: 'pattern' })
+  const allItems = await listContentByPillar('learn')
+
+  const lessons = allItems
+    .filter(i => i.frontmatter.type === 'lesson')
+    .map(i => i.frontmatter)
+
+  const nonLessons = allItems
+    .filter(i => i.frontmatter.type !== 'lesson')
+    .map(i => i.frontmatter)
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-12">
-        <div className="mb-4 h-1 w-16 rounded-full bg-green-500" />
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Learn</h1>
-        <p className="max-w-2xl text-lg text-white/60">
-          Pick up the skills you need. Lessons, guides, design patterns, and
-          resources — all organized so you can learn at your own pace.
-        </p>
-      </div>
-
-      {lessons.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Lessons</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {lessons.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
+    <>
+      <section className="bg-[hsl(var(--pillar-learn-surface))] border-b border-[hsl(var(--pillar-learn-border))] py-20 px-6 lg:px-12">
+        <div className="max-w-[1300px] mx-auto">
+          <div className="text-[10px] tracking-wider font-medium uppercase text-[hsl(var(--pillar-learn))] mb-4">
+            LEARN
           </div>
-        </section>
-      )}
+          <h1 className="text-h1 mb-3">Learn</h1>
+          <p className="text-[hsl(var(--fg-secondary))] max-w-lg">
+            Guides, lessons, design patterns, and resources for building with AI.
+          </p>
+        </div>
+      </section>
 
-      {guides.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Guides</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {guides.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
+      <section className="max-w-[1300px] mx-auto px-6 lg:px-12 py-12">
+        <LearningPath lessons={lessons} />
 
-      {resources.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Resources</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {resources.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {patterns.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Patterns</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {patterns.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+        <div className="mt-8">
+          <h2 className="text-h2 mb-6">Also available</h2>
+          <FilterableContentGrid
+            items={nonLessons}
+            types={['guide', 'resource', 'pattern']}
+            pillar="learn"
+          />
+        </div>
+      </section>
+    </>
   )
 }

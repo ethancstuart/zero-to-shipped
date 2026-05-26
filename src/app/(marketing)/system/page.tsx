@@ -1,5 +1,5 @@
 import { listContentByPillar } from '@/lib/content/loader'
-import { ContentCard } from '@/components/content/content-card'
+import { FilterableContentGrid } from '@/components/content/filterable-content-grid'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,53 +10,29 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function SystemPage() {
-  const playbooks = await listContentByPillar('system', { type: 'playbook' })
-  const personas = await listContentByPillar('system', { type: 'persona' })
-  const starters = await listContentByPillar('system', { type: 'starter' })
+  const items = await listContentByPillar('system')
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-12">
-        <div className="mb-4 h-1 w-16 rounded-full bg-purple-500" />
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">System</h1>
-        <p className="max-w-2xl text-lg text-white/60">
-          Set up AI agents as your operating system. Playbooks, personas, and
-          starter configs to build your personal development stack.
-        </p>
-      </div>
-
-      {playbooks.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Playbook</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {playbooks.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
+    <>
+      <section className="bg-[hsl(var(--pillar-system-surface))] border-b border-[hsl(var(--pillar-system-border))] py-20 px-6 lg:px-12">
+        <div className="max-w-[1300px] mx-auto">
+          <div className="text-[10px] tracking-wider font-medium uppercase text-[hsl(var(--pillar-system))] mb-4">
+            SYSTEM
           </div>
-        </section>
-      )}
+          <h1 className="text-h1 mb-3">System</h1>
+          <p className="text-[hsl(var(--fg-secondary))] max-w-lg">
+            Set up AI agents as your operating system.
+          </p>
+        </div>
+      </section>
 
-      {personas.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Personas</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {personas.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {starters.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Starters</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {starters.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+      <section className="max-w-[1300px] mx-auto px-6 lg:px-12 py-12">
+        <FilterableContentGrid
+          items={items.map(i => i.frontmatter)}
+          types={['playbook', 'persona', 'starter']}
+          pillar="system"
+        />
+      </section>
+    </>
   )
 }

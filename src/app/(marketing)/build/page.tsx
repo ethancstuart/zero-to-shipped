@@ -1,5 +1,5 @@
 import { listContentByPillar } from '@/lib/content/loader'
-import { ContentCard } from '@/components/content/content-card'
+import { FilterableContentGrid } from '@/components/content/filterable-content-grid'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,53 +10,29 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function BuildPage() {
-  const sessions = await listContentByPillar('build', { type: 'session' })
-  const challenges = await listContentByPillar('build', { type: 'challenge' })
-  const walkthroughs = await listContentByPillar('build', { type: 'walkthrough' })
+  const items = await listContentByPillar('build')
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-12">
-        <div className="mb-4 h-1 w-16 rounded-full bg-amber-500" />
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Build</h1>
-        <p className="max-w-2xl text-lg text-white/60">
-          Watch someone build, then do it yourself. Live sessions, step-by-step
-          walkthroughs, and hands-on challenges.
-        </p>
-      </div>
-
-      {sessions.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Sessions</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {sessions.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
+    <>
+      <section className="bg-[hsl(var(--pillar-build-surface))] border-b border-[hsl(var(--pillar-build-border))] py-20 px-6 lg:px-12">
+        <div className="max-w-[1300px] mx-auto">
+          <div className="text-[10px] tracking-wider font-medium uppercase text-[hsl(var(--pillar-build))] mb-4">
+            BUILD
           </div>
-        </section>
-      )}
+          <h1 className="text-h1 mb-3">Build</h1>
+          <p className="text-[hsl(var(--fg-secondary))] max-w-lg">
+            Watch someone build, then do it yourself.
+          </p>
+        </div>
+      </section>
 
-      {challenges.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Challenges</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {challenges.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {walkthroughs.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Walkthroughs</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {walkthroughs.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+      <section className="max-w-[1300px] mx-auto px-6 lg:px-12 py-12">
+        <FilterableContentGrid
+          items={items.map(i => i.frontmatter)}
+          types={['session', 'challenge', 'walkthrough']}
+          pillar="build"
+        />
+      </section>
+    </>
   )
 }

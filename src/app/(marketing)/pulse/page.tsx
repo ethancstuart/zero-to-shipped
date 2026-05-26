@@ -1,5 +1,5 @@
 import { listContentByPillar } from '@/lib/content/loader'
-import { ContentCard } from '@/components/content/content-card'
+import { FilterableContentGrid } from '@/components/content/filterable-content-grid'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,53 +10,29 @@ export const metadata: Metadata = {
 export const revalidate = 900
 
 export default async function PulsePage() {
-  const briefs = await listContentByPillar('pulse', { type: 'brief' })
-  const comparisons = await listContentByPillar('pulse', { type: 'comparison' })
-  const releases = await listContentByPillar('pulse', { type: 'release' })
+  const items = await listContentByPillar('pulse')
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-12">
-        <div className="mb-4 h-1 w-16 rounded-full bg-blue-500" />
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Pulse</h1>
-        <p className="max-w-2xl text-lg text-white/60">
-          Stay current. Briefs, tool comparisons, and release notes — everything
-          happening across the AI coding landscape in one place.
-        </p>
-      </div>
-
-      {briefs.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Briefs</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {briefs.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
+    <>
+      <section className="bg-[hsl(var(--pillar-pulse-surface))] border-b border-[hsl(var(--pillar-pulse-border))] py-20 px-6 lg:px-12">
+        <div className="max-w-[1300px] mx-auto">
+          <div className="text-[10px] tracking-wider font-medium uppercase text-[hsl(var(--pillar-pulse))] mb-4">
+            PULSE
           </div>
-        </section>
-      )}
+          <h1 className="text-h1 mb-3">Pulse</h1>
+          <p className="text-[hsl(var(--fg-secondary))] max-w-lg">
+            What&apos;s happening across AI coding tools.
+          </p>
+        </div>
+      </section>
 
-      {comparisons.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Comparisons</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {comparisons.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {releases.length > 0 && (
-        <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Releases</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {releases.map((item) => (
-              <ContentCard key={item.frontmatter.slug} content={item.frontmatter} />
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+      <section className="max-w-[1300px] mx-auto px-6 lg:px-12 py-12">
+        <FilterableContentGrid
+          items={items.map(i => i.frontmatter)}
+          types={['brief', 'comparison', 'release']}
+          pillar="pulse"
+        />
+      </section>
+    </>
   )
 }
