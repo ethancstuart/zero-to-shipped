@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/constants";
+import { GrainOverlay } from "@/components/motion/grain-overlay";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -79,6 +80,7 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
+        <GrainOverlay />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
