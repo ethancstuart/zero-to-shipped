@@ -152,7 +152,10 @@ Always label new bugs with their severity tier.
 - If content was planned or published, update the Content Calendar with: title, type, target channel, publish date, status.
 
 ## Conventions
-- Dark theme default
+- Light theme default, dark equally supported
+- Typography: Space Grotesk (display), DM Sans (body), JetBrains Mono (data/code only)
+- Animation: GSAP + ScrollTrigger for scroll-driven motion. All motion respects prefers-reduced-motion.
+- Monospace for data only — never for brand identity, nav, or labels
 - TypeScript strict, never JavaScript
 - Server components by default, `use client` only for interactivity
 - MDX for all content, never hardcoded pages
