@@ -2,15 +2,17 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Transform Prototype Studio from generic dark Tailwind into a high-craft, light-first editorial site with full kinetic motion (GSAP), generative hero, scroll-pinned sections, bento grid, and branded identity — across all 30+ pages, both themes.
+**Goal:** Full product overhaul — pre-design cleanup (Stripe removal, stale pages, SEO, error logging), then visual transformation into a high-craft, light-first editorial site with full kinetic motion (GSAP), generative hero, scroll-pinned sections, bento grid, and branded identity — across all 30+ pages, both themes. Includes comprehensive test pass and analytics setup.
 
-**Architecture:** Design system tokens in globals.css → reusable motion utilities via GSAP ScrollTrigger → component library (cards, pills, nav, footer) → page-by-page rebuild starting with homepage → dark mode pass → OG images → responsive + accessibility polish.
+**Architecture:** Pre-design cleanup (Task 0) → design system tokens in globals.css → reusable motion utilities via GSAP ScrollTrigger → component library (cards, pills, nav, footer) → page-by-page rebuild starting with homepage → dark mode pass → OG images → responsive + accessibility → comprehensive tests → analytics baselines.
 
 **Tech Stack:** Next.js 16 / React 19 / Tailwind v4 / GSAP + ScrollTrigger / Canvas API / shadcn/ui (restyled) / Google Fonts (Space Grotesk, DM Sans, JetBrains Mono)
 
 **Spec:** `docs/superpowers/specs/2026-05-25-prototype-studio-visual-design.md`
 
 **Repo:** `~/Projects/zero-to-shipped`
+
+**Review decisions incorporated from:** Council (14 members) + Masthead (10 members), full product audit covering content, copy, technical health, marketing, and design.
 
 ---
 
@@ -84,6 +86,157 @@ src/components/marketing/pricing-section.tsx       # Replaced inline
 src/components/marketing/role-tracks-section.tsx   # Replaced by /for/[slug]
 src/components/marketing/what-you-build-strip.tsx  # Replaced by showcase
 src/components/marketing/free-content-hub.tsx      # No longer needed
+```
+
+---
+
+## Task 0: Pre-Design Cleanup
+
+**Files:**
+- Delete: `content/learn/lessons/test-lesson.mdx`
+- Delete: `src/app/(marketing)/waitlist/page.tsx`
+- Modify: `src/lib/env.ts` (remove Stripe validation)
+- Delete: `src/app/api/stripe/` (all Stripe routes)
+- Modify: `package.json` (remove stripe dependency)
+- Modify: `src/app/(marketing)/pricing/page.tsx` (redesign as free-first)
+- Modify: `src/app/(marketing)/ask/page.tsx` (add metadata)
+- Modify: `src/app/layout.tsx` (add Organization JSON-LD)
+- Modify: multiple API routes (Sentry standardization)
+- Modify: Vercel cron config (disable email crons)
+
+- [ ] **Step 1: Delete test-lesson.mdx**
+
+```bash
+rm content/learn/lessons/test-lesson.mdx
+```
+
+Run `npx tsx scripts/sync-content-index.ts` to update the content index in Supabase.
+
+- [ ] **Step 2: Delete waitlist page**
+
+```bash
+rm src/app/(marketing)/waitlist/page.tsx
+```
+
+Remove any nav links to `/waitlist`. Check `src/components/layout/marketing-nav.tsx` and `src/components/layout/footer.tsx` for links.
+
+- [ ] **Step 3: Remove Stripe entirely**
+
+Remove the Stripe dependency:
+```bash
+npm uninstall stripe
+```
+
+Delete Stripe routes:
+```bash
+rm -rf src/app/api/stripe/
+```
+
+In `src/lib/env.ts`, remove `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and `STRIPE_COUPON_FOUNDING` from the Zod schema. Make any remaining Stripe-adjacent env vars optional or remove them.
+
+Search for and remove any remaining Stripe imports:
+```bash
+grep -r "stripe\|STRIPE" src/ --include="*.ts" --include="*.tsx" -l
+```
+
+Review each file — remove Stripe imports and any code paths that depend on them. For files like founding-spots API that reference Stripe coupons, remove the Stripe-specific logic.
+
+- [ ] **Step 4: Redesign pricing page as free-first**
+
+Rewrite `src/app/(marketing)/pricing/page.tsx`:
+- H1: "Everything is free."
+- Subtitle: "All content, tools, and features are available at no cost. Premium content coming later."
+- Show the full feature list with checkmarks (all free)
+- Keep the FAQ section, update answers to reflect free-first model
+- Add metadata: `title: "Pricing — Prototype Studio"`, `description: "Prototype Studio is free. All content, tools, and features included."`
+- Remove founding pricing, Stripe CTAs, and $99/$199 references
+
+- [ ] **Step 5: Add metadata to ask page**
+
+Add to `src/app/(marketing)/ask/page.tsx`:
+```typescript
+export const metadata = {
+  title: 'Ask — Prototype Studio',
+  description: 'Ask questions about AI coding tools and get answers powered by our AI assistant.',
+}
+```
+
+- [ ] **Step 6: Add JSON-LD structured data**
+
+In `src/app/layout.tsx`, add Organization JSON-LD in the `<head>`:
+
+```typescript
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Prototype Studio',
+      url: siteConfig.url,
+      description: siteConfig.description,
+    }),
+  }}
+/>
+```
+
+In `src/app/(marketing)/pricing/page.tsx`, add FAQPage JSON-LD for the FAQ section.
+
+- [ ] **Step 7: Add canonical tags site-wide**
+
+In `src/app/layout.tsx` metadata config, add:
+```typescript
+alternates: {
+  canonical: siteConfig.url,
+}
+```
+
+For dynamic pages, add canonical in each page's `generateMetadata`:
+```typescript
+alternates: { canonical: `${siteConfig.url}/${pillar}/${slug}` }
+```
+
+- [ ] **Step 8: Standardize Sentry error logging**
+
+Find all API routes with `console.error`:
+```bash
+grep -r "console.error\|console.log" src/app/api/ --include="*.ts" -l
+```
+
+In each file, replace `console.error(...)` with:
+```typescript
+import * as Sentry from '@sentry/nextjs'
+Sentry.captureException(error)
+```
+
+Keep `console.error` as a fallback for local dev (Sentry DSN may be empty).
+
+- [ ] **Step 9: Disable email crons**
+
+In `vercel.json` (or wherever cron schedules are configured), disable or remove the 9 email crons:
+- launch-sequence
+- founding-urgency
+- setup-check
+- premium-reengagement
+- streak-nudge
+- milestone-engagement
+- free-user-nurture
+- analytics-digest
+
+Keep active: `tool-intelligence` (every 6 hours) and `benchmarks` (weekly).
+
+The cron route files can stay in the codebase — just remove them from the Vercel cron schedule so they don't fire.
+
+- [ ] **Step 10: Verify build**
+
+```bash
+npm run lint && npx tsc --noEmit && npm run build
+```
+
+- [ ] **Step 11: Commit**
+
+```bash
+git add -A && git commit -m "chore: pre-design cleanup — remove Stripe, delete stale pages, fix SEO, standardize logging"
 ```
 
 ---
@@ -1073,7 +1226,7 @@ Create `src/components/hero/hero-section.tsx`:
 
 Assembles all hero sub-components. Includes: GenerativeMesh, CursorSpotlight, `// prototype.studio` comment, WordReveal headline, subtitle (DM Sans), primary + secondary CTAs (MagneticButton), bottom meta with pulsing dots, scroll indicator.
 
-The hero config:
+The hero config (A/B test — review decision: test both "Build Real Products" and "Learn to Build Real Products"):
 ```typescript
 const heroLines = [
   { words: ['Build', 'Real'] },
@@ -1081,6 +1234,8 @@ const heroLines = [
   { words: ['With', 'AI.'], className: 'text-[hsl(var(--fg-faint))]' },
 ]
 ```
+
+Use the existing `src/lib/experiments/` A/B testing infrastructure to serve variant B ("Learn to Build Real Products. With AI.") to 50% of visitors. Track CTA click-through as the success metric.
 
 The blue period accent on "Products." is added via a `<span className="text-[hsl(var(--accent))]">.</span>` — handle this in the word rendering by checking if word ends with "." and splitting.
 
@@ -1247,9 +1402,11 @@ Pillar: pulse, types: brief | comparison | release
 
 Pillar: build, types: session | challenge | walkthrough
 
-- [ ] **Step 4: Rewrite learn/page.tsx**
+- [ ] **Step 4: Rewrite learn/page.tsx with guided learning path**
 
 Pillar: learn, types: lesson | guide | resource | pattern
+
+**Special for Learn hub (review decision):** Add a numbered learning path progression at the top. The 16 lesson modules already have `position` numbers in frontmatter — render them as a sequential "1 → 2 → 3 → ... → 16" path with completion indicators. Guides and resources render below as supplementary "Also available" sections. The AI assistant should also recommend next content based on user consumption (connect to personalization engine).
 
 - [ ] **Step 5: Rewrite system/page.tsx**
 
@@ -1594,10 +1751,120 @@ git push origin main
 
 ---
 
+## Task 15: Comprehensive Test Pass
+
+**Files:**
+- Create: tests for auth middleware, cron auth, email tokens, critical APIs
+- Modify: existing test files as needed
+
+- [ ] **Step 1: Auth middleware tests**
+
+Test that:
+- Public routes (/, /pricing, /learn, etc.) return 200 without auth
+- Protected routes (/dashboard, /profile) redirect to home without auth
+- Auth callback route handles valid and invalid codes
+
+- [ ] **Step 2: Cron CRON_SECRET validation tests**
+
+Test that all cron routes:
+- Return 401 without Bearer token
+- Return 401 with wrong Bearer token
+- Return 200 with correct CRON_SECRET
+
+- [ ] **Step 3: Email HMAC token tests**
+
+Test `generateUnsubscribeToken()` and verify:
+- Tokens are deterministic for same input
+- Tokens differ for different inputs
+- Token validation passes for valid tokens, fails for tampered ones
+
+- [ ] **Step 4: Critical API endpoint tests**
+
+Test the 3 most-used endpoints:
+- `/api/v1/tools` — returns tool list, respects rate limits
+- `/api/v1/stats` — returns platform metrics
+- `/api/v1/pulse` — returns latest content
+
+- [ ] **Step 5: Content loader tests**
+
+Test `listContentByPillar()` and `getContentBySlug()`:
+- Returns correct content for each pillar
+- Handles missing slugs gracefully
+- Filters by type, difficulty, featured status
+
+- [ ] **Step 6: Component render tests**
+
+Test that key new components render without error:
+- Pill, SectionDivider, MagneticButton
+- PillarCard, ContentCard, ToolCard
+- ScrollReveal, GrainOverlay
+
+- [ ] **Step 7: Run full test suite**
+
+```bash
+npx vitest run --coverage
+```
+
+Target: 50+ tests total (up from 15), all passing.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add -A && git commit -m "test: comprehensive test pass — auth, crons, APIs, components"
+```
+
+---
+
+## Task 16: Analytics Baselines
+
+**Files:**
+- Modify: `src/app/(marketing)/layout.tsx` (if needed)
+- Verify: Vercel Analytics + Speed Insights configuration
+
+- [ ] **Step 1: Verify Vercel Analytics is active**
+
+Check that `@vercel/analytics` and `@vercel/speed-insights` are imported and rendered in the root layout. These should already be in place — verify they're not commented out.
+
+- [ ] **Step 2: Set up custom events for success metrics**
+
+The review locked these success metrics:
+1. **Scroll depth** — Vercel Analytics tracks this automatically
+2. **Content reach rate** — % of visitors who navigate to a content page. Track via a custom event when any `/[pillar]/[slug]` page loads.
+3. **Return visit rate** — Track via `localStorage` timestamp comparison (visited within 7 days)
+4. **Sign-up conversion** — Track via Supabase auth callback
+
+Add a lightweight client component that fires custom Vercel Analytics events:
+```typescript
+import { track } from '@vercel/analytics'
+
+// On content page load:
+track('content_view', { pillar, type, slug })
+
+// On sign-up:
+track('signup')
+```
+
+- [ ] **Step 3: Document baseline expectations**
+
+Before pushing the redesign, record current baseline metrics from Vercel Analytics dashboard (if available) or set targets:
+- Scroll depth: target 60%+ reaching section 3
+- Content reach rate: target 30%+ of visitors click through to content
+- Return visit rate: target 15%+ within 7 days
+- Sign-up conversion: target 5%+ of visitors
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add -A && git commit -m "feat: analytics baselines — custom events for redesign success metrics"
+```
+
+---
+
 ## Summary
 
 | Task | Description | Key Files |
 |------|-------------|-----------|
+| 0 | Pre-design cleanup | Stripe removal, stale pages, SEO, Sentry, crons |
 | 1 | Design system foundation | globals.css, layout.tsx, gsap.ts |
 | 2 | Motion utilities + grain | use-gsap.ts, scroll-reveal, grain-overlay |
 | 3 | Shared components | pill, section-divider, magnetic-button |
@@ -1612,5 +1879,7 @@ git push origin main
 | 12 | OG images | api/og route rewrite |
 | 13 | Responsive + a11y | Mobile nav, breakpoints, reduced motion |
 | 14 | Final integration | Cleanup, CLAUDE.md, full test |
+| 15 | Comprehensive test pass | Auth, crons, APIs, content loader, components |
+| 16 | Analytics baselines | Custom events, success metric tracking |
 
-**Estimated total: 14 tasks, ~90 steps**
+**Estimated total: 17 tasks (0-16), ~110 steps**
