@@ -37,8 +37,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -48,100 +49,162 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Brand site design tokens — dark-mode-first */
+/* ==========================================================================
+   Design Tokens — Light-first
+   ========================================================================== */
+
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0a;
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #0a0a0a;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #2563eb;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #3b82f6;
-  --chart-3: #60a5fa;
-  --chart-4: #93c5fd;
-  --chart-5: #bfdbfe;
+  /* Core surfaces */
+  --bg: 0 0% 100%;
+  --bg-subtle: 40 11% 97%;
+  --bg-muted: 40 7% 96%;
+
+  /* Core foreground */
+  --fg: 0 0% 10%;
+  --fg-secondary: 0 0% 40%;
+  --fg-muted: 0 0% 60%;
+  --fg-faint: 0 0% 80%;
+
+  /* Borders */
+  --border-base: 0 0% 94%;
+  --border-hover: 0 0% 87%;
+
+  /* Accent */
+  --accent-hsl: 217 91% 60%;
+
+  /* Pillar colors */
+  --pillar-pulse: 217 91% 60%;
+  --pillar-pulse-surface: 217 91% 97%;
+  --pillar-pulse-border: 217 91% 90%;
+
+  --pillar-build: 38 92% 50%;
+  --pillar-build-surface: 38 92% 97%;
+  --pillar-build-border: 38 92% 88%;
+
+  --pillar-learn: 152 76% 42%;
+  --pillar-learn-surface: 152 76% 97%;
+  --pillar-learn-border: 152 76% 88%;
+
+  --pillar-system: 262 83% 58%;
+  --pillar-system-surface: 262 83% 97%;
+  --pillar-system-border: 262 83% 90%;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.04);
+  --shadow-md: 0 4px 12px -2px hsl(0 0% 0% / 0.06);
+  --shadow-lg: 0 12px 32px -4px hsl(0 0% 0% / 0.08);
+
+  /* Map to shadcn tokens */
+  --background: hsl(var(--bg));
+  --foreground: hsl(var(--fg));
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(var(--fg));
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(var(--fg));
+  --primary: hsl(var(--accent-hsl));
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(var(--bg-subtle));
+  --secondary-foreground: hsl(var(--fg));
+  --muted: hsl(var(--bg-muted));
+  --muted-foreground: hsl(var(--fg-muted));
+  --accent: hsl(var(--accent-hsl));
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 84% 60%);
+  --border: hsl(var(--border-base));
+  --input: hsl(var(--border-base));
+  --ring: hsl(var(--accent-hsl));
+  --chart-1: hsl(217 91% 60%);
+  --chart-2: hsl(217 91% 70%);
+  --chart-3: hsl(217 91% 50%);
+  --chart-4: hsl(217 91% 80%);
+  --chart-5: hsl(217 91% 40%);
   --radius: 0.625rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #2563eb;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5f5f5;
-  --sidebar-accent-foreground: #0a0a0a;
-  --sidebar-border: #e5e5e5;
-  --sidebar-ring: #2563eb;
+  --sidebar: hsl(0 0% 100%);
+  --sidebar-foreground: hsl(var(--fg));
+  --sidebar-primary: hsl(var(--accent-hsl));
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(var(--bg-subtle));
+  --sidebar-accent-foreground: hsl(var(--fg));
+  --sidebar-border: hsl(var(--border-base));
+  --sidebar-ring: hsl(var(--accent-hsl));
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #141414;
-  --card-foreground: #fafafa;
-  --popover: #141414;
-  --popover-foreground: #fafafa;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --secondary: #171717;
-  --secondary-foreground: #fafafa;
-  --muted: #171717;
-  --muted-foreground: #a3a3a3;
-  --accent: #3b82f6;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --border: #262626;
-  --input: #262626;
-  --ring: #3b82f6;
-  --chart-1: #3b82f6;
-  --chart-2: #60a5fa;
-  --chart-3: #2563eb;
-  --chart-4: #93c5fd;
-  --chart-5: #1d4ed8;
-  --sidebar: #141414;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #171717;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #262626;
-  --sidebar-ring: #3b82f6;
+  /* Core surfaces */
+  --bg: 0 0% 4%;
+  --bg-subtle: 0 0% 7%;
+  --bg-muted: 0 0% 10%;
+
+  /* Core foreground */
+  --fg: 0 0% 98%;
+  --fg-secondary: 0 0% 60%;
+  --fg-muted: 0 0% 40%;
+  --fg-faint: 0 0% 20%;
+
+  /* Borders */
+  --border-base: 0 0% 12%;
+  --border-hover: 0 0% 20%;
+
+  /* Accent */
+  --accent-hsl: 217 91% 67%;
+
+  /* Pillar colors (deep tints) */
+  --pillar-pulse: 217 91% 67%;
+  --pillar-pulse-surface: 217 40% 8%;
+  --pillar-pulse-border: 217 50% 18%;
+
+  --pillar-build: 38 92% 55%;
+  --pillar-build-surface: 38 40% 8%;
+  --pillar-build-border: 38 50% 18%;
+
+  --pillar-learn: 152 76% 48%;
+  --pillar-learn-surface: 152 40% 8%;
+  --pillar-learn-border: 152 50% 18%;
+
+  --pillar-system: 262 83% 65%;
+  --pillar-system-surface: 262 40% 8%;
+  --pillar-system-border: 262 50% 18%;
+
+  /* Shadows — dark mode uses border glow instead */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  /* Map to shadcn tokens */
+  --background: hsl(var(--bg));
+  --foreground: hsl(var(--fg));
+  --card: hsl(0 0% 7%);
+  --card-foreground: hsl(var(--fg));
+  --popover: hsl(0 0% 7%);
+  --popover-foreground: hsl(var(--fg));
+  --primary: hsl(var(--accent-hsl));
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 10%);
+  --secondary-foreground: hsl(var(--fg));
+  --muted: hsl(0 0% 10%);
+  --muted-foreground: hsl(var(--fg-muted));
+  --accent: hsl(var(--accent-hsl));
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 84% 60%);
+  --border: hsl(var(--border-base));
+  --input: hsl(var(--border-base));
+  --ring: hsl(var(--accent-hsl));
+  --chart-1: hsl(217 91% 67%);
+  --chart-2: hsl(217 91% 75%);
+  --chart-3: hsl(217 91% 55%);
+  --chart-4: hsl(217 91% 82%);
+  --chart-5: hsl(217 91% 45%);
+  --sidebar: hsl(0 0% 7%);
+  --sidebar-foreground: hsl(var(--fg));
+  --sidebar-primary: hsl(var(--accent-hsl));
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(0 0% 10%);
+  --sidebar-accent-foreground: hsl(var(--fg));
+  --sidebar-border: hsl(var(--border-base));
+  --sidebar-ring: hsl(var(--accent-hsl));
 }
 
 @layer base {
-  :root {
-    --brand-primary: 210 100% 60%;
-    --brand-secondary: 280 80% 65%;
-    --brand-accent: 160 84% 45%;
-
-    --surface-0: 0 0% 4%;
-    --surface-1: 0 0% 7%;
-    --surface-2: 0 0% 10%;
-    --surface-3: 0 0% 14%;
-
-    --text-primary: 0 0% 100%;
-    --text-secondary: 0 0% 70%;
-    --text-muted: 0 0% 45%;
-
-    --border-subtle: 0 0% 15%;
-    --border-default: 0 0% 20%;
-
-    --pillar-pulse: 200 95% 55%;
-    --pillar-build: 35 95% 55%;
-    --pillar-learn: 145 80% 45%;
-    --pillar-system: 275 85% 60%;
-  }
-
   * {
     @apply border-border outline-ring/50;
   }
@@ -161,7 +224,47 @@
   color: var(--accent-foreground);
 }
 
-/* Prose styling for module content */
+/* ==========================================================================
+   Typography Utilities
+   ========================================================================== */
+
+@layer utilities {
+  .text-display {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 9vw, 6.25rem);
+    line-height: 1.05;
+    letter-spacing: -3px;
+  }
+  .text-h1 {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+  }
+  .text-h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+  }
+  .text-h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono-data {
+    font-family: var(--font-mono);
+  }
+}
+
+/* ==========================================================================
+   Prose styling for module content
+   ========================================================================== */
+
 .prose {
   --tw-prose-body: var(--muted-foreground);
   --tw-prose-headings: var(--foreground);
@@ -175,7 +278,10 @@
   --tw-prose-hr: var(--border);
 }
 
-/* Shiki code block styling */
+/* ==========================================================================
+   Shiki code block styling
+   ========================================================================== */
+
 .shiki {
   padding: 1rem;
   border-radius: var(--radius);
@@ -192,7 +298,10 @@ html.dark .shiki .light {
   display: none;
 }
 
-/* Staggered entrance animation for grid children */
+/* ==========================================================================
+   Staggered entrance animation for grid children
+   ========================================================================== */
+
 .stagger-fade-in > * {
   animation: enter 0.5s ease-out both;
   --tw-enter-opacity: 0;
@@ -203,7 +312,10 @@ html.dark .shiki .light {
 .stagger-fade-in > *:nth-child(3) { animation-delay: 200ms; }
 .stagger-fade-in > *:nth-child(4) { animation-delay: 300ms; }
 
-/* Tool-specific content visibility */
+/* ==========================================================================
+   Tool-specific content visibility
+   ========================================================================== */
+
 [data-tool="cursor"] {
   display: none;
 }
