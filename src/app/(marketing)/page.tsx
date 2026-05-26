@@ -1,68 +1,161 @@
-import Link from 'next/link'
 import { listContentByPillar, listAllContent } from '@/lib/content/loader'
-import { PillarSection } from '@/components/marketing/pillar-section'
+import { createClient } from '@/lib/supabase/server'
+import { HeroSection } from '@/components/hero/hero-section'
+import { FirstVisitBanner } from '@/components/homepage/first-visit-banner'
+import { StartHereRow } from '@/components/homepage/start-here-row'
+import { PinnedPillars } from '@/components/homepage/pinned-pillars'
+import type { PillarData } from '@/components/homepage/pinned-pillars'
+import { NumberTheater } from '@/components/homepage/number-theater'
+import { BentoGrid } from '@/components/homepage/bento-grid'
+import { GradientBreak } from '@/components/homepage/gradient-break'
+import { HorizontalShowcase } from '@/components/homepage/horizontal-showcase'
+import { SectionDivider } from '@/components/shared/section-divider'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Prototype Studio — Build Real Products with AI',
-  description: 'Learn to build real products with AI. Watch sessions. Follow guides. Set up your own agent system.',
+  description:
+    'The AI prototyping platform for PMs, analysts, and builders who want to ship. Watch sessions. Follow guides. Set up your own agent system.',
+}
+
+async function getPillarCounts() {
+  try {
+    const supabase = await createClient()
+    const pillars = ['pulse', 'build', 'learn', 'system'] as const
+    const counts: Record<string, number> = {}
+
+    for (const pillar of pillars) {
+      const items = await listContentByPillar(pillar)
+      counts[pillar] = items.length
+    }
+
+    // Try to get tool count from Supabase
+    let toolCount = 9
+    try {
+      const { count } = await supabase
+        .from('tools')
+        .select('*', { count: 'exact', head: true })
+      if (count !== null) toolCount = count
+    } catch {
+      // Fallback to default
+    }
+
+    return { counts, toolCount }
+  } catch {
+    return {
+      counts: { pulse: 0, build: 0, learn: 0, system: 0 },
+      toolCount: 9,
+    }
+  }
+}
+
+async function getRecentReleases() {
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase
+      .from('tool_releases')
+      .select('tool_id, version, tools(name)')
+      .order('released_at', { ascending: false })
+      .limit(6)
+
+    if (!data || data.length === 0) return []
+
+    const colors = [
+      'hsl(var(--pillar-pulse))',
+      'hsl(var(--pillar-build))',
+      'hsl(var(--pillar-learn))',
+      'hsl(var(--pillar-system))',
+    ]
+
+    return data.map((r, i) => ({
+      toolName: (r.tools as unknown as { name: string })?.name ?? 'Unknown',
+      version: r.version ?? '',
+      color: colors[i % colors.length],
+    }))
+  } catch {
+    return []
+  }
 }
 
 export default async function HomePage() {
-  const [pulseItems, buildItems, learnItems, systemItems, allItems] = await Promise.all([
-    listContentByPillar('pulse', { limit: 3 }),
-    listContentByPillar('build', { limit: 3 }),
-    listContentByPillar('learn', { featured: true, limit: 3 }),
-    listContentByPillar('system', { limit: 3 }),
+  const [{ counts, toolCount }, recentReleases, allItems] = await Promise.all([
+    getPillarCounts(),
+    getRecentReleases(),
     listAllContent(),
   ])
 
+  const pillarData: PillarData[] = [
+    {
+      name: 'pulse',
+      title: "What's happening",
+      description:
+        'Real-time tracking of AI coding tools. Release briefs, comparisons, and capability analysis across the ecosystem.',
+      stats: [
+        { value: toolCount, label: 'tools tracked' },
+        { value: counts.pulse || 0, label: 'briefs' },
+        { value: 270, label: 'capabilities' },
+      ],
+    },
+    {
+      name: 'build',
+      title: 'Watch it get built',
+      description:
+        'Full build sessions recorded from zero to shipped product. Real decisions, real agent prompts, real outcomes.',
+      stats: [
+        { value: counts.build || 0, label: 'sessions' },
+        { value: 4, label: 'projects shipped' },
+        { value: 34, label: 'features built' },
+      ],
+    },
+    {
+      name: 'learn',
+      title: 'Pick up the skills',
+      description:
+        'Guides, patterns, and resources for non-engineers building with AI tools. From first prompt to production.',
+      stats: [
+        { value: counts.learn || 0, label: 'resources' },
+        { value: 3, label: 'difficulty levels' },
+        { value: allItems.length, label: 'total items' },
+      ],
+    },
+    {
+      name: 'system',
+      title: 'Your agent operating system',
+      description:
+        'Starters, playbooks, and configurations for setting up multi-agent workflows. Copy, customize, ship.',
+      stats: [
+        { value: counts.system || 0, label: 'configs' },
+        { value: 5, label: 'agent patterns' },
+        { value: 12, label: 'API endpoints' },
+      ],
+    },
+  ]
+
   return (
-    <div className="mx-auto max-w-6xl px-6">
-      <section className="relative py-24 text-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-purple-500/5 to-transparent" />
-        <div className="relative">
-          <h1 className="mx-auto mb-6 max-w-3xl text-5xl font-bold tracking-tight text-white sm:text-6xl">
-            Build real products with AI
-          </h1>
-          <p className="mx-auto mb-10 max-w-xl text-lg text-white/50">
-            Watch sessions. Follow guides. Set up your own agent system.
-            Everything you need to go from idea to shipped product.
-          </p>
-          <div className="flex items-center justify-center gap-4">
-            <Link href="/learn" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-90">
-              Start learning
-            </Link>
-            <Link href="/pulse" className="rounded-lg border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5">
-              See what&apos;s new
-            </Link>
-          </div>
-        </div>
-      </section>
+    <>
+      <HeroSection />
+      <FirstVisitBanner />
 
-      <section className="mb-20 grid grid-cols-2 gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-6 sm:grid-cols-4">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white">9</div>
-          <div className="text-xs text-white/40">AI tools tracked</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white">{allItems.length}</div>
-          <div className="text-xs text-white/40">resources</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white">4</div>
-          <div className="text-xs text-white/40">content pillars</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white">Free</div>
-          <div className="text-xs text-white/40">to start</div>
-        </div>
-      </section>
+      <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
+        <StartHereRow />
+        <SectionDivider number="01" label="Platform" />
+      </div>
 
-      <PillarSection title="Pulse" description="What's happening across AI coding tools" href="/pulse" items={pulseItems} />
-      <PillarSection title="Build" description="Watch someone take an idea to a working app" href="/build" items={buildItems} />
-      <PillarSection title="Learn" description="Pick up the skills you need" href="/learn" items={learnItems} />
-      <PillarSection title="System" description="Set up AI agents as your operating system" href="/system" items={systemItems} />
-    </div>
+      <PinnedPillars pillarData={pillarData} />
+
+      <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
+        <NumberTheater />
+        <SectionDivider number="02" label="Features" />
+        <BentoGrid recentReleases={recentReleases} />
+      </div>
+
+      <GradientBreak />
+
+      <div className="max-w-[1300px] mx-auto px-6 lg:px-12 py-40">
+        <SectionDivider number="03" label="Showcase" />
+      </div>
+
+      <HorizontalShowcase />
+    </>
   )
 }
