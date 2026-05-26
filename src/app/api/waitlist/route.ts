@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { emailWrapper, emailButton } from "@/lib/email/templates";
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
     .upsert({ email }, { onConflict: "email", ignoreDuplicates: true });
 
   if (dbError) {
+    Sentry.captureException(dbError);
     console.error("[waitlist] db error:", dbError.message);
     return NextResponse.json({ error: "Subscribe failed" }, { status: 500 });
   }
@@ -58,6 +60,7 @@ export async function POST(req: NextRequest) {
         ),
       });
     } catch (err) {
+      Sentry.captureException(err);
       console.error("[waitlist] email error:", err);
     }
   }

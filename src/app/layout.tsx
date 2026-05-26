@@ -44,6 +44,7 @@ export const metadata: Metadata = {
     creator: siteConfig.creator,
   },
   robots: { index: true, follow: true },
+  alternates: { canonical: siteConfig.url },
 };
 
 export default function RootLayout({
@@ -53,6 +54,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: siteConfig.name,
+              url: siteConfig.url,
+              logo: `${siteConfig.url}/logo.png`,
+              description: siteConfig.description,
+              sameAs: [],
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >

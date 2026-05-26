@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { emailWrapper, emailButton } from '@/lib/email/templates'
@@ -14,6 +15,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!process.env.RESEND_API_KEY) {
+    Sentry.captureMessage('[toolkit-subscribe] RESEND_API_KEY not configured', 'warning')
     console.error('[toolkit-subscribe] RESEND_API_KEY not configured')
     return NextResponse.json({ error: 'Email service unavailable' }, { status: 503 })
   }
@@ -28,6 +30,7 @@ export async function POST(req: NextRequest) {
     .upsert({ email, source }, { onConflict: 'email', ignoreDuplicates: true })
 
   if (dbError) {
+    Sentry.captureException(dbError)
     console.error('[toolkit-subscribe] db error:', dbError.message)
     return NextResponse.json({ error: 'Subscribe failed' }, { status: 500 })
   }
@@ -68,6 +71,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
     // Email failure is non-fatal — subscriber is already saved
+    Sentry.captureException(err)
     console.error('[toolkit-subscribe] email error:', err)
   }
 

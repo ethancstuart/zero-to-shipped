@@ -8,9 +8,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CheckoutButton } from "@/components/pricing/checkout-button";
 import { PremiumGateTracker } from "./premium-gate-tracker";
-import { FoundingCounter } from "@/components/marketing/founding-counter";
 import {
   Card,
   CardHeader,
@@ -170,44 +168,26 @@ export function PremiumGate({
                   </Progress>
                 </div>
 
-                {/* Pricing */}
+                {/* Coming soon notice */}
                 <div className="space-y-3 text-center">
-                  <div className="flex items-center justify-center gap-3">
-                    <span className="text-sm text-muted-foreground line-through">
-                      $199
-                    </span>
-                    <span className="text-2xl font-bold">$99</span>
-                    <span className="text-xs font-medium text-muted-foreground">
-                      founding price
-                    </span>
-                  </div>
-                  <FoundingCounter />
-                  <p className="text-xs text-muted-foreground">
-                    Founding members also get Season 2 (agent-building modules)
-                    free
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Premium content coming soon.
                   </p>
                 </div>
 
-                {/* Variant-specific hook — the A/B test signal */}
+                {/* Variant-specific hook */}
                 <p className="text-center text-sm font-medium text-foreground/90">
                   {variantCopy.hook}
                 </p>
 
                 {/* CTA */}
                 <div className="space-y-2">
-                  <CheckoutButton
-                    tier="full_access"
-                    label={variantCopy.ctaLabel}
-                    source="premium_gate"
-                    variant={variant}
-                    moduleNumber={moduleNumber}
-                  />
                   <Button
                     variant="outline"
                     className="w-full"
                     render={<Link href="/pricing" />}
                   >
-                    Compare Plans
+                    View Pricing
                     <ArrowRight className="ml-1 size-4" />
                   </Button>
                 </div>
@@ -215,23 +195,13 @@ export function PremiumGate({
 
               <CardFooter className="flex-col gap-2">
                 <p className="text-xs text-muted-foreground">
-                  One-time payment. Lifetime access. No subscription.
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Not satisfied?{" "}
-                  <Link
-                    href="/terms#refund-policy"
-                    className="underline underline-offset-2 transition-colors hover:text-foreground"
-                  >
-                    14-day money-back guarantee
-                  </Link>
-                  . No questions asked.
+                  All free content is available now. Premium modules are coming soon.
                 </p>
                 <Link
                   href="/learn"
                   className="text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"
                 >
-                  Not ready yet? Continue with free lessons &rarr;
+                  Continue with free lessons &rarr;
                 </Link>
               </CardFooter>
             </Card>

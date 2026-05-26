@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { getStripe } from "@/lib/stripe";
 import { emailWrapperDark } from "@/lib/email/templates";
 
 export async function GET(request: NextRequest) {
@@ -27,7 +26,6 @@ export async function GET(request: NextRequest) {
     premiumUsersRes,
     completionsRes,
     waitlistRes,
-    foundingSpotsRes,
   ] = await Promise.all([
     // Total users
     supabase
@@ -53,35 +51,7 @@ export async function GET(request: NextRequest) {
     supabase
       .from("waitlist")
       .select("email", { count: "exact", head: true }),
-    // Founding spots
-    (async () => {
-      try {
-        const couponId = process.env.STRIPE_COUPON_FOUNDING;
-        if (!couponId) return { remaining: "N/A", total: 100 };
-        const coupon = await getStripe().coupons.retrieve(couponId);
-        const total = coupon.max_redemptions ?? 100;
-        const used = coupon.times_redeemed ?? 0;
-        return { remaining: Math.max(0, total - used), total };
-      } catch (error) {
-        Sentry.captureException(error);
-        return { remaining: "Error", total: 100 };
-      }
-    })(),
   ]);
-
-  // Stripe revenue (last 24h)
-  let revenue24h = 0;
-  try {
-    const charges = await getStripe().charges.list({
-      created: { gte: Math.floor(yesterday.getTime() / 1000) },
-      limit: 100,
-    });
-    revenue24h = charges.data
-      .filter((c) => c.status === "succeeded")
-      .reduce((sum, c) => sum + c.amount, 0) / 100;
-  } catch (error) {
-    Sentry.captureException(error);
-  }
 
   // Top modules completed (all time)
   const { data: topModules } = await supabase
@@ -104,8 +74,6 @@ export async function GET(request: NextRequest) {
     premiumUsers: premiumUsersRes.count ?? 0,
     completions24h: completionsRes.count ?? 0,
     waitlistSize: waitlistRes.count ?? 0,
-    foundingSpots: foundingSpotsRes,
-    revenue24h,
     topModules: sortedModules,
   };
 
@@ -135,20 +103,12 @@ export async function GET(request: NextRequest) {
               <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.premiumUsers}</td>
             </tr>
             <tr>
-              <td style="padding: 8px 0; color: #888;">Revenue (24h)</td>
-              <td style="padding: 8px 0; text-align: right; color: #22c55e; font-weight: bold;">$${digest.revenue24h.toFixed(2)}</td>
-            </tr>
-            <tr>
               <td style="padding: 8px 0; color: #888;">Completions (24h)</td>
               <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.completions24h}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0; color: #888;">Waitlist Size</td>
               <td style="padding: 8px 0; text-align: right; color: #fff; font-weight: bold;">${digest.waitlistSize}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; color: #888;">Founding Spots Left</td>
-              <td style="padding: 8px 0; text-align: right; color: #f59e0b; font-weight: bold;">${digest.foundingSpots.remaining} / ${digest.foundingSpots.total}</td>
             </tr>
           </table>
 

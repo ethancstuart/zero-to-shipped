@@ -16,13 +16,13 @@ export default async function WelcomePage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("display_name, subscription_tier, stripe_customer_id")
+    .select("display_name, subscription_tier")
     .eq("id", user.id)
     .single();
 
   const typedProfile = profile as Pick<
     Profile,
-    "display_name" | "subscription_tier" | "stripe_customer_id"
+    "display_name" | "subscription_tier"
   > | null;
 
   const name = typedProfile?.display_name?.split(" ")[0] ?? "there";
