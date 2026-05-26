@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import { NavLoginButton } from "./nav-login-button";
+import { MobileMenu } from "./mobile-menu";
 import { createClient } from "@/lib/supabase/server";
 
 const navItems = [
@@ -39,17 +40,20 @@ export async function MarketingNav() {
         </div>
 
         <div className="flex items-center gap-3">
-          <ThemeToggle />
-          {user ? (
-            <Link
-              href="/dashboard"
-              className="bg-[hsl(var(--fg))] text-[hsl(var(--bg))] rounded-full px-5 py-2 text-xs transition-all duration-300 hover:opacity-90"
-            >
-              Dashboard
-            </Link>
-          ) : (
-            <NavLoginButton />
-          )}
+          <div className="hidden lg:flex items-center gap-3">
+            <ThemeToggle />
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="bg-[hsl(var(--fg))] text-[hsl(var(--bg))] rounded-full px-5 py-2 text-xs transition-all duration-300 hover:opacity-90"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <NavLoginButton />
+            )}
+          </div>
+          <MobileMenu isAuthenticated={!!user} />
         </div>
       </nav>
     </header>

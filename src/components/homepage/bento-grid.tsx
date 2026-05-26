@@ -27,7 +27,7 @@ function AgentReplayTile() {
   ]
 
   return (
-    <div className="col-span-1 row-span-2 sm:col-span-2 sm:row-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between overflow-hidden">
+    <div className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between overflow-hidden">
       <div>
         <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
           Agent Replay
@@ -59,7 +59,7 @@ function ToolIntelligenceTile() {
   const activeCells = [2, 5, 7, 9, 11, 14, 17, 19, 22]
 
   return (
-    <div className="col-span-1 sm:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
+    <div className="col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
         Tool Intelligence
       </div>
@@ -129,7 +129,7 @@ function LiveFeedTile({ releases }: { releases: RecentRelease[] }) {
   const doubled = [...items, ...items]
 
   return (
-    <div className="col-span-1 sm:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
+    <div className="col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-4">
         Live Feed
       </div>
@@ -178,7 +178,7 @@ export function BentoGrid({ recentReleases }: BentoGridProps) {
           to   { transform: translateX(-50%); }
         }
       `}</style>
-      <StaggerGrid className="grid grid-cols-1 sm:grid-cols-4 gap-4 py-10" stagger={0.08}>
+      <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-10" stagger={0.08}>
         <AgentReplayTile />
         <ToolIntelligenceTile />
         <TransparencyTile />

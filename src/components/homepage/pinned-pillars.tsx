@@ -190,8 +190,10 @@ function MobilePillars({ pillarData }: PinnedPillarsProps) {
   )
 }
 
-function getIsMobile(): boolean {
-  return window.innerWidth < 1024
+function getIsMobileOrReduced(): boolean {
+  if (window.innerWidth < 1024) return true
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true
+  return false
 }
 
 function getIsMobileServer(): boolean {
@@ -200,11 +202,16 @@ function getIsMobileServer(): boolean {
 
 function subscribeResize(callback: () => void): () => void {
   window.addEventListener('resize', callback)
-  return () => window.removeEventListener('resize', callback)
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+  mq.addEventListener('change', callback)
+  return () => {
+    window.removeEventListener('resize', callback)
+    mq.removeEventListener('change', callback)
+  }
 }
 
 export function PinnedPillars({ pillarData }: PinnedPillarsProps) {
-  const isMobile = useSyncExternalStore(subscribeResize, getIsMobile, getIsMobileServer)
+  const isMobile = useSyncExternalStore(subscribeResize, getIsMobileOrReduced, getIsMobileServer)
 
   return isMobile ? (
     <MobilePillars pillarData={pillarData} />

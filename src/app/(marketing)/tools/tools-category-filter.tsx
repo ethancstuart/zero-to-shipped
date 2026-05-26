@@ -55,7 +55,7 @@ export function ToolsCategoryFilter({ tools, categories }: ToolsCategoryFilterPr
       </div>
 
       {/* Tool cards grid */}
-      <StaggerGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <StaggerGrid className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((tool) => (
           <ToolCard
             key={tool.slug}
