@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Rocket, Star, BookOpen, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SignupTracker } from "@/components/analytics/signup-tracker";
 import type { Profile } from "@/types";
 
 export const metadata = { title: "Welcome to Prototype Studio" };
@@ -30,6 +31,7 @@ export default async function WelcomePage() {
 
   return (
     <div className="mx-auto max-w-2xl py-12 text-center">
+      <SignupTracker />
       {/* Celebration header */}
       <div className="mb-8">
         <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-primary/10">

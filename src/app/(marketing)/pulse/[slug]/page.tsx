@@ -74,7 +74,7 @@ export default async function PulseDetailPage({ params }: Props) {
         {/* Mobile ToC */}
         <MobileToc />
 
-        <ViewTracker slug={frontmatter.slug} />
+        <ViewTracker slug={frontmatter.slug} pillar={frontmatter.pillar} type={frontmatter.type} />
 
         {/* Two-column layout */}
         <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
