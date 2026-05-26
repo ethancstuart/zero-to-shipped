@@ -1,12 +1,16 @@
 # Prototype Studio — Visual Design Spec
 
-**Status:** Approved  
+**Status:** Approved (with Council + Masthead review amendments)  
 **Date:** 2026-05-25  
 **Scope:** Full visual overhaul — design system, motion, all pages
 
 ## Design Direction
 
-Light editorial + system synthesis. White, fresh, marketing-friendly, not intimidating. High-craft kinetic editorial motion at the obys-2 / phantom.land level. Both light and dark themes fully designed.
+Light editorial + system synthesis. White, fresh, marketing-friendly, not intimidating. High-craft kinetic editorial motion at the obys-2 / phantom.land level. Both light and dark themes fully designed at launch.
+
+**Core identity:** "Learn to build with AI." Everything else (tool tracking, agent OS, showcase) supports the learning mission.
+
+**Audience tone:** Soften for non-technical users (PMs, analysts, builders). Monospace reserved for data contexts only — not used as brand identity on marketing surfaces.
 
 **NOT:** generic SaaS minimalism, dark hacker aesthetic, gimmicky 3D (no bruno-simon).
 
@@ -30,6 +34,10 @@ Light editorial + system synthesis. White, fresh, marketing-friendly, not intimi
 | `--text-small` | 13px | 400 | DM Sans |
 | `--text-caption` | 11px | 400 | JetBrains Mono |
 | `--text-micro` | 10px | 400 | JetBrains Mono |
+
+### Monospace Usage (Review Amendment)
+
+JetBrains Mono is **data-only**: code blocks, version badges, timestamps, the `// prototype.studio` hero signature, and stats/metrics. Pillar labels, nav logo, footer headings, pills, and section labels use DM Sans with letter-spacing tracking instead. This keeps the system aesthetic without alienating non-technical visitors.
 
 ## Color System
 
@@ -91,7 +99,7 @@ Light editorial + system synthesis. White, fresh, marketing-friendly, not intimi
 | Bento tiles | Fade + slide up 30px, 100ms stagger | 600ms | cubic-bezier(0.16, 1, 0.3, 1) |
 | Gradient break text | Fade + slide up 30px | 1000ms | cubic-bezier(0.16, 1, 0.3, 1) |
 
-All entrance animations are scroll-triggered via IntersectionObserver (threshold 0.1-0.3).
+All entrance animations are scroll-triggered via GSAP ScrollTrigger (replaces custom IntersectionObserver code and Framer Motion for scroll-driven work).
 
 ### Interactive Motion
 
@@ -109,7 +117,7 @@ All entrance animations are scroll-triggered via IntersectionObserver (threshold
 
 | Feature | Behavior |
 |---------|----------|
-| Scroll-pinned pillars | Section height 400vh, sticky inner. Scroll progress maps to 4 pillar states. Tabs highlight, detail cards swap with fade+slide, stats count up on each transition. |
+| Scroll-pinned pillars | Section height 400vh, sticky inner. Scroll progress maps to 4 pillar states. Tabs highlight, detail cards swap with fade+slide, stats count up on each transition. **Progress dots** (4 dots, one per pillar) fixed on right edge showing current state. |
 | Number theater | Digits scramble randomly for first 40% of animation, then ease to target. 1200ms duration. Triggered by IntersectionObserver. |
 | Parallax | Decorative elements at 0.5x-0.8x scroll speed. Content at 1x. |
 | Section color transitions | Background gradient shifts between sections using pillar tints |
@@ -120,7 +128,9 @@ View Transitions API for route changes. Shared element animation: content card �
 
 ## Generative Hero Background
 
-Canvas-based dot mesh grid (20x14 points, 60px spacing). Lines connect adjacent dots. Mouse proximity (250px radius) warps points toward cursor at 8% force. Dots are accent-colored with distance-based opacity (0.03-0.25). Lines at rgba(200,210,230,0.15). Fixed position behind hero, 40% overall opacity.
+Canvas-based dot mesh grid (20x14 points, 60px spacing). Lines connect adjacent dots. Mouse proximity (250px radius) warps points toward cursor at 8% force. Dots are accent-colored with distance-based opacity (0.03-0.25). Lines at rgba(200,210,230,0.15). 40% overall opacity.
+
+**Scope:** Hero section only. Fades out as user scrolls past the hero (opacity transitions to 0 over 200px of scroll). The mesh is the greeting, not the wallpaper.
 
 ## Component Library
 
@@ -192,6 +202,7 @@ Canvas-based dot mesh grid (20x14 points, 60px spacing). Lines connect adjacent 
 ### Live Feed Ticker
 
 - Horizontal auto-scrolling strip
+- **Data source:** Automated from `tool_releases` Supabase table (populated by tool-intelligence cron every 6 hours). Query 10 most recent releases.
 - Tool events with colored dots
 - JetBrains Mono, 11px, fg-muted
 - 20s linear infinite animation, duplicated content for seamless loop
@@ -207,13 +218,21 @@ Canvas-based dot mesh grid (20x14 points, 60px spacing). Lines connect adjacent 
 
 ### Homepage
 
-1. **Hero** (100vh): Generative mesh bg, comment syntax `// prototype.studio`, word-by-word mask reveal headline ("Build Real / Products. / With AI."), DM Sans subtitle, primary + secondary CTA, pulsing pillar dots meta, scroll indicator
-2. **Scroll-pinned pillars** (400vh sticky): Left tab navigation cycling through 4 pillars with detail card swap + number scramble stats
-3. **Number theater stats**: 5-column stats bar with scramble-to-target animation
-4. **Bento grid features**: 6 tiles (1 large agent replay, 1 medium tool intelligence, 1 medium live ticker, 2 small stats)
-5. **Full-bleed gradient break**: Pillar color wash, centered large statement
-6. **Horizontal scroll showcase**: Drag-scrollable project cards with snap
-7. **Footer**
+**Two-track:** Logged-out users see the marketing spectacle. Logged-in users redirect to /dashboard with a simplified homepage accessible via nav.
+
+**Marketing Homepage (logged out):**
+1. **Hero** (100vh): Generative mesh bg (fades on scroll), comment syntax `// prototype.studio`, word-by-word mask reveal headline ("Build Real / Products. / With AI."), DM Sans subtitle, primary + secondary CTA, pulsing pillar dots meta, scroll indicator
+2. **"Start here" content row**: 3 curated content cards (best beginner pieces) — visible within 2 scrolls so time-constrained visitors can engage immediately
+3. **Scroll-pinned pillars** (400vh sticky): Left tab navigation cycling through 4 pillars with detail card swap + number scramble stats. Progress dots on right edge.
+4. **Number theater stats**: 5-column stats bar with scramble-to-target animation
+5. **Bento grid features**: 6 tiles (1 large agent replay, 1 medium tool intelligence, 1 medium live ticker, 2 small stats)
+6. **Full-bleed gradient break**: Pillar color wash, centered large statement
+7. **Horizontal scroll showcase**: Drag-scrollable project cards with snap + arrow buttons for mouse users. Seeded with Ethan's own builds (Meridian, RidgeCap, NexusWatch, LongTable).
+8. **Footer**
+
+**First-visit banner:** If no auth cookie, show subtle dismissible banner above pillar cards: "New here? Start with Learn →" linking to a beginner lesson.
+
+**Primary CTA behavior:** "Start building" scrolls to content / deep-links to the best Build walkthrough. "Explore the platform" navigates to pillar overview. No auth wall on first click — let people browse first, convert through value.
 
 ### Pillar Hub (/pulse, /build, /learn, /system)
 
@@ -231,6 +250,7 @@ Canvas-based dot mesh grid (20x14 points, 60px spacing). Lines connect adjacent 
 5. Two-column layout: prose body (max-width 720px) + sticky sidebar
 6. Sidebar: table of contents (active state with left border), bookmark action, related content
 7. Bottom: next/prev navigation + related content card row
+8. **Mobile (<640px):** Sidebar collapses. ToC becomes a collapsible top bar below metadata — expands on tap, collapses after selection.
 
 ### Tools Directory (/tools)
 
@@ -319,11 +339,27 @@ Invert all core tokens per the color table above. Pillar surfaces shift to deep 
 - CSS animations preferred over JS where possible
 - View transitions: progressive enhancement (check for API support)
 
+## OG Images & Social Cards
+
+Auto-generated per page type using Next.js OG image generation (`/api/og`):
+- **Template:** Pillar color band (left edge) + title in Space Grotesk + `// prototype.studio` comment mark (bottom right) + white background
+- **Per-type variants:** Content pages use pillar color, tool pages use tool logo, homepage uses gradient
+- Consistent, recognizable, zero manual effort
+
+## Paywall Strategy (Future)
+
+When premium tier launches, gate at the content level using existing `isPremium` MDX frontmatter. Show title + first paragraph, blur the rest with "Upgrade to continue" CTA. Free features (sandboxes, AI assistant, bookmarks, skill tree) remain free — premium unlocks advanced content only.
+
+## Accessibility
+
+**prefers-reduced-motion:** All elements render in their final "after animation" position immediately. No motion, full content. The site must be beautiful even without a single animation — static final states are the fallback, not a degraded experience.
+
 ## Implementation Notes
 
-- Build as Tailwind CSS v4 tokens in globals.css + custom CSS for animations
-- Framer Motion for complex entrance animations and view transitions
+- Build as Tailwind CSS v4 tokens in globals.css + custom CSS for base animations
+- **GSAP + ScrollTrigger** for all scroll-driven animations, entrance choreography, and pinned sections (replaces Framer Motion + custom IO for scroll work)
 - Canvas API for generative mesh (no external lib)
-- All motion respects `prefers-reduced-motion` — disable animations, show static states
+- All motion respects `prefers-reduced-motion` — show static final states
 - shadcn/ui components restyled to match (override base-nova defaults)
 - Custom MDX components inherit the type scale and color tokens
+- Google Fonts: Space Grotesk (300, 400, 500, 600, 700), DM Sans (300, 400, 500), JetBrains Mono (300, 400)
