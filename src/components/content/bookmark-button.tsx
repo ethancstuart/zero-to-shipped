@@ -38,8 +38,8 @@ export function BookmarkButton({ slug }: BookmarkButtonProps) {
       disabled={loading}
       className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
         bookmarked
-          ? 'border-white/30 bg-white/10 text-white'
-          : 'border-white/10 text-white/40 hover:text-white/60'
+          ? 'border-[hsl(var(--border-hover))] bg-[hsl(var(--bg-muted))] text-[hsl(var(--fg))]'
+          : 'border-[hsl(var(--border-base))] text-[hsl(var(--fg-muted))] hover:text-[hsl(var(--fg-secondary))]'
       }`}
     >
       {bookmarked ? 'Bookmarked' : 'Bookmark'}

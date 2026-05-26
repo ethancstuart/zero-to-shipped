@@ -300,8 +300,8 @@ ORDER BY table_name, ordinal_position;`}
                   <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     SQL
                   </p>
-                  <div className="overflow-x-auto rounded-lg bg-slate-950 px-4 py-3">
-                    <pre className="font-mono text-xs leading-relaxed text-slate-100 whitespace-pre">
+                  <div className="overflow-x-auto rounded-lg bg-[hsl(var(--bg-muted))] px-4 py-3">
+                    <pre className="font-mono text-xs leading-relaxed text-[hsl(var(--fg-secondary))] whitespace-pre">
                       {q.sql}
                     </pre>
                   </div>

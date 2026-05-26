@@ -33,7 +33,7 @@ export function CapabilityMatrix({ tools, capabilities }: CapabilityMatrixProps)
 
   if (tools.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-white/10 p-12 text-center text-white/30">
+      <div className="rounded-xl border border-dashed border-[hsl(var(--border-base))] p-12 text-center text-[hsl(var(--fg-faint))]">
         Select tools above to compare capabilities
       </div>
     )
@@ -44,13 +44,13 @@ export function CapabilityMatrix({ tools, capabilities }: CapabilityMatrixProps)
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th className="sticky left-0 bg-black/80 px-4 py-3 text-left text-sm font-medium text-white/50">
+            <th className="sticky left-0 bg-[hsl(var(--bg))]/95 backdrop-blur-sm px-4 py-3 text-left text-sm font-medium text-[hsl(var(--fg-muted))]">
               Capability
             </th>
             {tools.map((tool) => (
               <th
                 key={tool.id}
-                className="px-4 py-3 text-center text-sm font-medium text-white"
+                className="px-4 py-3 text-center text-sm font-medium text-[hsl(var(--fg))]"
               >
                 <a href={`/tools/${tool.slug}`} className="hover:underline">
                   {tool.name}
@@ -65,14 +65,14 @@ export function CapabilityMatrix({ tools, capabilities }: CapabilityMatrixProps)
               <tr key={`cat-${category}`}>
                 <td
                   colSpan={tools.length + 1}
-                  className="border-t border-white/10 px-4 py-2 text-xs font-medium uppercase tracking-wider text-white/30"
+                  className="border-t border-[hsl(var(--border-base))] px-4 py-2 text-xs font-medium uppercase tracking-wider text-[hsl(var(--fg-faint))]"
                 >
                   {category}
                 </td>
               </tr>
               {capNames.map((capName) => (
-                <tr key={capName} className="border-t border-white/5">
-                  <td className="sticky left-0 bg-black/80 px-4 py-2.5 text-sm text-white/70">
+                <tr key={capName} className="border-t border-[hsl(var(--border-base))]">
+                  <td className="sticky left-0 bg-[hsl(var(--bg))]/95 backdrop-blur-sm px-4 py-2.5 text-sm text-[hsl(var(--fg-secondary))]">
                     {capName}
                   </td>
                   {tools.map((tool) => {
@@ -81,17 +81,17 @@ export function CapabilityMatrix({ tools, capabilities }: CapabilityMatrixProps)
                       <td key={tool.id} className="px-4 py-2.5 text-center">
                         {cap ? (
                           <div className="flex flex-col items-center gap-1">
-                            <span className={cap.supported ? 'text-green-400' : 'text-white/15'}>
+                            <span className={cap.supported ? 'text-green-400' : 'text-[hsl(var(--fg-faint))]'}>
                               {cap.supported ? '✓' : '✗'}
                             </span>
                             {cap.quality_score && (
-                              <span className="text-xs text-white/30">
+                              <span className="text-xs text-[hsl(var(--fg-faint))]">
                                 {cap.quality_score}/5
                               </span>
                             )}
                           </div>
                         ) : (
-                          <span className="text-white/10">—</span>
+                          <span className="text-[hsl(var(--fg-faint))]">—</span>
                         )}
                       </td>
                     )

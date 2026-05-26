@@ -9,12 +9,27 @@ export function CursorSpotlight() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const el = ref.current
     if (!el) return
+
+    const updateGradient = () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      const color = isDark ? 'rgba(96,165,250,0.06)' : 'rgba(59,130,246,0.04)'
+      el.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`
+    }
+
+    updateGradient()
+
+    const observer = new MutationObserver(updateGradient)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+
     const onMove = (e: MouseEvent) => {
       el.style.left = `${e.clientX}px`
       el.style.top = `${e.clientY}px`
     }
     document.addEventListener('mousemove', onMove)
-    return () => document.removeEventListener('mousemove', onMove)
+    return () => {
+      document.removeEventListener('mousemove', onMove)
+      observer.disconnect()
+    }
   }, [])
 
   return (

@@ -16,7 +16,7 @@ export function CostTicker() {
       .catch(() => {})
   }, [])
 
-  if (cost === null) return <span className="text-white/30">loading...</span>
+  if (cost === null) return <span className="text-[hsl(var(--fg-faint))]">loading...</span>
 
   return (
     <span className="inline-flex items-center rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1 text-sm font-medium text-green-400">

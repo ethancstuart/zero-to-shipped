@@ -28,8 +28,8 @@ export function ForYouSidebar() {
   if (recommendations.length === 0) return null
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-      <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/50">
+    <div className="rounded-xl border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-5">
+      <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[hsl(var(--fg-muted))]">
         For You
       </h3>
       <div className="space-y-3">
@@ -37,10 +37,10 @@ export function ForYouSidebar() {
           <Link
             key={rec.slug}
             href={`/${rec.pillar}/${rec.slug}`}
-            className="block rounded-lg p-3 transition-colors hover:bg-white/5"
+            className="block rounded-lg p-3 transition-colors hover:bg-[hsl(var(--bg-muted))]"
           >
-            <div className="text-sm font-medium text-white/80">{rec.title}</div>
-            <div className="text-xs text-white/30">{rec.reason}</div>
+            <div className="text-sm font-medium text-[hsl(var(--fg-secondary))]">{rec.title}</div>
+            <div className="text-xs text-[hsl(var(--fg-faint))]">{rec.reason}</div>
           </Link>
         ))}
       </div>

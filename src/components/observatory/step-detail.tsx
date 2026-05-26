@@ -13,28 +13,28 @@ const roleLabels: Record<string, string> = {
 }
 
 const stepStatusColors = {
-  pending: 'text-white/30',
+  pending: 'text-[hsl(var(--fg-faint))]',
   running: 'text-yellow-400',
   completed: 'text-green-400',
   failed: 'text-red-400',
-  skipped: 'text-white/20',
+  skipped: 'text-[hsl(var(--fg-faint))]',
 } as const
 
 export function StepDetail({ step }: StepDetailProps) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.01] px-4 py-3">
+    <div className="flex items-center justify-between rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-muted))] px-4 py-3">
       <div className="flex items-center gap-3">
-        <span className="w-6 text-center text-xs text-white/20">{step.step_order}</span>
-        <span className="text-sm font-medium text-white/80">
+        <span className="w-6 text-center text-xs text-[hsl(var(--fg-faint))]">{step.step_order}</span>
+        <span className="text-sm font-medium text-[hsl(var(--fg-secondary))]">
           {roleLabels[step.agent_role] || step.agent_role}
         </span>
         <span className={`text-xs ${stepStatusColors[step.status]}`}>
           {step.status === 'completed' ? '✓' : step.status === 'failed' ? '✗' : step.status === 'running' ? '◉' : '○'}
         </span>
       </div>
-      <div className="flex items-center gap-4 text-xs text-white/30">
+      <div className="flex items-center gap-4 text-xs text-[hsl(var(--fg-faint))]">
         {step.output_summary && (
-          <span className="max-w-xs truncate text-white/50" title={step.output_summary}>
+          <span className="max-w-xs truncate text-[hsl(var(--fg-muted))]" title={step.output_summary}>
             {step.output_summary}
           </span>
         )}

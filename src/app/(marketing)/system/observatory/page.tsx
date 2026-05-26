@@ -24,10 +24,10 @@ export default async function ObservatoryPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
       <div className="mb-12">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">
+        <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">
           Agent Observatory
         </h1>
-        <p className="max-w-2xl text-lg text-white/50">
+        <p className="max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
           Watch real AI agents work in production. Every pipeline run is
           visible — see which agent is active, read the handoffs, watch
           the fact-checker catch hallucinations.
@@ -39,7 +39,7 @@ export default async function ObservatoryPage() {
           <PipelineRunCard key={run.id} run={run} />
         ))}
         {(!runs || runs.length === 0) && (
-          <div className="rounded-xl border border-dashed border-white/10 p-12 text-center text-white/30">
+          <div className="rounded-xl border border-dashed border-[hsl(var(--border-base))] p-12 text-center text-[hsl(var(--fg-faint))]">
             No pipeline runs yet. The first run will appear when a tool ships a
             major release.
           </div>

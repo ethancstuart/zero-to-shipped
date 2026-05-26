@@ -2,7 +2,10 @@ import { notFound } from 'next/navigation'
 import { getContentBySlug, getContentSlugs } from '@/lib/content/loader'
 import { mdxComponents } from '@/components/mdx'
 import { ToolBadge } from '@/components/mdx/tool-badge'
-import { ForYouSidebar } from '@/components/content/for-you-sidebar'
+import { ScrollProgress } from '@/components/motion/scroll-progress'
+import { Pill } from '@/components/shared/pill'
+import { TocSidebar } from '@/components/content/toc-sidebar'
+import { MobileToc } from '@/components/content/mobile-toc'
 import { BookmarkButton } from '@/components/content/bookmark-button'
 import { ViewTracker } from '@/components/content/view-tracker'
 import type { Metadata } from 'next'
@@ -37,45 +40,56 @@ export default async function SystemDetailPage({ params }: Props) {
   const { frontmatter, content } = result
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
-        <article>
-          <header className="mb-12">
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/50">
-                {frontmatter.type}
-              </span>
-              <span className="text-xs text-white/40">
-                {frontmatter.difficulty} · {frontmatter.estimatedMinutes} min
-              </span>
-            </div>
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">
-              {frontmatter.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-2">
-              {frontmatter.tools.map((tool) => (
-                <ToolBadge
-                  key={tool}
-                  name={tool}
-                  version={frontmatter.toolVersions[tool]}
-                />
-              ))}
-              <BookmarkButton slug={frontmatter.slug} />
-            </div>
-          </header>
+    <>
+      <ScrollProgress />
+      <article className="max-w-[1300px] mx-auto px-6 lg:px-12 pt-32 pb-20">
+        {/* Metadata row */}
+        <div className="flex gap-2 mb-6 flex-wrap">
+          <Pill pillar={frontmatter.pillar}>{frontmatter.pillar}</Pill>
+          <Pill>{frontmatter.type}</Pill>
+          {frontmatter.estimatedMinutes > 0 && (
+            <Pill>{frontmatter.estimatedMinutes} min</Pill>
+          )}
+          <Pill>{frontmatter.difficulty}</Pill>
+        </div>
 
-          <ViewTracker slug={frontmatter.slug} />
+        {/* Title */}
+        <h1 className="text-h1 mb-4">{frontmatter.title}</h1>
 
-          <div className="prose prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-400 prose-code:rounded prose-code:bg-white/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-white/10">
+        {/* Tools + bookmark */}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {frontmatter.tools.map((tool) => (
+            <ToolBadge
+              key={tool}
+              name={tool}
+              version={frontmatter.toolVersions[tool]}
+            />
+          ))}
+          <BookmarkButton slug={frontmatter.slug} />
+        </div>
+
+        {/* Divider */}
+        <div className="h-px bg-[hsl(var(--border-base))] my-8" />
+
+        {/* Mobile ToC */}
+        <MobileToc />
+
+        <ViewTracker slug={frontmatter.slug} />
+
+        {/* Two-column layout */}
+        <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
+          {/* Prose */}
+          <div
+            data-prose
+            className="prose prose-neutral dark:prose-invert max-w-[720px] prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[hsl(var(--accent-hsl))] prose-code:rounded prose-code:bg-[hsl(var(--bg-muted))] prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-[hsl(var(--border-base))]"
+          >
             {content}
           </div>
-        </article>
-        <aside className="hidden lg:block">
-          <div className="sticky top-24">
-            <ForYouSidebar />
-          </div>
-        </aside>
-      </div>
-    </div>
+
+          {/* Sidebar */}
+          <TocSidebar />
+        </div>
+      </article>
+    </>
   )
 }

@@ -41,8 +41,8 @@ export default async function ComparePage({
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Compare Tools</h1>
-      <p className="mb-8 max-w-2xl text-lg text-white/50">
+      <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">Compare Tools</h1>
+      <p className="mb-8 max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
         Side-by-side capability comparison across AI coding tools.
       </p>
 
@@ -60,8 +60,8 @@ export default async function ComparePage({
               }`}
               className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
                 isSelected
-                  ? 'border-white/30 bg-white/10 text-white'
-                  : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                  ? 'border-[hsl(var(--border-hover))] bg-[hsl(var(--bg-muted))] text-[hsl(var(--fg))]'
+                  : 'border-[hsl(var(--border-base))] text-[hsl(var(--fg-muted))] hover:border-[hsl(var(--border-hover))] hover:text-[hsl(var(--fg-secondary))]'
               }`}
             >
               {tool.name}

@@ -38,7 +38,7 @@ export function VoteButton({ challengeId, toolId, toolName }: VoteButtonProps) {
     <button
       onClick={handleVote}
       disabled={loading}
-      className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm text-white transition-colors hover:bg-white/10 disabled:opacity-50"
+      className="w-full rounded-lg border border-[hsl(var(--border-hover))] bg-[hsl(var(--bg-muted))] px-4 py-2 text-sm text-[hsl(var(--fg))] transition-colors hover:bg-[hsl(var(--bg-subtle))] disabled:opacity-50"
     >
       {loading ? 'Voting...' : `Vote for ${toolName}`}
     </button>

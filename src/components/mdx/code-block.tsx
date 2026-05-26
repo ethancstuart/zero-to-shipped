@@ -17,9 +17,9 @@ export async function CodeBlock({
   })
 
   return (
-    <div className="my-6 overflow-hidden rounded-lg border border-white/10">
+    <div className="my-6 overflow-hidden rounded-lg border border-[hsl(var(--border-base))]">
       {filename && (
-        <div className="border-b border-white/10 bg-white/5 px-4 py-2 text-xs text-white/50">
+        <div className="border-b border-[hsl(var(--border-base))] bg-[hsl(var(--bg-muted))] px-4 py-2 text-xs text-[hsl(var(--fg-muted))]">
           {filename}
         </div>
       )}

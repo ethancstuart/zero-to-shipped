@@ -162,8 +162,12 @@ export function SkillTreeGraph({ modules, statusMap }: SkillTreeGraphProps) {
         return { fill: "#3b82f6", stroke: "#2563eb", text: "#fff" };
       case "available":
         return { fill: "transparent", stroke: "#3b82f6", text: "#3b82f6" };
-      default:
-        return { fill: "#262626", stroke: "#404040", text: "#737373" };
+      default: {
+        const isDark = document.documentElement.classList.contains("dark");
+        return isDark
+          ? { fill: "#262626", stroke: "#404040", text: "#737373" }
+          : { fill: "#f5f5f5", stroke: "#d4d4d4", text: "#a3a3a3" };
+      }
     }
   };
 

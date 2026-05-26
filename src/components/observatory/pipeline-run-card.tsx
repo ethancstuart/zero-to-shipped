@@ -19,18 +19,18 @@ export function PipelineRunCard({ run }: PipelineRunCardProps) {
     : run.trigger_type
 
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+    <div className="rounded-xl border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className={`rounded-full border px-2.5 py-1 text-xs font-medium ${statusColors[run.status]}`}>
             {run.status}
           </span>
-          <span className="text-sm font-medium text-white">{triggerLabel}</span>
-          <span className="rounded-full border border-white/10 px-2 py-0.5 text-xs text-white/30">
+          <span className="text-sm font-medium text-[hsl(var(--fg))]">{triggerLabel}</span>
+          <span className="rounded-full border border-[hsl(var(--border-base))] px-2 py-0.5 text-xs text-[hsl(var(--fg-faint))]">
             {run.trigger_type}
           </span>
         </div>
-        <div className="flex items-center gap-4 text-xs text-white/40">
+        <div className="flex items-center gap-4 text-xs text-[hsl(var(--fg-muted))]">
           {run.total_tokens > 0 && <span>{run.total_tokens.toLocaleString()} tokens</span>}
           {run.total_cost_cents > 0 && <span>${(run.total_cost_cents / 100).toFixed(2)}</span>}
           <span>{new Date(run.started_at).toLocaleString()}</span>

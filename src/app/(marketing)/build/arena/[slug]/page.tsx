@@ -59,18 +59,18 @@ export default async function ArenaDetailPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
       <div className="mb-12">
-        <h1 className="mb-4 text-3xl font-bold tracking-tight text-white">{challenge.title}</h1>
-        <p className="mb-4 max-w-2xl text-white/50">{challenge.description}</p>
-        <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4">
-          <h3 className="mb-2 text-sm font-medium text-white/60">Task Specification</h3>
-          <p className="text-sm text-white/40">{challenge.task_spec}</p>
+        <h1 className="mb-4 text-3xl font-bold tracking-tight text-[hsl(var(--fg))]">{challenge.title}</h1>
+        <p className="mb-4 max-w-2xl text-[hsl(var(--fg-secondary))]">{challenge.description}</p>
+        <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4">
+          <h3 className="mb-2 text-sm font-medium text-[hsl(var(--fg-muted))]">Task Specification</h3>
+          <p className="text-sm text-[hsl(var(--fg-muted))]">{challenge.task_spec}</p>
         </div>
       </div>
 
       {entries && entries.length > 0 ? (
         <SideBySide entries={entries} voteCounts={voteCounts} challengeId={challenge.id} />
       ) : (
-        <div className="rounded-xl border border-dashed border-white/10 p-12 text-center text-white/30">
+        <div className="rounded-xl border border-dashed border-[hsl(var(--border-base))] p-12 text-center text-[hsl(var(--fg-faint))]">
           No entries for this challenge yet.
         </div>
       )}

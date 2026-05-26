@@ -53,8 +53,8 @@ export default async function TransparencyPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
       <div className="mb-12">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Transparency</h1>
-        <p className="max-w-2xl text-lg text-white/50">
+        <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">Transparency</h1>
+        <p className="max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
           Full transparency on what it costs to build and run this platform.
           Every dollar, every token, every line of code.
         </p>
@@ -63,34 +63,34 @@ export default async function TransparencyPage() {
       {/* Build Stats */}
       {buildStats && (
         <section className="mb-16">
-          <h2 className="mb-6 text-2xl font-semibold text-white">Build Stats</h2>
+          <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Build Stats</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.loc?.toLocaleString()}</div>
-              <div className="text-xs text-white/40">Lines of Code</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.loc?.toLocaleString()}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Lines of Code</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.files}</div>
-              <div className="text-xs text-white/40">Source Files</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.files}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Source Files</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.contentFiles}</div>
-              <div className="text-xs text-white/40">Content Files</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.contentFiles}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Content Files</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.tests}</div>
-              <div className="text-xs text-white/40">Tests</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.tests}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Tests</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.routes}</div>
-              <div className="text-xs text-white/40">Routes</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.routes}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Routes</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-              <div className="text-2xl font-bold text-white">{buildStats.commits}</div>
-              <div className="text-xs text-white/40">Commits</div>
+            <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+              <div className="text-2xl font-bold text-[hsl(var(--fg))]">{buildStats.commits}</div>
+              <div className="text-xs text-[hsl(var(--fg-muted))]">Commits</div>
             </div>
           </div>
-          <p className="mt-2 text-xs text-white/20">
+          <p className="mt-2 text-xs text-[hsl(var(--fg-faint))]">
             Last updated:{' '}
             {buildStats.generatedAt
               ? new Date(buildStats.generatedAt).toLocaleDateString()
@@ -101,45 +101,45 @@ export default async function TransparencyPage() {
 
       {/* Pipeline Metrics */}
       <section className="mb-16">
-        <h2 className="mb-6 text-2xl font-semibold text-white">Pipeline Metrics</h2>
+        <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Pipeline Metrics</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className="text-2xl font-bold text-white">{totalRuns}</div>
-            <div className="text-xs text-white/40">Pipeline Runs</div>
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">{totalRuns}</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Pipeline Runs</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className="text-2xl font-bold text-white">
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">
               {totalRuns > 0 ? Math.round((successfulRuns / totalRuns) * 100) : 0}%
             </div>
-            <div className="text-xs text-white/40">Success Rate</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Success Rate</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className="text-2xl font-bold text-white">
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">
               {totalPipelineTokens.toLocaleString()}
             </div>
-            <div className="text-xs text-white/40">Tokens Used</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Tokens Used</div>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className="text-2xl font-bold text-white">
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">
               ${(totalPipelineCost / 100).toFixed(2)}
             </div>
-            <div className="text-xs text-white/40">Pipeline Cost</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Pipeline Cost</div>
           </div>
         </div>
       </section>
 
       {/* Platform Costs */}
       <section className="mb-16">
-        <h2 className="mb-6 text-2xl font-semibold text-white">Platform Costs</h2>
-        <div className="mb-4 rounded-lg border border-white/10 bg-white/[0.02] p-6">
-          <div className="text-3xl font-bold text-white">${(totalCostCents / 100).toFixed(2)}</div>
-          <div className="text-sm text-white/40">Total investment to date</div>
+        <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Platform Costs</h2>
+        <div className="mb-4 rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-6">
+          <div className="text-3xl font-bold text-[hsl(var(--fg))]">${(totalCostCents / 100).toFixed(2)}</div>
+          <div className="text-sm text-[hsl(var(--fg-muted))]">Total investment to date</div>
         </div>
         {costs && costs.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10 text-left text-xs text-white/40">
+                <tr className="border-b border-[hsl(var(--border-base))] text-left text-xs text-[hsl(var(--fg-muted))]">
                   <th className="pb-2">Month</th>
                   <th className="pb-2">Category</th>
                   <th className="pb-2 text-right">Amount</th>
@@ -148,20 +148,20 @@ export default async function TransparencyPage() {
               </thead>
               <tbody>
                 {costs.map((cost) => (
-                  <tr key={cost.id} className="border-b border-white/5">
-                    <td className="py-2 text-sm text-white/70">{cost.month}</td>
-                    <td className="py-2 text-sm text-white/50">{cost.category}</td>
-                    <td className="py-2 text-right text-sm text-white/70">
+                  <tr key={cost.id} className="border-b border-[hsl(var(--border-base))]">
+                    <td className="py-2 text-sm text-[hsl(var(--fg-secondary))]">{cost.month}</td>
+                    <td className="py-2 text-sm text-[hsl(var(--fg-muted))]">{cost.category}</td>
+                    <td className="py-2 text-right text-sm text-[hsl(var(--fg-secondary))]">
                       ${(cost.amount_cents / 100).toFixed(2)}
                     </td>
-                    <td className="py-2 text-sm text-white/30">{cost.notes || ''}</td>
+                    <td className="py-2 text-sm text-[hsl(var(--fg-faint))]">{cost.notes || ''}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <p className="text-sm text-white/30">No cost data entered yet.</p>
+          <p className="text-sm text-[hsl(var(--fg-faint))]">No cost data entered yet.</p>
         )}
       </section>
     </div>
