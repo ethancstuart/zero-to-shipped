@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
+import { SectionDivider } from '@/components/shared/section-divider'
+import { MagneticButton } from '@/components/shared/magnetic-button'
+import { ShowcaseGrid } from './showcase-grid'
 import type { Metadata } from 'next'
 import type { ShowcaseProject } from '@/types/showcase'
 
@@ -9,6 +11,41 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 3600
+
+const seedProjects = [
+  {
+    id: 'seed-1',
+    title: 'Meridian Intelligence',
+    description:
+      'Non-QM lending intelligence platform with 34 features.',
+    tools: ['Claude Code'],
+    buildTime: '4 weeks',
+  },
+  {
+    id: 'seed-2',
+    title: 'RidgeCap Capital',
+    description:
+      'CRE investment platform with deal flow and analytics.',
+    tools: ['Claude Code'],
+    buildTime: '3 weeks',
+  },
+  {
+    id: 'seed-3',
+    title: 'NexusWatch',
+    description:
+      'Geopolitical intelligence with 45+ data layers and AI analysis.',
+    tools: ['Claude Code'],
+    buildTime: '6 weeks',
+  },
+  {
+    id: 'seed-4',
+    title: 'LongTable',
+    description:
+      'AI-powered travel planning with booking and cost optimization.',
+    tools: ['Claude Code'],
+    buildTime: '2 weeks',
+  },
+]
 
 export default async function ShowcasePage({
   searchParams,
@@ -20,99 +57,89 @@ export default async function ShowcasePage({
 
   const { data: projects } = await supabase
     .from('showcase_projects')
-    .select(`*, showcase_project_tools(tool_id, tools:tool_id(name, slug))`)
+    .select(
+      `*, showcase_project_tools(tool_id, tools:tool_id(name, slug))`
+    )
     .eq('status', 'published')
     .order('created_at', { ascending: false })
 
-  // Filter by tool client-side (Supabase doesn't easily filter through junction tables)
+  // Get all tools for filter
+  const { data: tools } = await supabase
+    .from('tools')
+    .select('name, slug')
+    .order('name')
+
+  // Filter by tool client-side
   const filtered = tool
     ? (projects || []).filter((p: ShowcaseProject) =>
-        (p.showcase_project_tools || []).some((t) => t.tools?.slug === tool)
+        (p.showcase_project_tools || []).some(
+          (t) => t.tools?.slug === tool
+        )
       )
     : projects || []
 
-  // Get all tools for filter
-  const { data: tools } = await supabase.from('tools').select('name, slug').order('name')
+  const hasDbProjects = filtered.length > 0
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <div className="mb-8 flex items-end justify-between">
-        <div>
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">Showcase</h1>
-          <p className="max-w-2xl text-lg text-white/50">
-            See what people are building with AI coding tools.
-          </p>
+    <>
+      {/* Header */}
+      <section className="border-b border-[hsl(var(--border-base))] px-6 py-20 lg:px-12">
+        <div className="mx-auto flex max-w-[1300px] items-end justify-between">
+          <div>
+            <div className="font-mono-data mb-4 text-[10px] uppercase tracking-wider text-[hsl(var(--fg-muted))]">
+              SHOWCASE
+            </div>
+            <h1 className="text-h1 mb-3">Showcase</h1>
+            <p className="max-w-lg text-[hsl(var(--fg-secondary))]">
+              See what people are building with AI coding tools.
+            </p>
+          </div>
+          <MagneticButton href="/showcase/submit" variant="primary">
+            Submit your build
+          </MagneticButton>
         </div>
-        <Link
-          href="/showcase/submit"
-          className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition-opacity hover:opacity-90"
-        >
-          Submit a project
-        </Link>
-      </div>
+      </section>
 
-      {/* Tool filter */}
-      <div className="mb-8 flex flex-wrap gap-2">
-        <Link
-          href="/showcase"
-          className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-            !tool ? 'border-white/30 bg-white/10 text-white' : 'border-white/10 text-white/40 hover:text-white/60'
-          }`}
-        >
-          All
-        </Link>
-        {tools?.map((t) => (
-          <Link
-            key={t.slug}
-            href={`/showcase?tool=${t.slug}`}
-            className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-              tool === t.slug ? 'border-white/30 bg-white/10 text-white' : 'border-white/10 text-white/40 hover:text-white/60'
+      <section className="mx-auto max-w-[1300px] px-6 py-12 lg:px-12">
+        <SectionDivider
+          number="01"
+          label={hasDbProjects ? `${filtered.length} projects` : `${seedProjects.length} projects`}
+        />
+
+        {/* Tool filter pills */}
+        <div className="mb-10 flex flex-wrap gap-2">
+          <a
+            href="/showcase"
+            className={`rounded-full border px-3 py-1.5 text-xs font-medium tracking-wide transition-colors ${
+              !tool
+                ? 'border-[hsl(var(--fg))] bg-[hsl(var(--fg))] text-[hsl(var(--bg))]'
+                : 'border-[hsl(var(--border-base))] text-[hsl(var(--fg-muted))] hover:border-[hsl(var(--border-hover))] hover:text-[hsl(var(--fg-secondary))]'
             }`}
           >
-            {t.name}
-          </Link>
-        ))}
-      </div>
-
-      {/* Projects grid */}
-      {filtered.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((project: ShowcaseProject) => (
-            <div key={project.id} className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
-              <h3 className="mb-2 text-lg font-semibold text-white">{project.title}</h3>
-              <p className="mb-4 text-sm text-white/50 line-clamp-3">{project.description}</p>
-              <div className="mb-3 flex flex-wrap gap-1.5">
-                {(project.showcase_project_tools || []).map((t) => (
-                  <span key={t.tool_id} className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs text-white/50">
-                    {t.tools?.name || 'Unknown'}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-3 text-xs text-white/30">
-                {project.build_time_minutes && <span>{project.build_time_minutes} min</span>}
-                {project.builder_experience && <span>{project.builder_experience}</span>}
-                <span>{project.upvotes} upvotes</span>
-              </div>
-              <div className="mt-3 flex gap-2">
-                {project.url && (
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 underline hover:text-white/60">
-                    Live →
-                  </a>
-                )}
-                {project.github_url && (
-                  <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 underline hover:text-white/60">
-                    GitHub →
-                  </a>
-                )}
-              </div>
-            </div>
+            All
+          </a>
+          {tools?.map((t) => (
+            <a
+              key={t.slug}
+              href={`/showcase?tool=${t.slug}`}
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium tracking-wide transition-colors ${
+                tool === t.slug
+                  ? 'border-[hsl(var(--fg))] bg-[hsl(var(--fg))] text-[hsl(var(--bg))]'
+                  : 'border-[hsl(var(--border-base))] text-[hsl(var(--fg-muted))] hover:border-[hsl(var(--border-hover))] hover:text-[hsl(var(--fg-secondary))]'
+              }`}
+            >
+              {t.name}
+            </a>
           ))}
         </div>
-      ) : (
-        <div className="rounded-xl border border-dashed border-white/10 p-12 text-center text-white/30">
-          No projects yet. Be the first to submit!
-        </div>
-      )}
-    </div>
+
+        {/* Projects */}
+        {hasDbProjects ? (
+          <ShowcaseGrid projects={filtered} />
+        ) : (
+          <ShowcaseGrid seeds={seedProjects} />
+        )}
+      </section>
+    </>
   )
 }

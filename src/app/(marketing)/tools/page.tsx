@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
+import { SectionDivider } from '@/components/shared/section-divider'
+import { ToolsCategoryFilter } from './tools-category-filter'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -15,37 +17,33 @@ export default async function ToolsPage() {
     .select('*')
     .order('name')
 
+  const allTools = tools || []
+
+  // Extract distinct categories
+  const categories = Array.from(
+    new Set(allTools.map((t) => t.category).filter(Boolean))
+  ).sort() as string[]
+
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="mb-4 text-4xl font-bold tracking-tight text-white">
-        AI Coding Tools
-      </h1>
-      <p className="mb-12 max-w-2xl text-lg text-white/50">
-        We track releases and capabilities across {tools?.length || 0} AI coding
-        tools so you always know what&apos;s current.
-      </p>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools?.map((tool) => (
-          <a
-            key={tool.slug}
-            href={`/tools/${tool.slug}`}
-            className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-all hover:border-white/20 hover:bg-white/[0.04]"
-          >
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">{tool.name}</h3>
-              <span className="rounded-full border border-white/10 px-2 py-0.5 text-xs text-white/40">
-                {tool.category}
-              </span>
-            </div>
-            <p className="mb-3 text-sm text-white/50">{tool.description}</p>
-            {tool.current_version && (
-              <span className="text-xs text-white/30">
-                v{tool.current_version}
-              </span>
-            )}
-          </a>
-        ))}
-      </div>
-    </div>
+    <>
+      <section className="border-b border-[hsl(var(--border-base))] px-6 py-20 lg:px-12">
+        <div className="mx-auto max-w-[1300px]">
+          <div className="font-mono-data mb-4 text-[10px] uppercase tracking-wider text-[hsl(var(--fg-muted))]">
+            TOOLS
+          </div>
+          <h1 className="text-h1 mb-3">AI Coding Tools</h1>
+          <p className="max-w-lg text-[hsl(var(--fg-secondary))]">
+            We track releases and capabilities across {allTools.length} AI coding
+            tools so you always know what&apos;s current.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-[1300px] px-6 py-12 lg:px-12">
+        <SectionDivider number="01" label={`${allTools.length} tools`} />
+
+        <ToolsCategoryFilter tools={allTools} categories={categories} />
+      </section>
+    </>
   )
 }
