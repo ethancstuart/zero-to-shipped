@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  // Ensure the OpenAPI spec is bundled into the /api/docs serverless function
+  // so `readFileSync` can find it at runtime.
+  outputFileTracingIncludes: {
+    "/api/docs": ["./docs/api/openapi.yaml"],
+  },
   async headers() {
     return [
       {

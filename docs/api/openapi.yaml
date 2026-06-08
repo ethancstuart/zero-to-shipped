@@ -1,0 +1,792 @@
+openapi: 3.0.3
+info:
+  title: Prototype Studio API
+  version: 1.0.0
+  description: |
+    Public API for the Prototype Studio platform — AI tool intelligence,
+    content discovery, and showcase data.
+
+    All endpoints are rate-limited per client IP (Upstash sliding window with
+    in-memory fallback). The current limit is returned in the standard
+    `X-RateLimit-*` headers when a request is rejected with `429`. Successful
+    responses include a `remaining` field in the `meta` envelope.
+
+    Responses are wrapped in a uniform envelope:
+
+    ```json
+    {
+      "data": <endpoint-specific>,
+      "meta": {
+        "generatedAt": "2026-06-08T12:34:56.000Z",
+        "apiVersion": "v1",
+        "count": 42,
+        "remaining": 99
+      }
+    }
+    ```
+
+    No authentication is required for v1 endpoints.
+  contact:
+    name: Prototype Studio
+    url: https://zerotoship.app
+
+servers:
+  - url: https://zerotoship.app/api/v1
+    description: Production
+  - url: http://localhost:3000/api/v1
+    description: Local development
+
+tags:
+  - name: Tools
+    description: AI coding tool catalog and release history
+  - name: Capabilities
+    description: AI coding capabilities matrix across tools
+  - name: Content
+    description: Published Pulse content and weekly digest
+  - name: Showcase
+    description: Community-built projects
+  - name: Stats
+    description: Platform statistics
+  - name: Benchmarks
+    description: Benchmark definitions and per-tool results
+
+components:
+  schemas:
+    Meta:
+      type: object
+      description: Envelope metadata returned with every successful response.
+      properties:
+        generatedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the response was assembled.
+        apiVersion:
+          type: string
+          example: v1
+        count:
+          type: integer
+          description: Number of items in `data` (when applicable).
+        remaining:
+          type: integer
+          description: Remaining requests in the current rate-limit window.
+
+    ApiResponse:
+      type: object
+      properties:
+        data:
+          description: Endpoint-specific response data.
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: Rate limit exceeded
+
+    Tool:
+      type: object
+      required: [name, slug, category]
+      properties:
+        name:
+          type: string
+          example: Claude Code
+        slug:
+          type: string
+          example: claude-code
+        category:
+          type: string
+          example: cli
+        current_version:
+          type: string
+          nullable: true
+          example: v2.1.149
+        last_release_date:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+
+    ToolDetail:
+      type: object
+      description: |
+        Full row from the `tools` table plus the 5 most recent releases.
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+        current_version:
+          type: string
+          nullable: true
+        last_release_date:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+        releases:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolRelease'
+
+    ToolRelease:
+      type: object
+      required: [version, release_date]
+      properties:
+        version:
+          type: string
+          example: v2.1.149
+        release_date:
+          type: string
+          format: date-time
+        release_notes:
+          type: string
+          nullable: true
+        breaking_changes:
+          type: boolean
+          nullable: true
+        highlights:
+          type: array
+          items:
+            type: string
+          nullable: true
+
+    EcosystemStatus:
+      type: object
+      description: Row from the `ecosystem_status` join (tool x capability).
+      required: [capability, category]
+      properties:
+        tool_id:
+          type: string
+          format: uuid
+        capability:
+          type: string
+          example: agentic editing
+        category:
+          type: string
+          example: editor
+        supported:
+          type: boolean
+        maturity:
+          type: string
+          enum: [experimental, beta, stable, mature]
+          nullable: true
+        quality_score:
+          type: number
+          minimum: 0
+          maximum: 100
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        tools:
+          type: object
+          nullable: true
+          properties:
+            name: { type: string }
+            slug: { type: string }
+            category: { type: string }
+            current_version: { type: string, nullable: true }
+            description: { type: string, nullable: true }
+            website: { type: string, format: uri, nullable: true }
+
+    Capability:
+      type: object
+      required: [capability, category]
+      properties:
+        capability:
+          type: string
+          example: agentic editing
+        category:
+          type: string
+          example: editor
+
+    CapabilityDetail:
+      type: object
+      required: [capability, category, tools]
+      properties:
+        capability:
+          type: string
+        category:
+          type: string
+        tools:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string, nullable: true }
+              slug: { type: string, nullable: true }
+              supported: { type: boolean }
+              maturity:
+                type: string
+                enum: [experimental, beta, stable, mature]
+                nullable: true
+              qualityScore:
+                type: number
+                nullable: true
+              notes:
+                type: string
+                nullable: true
+
+    PulseItem:
+      type: object
+      required: [title, slug]
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        summary:
+          type: string
+          nullable: true
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+        content_type:
+          type: string
+          example: brief
+        tags:
+          type: array
+          items:
+            type: string
+          nullable: true
+        external_url:
+          type: string
+          format: uri
+          nullable: true
+
+    WeeklyDigest:
+      type: object
+      properties:
+        weekStarting:
+          type: string
+          format: date
+          example: '2026-06-01'
+        releases:
+          type: array
+          items:
+            type: object
+            properties:
+              version: { type: string }
+              significance:
+                type: string
+                enum: [major, minor, patch]
+                nullable: true
+              summary: { type: string, nullable: true }
+              release_date: { type: string, format: date-time }
+              tool_id: { type: string, format: uuid }
+              tools:
+                type: object
+                nullable: true
+                properties:
+                  name: { type: string }
+                  slug: { type: string }
+        newContent:
+          type: array
+          items:
+            type: object
+            properties:
+              slug: { type: string }
+              title: { type: string }
+              published_at: { type: string, format: date-time, nullable: true }
+        releaseSummary:
+          type: string
+          example: '3 releases across 2 tools'
+
+    ShowcaseProject:
+      type: object
+      required: [title, url]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        url:
+          type: string
+          format: uri
+        screenshot_url:
+          type: string
+          format: uri
+          nullable: true
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+        build_time_minutes:
+          type: integer
+          nullable: true
+        builder_experience:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    PlatformStats:
+      type: object
+      properties:
+        toolsTracked:
+          type: integer
+        contentPieces:
+          type: integer
+        showcaseEntries:
+          type: integer
+        totalReleases:
+          type: integer
+        totalCostCents:
+          type: integer
+          description: Cumulative platform infrastructure cost in cents.
+
+    Benchmark:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        task:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    BenchmarkResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        benchmark_id:
+          type: string
+          format: uuid
+        tool_id:
+          type: string
+          format: uuid
+        score:
+          type: number
+          nullable: true
+        run_date:
+          type: string
+          format: date-time
+        notes:
+          type: string
+          nullable: true
+        tools:
+          type: object
+          nullable: true
+          properties:
+            name: { type: string }
+            slug: { type: string }
+
+    BenchmarkResultsResponse:
+      type: object
+      properties:
+        benchmark:
+          type: object
+          properties:
+            slug: { type: string }
+            task: { type: string, nullable: true }
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenchmarkResult'
+
+  parameters:
+    LimitParam:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Maximum items returned.
+
+    OffsetParam:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Number of items to skip (pagination).
+
+  responses:
+    RateLimited:
+      description: Too many requests in the current window.
+      headers:
+        X-RateLimit-Limit:
+          schema: { type: integer }
+        X-RateLimit-Remaining:
+          schema: { type: integer }
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+            description: Unix timestamp (seconds) when the window resets.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    BadRequest:
+      description: Invalid or missing query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    ServerError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+paths:
+  /tools:
+    get:
+      tags: [Tools]
+      summary: List all tracked tools
+      description: Returns the full catalog of AI coding tools, ordered by name.
+      responses:
+        '200':
+          description: List of tools.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Tool'
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /tools/{slug}:
+    get:
+      tags: [Tools]
+      summary: Get a single tool by slug
+      description: |
+        Returns the full tool row plus the 5 most recent releases.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+          example: claude-code
+      responses:
+        '200':
+          description: Tool detail with recent releases.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ToolDetail'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /tools/{slug}/releases:
+    get:
+      tags: [Tools]
+      summary: Get release history for a tool
+      description: Paginated release history, newest first.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+          example: claude-code
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/OffsetParam'
+      responses:
+        '200':
+          description: Releases for the tool.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ToolRelease'
+                      meta:
+                        allOf:
+                          - $ref: '#/components/schemas/Meta'
+                          - type: object
+                            properties:
+                              tool:
+                                type: object
+                                properties:
+                                  name: { type: string }
+                                  slug: { type: string }
+                              total: { type: integer }
+                              limit: { type: integer }
+                              offset: { type: integer }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /compare:
+    get:
+      tags: [Tools]
+      summary: Compare capabilities across multiple tools
+      description: |
+        Returns the ecosystem_status rows joined with tool metadata for the
+        requested slugs. Provide 2–5 comma-separated slugs.
+      parameters:
+        - name: tools
+          in: query
+          required: true
+          schema: { type: string }
+          description: Comma-separated tool slugs (2–5 items).
+          example: claude-code,cursor,windsurf
+      responses:
+        '200':
+          description: Comparison matrix.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/EcosystemStatus'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /capabilities:
+    get:
+      tags: [Capabilities]
+      summary: List all distinct capabilities
+      description: |
+        Deduplicated list of capabilities tracked across the ecosystem,
+        grouped by category.
+      responses:
+        '200':
+          description: Distinct capabilities.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Capability'
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /capabilities/{capability}:
+    get:
+      tags: [Capabilities]
+      summary: Get tool support for a single capability
+      description: |
+        The `{capability}` path segment is matched with `ILIKE %value%` after
+        URL-decoding and replacing dashes with spaces, so `agentic-editing`
+        matches the capability `agentic editing`.
+      parameters:
+        - name: capability
+          in: path
+          required: true
+          schema: { type: string }
+          example: agentic-editing
+      responses:
+        '200':
+          description: Tools that support the capability, ordered by quality score.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CapabilityDetail'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+
+  /pulse:
+    get:
+      tags: [Content]
+      summary: Latest published Pulse content
+      description: |
+        Published items from the Pulse pillar, newest first.
+      responses:
+        '200':
+          description: Pulse content items.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PulseItem'
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /pulse/weekly:
+    get:
+      tags: [Content]
+      summary: Weekly content + release digest
+      description: |
+        Aggregated digest for the previous 7 days: tool releases and new
+        Pulse content.
+      responses:
+        '200':
+          description: Weekly digest.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/WeeklyDigest'
+        '429': { $ref: '#/components/responses/RateLimited' }
+
+  /showcase:
+    get:
+      tags: [Showcase]
+      summary: Published showcase projects
+      description: Community-submitted projects with status = `published`, newest first.
+      responses:
+        '200':
+          description: List of published showcase projects.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ShowcaseProject'
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /stats:
+    get:
+      tags: [Stats]
+      summary: Platform-wide statistics
+      description: |
+        Aggregated counts for tools tracked, published content, showcase
+        entries, releases, and cumulative platform cost in cents.
+      responses:
+        '200':
+          description: Platform statistics.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PlatformStats'
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /benchmarks:
+    get:
+      tags: [Benchmarks]
+      summary: List active benchmarks
+      description: Returns benchmarks where `is_active = true`, newest first.
+      responses:
+        '200':
+          description: Active benchmark definitions.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Benchmark'
+        '429': { $ref: '#/components/responses/RateLimited' }
+
+  /benchmarks/{slug}/results:
+    get:
+      tags: [Benchmarks]
+      summary: Results for a specific benchmark
+      description: Up to 50 most recent results across all tools.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Benchmark results.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/BenchmarkResultsResponse'
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
