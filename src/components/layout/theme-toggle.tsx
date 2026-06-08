@@ -1,21 +1,51 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { useSyncExternalStore } from "react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type ThemeChoice = "light" | "dark" | "system";
+
+const NEXT_THEME: Record<ThemeChoice, ThemeChoice> = {
+  light: "dark",
+  dark: "system",
+  system: "light",
+};
+
+const LABEL: Record<ThemeChoice, string> = {
+  light: "Light theme — switch to dark",
+  dark: "Dark theme — switch to system",
+  system: "System theme — switch to light",
+};
+
+// No-op subscribe — we just want the SSR snapshot to differ from the client one
+// so React knows to swap the icon on hydration without warning. next-themes
+// itself drives re-renders when the theme changes.
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
+
+  const current: ThemeChoice = mounted
+    ? ((theme as ThemeChoice | undefined) ?? "system")
+    : "system";
+
+  const Icon =
+    current === "light" ? Sun : current === "dark" ? Moon : Monitor;
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      aria-label="Toggle theme"
+      onClick={() => setTheme(NEXT_THEME[current])}
+      aria-label={LABEL[current]}
+      title={LABEL[current]}
     >
-      <Sun className="size-4 scale-100 rotate-0 transition-transform dark:scale-0 dark:-rotate-90" />
-      <Moon className="absolute size-4 scale-0 rotate-90 transition-transform dark:scale-100 dark:rotate-0" />
+      <Icon className="size-4" />
     </Button>
   );
 }

@@ -21,35 +21,45 @@ interface FilterableContentGridProps {
 }
 
 export function FilterableContentGrid({ items, types, pillar }: FilterableContentGridProps) {
+  // Only surface filter pills for types that actually have content in this set,
+  // so we never render a pill that leads to an empty grid.
+  const availableTypes = types.filter((t) => items.some((i) => i.type === t))
+
   const [activeType, setActiveType] = useState<string>('all')
-  const filtered = activeType === 'all' ? items : items.filter(i => i.type === activeType)
+  // If the previously active type became unavailable, treat as 'all'.
+  const effectiveType =
+    activeType !== 'all' && !availableTypes.includes(activeType) ? 'all' : activeType
+  const filtered =
+    effectiveType === 'all' ? items : items.filter((i) => i.type === effectiveType)
 
   const inactiveClass = 'bg-[hsl(var(--bg-muted))] text-[hsl(var(--fg-muted))] border-[hsl(var(--border-base))]'
   const activeClass = pillarActiveStyles[pillar]
 
   return (
     <>
-      <div className="flex gap-2 mb-8 flex-wrap">
-        <button
-          onClick={() => setActiveType('all')}
-          className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide border transition-colors ${
-            activeType === 'all' ? activeClass : inactiveClass
-          }`}
-        >
-          All
-        </button>
-        {types.map(type => (
+      {availableTypes.length > 0 && (
+        <div className="flex gap-2 mb-8 flex-wrap">
           <button
-            key={type}
-            onClick={() => setActiveType(type)}
-            className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide border transition-colors capitalize ${
-              activeType === type ? activeClass : inactiveClass
+            onClick={() => setActiveType('all')}
+            className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide border transition-colors ${
+              effectiveType === 'all' ? activeClass : inactiveClass
             }`}
           >
-            {type}
+            All
           </button>
-        ))}
-      </div>
+          {availableTypes.map(type => (
+            <button
+              key={type}
+              onClick={() => setActiveType(type)}
+              className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-medium tracking-wide border transition-colors capitalize ${
+                effectiveType === type ? activeClass : inactiveClass
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+      )}
       {filtered.length > 0 ? (
         <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(item => (

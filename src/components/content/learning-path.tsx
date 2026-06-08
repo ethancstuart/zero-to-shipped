@@ -7,15 +7,27 @@ interface LearningPathProps {
   lessons: ContentFrontmatter[]
 }
 
-/** Extract module number from title like "Module 5: Version Control with Git" */
-function getModuleNumber(title: string): number {
-  const match = title.match(/Module\s+(\d+)/i)
-  return match ? parseInt(match[1], 10) : 999
+/**
+ * Get the module's ordinal position. Prefers the `position` frontmatter field,
+ * then falls back to parsing "Module N" from the title.
+ */
+function getModuleNumber(lesson: ContentFrontmatter): number {
+  if (typeof lesson.position === 'number' && Number.isFinite(lesson.position)) {
+    return lesson.position
+  }
+  const match = lesson.title.match(/Module\s+(\d+)/i)
+  if (match) return parseInt(match[1], 10)
+  return Number.MAX_SAFE_INTEGER
 }
 
 export function LearningPath({ lessons }: LearningPathProps) {
-  const sorted = [...lessons].sort(
-    (a, b) => getModuleNumber(a.title) - getModuleNumber(b.title)
+  // Only show lessons with a real ordinal position so unordered/test lessons
+  // don't pollute the path with a fallback marker (e.g. the old "999" bug).
+  const ordered = lessons.filter(
+    (l) => typeof l.position === 'number' || /Module\s+\d+/i.test(l.title),
+  )
+  const sorted = [...ordered].sort(
+    (a, b) => getModuleNumber(a) - getModuleNumber(b),
   )
 
   if (sorted.length === 0) return null
@@ -32,7 +44,7 @@ export function LearningPath({ lessons }: LearningPathProps) {
 
         <div className="flex flex-col gap-2">
           {sorted.map((lesson) => {
-            const num = getModuleNumber(lesson.title)
+            const num = getModuleNumber(lesson)
             // Strip "Module N: " prefix for cleaner display
             const cleanTitle = lesson.title.replace(/^Module\s+\d+:\s*/i, '')
 
