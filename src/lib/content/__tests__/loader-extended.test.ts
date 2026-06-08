@@ -7,8 +7,6 @@ import {
   getContentSlugs,
   getContentFrontmatter,
 } from '@/lib/content/loader'
-import type { ContentFrontmatter } from '@/types/content'
-
 /**
  * Extended content loader tests — covers featured filtering, tag filtering,
  * limit, listAllContent, getContentSlugs, and real content validation.

@@ -152,16 +152,41 @@ Always label new bugs with their severity tier.
 - If content was planned or published, update the Content Calendar with: title, type, target channel, publish date, status.
 
 ## Conventions
+
+### Design
 - Light theme default, dark equally supported
 - Typography: Space Grotesk (display), DM Sans (body), JetBrains Mono (data/code only)
 - Animation: GSAP + ScrollTrigger for scroll-driven motion. All motion respects prefers-reduced-motion.
 - Monospace for data only — never for brand identity, nav, or labels
+- Mobile-first responsive design
+
+### Code
 - TypeScript strict, never JavaScript
 - Server components by default, `use client` only for interactivity
 - MDX for all content, never hardcoded pages
 - Tailwind v4 prose classes for content rendering
 - Components: PascalCase in feature folders
-- Mobile-first responsive design
+
+### Reliability
+- Error boundaries wrap all major page sections (see `src/components/error-boundary.tsx`)
+- Circuit breakers on all external service calls — use `supabaseBreaker`, `claudeBreaker`, `geminiBreaker` from `src/lib/circuit-breaker.ts`
+- All cron jobs wrapped with `withCronMonitoring()` from `src/lib/cron-monitor.ts`
+- Rate limiting via `apiLimiter`/`assistantLimiter`/`authLimiter` from `src/lib/rate-limit.ts` (Upstash Redis with in-memory fallback)
+- Structured JSON logging via `src/lib/logger.ts` — never raw `console.log` in API routes
+- Request tracing via `x-request-id` header set in middleware
+
+### Quality gates
+- E2E tests in `e2e/` — Playwright runs against dev server, mobile + desktop projects
+- Content validation: `npm run validate-content` runs in CI, fails on bad MDX frontmatter
+- Bundle size enforcement: `npm run check-bundle` fails CI if total JS grows >15% from baseline
+- Secret leakage audit: `npm run audit-secrets` checks build output for known secret patterns
+- Lighthouse CI: 4 pages audited per build, performance/a11y/SEO thresholds enforced
+
+### Documentation
+- Operational runbook at `docs/runbook.md` — incident response, scaling, secret rotation
+- API documentation at `docs/api/openapi.yaml`, rendered at `/api/docs`
+- Performance baselines at `docs/performance/`
+- Brand voice at `docs/brand/voice.md`
 
 ## Shared Context — home-base
 This project is part of a portfolio managed from ~/Projects/home-base.

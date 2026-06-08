@@ -1,6 +1,6 @@
 import http from 'k6/http'
 import { sleep, check } from 'k6'
-import { Trend, Counter } from 'k6/metrics'
+import { Trend } from 'k6/metrics'
 
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:3000'
 
