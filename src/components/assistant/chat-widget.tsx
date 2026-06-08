@@ -9,11 +9,19 @@ interface Message {
   sources?: string[]
 }
 
+interface UsageInfo {
+  remaining: number
+  limit: number
+  resetsAt: string
+}
+
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [usage, setUsage] = useState<UsageInfo | null>(null)
+  const [limitReached, setLimitReached] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -22,7 +30,7 @@ export function ChatWidget() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!input.trim() || loading) return
+    if (!input.trim() || loading || limitReached) return
 
     const query = input.trim()
     setInput('')
@@ -43,10 +51,26 @@ export function ChatWidget() {
           ...prev,
           { role: 'assistant', content: data.answer, sources: data.sources },
         ])
+        if (data.usage) {
+          setUsage(data.usage)
+          if (data.usage.remaining <= 0) {
+            setLimitReached(true)
+          }
+        }
+      } else if (res.status === 429 && data.error === 'daily_limit_reached') {
+        setLimitReached(true)
+        setUsage({ remaining: 0, limit: 0, resetsAt: data.resetsAt ?? 'midnight UTC' })
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: `You've used your free questions for today. Resets at ${data.resetsAt ?? 'midnight UTC'}.`,
+          },
+        ])
       } else {
         setMessages((prev) => [
           ...prev,
-          { role: 'assistant', content: data.error || 'Something went wrong.' },
+          { role: 'assistant', content: data.message || data.error || 'Something went wrong.' },
         ])
       }
     } catch {
@@ -72,6 +96,14 @@ export function ChatWidget() {
       </button>
     )
   }
+
+  const showCounter = usage !== null
+  const isWarning = showCounter && usage.remaining > 0 && usage.remaining <= 2
+  const counterText = limitReached
+    ? `You've used your free questions for today. Resets at ${usage?.resetsAt ?? 'midnight UTC'}.`
+    : usage
+    ? `${usage.remaining} of ${usage.limit} questions remaining today`
+    : ''
 
   return (
     <div className="fixed bottom-3 right-3 z-50 flex h-[90vh] max-h-[500px] w-[95vw] max-w-[380px] flex-col overflow-hidden rounded-xl border border-[hsl(var(--border-hover))] bg-[hsl(var(--bg))] shadow-2xl sm:bottom-6 sm:right-6">
@@ -106,6 +138,22 @@ export function ChatWidget() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Usage counter */}
+      {showCounter && (
+        <div
+          className={`border-t border-[hsl(var(--border-base))] px-4 py-2 text-xs ${
+            limitReached
+              ? 'text-amber-600'
+              : isWarning
+              ? 'text-amber-600'
+              : 'text-[hsl(var(--fg-muted))]'
+          }`}
+          aria-live="polite"
+        >
+          {counterText}
+        </div>
+      )}
+
       {/* Input */}
       <form onSubmit={handleSubmit} className="border-t border-[hsl(var(--border-base))] p-3">
         <div className="flex gap-2">
@@ -113,13 +161,13 @@ export function ChatWidget() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question..."
-            className="flex-1 rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] px-3 py-2 text-sm text-[hsl(var(--fg))] placeholder:text-[hsl(var(--fg-faint))] focus:border-[hsl(var(--border-hover))] focus:outline-none"
-            disabled={loading}
+            placeholder={limitReached ? 'Daily limit reached' : 'Ask a question...'}
+            className="flex-1 rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] px-3 py-2 text-sm text-[hsl(var(--fg))] placeholder:text-[hsl(var(--fg-faint))] focus:border-[hsl(var(--border-hover))] focus:outline-none disabled:opacity-50"
+            disabled={loading || limitReached}
           />
           <button
             type="submit"
-            disabled={loading || !input.trim()}
+            disabled={loading || limitReached || !input.trim()}
             className="rounded-lg bg-[hsl(var(--fg))] px-3 py-2 text-sm font-medium text-[hsl(var(--bg))] disabled:opacity-50"
           >
             →
