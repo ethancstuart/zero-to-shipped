@@ -4,6 +4,7 @@ import { getAdapter } from '@/lib/intelligence/adapters/registry'
 import { classifyRelease } from '@/lib/intelligence/classifier'
 import { checkContentStaleness } from '@/lib/intelligence/staleness'
 import type { AdapterConfig } from '@/lib/intelligence/adapters/types'
+import { withCronMonitoring } from '@/lib/cron-monitor'
 import crypto from 'crypto'
 
 const supabase = createClient(
@@ -17,100 +18,121 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { data: tools } = await supabase
-    .from('tools')
-    .select('*')
-    .order('name')
+  const results: Array<Record<string, unknown>> = []
 
-  if (!tools) {
-    return NextResponse.json({ error: 'No tools found' }, { status: 500 })
-  }
+  try {
+    await withCronMonitoring('tool-intelligence', async () => {
+      const { data: tools } = await supabase
+        .from('tools')
+        .select('*')
+        .order('name')
 
-  const results = []
-
-  for (const tool of tools) {
-    try {
-      const config = tool.scraper_config as AdapterConfig
-      if (!config?.type) {
-        results.push({ tool: tool.slug, status: 'skipped', reason: 'no scraper config' })
-        continue
+      if (!tools) {
+        throw new Error('No tools found')
       }
 
-      const adapter = getAdapter(config)
-      const releases = await adapter.fetch(config)
+      let totalNewReleases = 0
 
-      if (releases.length === 0) {
-        results.push({ tool: tool.slug, status: 'no_releases' })
-        continue
-      }
+      for (const tool of tools) {
+        try {
+          const config = tool.scraper_config as AdapterConfig
+          if (!config?.type) {
+            results.push({ tool: tool.slug, status: 'skipped', reason: 'no scraper config' })
+            continue
+          }
 
-      let newReleases = 0
+          const adapter = getAdapter(config)
+          const releases = await adapter.fetch(config)
 
-      for (const release of releases) {
-        const hash = crypto
-          .createHash('md5')
-          .update(release.rawChangelog)
-          .digest('hex')
+          if (releases.length === 0) {
+            results.push({ tool: tool.slug, status: 'no_releases' })
+            continue
+          }
 
-        const { data: existing } = await supabase
-          .from('tool_releases')
-          .select('id')
-          .eq('tool_id', tool.id)
-          .eq('response_hash', hash)
-          .limit(1)
+          let newReleases = 0
 
-        if (existing && existing.length > 0) continue
+          for (const release of releases) {
+            const hash = crypto
+              .createHash('md5')
+              .update(release.rawChangelog)
+              .digest('hex')
 
-        const classification = await classifyRelease(
-          tool.name,
-          release.version,
-          release.rawChangelog,
-        )
+            const { data: existing } = await supabase
+              .from('tool_releases')
+              .select('id')
+              .eq('tool_id', tool.id)
+              .eq('response_hash', hash)
+              .limit(1)
 
-        await supabase.from('tool_releases').upsert(
-          {
-            tool_id: tool.id,
-            version: release.version,
-            release_date: release.releaseDate,
-            summary: classification.summary,
-            significance: classification.significance,
-            raw_changelog: release.rawChangelog,
-            source_url: release.sourceUrl,
-            capabilities: classification.capabilities,
-            response_hash: hash,
-            brief_status: classification.significance === 'major' ? 'pending' : 'skipped',
-          },
-          { onConflict: 'tool_id,version' },
-        )
+            if (existing && existing.length > 0) continue
 
-        await supabase
-          .from('tools')
-          .update({
-            current_version: release.version,
-            last_release_date: release.releaseDate,
-            updated_at: new Date().toISOString(),
+            const classification = await classifyRelease(
+              tool.name,
+              release.version,
+              release.rawChangelog,
+            )
+
+            await supabase.from('tool_releases').upsert(
+              {
+                tool_id: tool.id,
+                version: release.version,
+                release_date: release.releaseDate,
+                summary: classification.summary,
+                significance: classification.significance,
+                raw_changelog: release.rawChangelog,
+                source_url: release.sourceUrl,
+                capabilities: classification.capabilities,
+                response_hash: hash,
+                brief_status: classification.significance === 'major' ? 'pending' : 'skipped',
+              },
+              { onConflict: 'tool_id,version' },
+            )
+
+            await supabase
+              .from('tools')
+              .update({
+                current_version: release.version,
+                last_release_date: release.releaseDate,
+                updated_at: new Date().toISOString(),
+              })
+              .eq('id', tool.id)
+
+            await checkContentStaleness(tool.slug, release.version)
+
+            // Pipeline integration point: for major releases, the multi-agent content
+            // pipeline can be triggered here via runPipeline('release_detected', { ... }).
+            // Not called inline to keep this cron fast and avoid Vercel timeout limits.
+            // Use POST /api/admin/trigger-pipeline or a dedicated pipeline cron instead.
+
+            newReleases++
+          }
+
+          results.push({ tool: tool.slug, status: 'ok', newReleases })
+          totalNewReleases += newReleases
+        } catch (error) {
+          results.push({
+            tool: tool.slug,
+            status: 'error',
+            error: error instanceof Error ? error.message : 'Unknown error',
           })
-          .eq('id', tool.id)
-
-        await checkContentStaleness(tool.slug, release.version)
-
-        // Pipeline integration point: for major releases, the multi-agent content
-        // pipeline can be triggered here via runPipeline('release_detected', { ... }).
-        // Not called inline to keep this cron fast and avoid Vercel timeout limits.
-        // Use POST /api/admin/trigger-pipeline or a dedicated pipeline cron instead.
-
-        newReleases++
+        }
       }
 
-      results.push({ tool: tool.slug, status: 'ok', newReleases })
-    } catch (error) {
-      results.push({
-        tool: tool.slug,
-        status: 'error',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      })
-    }
-  }
+      return {
+        itemsProcessed: totalNewReleases,
+        metadata: { toolsProcessed: tools.length },
+      }
+    })
 
-  return NextResponse.json({ results, processedAt: new Date().toISOString() })
+    return NextResponse.json({ results, processedAt: new Date().toISOString() })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: 'Cron failed',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        results,
+      },
+      { status: 500 },
+    )
+  }
 }
