@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ToolDetailTabs } from './tool-detail-tabs'
 import { Pill } from '@/components/shared/pill'
 import { ScrollReveal } from '@/components/motion/scroll-reveal'
+import { ErrorBoundary } from '@/components/error-boundary'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 
@@ -125,11 +126,13 @@ export default async function ToolDetailPage({ params }: Props) {
 
       {/* Tabbed content */}
       <section className="mx-auto max-w-[900px] px-6 py-12 lg:px-12">
-        <ToolDetailTabs
-          tool={tool}
-          releases={releases || []}
-          capsByCategory={capsByCategory}
-        />
+        <ErrorBoundary section="tool-detail-tabs">
+          <ToolDetailTabs
+            tool={tool}
+            releases={releases || []}
+            capsByCategory={capsByCategory}
+          />
+        </ErrorBoundary>
       </section>
     </>
   )

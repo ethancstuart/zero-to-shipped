@@ -8,6 +8,7 @@ import { TocSidebar } from '@/components/content/toc-sidebar'
 import { MobileToc } from '@/components/content/mobile-toc'
 import { BookmarkButton } from '@/components/content/bookmark-button'
 import { ViewTracker } from '@/components/content/view-tracker'
+import { ErrorBoundary } from '@/components/error-boundary'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -79,12 +80,14 @@ export default async function BuildDetailPage({ params }: Props) {
         {/* Two-column layout */}
         <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
           {/* Prose */}
-          <div
-            data-prose
-            className="prose prose-neutral dark:prose-invert max-w-[720px] prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[hsl(var(--accent-hsl))] prose-code:rounded prose-code:bg-[hsl(var(--bg-muted))] prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-[hsl(var(--border-base))]"
-          >
-            {content}
-          </div>
+          <ErrorBoundary section="content-prose">
+            <div
+              data-prose
+              className="prose prose-neutral dark:prose-invert max-w-[720px] prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[hsl(var(--accent-hsl))] prose-code:rounded prose-code:bg-[hsl(var(--bg-muted))] prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-pre:border prose-pre:border-[hsl(var(--border-base))]"
+            >
+              {content}
+            </div>
+          </ErrorBoundary>
 
           {/* Sidebar */}
           <TocSidebar />

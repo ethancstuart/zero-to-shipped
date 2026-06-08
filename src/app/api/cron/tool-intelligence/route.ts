@@ -5,6 +5,8 @@ import { classifyRelease } from '@/lib/intelligence/classifier'
 import { checkContentStaleness } from '@/lib/intelligence/staleness'
 import type { AdapterConfig } from '@/lib/intelligence/adapters/types'
 import { withCronMonitoring } from '@/lib/cron-monitor'
+import { supabaseBreaker } from '@/lib/circuit-breaker'
+import { log } from '@/lib/logger'
 import crypto from 'crypto'
 
 const supabase = createClient(
@@ -22,13 +24,26 @@ export async function GET(request: Request) {
 
   try {
     await withCronMonitoring('tool-intelligence', async () => {
-      const { data: tools } = await supabase
-        .from('tools')
-        .select('*')
-        .order('name')
+      const tools = await supabaseBreaker.execute(
+        async () => {
+          const { data, error } = await supabase
+            .from('tools')
+            .select('*')
+            .order('name')
+          if (error) throw error
+          return data
+        },
+        () => {
+          log('warn', 'Supabase unavailable, skipping tool-intelligence cron')
+          return null
+        },
+      )
 
       if (!tools) {
-        throw new Error('No tools found')
+        return {
+          itemsProcessed: 0,
+          metadata: { skipped: 'supabase_unavailable' },
+        }
       }
 
       let totalNewReleases = 0

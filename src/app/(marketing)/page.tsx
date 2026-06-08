@@ -10,6 +10,7 @@ import { BentoGrid } from '@/components/homepage/bento-grid'
 import { GradientBreak } from '@/components/homepage/gradient-break'
 import { HorizontalShowcase } from '@/components/homepage/horizontal-showcase'
 import { SectionDivider } from '@/components/shared/section-divider'
+import { ErrorBoundary } from '@/components/error-boundary'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -133,29 +134,43 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSection />
+      <ErrorBoundary section="hero">
+        <HeroSection />
+      </ErrorBoundary>
       <FirstVisitBanner />
 
       <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
-        <StartHereRow />
+        <ErrorBoundary section="start-here-row">
+          <StartHereRow />
+        </ErrorBoundary>
         <SectionDivider number="01" label="Platform" />
       </div>
 
-      <PinnedPillars pillarData={pillarData} />
+      <ErrorBoundary section="pinned-pillars">
+        <PinnedPillars pillarData={pillarData} />
+      </ErrorBoundary>
 
       <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
-        <NumberTheater />
+        <ErrorBoundary section="number-theater">
+          <NumberTheater />
+        </ErrorBoundary>
         <SectionDivider number="02" label="Features" />
-        <BentoGrid recentReleases={recentReleases} />
+        <ErrorBoundary section="bento-grid">
+          <BentoGrid recentReleases={recentReleases} />
+        </ErrorBoundary>
       </div>
 
-      <GradientBreak />
+      <ErrorBoundary section="gradient-break">
+        <GradientBreak />
+      </ErrorBoundary>
 
       <div className="max-w-[1300px] mx-auto px-6 lg:px-12 py-40">
         <SectionDivider number="03" label="Showcase" />
       </div>
 
-      <HorizontalShowcase />
+      <ErrorBoundary section="horizontal-showcase">
+        <HorizontalShowcase />
+      </ErrorBoundary>
     </>
   )
 }
