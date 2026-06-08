@@ -36,7 +36,30 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     // Public routes that don't require auth
-    const publicRoutes = ["/", "/auth/callback", "/pricing", "/leaderboard", "/guides", "/resources", "/agents", "/privacy", "/terms"];
+    const publicRoutes = [
+      "/",
+      "/auth/callback",
+      "/pricing",
+      "/leaderboard",
+      "/guides",
+      "/resources",
+      "/agents",
+      "/privacy",
+      "/terms",
+      "/pulse",
+      "/build",
+      "/learn",
+      "/system",
+      "/tools",
+      "/compare",
+      "/showcase",
+      "/waitlist",
+      "/library",
+      "/ask",
+      "/about",
+      "/transparency",
+      "/learning-paths",
+    ];
     const isPublicRoute =
       publicRoutes.some((route) => request.nextUrl.pathname === route) ||
       request.nextUrl.pathname.startsWith("/u/") ||
@@ -45,7 +68,15 @@ export async function updateSession(request: NextRequest) {
       request.nextUrl.pathname.startsWith("/guides/") ||
       request.nextUrl.pathname.startsWith("/resources/") ||
       request.nextUrl.pathname.startsWith("/learn/") ||
-      request.nextUrl.pathname === "/learn";
+      request.nextUrl.pathname.startsWith("/pulse/") ||
+      request.nextUrl.pathname.startsWith("/build/") ||
+      request.nextUrl.pathname.startsWith("/system/") ||
+      request.nextUrl.pathname.startsWith("/tools/") ||
+      request.nextUrl.pathname.startsWith("/compare/") ||
+      request.nextUrl.pathname.startsWith("/showcase/") ||
+      request.nextUrl.pathname.startsWith("/for/") ||
+      request.nextUrl.pathname.startsWith("/library/") ||
+      request.nextUrl.pathname.startsWith("/learning-paths/");
 
     // Capture referral code from URL into a cookie
     const refCode = request.nextUrl.searchParams.get("ref");
