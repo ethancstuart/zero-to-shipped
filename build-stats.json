@@ -1,9 +1,9 @@
 {
-  "loc": 30505,
-  "files": 317,
+  "loc": 31261,
+  "files": 323,
   "contentFiles": 36,
-  "tests": 237,
+  "tests": 259,
   "routes": 56,
-  "commits": 189,
-  "generatedAt": "2026-05-26T13:53:03Z"
+  "commits": 195,
+  "generatedAt": "2026-06-08T15:51:56Z"
 }
