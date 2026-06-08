@@ -59,6 +59,7 @@ export async function updateSession(request: NextRequest) {
       "/about",
       "/transparency",
       "/learning-paths",
+      "/which-tool",
     ];
     const isPublicRoute =
       publicRoutes.some((route) => request.nextUrl.pathname === route) ||
@@ -74,6 +75,7 @@ export async function updateSession(request: NextRequest) {
       request.nextUrl.pathname.startsWith("/tools/") ||
       request.nextUrl.pathname.startsWith("/compare/") ||
       request.nextUrl.pathname.startsWith("/showcase/") ||
+      request.nextUrl.pathname.startsWith("/which-tool/") ||
       request.nextUrl.pathname.startsWith("/for/") ||
       request.nextUrl.pathname.startsWith("/library/") ||
       request.nextUrl.pathname.startsWith("/learning-paths/");
