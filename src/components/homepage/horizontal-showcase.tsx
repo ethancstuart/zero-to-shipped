@@ -81,6 +81,9 @@ export function HorizontalShowcase() {
       {/* Scroll track */}
       <div
         ref={trackRef}
+        tabIndex={0}
+        role="region"
+        aria-label="Showcase carousel"
         className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 lg:px-12 pb-4 no-scrollbar"
         style={{ scrollbarWidth: 'none' }}
       >

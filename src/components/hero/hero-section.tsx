@@ -42,7 +42,7 @@ function MetaDot({ color, label }: { color: 'blue' | 'green' | 'purple'; label: 
 
 function ScrollIndicator() {
   return (
-    <div className="absolute bottom-12 right-6 lg:right-12 flex flex-col items-center gap-3 opacity-0 animate-[fadeUp_0.6s_ease-out_2s_forwards]">
+    <div aria-hidden="true" className="absolute bottom-12 right-6 lg:right-12 flex flex-col items-center gap-3 opacity-0 animate-[fadeUp_0.6s_ease-out_2s_forwards]">
       <span className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-[hsl(var(--fg-faint))]">
         scroll
       </span>
@@ -66,8 +66,8 @@ export function HeroSection() {
       <GenerativeMesh />
       <CursorSpotlight />
 
-      {/* Comment syntax */}
-      <div className="font-mono-data text-[11px] tracking-wider text-[hsl(var(--fg-faint))] mb-12 opacity-0 animate-[fadeUp_0.8s_ease-out_0.2s_forwards]">
+      {/* Comment syntax — decorative, hidden from a11y tree */}
+      <div aria-hidden="true" className="font-mono-data text-[11px] tracking-wider text-[hsl(var(--fg-faint))] mb-12 opacity-0 animate-[fadeUp_0.8s_ease-out_0.2s_forwards]">
         {'// prototype.studio'}
       </div>
 

@@ -122,7 +122,7 @@ function DesktopPinnedPillars({ pillarData }: PinnedPillarsProps) {
                 )}
               >
                 <span className="text-[10px] uppercase tracking-[2px] font-medium">{pillar.name}</span>
-                <span className="block text-sm mt-0.5 opacity-70">{pillar.title}</span>
+                <span className="block text-sm mt-0.5 text-[hsl(var(--fg-secondary))]">{pillar.title}</span>
               </button>
             )
           })}

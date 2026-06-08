@@ -13,6 +13,8 @@ test.describe('Accessibility (axe-core)', () => {
     test(`${name} has no critical or serious a11y violations`, async ({ page }) => {
       await page.goto(url)
       await page.waitForLoadState('networkidle')
+      // Wait for CSS and GSAP entrance animations to complete (max delay ~2s)
+      await page.waitForTimeout(2000)
 
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -45,6 +47,8 @@ test.describe('Accessibility (axe-core)', () => {
 
     await firstCard.click()
     await page.waitForLoadState('networkidle')
+    // Wait for GSAP entrance animations to complete
+    await page.waitForTimeout(2000)
 
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
