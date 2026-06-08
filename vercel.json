@@ -5,6 +5,10 @@
       "schedule": "0 */6 * * *"
     },
     {
+      "path": "/api/cron/pipeline-generator",
+      "schedule": "30 */6 * * *"
+    },
+    {
       "path": "/api/cron/benchmarks",
       "schedule": "0 0 * * 0"
     }
