@@ -50,6 +50,41 @@ async function getPillarCounts() {
   }
 }
 
+async function getPlatformCost(): Promise<string> {
+  try {
+    const supabase = await createClient()
+    let totalCents = 0
+
+    // Prefer platform_costs (manual ledger). Fallback to pipeline_runs aggregate.
+    const { data: ledger } = await supabase
+      .from('platform_costs')
+      .select('amount_cents')
+    if (ledger && ledger.length > 0) {
+      totalCents = ledger.reduce(
+        (sum, r) => sum + (r.amount_cents || 0),
+        0,
+      )
+    }
+
+    if (totalCents === 0) {
+      const { data: runs } = await supabase
+        .from('pipeline_runs')
+        .select('total_cost_cents')
+      if (runs && runs.length > 0) {
+        totalCents = runs.reduce(
+          (sum, r) => sum + (r.total_cost_cents || 0),
+          0,
+        )
+      }
+    }
+
+    if (totalCents <= 0) return '< $0.01'
+    return `$${(totalCents / 100).toFixed(2)}`
+  } catch {
+    return '< $0.01'
+  }
+}
+
 async function getRecentReleases() {
   try {
     const supabase = await createClient()
@@ -79,11 +114,17 @@ async function getRecentReleases() {
 }
 
 export default async function HomePage() {
-  const [{ counts, toolCount }, recentReleases, allItems] = await Promise.all([
+  const [{ counts, toolCount }, recentReleases, allItems, platformCost] = await Promise.all([
     getPillarCounts(),
     getRecentReleases(),
     listAllContent(),
+    getPlatformCost(),
   ])
+
+  // /api/v1 paths in docs/api/openapi.yaml: tools, tools/{slug}, tools/{slug}/releases,
+  // compare, capabilities, capabilities/{capability}, pulse, pulse/weekly, showcase,
+  // stats, benchmarks, benchmarks/{slug}/results = 12
+  const endpointCount = 12
 
   const pillarData: PillarData[] = [
     {
@@ -156,7 +197,11 @@ export default async function HomePage() {
         </ErrorBoundary>
         <SectionDivider number="02" label="Features" />
         <ErrorBoundary section="bento-grid">
-          <BentoGrid recentReleases={recentReleases} />
+          <BentoGrid
+            recentReleases={recentReleases}
+            platformCost={platformCost}
+            endpointCount={endpointCount}
+          />
         </ErrorBoundary>
       </div>
 

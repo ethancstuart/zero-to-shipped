@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { StaggerGrid } from '@/components/motion/stagger-grid'
 import { cn } from '@/lib/utils'
 
@@ -11,6 +12,21 @@ interface RecentRelease {
 
 interface BentoGridProps {
   recentReleases: RecentRelease[]
+  platformCost: string
+  endpointCount: number
+}
+
+/* -----------------------------------------------------------------------
+   Shared affordance
+   ----------------------------------------------------------------------- */
+
+function ViewAffordance() {
+  return (
+    <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase flex items-center gap-1 transition-colors group-hover:text-[hsl(var(--fg-secondary))]">
+      View
+      <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+    </div>
+  )
 }
 
 /* -----------------------------------------------------------------------
@@ -27,7 +43,10 @@ function AgentReplayTile() {
   ]
 
   return (
-    <div className="col-span-1 row-span-2 sm:col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between overflow-hidden">
+    <Link
+      href="/system/observatory"
+      className="group col-span-1 row-span-2 sm:col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between overflow-hidden transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
       <div>
         <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
           Agent Replay
@@ -50,7 +69,10 @@ function AgentReplayTile() {
           </div>
         ))}
       </div>
-    </div>
+      <div className="mt-6 flex justify-end">
+        <ViewAffordance />
+      </div>
+    </Link>
   )
 }
 
@@ -59,7 +81,10 @@ function ToolIntelligenceTile() {
   const activeCells = [2, 5, 7, 9, 11, 14, 17, 19, 22]
 
   return (
-    <div className="col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
+    <Link
+      href="/compare"
+      className="group col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden flex flex-col transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
         Tool Intelligence
       </div>
@@ -81,39 +106,54 @@ function ToolIntelligenceTile() {
           )
         })}
       </div>
-    </div>
+      <div className="mt-6 flex justify-end">
+        <ViewAffordance />
+      </div>
+    </Link>
   )
 }
 
-function TransparencyTile() {
+function TransparencyTile({ cost }: { cost: string }) {
   return (
-    <div className="rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between">
+    <Link
+      href="/transparency"
+      className="group rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
         Transparency
       </div>
       <div>
         <div className="font-display text-3xl font-light tracking-tight text-[hsl(var(--fg))]">
-          $0.00
+          {cost}
         </div>
         <div className="font-mono-data text-[10px] text-[hsl(var(--fg-muted))] mt-1">platform cost</div>
       </div>
-    </div>
+      <div className="mt-6 flex justify-end">
+        <ViewAffordance />
+      </div>
+    </Link>
   )
 }
 
-function OpenApiTile() {
+function OpenApiTile({ endpointCount }: { endpointCount: number }) {
   return (
-    <div className="rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between">
+    <Link
+      href="/api/docs"
+      className="group rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
         Open API
       </div>
       <div>
         <div className="font-display text-3xl font-light tracking-tight text-[hsl(var(--fg))]">
-          12
+          {endpointCount}
         </div>
         <div className="font-mono-data text-[10px] text-[hsl(var(--fg-muted))] mt-1">endpoints</div>
       </div>
-    </div>
+      <div className="mt-6 flex justify-end">
+        <ViewAffordance />
+      </div>
+    </Link>
   )
 }
 
@@ -129,7 +169,10 @@ function LiveFeedTile({ releases }: { releases: RecentRelease[] }) {
   const doubled = [...items, ...items]
 
   return (
-    <div className="col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden">
+    <Link
+      href="/pulse"
+      className="group col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden flex flex-col transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-4">
         Live Feed
       </div>
@@ -153,7 +196,10 @@ function LiveFeedTile({ releases }: { releases: RecentRelease[] }) {
           ))}
         </div>
       </div>
-    </div>
+      <div className="mt-6 flex justify-end">
+        <ViewAffordance />
+      </div>
+    </Link>
   )
 }
 
@@ -161,7 +207,7 @@ function LiveFeedTile({ releases }: { releases: RecentRelease[] }) {
    BentoGrid
    ----------------------------------------------------------------------- */
 
-export function BentoGrid({ recentReleases }: BentoGridProps) {
+export function BentoGrid({ recentReleases, platformCost, endpointCount }: BentoGridProps) {
   return (
     <>
       <style jsx global>{`
@@ -181,8 +227,8 @@ export function BentoGrid({ recentReleases }: BentoGridProps) {
       <StaggerGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-10" stagger={0.08}>
         <AgentReplayTile />
         <ToolIntelligenceTile />
-        <TransparencyTile />
-        <OpenApiTile />
+        <TransparencyTile cost={platformCost} />
+        <OpenApiTile endpointCount={endpointCount} />
         <LiveFeedTile releases={recentReleases} />
       </StaggerGrid>
     </>
