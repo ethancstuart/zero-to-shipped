@@ -1,0 +1,247 @@
+---
+title: "Build Your Own AI Assistant with Codex (Like Prototype Studio's)"
+slug: "build-your-own-assistant-with-codex"
+pillar: "build"
+type: "walkthrough"
+format: "written"
+difficulty: "intermediate"
+estimatedMinutes: 75
+tools: ["codex", "openai", "supabase"]
+tags: ["ai-assistant", "rag", "embeddings", "meta"]
+isPremium: false
+isFeatured: true
+status: "published"
+publishedAt: "2026-06-09"
+description: "Build a chat assistant that knows your own content. Uses Codex (currently my top recommendation) plus OpenAI embeddings and Supabase pgvector. The meta-walkthrough — how Prototype Studio's own assistant works."
+---
+
+# Build Your Own AI Assistant with Codex (Like Prototype Studio's)
+
+## What you'll have at the end
+
+A `/ask` page on your own site where visitors type a question, hit enter, and get an answer that's grounded in your actual content — your docs, your blog posts, your product copy. Not a generic chatbot pretending to know your business. An assistant that quotes your own words back at you with citations.
+
+The flow: question in, embedding generated, top matches retrieved from your content, an LLM call that's strictly told to answer from those matches, streamed response on screen. If your content doesn't cover the question, the assistant says so. That last part is the difference between something useful and something embarrassing.
+
+I'll be building it with Codex because that's what I'd reach for today if I were starting this from scratch. The walkthrough is structured so you could swap Codex for Claude Code with minimal changes — but I want to use the tool I'm actually reaching for, and that's Codex right now.
+
+## Why this is the perfect Codex project
+
+Codex's long-running task behavior is the killer feature for this kind of build. The assistant has four parts that don't depend on each other in a sequential way: the embedding pipeline, the vector schema, the retrieval logic, and the chat UI. You can hand Codex the spec for all four, let it work, and come back to a PR you review in one sitting.
+
+That workflow does not work as well for a tightly-coupled feature where you need to be in the loop every five minutes. It works extremely well for "go build four things that fit together cleanly." This is one of those tasks.
+
+The other reason: this build hits the OpenAI API for both embeddings and (optionally) the generation step. Codex is OpenAI's tool. The defaults line up. The auth lines up. You spend less time wrestling with environment variables and more time on the actual product.
+
+## The architecture
+
+Here's the whole system on one line: **your content → embeddings → pgvector → retrieval → LLM response with citations.**
+
+Expanding that:
+
+1. You write content in MDX files (or a database, or wherever you keep it).
+2. A script chunks each file, sends each chunk to OpenAI's embedding API, and stores the resulting vector in a Supabase table using the `pgvector` extension.
+3. A user submits a question. You embed the question the same way.
+4. You query Supabase: "give me the 5 chunks with vectors most similar to this question's vector."
+5. You send those chunks plus the question to an LLM with a system prompt that says "answer only from this context, cite the source filenames."
+6. You stream the response back to the user.
+
+Five steps. None of them are conceptually hard. The work is in making them robust and fast.
+
+<Callout type="info" title="Why pgvector and not a dedicated vector DB">
+You'll see lots of tutorials reach for Pinecone, Weaviate, or Chroma. For a single-purpose assistant on a single site, pgvector inside Supabase is enough. You skip another service, another billing surface, another credential to rotate. When your corpus crosses ~10M vectors or you need sub-50ms latency at high QPS, look at a dedicated store. Until then, pgvector earns its keep.
+</Callout>
+
+## Step 1: Set up the project
+
+Empty directory, start Codex:
+
+<CodeBlock language="bash">
+mkdir my-assistant
+cd my-assistant
+codex
+</CodeBlock>
+
+First prompt:
+
+<CodeBlock language="text">
+Scaffold a Next.js 15 app in the current directory.
+- App Router, TypeScript, Tailwind v4
+- Install: @supabase/supabase-js, @supabase/ssr, openai, ai (Vercel AI SDK), zod
+- Create Supabase client helpers at src/lib/supabase/client.ts and src/lib/supabase/server.ts
+- Create an OpenAI client helper at src/lib/openai.ts that reads OPENAI_API_KEY from env
+- Add .env.local.example with: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
+- Run the install and confirm the dev server starts
+</CodeBlock>
+
+Create a Supabase project at [supabase.com](https://supabase.com) if you haven't. Copy the URL, anon key, and service role key into `.env.local`. Get an OpenAI API key from [platform.openai.com](https://platform.openai.com) and add it too.
+
+Now enable pgvector. In the Supabase dashboard, go to Database → Extensions. Search for "vector." Toggle it on. That gives you the `vector` column type Postgres needs to store embeddings.
+
+Then have Codex set up the schema:
+
+<CodeBlock language="text">
+Create a SQL migration at supabase/migrations/0001_content_embeddings.sql:
+- Table: content_chunks
+  - id uuid primary key default gen_random_uuid()
+  - source_path text not null  (e.g. "docs/getting-started.md")
+  - chunk_index int not null
+  - content text not null
+  - embedding vector(1536) not null
+  - created_at timestamptz default now()
+- Index: ivfflat on embedding using vector_cosine_ops with lists = 100
+- Function: match_content_chunks(query_embedding vector(1536), match_count int) returning the top match_count chunks ordered by cosine distance, returning id, source_path, content, similarity (as 1 - distance)
+- RLS enabled, but with a permissive read policy for now (we'll tighten in step 5)
+</CodeBlock>
+
+Run the migration using the Supabase CLI or paste it into the SQL editor in the dashboard. Verify the table exists and the function returns an empty array when called.
+
+## Step 2: Generate embeddings for your content
+
+You need content to embed. For this walkthrough, drop a few markdown files into a `content/` folder at the root of your project — your existing docs, a few blog posts, your README. Anything in plain text. 5–20 files is plenty to start.
+
+Then have Codex write the embedding script:
+
+<CodeBlock language="text">
+Create scripts/generate-embeddings.ts.
+- Read all .md and .mdx files under ./content (recursive)
+- For each file, chunk the content into roughly 500-token pieces, splitting on paragraph boundaries when possible
+- For each chunk, call OpenAI's embeddings.create with model "text-embedding-3-small" (1536 dimensions)
+- Upsert each chunk into the content_chunks table using the service role client, with source_path = relative file path and chunk_index = position in the file
+- Before inserting, delete existing rows for that source_path so re-runs don't duplicate
+- Log progress: "Embedded {n}/{total} chunks from {file}"
+- Add a "npm run embed" script to package.json that runs this with tsx
+</CodeBlock>
+
+Run it:
+
+<CodeBlock language="bash">
+npm run embed
+</CodeBlock>
+
+You should see chunks streaming in. Cost check: `text-embedding-3-small` is $0.02 per 1M tokens. A few thousand chunks costs cents. Don't worry about the budget at this scale.
+
+Verify in Supabase: go to the table editor, open `content_chunks`, see your rows. The `embedding` column will look like a long array of numbers. That's correct — those numbers are the semantic fingerprint of each chunk.
+
+<Callout type="info" title="Chunking is the part that affects quality most">
+The 500-token chunk size is a reasonable default. If your assistant gives answers that feel "close but not quite right," try smaller chunks (250 tokens) for higher precision, or larger chunks (1000 tokens) if your content is dense and benefits from more context per match. There's no universal right answer. Test against real questions.
+</Callout>
+
+## Step 3: Build the chat endpoint with RAG
+
+Now the brain of the assistant. Codex:
+
+<CodeBlock language="text">
+Create the API route at src/app/api/ask/route.ts.
+- Accept POST with body { question: string }
+- Validate with zod: question must be 1-500 chars
+- Embed the question using OpenAI's text-embedding-3-small
+- Call supabase.rpc('match_content_chunks', { query_embedding, match_count: 5 })
+- If no chunks come back with similarity > 0.7, return a streamed response that says "I don't have content covering that. Try asking about [list a few of your actual topics]."
+- Otherwise, build a system prompt that includes:
+  - "You answer questions about my content. Use ONLY the provided context. If the answer isn't in the context, say so."
+  - The retrieved chunks, each labeled with its source_path
+  - "Cite sources inline like [docs/getting-started.md]"
+- Use the Vercel AI SDK's streamText with gpt-4o-mini, system prompt, and the user's question
+- Return the streamed response
+- Use the server-side Supabase client (service role key is fine here since this is server-only)
+</CodeBlock>
+
+Test with curl:
+
+<CodeBlock language="bash">
+curl -X POST http://localhost:3000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question":"What is this content about?"}'
+</CodeBlock>
+
+You should see a streamed response that quotes your own files. If it makes things up or refuses to answer, check two places: the similarity threshold (0.7 might be too high if your corpus is small) and the system prompt (make sure it's strict about the "only from context" rule).
+
+## Step 4: Build the chat UI
+
+<CodeBlock language="text">
+Create src/app/ask/page.tsx using the Vercel AI SDK's useChat hook.
+- Client component
+- Centered chat layout, max-width 720px
+- Sticky composer at the bottom with a textarea (auto-resize) and a "Ask" button
+- Message list above the composer, scrolls independently
+- User messages right-aligned, assistant messages left-aligned with a subtle border
+- While streaming, show a small pulsing dot indicator
+- Use the api/ask endpoint
+- After each response, render any [filename.md] citations as small pill links at the bottom of that message
+- Empty state: a heading "Ask me anything about this site" and 3 suggested example questions as clickable chips
+- Style: minimal, white background, system font stack, no library theming
+</CodeBlock>
+
+Open `localhost:3000/ask`. Type a question that you know is covered in your content. The response should stream in, quote your files, and feel like the assistant actually read them — because it did.
+
+Type a question that's intentionally off-topic ("what's the capital of France"). The assistant should refuse politely. If it answers anyway, your system prompt isn't strict enough. Tighten it.
+
+## Step 5: Add per-user rate limiting
+
+This is the step everyone skips and then regrets. The first time someone scripts your `/ask` endpoint in a loop, you'll get a four-figure OpenAI bill overnight. Don't be that person.
+
+I learned this the hard way with Prototype Studio's own assistant. Three weeks after launch, I saw the daily OpenAI spend graph spike. Someone had wired up a scraper hitting our `/ask` endpoint 20 times a second. The fix took an hour. The bill was already $180 by the time I noticed.
+
+<Callout type="warning" title="I learned this the hard way">
+Rate limiting is not a "nice to have" for AI endpoints. It's load-bearing. Ship it before you ship the assistant publicly. If you can't ship rate limiting today, keep the endpoint behind auth until you can.
+</Callout>
+
+Codex:
+
+<CodeBlock language="text">
+Add per-IP rate limiting to /api/ask.
+- Use @upstash/ratelimit + @upstash/redis
+- Install both packages
+- Add UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to .env.local.example
+- Create src/lib/rate-limit.ts that exports a rate limiter: 10 requests per minute per IP, sliding window
+- In the route handler, read the IP from request headers (x-forwarded-for, falling back to a default), check the rate limit before doing any OpenAI work, and return 429 with a JSON error if exceeded
+- If the Redis env vars are missing, fall back to an in-memory limiter (acceptable for local dev, not for prod)
+</CodeBlock>
+
+Create a free Upstash Redis database at [upstash.com](https://upstash.com), copy the URL and token, paste into `.env.local`. Restart the dev server.
+
+Test by hitting the endpoint 11 times in a row. The 11th should return a 429.
+
+For Prototype Studio's assistant, I also added a per-day cap (50 questions per IP per day) on top of the per-minute limit. That stopped the slow-and-steady scraper pattern that per-minute limits miss. Worth considering if your endpoint is fully public.
+
+## Step 6: Deploy and test
+
+<CodeBlock language="bash">
+git init
+git add .
+git commit -m "feat: rag assistant with codex"
+gh repo create my-assistant --private --source=. --push
+vercel
+</CodeBlock>
+
+When Vercel asks for env vars, paste all of them: Supabase URL, anon key, service role key, OpenAI key, Upstash URL, Upstash token. Run `vercel --prod`.
+
+Open the live URL. Test the assistant. Test the rate limit (hit /api/ask 11 times). Test an off-topic question. Test a question you know is covered.
+
+If everything works, the assistant is live. Tweet the URL, get five friends to ask things, watch the responses come in. The feedback you get in the first 24 hours is more useful than any amount of additional engineering.
+
+## The meta moment
+
+This is exactly how Prototype Studio's own assistant works. Same architecture, same model choices, almost the same chunking strategy. The site you're reading this on has a `/ask` page wired up to the same five steps you just walked through.
+
+A few specific things I do differently in production that you don't need on day one:
+
+- I re-embed content automatically when MDX files change in CI, not by running a script manually
+- I cache the embeddings of common questions for 5 minutes to cut latency and cost
+- I log every question to a Supabase table so I can see what people actually ask (this has been the single most useful signal for what content to write next)
+- I show the matched chunks in a debug panel for myself (gated by a cookie) so I can audit answers in production
+
+None of those are necessary to ship version one. They're things you add when the assistant earns its keep and you want to make it better.
+
+## What's next
+
+Three directions you can take this from here:
+
+**Multi-step reasoning.** Instead of one retrieval + one generation, do a planning step first: "what does the user actually need? what queries should I run?" Then do multiple retrievals and synthesize. Helpful for questions that span several documents.
+
+**Function calling / tools.** Give the assistant the ability to take actions, not just answer. Look up a user's account, create a draft, schedule a meeting. The LLM decides when to call which function based on the question. This is where assistants start to feel like products instead of search boxes.
+
+**Streaming UI updates.** Right now you stream text. You can also stream UI components — render a card while the answer is being generated, populate it with structured data the model returns. The Vercel AI SDK's `streamUI` API handles this. It's the difference between a chat interface and a real interactive surface.
+
+Each of those is its own walkthrough. The base you just built — embeddings, retrieval, grounded generation, rate limiting — is the foundation all of them sit on.

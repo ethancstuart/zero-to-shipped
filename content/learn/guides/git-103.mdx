@@ -1,0 +1,269 @@
+---
+title: "Git 103: Recovery, History, and Safety"
+slug: "git-103"
+pillar: "learn"
+type: "guide"
+format: "written"
+difficulty: "advanced"
+estimatedMinutes: 40
+tools: ["git", "github"]
+tags: ["git", "recovery", "advanced", "pm"]
+isPremium: false
+isFeatured: false
+status: "published"
+publishedAt: "2026-06-09"
+series: "git-track"
+position: 3
+description: "What to do when Git goes wrong. Reflog, bisect, interactive rebase, and the recovery one-liners every PM should know."
+---
+
+# Git 103: Recovery, History, and Safety
+
+The first time you think you've lost work in Git, your stomach drops. You ran something wrong, the file looks empty, the branch is in the wrong place, and you're staring at the terminal trying to remember if you committed before that last command. I've been there. Most non-engineers I've worked with have been there.
+
+Here's the thing: Git is forgiving. Almost nothing is truly lost. Every commit Git has ever made on your machine is sitting in `.git/` somewhere, addressable by a hash, recoverable if you know where to look. The hard part isn't recovery. It's knowing that recovery is possible and which tool to reach for.
+
+## Why this matters
+
+This guide is the one you'll use the day something goes wrong. You don't need to memorize it. You need to know it exists and roughly what's in it, so when the moment comes you can come back, find the relevant section, and unwreck yourself. Bookmark it. Skim it once now so you know the shape of it. Come back when you need it.
+
+I structured it around the situations you'll actually hit: "I broke main," "I need to find when a bug was introduced," "I want to clean up before sharing," "I'm about to force push," and a cheat sheet of one-liners for everything else.
+
+---
+
+## "I broke main": reflog, revert, reset
+
+Three tools, three different jobs. The mistake is reaching for the wrong one.
+
+### `git reflog` — your safety net
+
+Git keeps a private journal called the **reflog** that records every time your branch pointer moves. Commits, checkouts, resets, rebases — all of it. It's local to your machine and it's the first thing you should run when you think you lost work.
+
+<CodeBlock language="bash">
+{`git reflog`}
+</CodeBlock>
+
+You'll see output like:
+
+<CodeBlock language="text">
+{`a3f2b1c HEAD@{0}: reset: moving to HEAD~3
+9d8e4f5 HEAD@{1}: commit: Add pricing tier logic
+7c2a1b8 HEAD@{2}: commit: Update copy on homepage
+5b9d3e2 HEAD@{3}: checkout: moving from main to feature-branch`}
+</CodeBlock>
+
+Each line is a state your branch was in. The hash on the left is a commit you can return to. `HEAD@{1}` is where you were one move ago, `HEAD@{2}` two moves ago, and so on. If you accidentally reset your branch and lost three commits, you can find them in the reflog and recover them.
+
+To return your branch to a previous state:
+
+<CodeBlock language="bash">
+{`git reset --hard HEAD@{1}`}
+</CodeBlock>
+
+That tells Git: "Move my branch pointer back to where it was one operation ago." The "lost" commits are now where you can see them again.
+
+The reflog stays around for 90 days by default. It's enough.
+
+### `git revert <sha>` — make a new commit that undoes a previous one
+
+This is the safest way to back out a change that has already been pushed and shared. It doesn't rewrite history. It adds a new commit on top that's the exact inverse of the commit you're targeting.
+
+<CodeBlock language="bash">
+{`git revert a3f2b1c`}
+</CodeBlock>
+
+The original commit stays in history. Anyone looking at the log sees what was done and that it was undone. There's nothing to force-push, nothing to coordinate with teammates. Use this on shared branches.
+
+### `git reset` — moves your branch pointer
+
+Reset is more powerful and more dangerous. It moves where your branch is pointing, and depending on the flag, also changes your working files.
+
+<CodeBlock language="bash">
+{`git reset --soft HEAD~1   # move branch back 1 commit, keep all changes staged
+git reset --mixed HEAD~1  # move branch back 1 commit, keep changes but unstage them (default)
+git reset --hard HEAD~1   # move branch back 1 commit, DISCARD changes`}
+</CodeBlock>
+
+`--hard` is the one that scares people, and rightly so. It throws away your uncommitted work. But if you're recovering with reflog (`git reset --hard HEAD@{1}`), `--hard` is exactly what you want — you're returning to a known-good state.
+
+**When to use each:**
+
+- Use `revert` on shared branches. Always.
+- Use `reset` on your own personal branch, when you haven't pushed yet.
+- Use `reflog` to find where to reset to.
+
+<Callout type="warning" title="What I do when I think I lost work">
+Step 1: stop. Do not run any more commands until I know what state I'm in. Every command I run on top of a confused state risks making it worse. Step 2: run `git status` and `git reflog`. Read both. Find the last hash that represents the state I want to be in. Step 3: copy that hash somewhere safe (a sticky note, a Slack DM to myself). Step 4: now, with the hash in hand, decide between `reset --hard <hash>` (recover and discard current state) or `cherry-pick <hash>` (pluck specific commits out). Step 5: verify with `git log` that I'm where I expected to be. The pause between steps 1 and 2 is what keeps me out of trouble.
+</Callout>
+
+---
+
+## Finding when a bug was introduced: git bisect
+
+A user reports a bug. The feature used to work. You don't know when it broke. The codebase has 500 commits since the last known-good version. Reading every commit is hopeless.
+
+`git bisect` is a binary search through history. You tell Git a commit that was good and a commit that's bad, and Git checks out commits in the middle for you to test. You mark each one good or bad. Git narrows the range each time. In about `log2(N)` steps, it points at the exact commit that introduced the bug. For 500 commits, that's 9 tests.
+
+### Setup
+
+<CodeBlock language="bash">
+{`git bisect start
+git bisect bad                  # the current commit is broken
+git bisect good a3f2b1c         # this older commit was working`}
+</CodeBlock>
+
+Git checks out a commit halfway between good and bad. You test the feature. If it's working at this commit:
+
+<CodeBlock language="bash">
+{`git bisect good`}
+</CodeBlock>
+
+If it's broken:
+
+<CodeBlock language="bash">
+{`git bisect bad`}
+</CodeBlock>
+
+Git checks out the next commit to test. You repeat until Git announces the first bad commit.
+
+### When to stop
+
+When Git names the bad commit, or any time you realize bisect isn't going to help (the bug is intermittent, or external state is interfering):
+
+<CodeBlock language="bash">
+{`git bisect reset`}
+</CodeBlock>
+
+That returns you to where you started.
+
+### Real-world: finding a regression in six minutes
+
+I once had a regression where a form submission silently failed. The feature worked two weeks ago. Between then and now: 47 commits. I started bisect with the broken HEAD as bad and a known-good commit from two weeks back. Six tests later — each one was clicking the form button and watching for the network call — Git pointed at the commit. It was a one-character change to an environment variable name. I'd have spent two hours reading commits otherwise. Bisect cost me six minutes.
+
+The trick is having a fast test. If the bug takes 30 minutes to reproduce, bisect is painful. If you can test in 30 seconds, it's magic.
+
+---
+
+## Cleaning history before sharing
+
+Your work-in-progress commits don't need to be public. Engineers clean up their commit history before opening a PR so the diff tells a coherent story instead of showing the messy path they took to get there. The tool for this is **interactive rebase**.
+
+<CodeBlock language="bash">
+{`git rebase -i HEAD~5`}
+</CodeBlock>
+
+That opens an editor with the last 5 commits, oldest at the top:
+
+<CodeBlock language="text">
+{`pick a3f2b1c Start payment flow
+pick 9d8e4f5 WIP
+pick 7c2a1b8 Fix typo
+pick 5b9d3e2 Finally working
+pick 2a1b8c4 Update tests`}
+</CodeBlock>
+
+You edit the file to tell Git what to do with each commit:
+
+- `pick` — keep this commit as-is
+- `squash` — combine this commit into the one above it, keeping both commit messages
+- `fixup` — combine into the one above, discard this message
+- `edit` — pause here so you can change the commit's files
+- `reword` — keep the commit but change the message
+- `drop` — delete the commit entirely
+
+A common cleanup pattern: turn five WIP commits into one good commit:
+
+<CodeBlock language="text">
+{`pick a3f2b1c Add payment flow
+fixup 9d8e4f5 WIP
+fixup 7c2a1b8 Fix typo
+fixup 5b9d3e2 Finally working
+fixup 2a1b8c4 Update tests`}
+</CodeBlock>
+
+Save the file. Git replays the commits, applying your instructions. You end up with one commit titled "Add payment flow" that contains all the changes.
+
+### When NOT to clean history
+
+**Once you've pushed and someone else has pulled your branch, don't rewrite history.** Interactive rebase rewrites commits. Force pushing the rewritten branch will leave anyone who pulled your old version in a broken state. They'll have your old commits and your new commits in their history and a mess to untangle.
+
+Rule: rewrite history only on your own personal branch, before anyone else has based work on it. If in doubt, ask in Slack: "Is anyone else working off my branch? About to rebase."
+
+---
+
+## Force push: when, why, and how to be safe
+
+`git push --force` overwrites the remote branch with your local version. It's how you publish a rebase or a history rewrite. It's also how you destroy a teammate's work if you're careless.
+
+The safer version:
+
+<CodeBlock language="bash">
+{`git push --force-with-lease`}
+</CodeBlock>
+
+`--force-with-lease` adds a sanity check: "force push, but only if the remote is in the state I expect." If a teammate pushed a commit to the same branch since you last pulled, the lease fails and the push is rejected. You've been protected from overwriting their work.
+
+Use `--force-with-lease` by default. Never use plain `--force` on a branch anyone else might touch.
+
+### Where force push is fine
+
+Your own personal branch, that no one else is collaborating on, that you haven't merged into anything important. That's it.
+
+### Where it's forbidden
+
+`main`. `develop`. Any release branch. Any branch with an open PR that others have reviewed.
+
+Most teams enforce this with branch protection rules in GitHub: `main` is configured to reject force pushes outright. If your team hasn't set that up, ask for it. It's a 30-second fix in repo settings that prevents an entire category of disaster.
+
+The phrase "I'll force push" in a Slack thread should make you slow down. Read what they're force-pushing. Confirm it's not `main`.
+
+---
+
+## Git hooks for non-engineers
+
+Git hooks are scripts that run automatically at certain points in your workflow — before a commit, after a commit, before a push, and so on. The most useful one for non-engineers is the **pre-commit hook**, which runs before every commit and can block the commit if it doesn't pass checks.
+
+Raw Git hooks are shell scripts in `.git/hooks/`, which is fine if you write shell scripts. Most modern teams use **Husky**, which makes hooks config-based and shareable across the team. Engineers set it up once. You benefit forever.
+
+A typical pre-commit hook does things like:
+
+- Run the linter on changed files (catch style issues before they hit the PR)
+- Format code automatically with Prettier
+- Block commits that contain TODO markers or `console.log`
+- Block direct commits to `main`
+
+Why you care: when you `git commit` and the terminal spits out lint errors and refuses the commit, that's a hook doing its job. The fix is either to clean up the issue and commit again, or — if you really need to bypass — use `git commit --no-verify` (and only if you know why you're bypassing it).
+
+Ask your engineering team what hooks are configured. Knowing what's running on every commit saves you minutes of confusion the first time one fires.
+
+---
+
+## The "oh no" cheat sheet
+
+Eight emergency one-liners. Skim them once. Come back when you need them.
+
+**`git reflog`** — Find what you lost. Shows every state your branch has been in. The starting point for any "I deleted my work" panic.
+
+**`git restore <file>`** — Discard uncommitted changes to a specific file. Throws away your edits and returns the file to its last committed state.
+
+**`git restore --staged <file>`** — Unstage a file you ran `git add` on by mistake. The file keeps your changes, it's just no longer queued for the next commit.
+
+**`git commit --amend`** — Fix the most recent commit. Adds any currently staged changes to it and lets you edit the commit message. Only use on commits you haven't pushed yet.
+
+**`git revert HEAD`** — Undo the most recent commit by creating a new commit that's the inverse. Safe to use on shared branches because it doesn't rewrite history.
+
+**`git reset --hard HEAD@{1}`** — Recover from a botched reset. Uses the reflog to return your branch to the state it was in before your last move. The undo button for resets.
+
+**`git stash`** — Set aside your uncommitted changes temporarily. Useful when you need to switch branches but aren't ready to commit. Get them back with `git stash pop`.
+
+**`git checkout -`** — Switch to the branch you were on previously. Like `cd -` in the terminal. Useful when you bounce between two branches a lot.
+
+---
+
+## Closing
+
+You don't need to memorize all of this. The point of Git 103 isn't fluency — it's confidence. When something goes wrong, you should be able to think, "I know this is recoverable. Let me check the reflog. Let me figure out whether to revert or reset. Let me ask before I force push." That posture is the whole game.
+
+The engineers on your team have been here too. Every one of them has reset the wrong branch, force-pushed something they shouldn't have, or stared at a merge conflict at 4pm on a Friday. The difference between a junior reaction and a senior reaction is the pause — the few seconds of "okay, let me figure out what state I'm in before I do anything else." That pause is what this guide is teaching.
+
+Save the cheat sheet. Come back when you need it.

@@ -1,0 +1,110 @@
+---
+title: "The Builder's Weekly Workflow"
+slug: "builders-weekly-workflow"
+pillar: "system"
+type: "playbook"
+format: "written"
+difficulty: "intermediate"
+estimatedMinutes: 20
+tools: ["claude-code", "codex"]
+tags: ["workflow", "productivity", "weekly", "pm"]
+isPremium: false
+isFeatured: true
+status: "published"
+publishedAt: "2026-06-09"
+description: "How I actually structure my week as a solo builder using AI. Monday planning, Tuesday-Thursday building, Friday review. Templates included."
+---
+
+# The Builder's Weekly Workflow
+
+## Why I work in weeks, not days
+
+I tried working in days for a long time. Wake up, look at the list, pick something, work on it. The problem was that the list never got shorter. Every day produced new items faster than it closed old ones. I'd end the week with twice as much "in flight" as I started with, and no sense of whether I was actually moving.
+
+A week is a different unit. It's long enough to ship something real — a feature, a campaign, a meaningful refactor — and short enough that I can hold the whole plan in my head. When I switched from a daily rhythm to a weekly one, the floor on my output stopped wobbling. Some days were still bad. The week kept producing.
+
+The other thing weeks do that days don't: they let you separate planning, building, and reviewing. Trying to do all three every day means none of them get done well. When each has its own day, planning is actually planning, and Friday isn't just "the day I'm too tired to ship anything new."
+
+This is how I actually work. Not how I think you should work. Take what's useful.
+
+## Monday: planning
+
+Monday is the day I figure out what the week is for. Nothing else. I do not write code on Monday. I do not respond to anything that isn't on fire. I open a new doc and write.
+
+The planning doc has four sections. I keep them short.
+
+**1. The one outcome.** If I only shipped one thing this week, what would it be? Not "I should make progress on the assistant." A specific shippable artifact: "Assistant `/ask` page live in production with rate limiting." If I can't name the artifact, I'm not done planning.
+
+**2. The supporting work.** What has to happen for the outcome to be possible? Usually 3–6 items. Not tasks — these are the milestones. "Embedding pipeline working end-to-end." "Rate limiting tested." "UI shipped to staging."
+
+**3. The "if there's time" list.** Things I'd love to do but won't sacrifice the outcome for. This list is allowed to be long because I won't get to most of it. The point is that it's named, so I don't carry it as guilt for the rest of the week.
+
+**4. The known constraints.** Meetings, travel, deep-work blocks already on the calendar. Anything that limits actual coding hours. If I have 15 real building hours this week instead of 25, the plan has to fit in 15.
+
+That's it. The doc fits on one screen. I read it once Monday evening before I close the laptop and once Tuesday morning before I start.
+
+<Callout type="info" title="The template I use">
+Section 1: **The one outcome.** [one sentence, names a specific shippable artifact]
+
+Section 2: **Supporting work.** [3-6 bullets, each a milestone, not a task]
+
+Section 3: **If there's time.** [open list, no commitment]
+
+Section 4: **Known constraints.** [meetings, travel, hours actually available]
+
+Plain markdown. Lives in my notes app. Gets deleted at the end of the week.
+</Callout>
+
+## Tuesday through Thursday: building
+
+These are the days I write. Tuesday is usually the strongest because Monday's plan is fresh. Wednesday is the day I have to recover energy from. Thursday is where the week lives or dies — if the outcome isn't in sight by Thursday afternoon, something has to change.
+
+I work in two long blocks each day. Morning, 9 to 12. Afternoon, 2 to 5. Nothing schedules into those blocks unless it's a genuine emergency. Email and Slack happen in the gaps — 12 to 2 and 5 to 6. I have not lost a meaningful opportunity in two years by checking Slack twice a day instead of constantly.
+
+Inside a block, the structure is the same every time. I open Claude Code or Codex (depending on the task — Codex for long-running self-contained work, Claude Code for delicate or context-heavy work). I load context by re-reading the planning doc and any relevant CLAUDE.md or notes. Then I prompt.
+
+The context-loading step is the one that makes or breaks the block. I used to skip it. The output suffered every time. Now I treat the first five minutes of a session as non-negotiable setup — re-read the plan, skim the relevant code, remind myself what "done" looks like, then start.
+
+<Callout type="info" title="The context refresh prompt I use to start every session">
+"Before we start, here's where we are. The goal for this week is [outcome]. Today I'm working on [milestone]. The relevant files are [list]. The constraint I care about most is [e.g. don't break the existing /api/ask endpoint]. The acceptance criteria is [one sentence on what done looks like]. Confirm you understand before we begin."
+
+This prompt costs 30 seconds to type. It saves me from spending 30 minutes correcting drift later in the session. The model is dramatically better at staying on task when it has the frame.
+</Callout>
+
+A block ends when one of three things is true: the milestone is shipped, a clear sub-step is done and a natural pause exists, or I'm out of useful judgment. The last one matters most. If I keep working past the point where I can tell good code from bad, I produce technical debt at full speed.
+
+Between blocks I close the laptop. Walk. Eat. Don't think about the work. The afternoon block is better when the morning ended cleanly.
+
+## Friday: review
+
+Friday is not for new work. Friday is for closing loops and learning.
+
+Morning: ship anything that's 90% done. If it's not 90% by Friday morning, it doesn't ship this week. Forcing it produces broken work and a worse weekend.
+
+Afternoon: the retro. I write three answers to three questions and stop.
+
+<Callout type="info" title="The weekly retro template">
+**1. What shipped this week?** Concrete artifacts only. Not "made progress on X." If it's not in production or in a PR ready to merge, it doesn't go here.
+
+**2. What didn't ship that I thought would?** Honest list. No excuses, no spin. The point is the pattern over weeks, not the explanation for this one.
+
+**3. What will I do differently next week?** One change. Not five. The 80/20 of process improvement is making one small change a week and letting it compound.
+
+Three answers. Three sentences each maximum. Saved to a "weekly retros" folder.
+</Callout>
+
+The retros compound over months. Three months in, I can flip back and see the patterns — the same context-switching mistakes, the same overcommitment patterns, the same energy traps. Patterns are invisible week to week and obvious quarter to quarter.
+
+After the retro, I close the planning doc. The week is over.
+
+## Why this beats daily standups for solo builders
+
+Daily standups are a coordination mechanism for teams. When you work alone, the coordination cost is zero and the planning cost is high. A daily standup is the wrong unit of granularity — it forces you to summarize work that hasn't compounded into anything reportable yet.
+
+A week, by contrast, is the smallest unit of time in which a solo builder can credibly say something shipped. Anything shorter is interruption-heavy. Anything longer loses the corrective signal.
+
+The other reason: AI tooling changes the math on a week. With Claude Code or Codex, the actual implementation time has collapsed. The work that used to fill the week is now the work of a day or two. What stays expensive is judgment — knowing what to build, recognizing when something's off, deciding what to ship. The weekly cadence puts the judgment in the right places: at the start (planning), at the end (retro), and in transitions between blocks. The middle is execution, and execution is what AI is best at supporting.
+
+If you're moving from a team rhythm to a solo rhythm, this is the adjustment most people miss. You don't need more meetings with yourself. You need fewer, sharper ones.
+
+The rhythm is the system. Use it for a month. Then change the parts that aren't working.

@@ -1,295 +1,164 @@
 ---
-title: "Dev Environment Setup"
-slug: dev-environment
-pillar: learn
-type: resource
-format: written
-tools: [claude-code, cursor]
-toolVersions: {}
-difficulty: beginner
-estimatedMinutes: 45
-tags: [setup, installation, node, git, terminal, mac, windows]
+title: "Your Dev Environment, Set Up Right"
+slug: "dev-environment"
+pillar: "learn"
+type: "resource"
+format: "written"
+difficulty: "beginner"
+estimatedMinutes: 25
+tools: ["claude-code", "cursor", "codex"]
+tags: ["setup", "tooling", "dev-environment"]
 isPremium: false
 isFeatured: false
-status: published
-publishedAt: "2026-03-15"
+status: "published"
+publishedAt: "2026-06-09"
+description: "The exact tools, terminal, and dotfiles I'd install today if I were starting over. Mac, Windows, and Linux."
 ---
 
-This guide gets you from a blank computer to a complete development environment in about 45 minutes. Follow it once and you'll have everything you need to build real software with AI tools.
+# Your Dev Environment, Set Up Right
 
-## What you're setting up
+## The 30-minute setup
 
-By the end of this guide, your computer will have:
+If you take nothing else from this piece, do these three things right now and you'll be ahead of where I was a year in.
 
-- **Node.js** — the runtime that powers most web projects
-- **Git** — version control (saving + tracking your code)
-- **A modern terminal** — where you run commands
-- **Cursor** — the AI-powered code editor
-- **Claude Code** — the AI agent that works directly in your terminal
-- **GitHub CLI** — manage your code repositories from the command line
-- **Vercel CLI** — deploy your projects to the web in seconds
+1. Install a real terminal (not the default one your OS came with)
+2. Install Cursor as your editor
+3. Install the GitHub CLI (`gh`)
 
-You don't need to understand all of these right now. Follow the steps in order and it will make sense as you use them.
+That's the floor. Thirty minutes, three downloads. Everything else in this resource is optimization on top of those three.
 
----
+The reason these three: AI coding tools live in the terminal and the editor. The terminal you ship with on Mac or Windows is fine for occasional use and bad for daily use. The editor you choose shapes how you work every minute you're awake. The GitHub CLI is the connective tissue that lets you move between your code and your repos without breaking flow. Get those right and the rest is upgrades.
 
-## Mac Setup
+The longer version, by category, follows.
 
-Mac comes with a terminal app, but we'll install Warp — it's dramatically better. Everything below uses the terminal.
+## Terminal
 
-### Step 1: Install Homebrew
+This is the application you'll spend the most time in. Pick one that doesn't fight you.
 
-Homebrew is a package manager — it installs software for you so you don't have to hunt for installers. It's the first thing every Mac developer installs.
+**Mac: Ghostty.** It's fast, the defaults are sane, the font rendering is sharp, and it doesn't suffer from the slow startup that older terminals have when you've got a busy shell config. I switched from iTerm2 to Ghostty in early 2026 and have not missed iTerm once. The only reason to stay on iTerm is if you have years of muscle memory in its specific shortcuts — that's a real cost, don't minimize it.
 
-Open Terminal (search for it in Spotlight) and run:
+**Windows: Windows Terminal.** Microsoft's own terminal app, free in the Microsoft Store. It supports WSL2 natively, which is where you actually want to do your work — Windows-native dev tools are still a worse experience than the Linux toolchain running inside WSL. Set up Windows Terminal, install Ubuntu via WSL, and treat the Linux side as your real environment.
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+**Linux: Alacritty.** Fast, GPU-accelerated, configured via a single TOML file. There are other good choices (Kitty, WezTerm) but Alacritty has the smallest config surface, which I value when I'm bootstrapping a new machine.
 
-Follow the prompts. When it finishes, close and reopen your terminal. Verify it worked:
+The thing terminals are for is staying out of your way. The default Mac Terminal and PowerShell are not bad applications — they're just full of compromises for backward compatibility. Modern terminals shed those compromises. The improvement is real.
 
-```bash
-brew --version
-```
+## Shell
 
-You should see something like `Homebrew 4.x.x`.
+This is where the controversy lives. Pick one. Stop researching.
 
-### Step 2: Install Node.js
+**zsh + Oh My Zsh.** The default on modern Mac, ships with a clean plugin ecosystem. Oh My Zsh gives you theme presets, autosuggestions (gray text completion of your previous commands), and syntax highlighting. Add the `zsh-autosuggestions` and `zsh-syntax-highlighting` plugins as soon as you install. They're the two that earn their keep daily.
 
-```bash
-brew install node
-```
+**fish.** Different shell, different philosophy. Defaults are dramatically better than zsh — autosuggestions, syntax highlighting, and a clean config language all built in, no plugins needed. The cost is that fish is not POSIX-compatible, which means scripts written for bash/zsh sometimes don't work as-is. For your interactive shell, this is fine. For shell scripts, write them in bash regardless of what your interactive shell is.
 
-Verify:
+The controversy: many developers swear by fish and never go back. Others find the POSIX incompatibility a dealbreaker. My take — if you're new, start with zsh + Oh My Zsh. It's the well-trodden path, and every tutorial assumes it. If you're experienced and curious, fish is genuinely better at being an interactive shell. Either choice is defensible. Both will frustrate you in the same week the AI tooling moves.
 
-```bash
-node --version
-npm --version
-```
+Whatever you pick, do this once and stop tinkering. Shell configuration is a black hole. I've watched people spend more time configuring their terminal than using it. Set it up, get to "good enough," go build something.
 
-You should see `v22.x.x` or higher for Node, and `10.x.x` for npm.
+## Dotfiles
 
-### Step 3: Install Git
+Dotfiles are the configuration files that make your environment yours. Put them in a git repo. Sync them across machines. Survive disk failures.
 
-Mac may already have Git. Install the latest version anyway:
+Minimum starter:
 
-```bash
-brew install git
-```
+<CodeBlock language="text">
+~/dotfiles/
+  .zshrc           or  .config/fish/config.fish
+  .gitconfig
+  .gitignore_global
+  .config/ghostty/config
+  install.sh       (symlinks files to home directory)
+</CodeBlock>
 
-Configure your identity (Git uses this for every commit):
+The `install.sh` script is the part most people skip. It's the one that makes the dotfiles useful. The pattern is simple: for each file in the repo, create a symlink from `~/.zshrc` (or wherever it belongs) to the file in the repo. Now editing the file in the repo updates your live config, and you can commit changes as you go.
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
+What goes in each:
 
-### Step 4: Install Warp Terminal
+**`.zshrc` / `config.fish`** — your aliases (`gs` for `git status`, `gp` for `git push`, `..` for `cd ..`), your prompt customization if any, your PATH additions, your environment variables that aren't secrets.
 
-Warp is a modern terminal with AI built in. It understands plain English — type what you want to do and it suggests the command.
+**`.gitconfig`** — your name, email, default branch (`main`), pull strategy (`rebase = true`), and a few aliases (`co` for `checkout`, `br` for `branch`). Set `core.excludesfile` to point at your global gitignore.
 
-```bash
-brew install --cask warp
-```
+**`.gitignore_global`** — the OS-specific files that shouldn't be in any repo. `.DS_Store` on Mac. `Thumbs.db` on Windows. Editor swap files. Set this once and never think about it again.
 
-Open Warp from your Applications folder. Use it for all terminal work going forward.
+**Terminal config** — fonts, color scheme, padding, key bindings. The little things you tweak that make your terminal feel right.
 
-### Step 5: Install Cursor
+That's it. Five files. Maybe a hundred lines of config total. Anything more than that and you're optimizing instead of building.
 
-Cursor is the AI-powered code editor. It's built on VS Code, so everything looks familiar — but it has AI built into every part of it.
+<Callout type="info" title="Watch out">
+The trap with dotfiles is treating them as a project instead of as infrastructure. The job is "set up once, sync across machines, get out of the way." If you find yourself spending a Saturday refactoring your zsh config, you've crossed the line. Set a budget of one hour a quarter for dotfiles maintenance. More than that is a hobby, which is fine, but call it that.
+</Callout>
 
-```bash
-brew install --cask cursor
-```
+## Editor
 
-Open Cursor. Sign in with your Google account when prompted.
+**Cursor as default.** It's a fork of VS Code with AI built in. Every shortcut, every extension, every config file works the same as VS Code. The added AI features — Cmd-K for inline edits, Cmd-L for chat, tab completion across multi-line predictions — are integrated more deeply than you can get with VS Code plus a Copilot extension. For most people, most of the time, Cursor is the right default.
 
-### Step 6: Install Claude Code
+**VS Code if you want vanilla.** Same editor minus the AI integration. If you do most of your AI work in a separate terminal (Claude Code, Codex) and want your editor to be just an editor, this is the choice. Lots of professional developers prefer this — the cognitive load of an AI editor on top of an AI terminal can be too much.
 
-Claude Code is an AI agent that runs in your terminal. It reads and edits files directly, runs commands, and handles multi-step tasks autonomously.
+Both editors support every language you'll touch. Both have good extension ecosystems. Both are free. The choice is about how integrated you want AI to be in the editing surface itself.
 
-```bash
-npm install -g @anthropic-ai/claude-code
-```
+I switched to Cursor in 2025 and stayed. The tab completion alone saves me enough time to justify it. But I keep VS Code installed for when I want to work in a quieter environment, and I'd recommend the same.
 
-You'll need an Anthropic API key. Get one at **console.anthropic.com** → API Keys → Create Key. Then add it to your environment:
+What I don't recommend: vim/neovim as your daily driver if you're newer to development. They're great editors and there's a reason serious engineers use them. But the learning curve eats months of productivity you don't have to spare when you're still building your foundation. Come back to them in a few years if you're curious. Until then, Cursor or VS Code.
 
-```bash
-echo 'export ANTHROPIC_API_KEY="your-key-here"' >> ~/.zshrc
-source ~/.zshrc
-```
+## CLI tools you actually use
 
-Verify:
+A handful of CLI tools that I use weekly and recommend installing immediately:
 
-```bash
-claude --version
-```
+**`gh` (GitHub CLI)** — create repos, open PRs, view issues, all from the terminal. `gh pr create`, `gh repo create`, `gh issue list`. The thing this replaces is opening github.com twenty times a day.
 
-### Step 7: Install GitHub CLI
+**`ripgrep` (`rg`)** — search code recursively, faster than `grep`. Honors `.gitignore` by default, so it doesn't waste time grepping through `node_modules`. The first tool I install on any new machine.
 
-```bash
-brew install gh
-```
+**`fzf`** — fuzzy file finder. Pipe anything into it, type to filter, press enter to select. The killer use case is `cd $(find . -type d | fzf)` to jump to any directory by typing a partial name.
 
-Authenticate:
+**`bat`** — like `cat` but with syntax highlighting and line numbers. Replace your `cat` alias with `bat` and reading files in the terminal becomes pleasant.
 
-```bash
-gh auth login
-```
+**`jq`** — JSON parsing in the shell. Essential the first time you have to extract a value from an API response in a script.
 
-Choose GitHub.com → HTTPS → Login with a web browser. Follow the prompts.
+**`httpie`** — friendlier `curl`. Better defaults, prettier output, JSON support without fighting quote escaping. I use it for any API exploration before I commit code that calls the endpoint.
 
-### Step 8: Install Vercel CLI
+Install them via Homebrew on Mac, Scoop or winget on Windows, or your package manager on Linux. Total install time: under five minutes. Time saved: a lot, forever.
 
-```bash
-npm install -g vercel
-```
+## Env file management
 
-Authenticate:
+The `.env.local` pattern is the convention every modern framework follows. Files named `.env.local`, `.env.production`, etc. are loaded automatically by Next.js, Vite, and most other tools. They're ignored by git by default (or should be — verify).
 
-```bash
-vercel login
-```
+The rules I follow:
 
----
+1. **`.env.local` is gitignored. Always. No exceptions.** Verify by running `git status` after creating it. If it shows up, something's wrong with your `.gitignore`.
 
-## Windows Setup
+2. **`.env.local.example` is committed.** This is a template with the keys but no values. New contributors can copy it to `.env.local` and fill in their own keys. The `.example` file is also self-documenting — anyone looking at your repo can see what env vars they need.
 
-On Windows, we'll use **winget** — the built-in Windows package manager (available on Windows 10/11). Open Windows Terminal (search for it in Start) and run each command.
+3. **Production secrets live in Vercel/Fly/wherever you deploy.** Never in a file. Never in a Slack message. Never in a screenshot. Set them in the platform's env var UI or via their CLI.
 
-### Step 1: Install Node.js
+4. **When in doubt, rotate.** If you ever leak a secret — committed by accident, pasted into a chat, anything — assume it's compromised and rotate it. Two minutes of inconvenience is cheaper than a breach.
 
-```bash
-winget install OpenJS.NodeJS.LTS
-```
+<Callout type="warning" title="I learned this the hard way">
+The first time I leaked an API key, it was committed to a public repo for 11 minutes before I caught it. By the time I rotated, a scraper had picked it up and used it. The bill was $80. Most providers have free monitoring that catches this — turn it on. GitHub has secret scanning built in for many providers. Use it.
+</Callout>
 
-Close and reopen Windows Terminal after installation. Verify:
+## The "I'm on a new machine" recovery procedure
 
-```bash
-node --version
-npm --version
-```
+Eventually you'll set up a new machine. The dotfiles repo plus a written checklist makes this a one-hour process instead of a one-day one.
 
-### Step 2: Install Git
+The checklist I keep in a `setup.md` at the root of my dotfiles repo:
 
-```bash
-winget install Git.Git
-```
+<CodeBlock language="text">
+1. Install Xcode CLI tools (Mac): xcode-select --install
+2. Install Homebrew: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+3. Install Brewfile contents: brew bundle --file=~/dotfiles/Brewfile
+4. Clone dotfiles: git clone git@github.com:me/dotfiles.git ~/dotfiles
+5. Run install: cd ~/dotfiles && ./install.sh
+6. Install Cursor manually (or via brew cask)
+7. Set up SSH key for GitHub: ssh-keygen -t ed25519 -C "email@example.com" then upload to GitHub
+8. Sign into GitHub CLI: gh auth login
+9. Install Node via fnm or nvm
+10. Pull down the most recent project: cd ~/Projects && git clone [main project]
+11. Copy .env.local from 1Password
+12. npm install && npm run dev — verify it works
+</CodeBlock>
 
-Close and reopen terminal. Configure your identity:
+Twelve steps. About an hour. The point is that none of it is figured out under pressure — it's a checklist you wrote when calm. The first time you have to do this is the worst time to figure it out.
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "you@example.com"
-```
+The `Brewfile` is the file you generate by running `brew bundle dump`. It's a list of every tool, library, and Mac app you have installed via Homebrew. Re-running `brew bundle` on a new machine reinstalls all of them. Commit your Brewfile to dotfiles. Update it every few months.
 
-### Step 3: Install Windows Terminal (if not already installed)
-
-```bash
-winget install Microsoft.WindowsTerminal
-```
-
-Windows Terminal supports tabs, themes, and multiple shell types. Use it going forward.
-
-### Step 4: Install Cursor
-
-```bash
-winget install Anysphere.Cursor
-```
-
-Open Cursor from the Start menu. Sign in with your Google account.
-
-### Step 5: Install Claude Code
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
-Get your Anthropic API key at **console.anthropic.com**. Add it as a permanent environment variable:
-
-1. Search "Environment Variables" in the Start menu
-2. Click "Edit the system environment variables"
-3. Click "Environment Variables…"
-4. Under User variables, click "New"
-5. Name: `ANTHROPIC_API_KEY` | Value: your key
-6. Click OK, then close and reopen your terminal
-
-Verify:
-
-```bash
-claude --version
-```
-
-### Step 6: Install GitHub CLI
-
-```bash
-winget install GitHub.cli
-```
-
-Authenticate:
-
-```bash
-gh auth login
-```
-
-### Step 7: Install Vercel CLI
-
-```bash
-npm install -g vercel
-vercel login
-```
-
----
-
-## Verify everything works
-
-Run each of these commands. If any fail, something wasn't installed correctly — scroll up and re-run that section.
-
-```bash
-node --version       # Should show v22.x.x or higher
-npm --version        # Should show 10.x.x or higher
-git --version        # Should show git version 2.x.x
-claude --version     # Should show the Claude Code version
-gh --version         # Should show gh version 2.x.x
-vercel --version     # Should show Vercel CLI x.x.x
-```
-
-All six commands should return a version number. If you see "command not found", close and reopen your terminal — sometimes the PATH needs to reload.
-
----
-
-## Your first 10 commands
-
-These are the commands you'll use every single session. Bookmark this section.
-
-### Navigation
-
-```bash
-pwd              # Where am I? (print working directory)
-ls               # What's in this folder?
-cd foldername    # Move into a folder
-cd ..            # Move up one level
-cd ~             # Go home (your user directory)
-```
-
-### Project work
-
-```bash
-npm run dev      # Start the development server
-git status       # What changed since my last save?
-git add .        # Stage all changes
-git commit -m "what I did"   # Save a snapshot
-git push         # Push to GitHub
-```
-
-**Pro tip:** In Warp (Mac) and Windows Terminal, press `Ctrl+K` and describe what you want in plain English — the terminal generates the command for you.
-
----
-
-## What's next
-
-Now that your environment is set up, two places to go:
-
-- **[AI Workflow OS](/learn/ai-workflow-os)** — learn how to structure your AI development world with CLAUDE.md, MCP servers, and the build loop.
-- **Module 1 of Zero to Ship** — build your first real app in a single session. Free, no account required.
+That's the whole setup. Not optimized. Not impressive. Just working. The point of a dev environment is to disappear under your hands while you build the thing. Set it up once, commit the config, and stop touching it for a while. Go build.

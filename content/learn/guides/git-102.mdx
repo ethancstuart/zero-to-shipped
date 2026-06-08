@@ -1,0 +1,171 @@
+---
+title: "Git 102: Working with Engineering Teams"
+slug: "git-102"
+pillar: "learn"
+type: "guide"
+format: "written"
+difficulty: "intermediate"
+estimatedMinutes: 30
+tools: ["git", "github"]
+tags: ["git", "collaboration", "pm", "ba"]
+isPremium: false
+isFeatured: false
+status: "published"
+publishedAt: "2026-06-09"
+series: "git-track"
+position: 2
+description: "Pull requests, branches, merges, conflicts — what you need to know when your engineering team uses Git daily."
+---
+
+# Git 102: Working with Engineering Teams
+
+You read Git 101. You know how to commit, push, and pull. Now you're working alongside engineers who live in Git every day, and the vocabulary has shifted. People are saying "rebase your branch," "squash and merge," "I'll cherry-pick that." The mistakes get more expensive at this level — a bad force push can cost a team an afternoon. Here's what I wish I'd known earlier.
+
+This guide is for PMs, BAs, project managers, and BI engineers who don't write code full-time but spend real hours in GitHub. The goal isn't to turn you into an engineer. It's to make you a sharper collaborator — one who can read a PR critically, ask the right questions, and avoid the few mistakes that cause the most pain.
+
+## Why this matters
+
+Most teams don't fail at Git because their engineers don't know what they're doing. They fail at the seams — when a PM approves a PR they didn't understand, when a stakeholder asks for a "small change" that turns into a three-day rebase, when a branch sits stale for so long that integrating it becomes its own project. Those failures live in the gap between engineering and the rest of the team. That gap is yours to close.
+
+---
+
+## PRs: how to actually read one
+
+A pull request is not "a code review." That's what happens inside it, but the PR itself is a proposal. It says: "Here's a change I want to make to the main codebase. Here's why. Here's the diff. Please review it before we merge." It's the unit of change that gets discussed, approved, and shipped.
+
+When you open a PR as a non-engineer reviewer, you're not trying to catch syntax bugs. You're checking five things:
+
+1. **The description.** Does it explain what changed and why? If you can't understand the intent from the description alone, that's a signal — ask the engineer to clarify before you read a single line of code.
+2. **Files changed.** Scan the list. Are the changes scoped to what the description says? A PR titled "Fix typo in pricing page" that touches 14 files in the auth module is a yellow flag. Ask why.
+3. **Tests.** Did the PR add or update tests? Most teams have a norm here. If your team requires tests for new features and this PR has none, ask about it.
+4. **Status checks.** At the bottom of the PR, GitHub shows whether CI passed — linting, tests, builds. If anything is red, don't approve. Ask the engineer to fix it first.
+5. **The conversation thread.** Read it. Has another engineer raised concerns that haven't been addressed? Has the author replied with "good catch, will fix" but not pushed the fix? Don't approve over open threads.
+
+When to ask questions vs. trust the engineer: ask any time the description doesn't match the diff, any time a check is red, any time something is touched that you didn't expect. Trust the engineer on implementation details — variable names, function structure, library choices. Those aren't your call unless you've been explicitly invited to weigh in.
+
+<Callout type="warning" title="Watch out for this">
+I once approved a PR I didn't understand because the engineer was senior, the team was busy, and I didn't want to look uninformed. It shipped a regression to production that took a week to unwind. The lesson: "I don't understand this — can you walk me through it?" is always a better question than approval-by-default. Senior engineers respect it. Junior engineers learn from it.
+</Callout>
+
+---
+
+## Branches in real life
+
+Your engineering team has branches with names like `feature/payment-flow`, `fix/checkout-bug-mobile`, or `chore/upgrade-next-16`. The prefix is a convention — `feature/` for new work, `fix/` for bug fixes, `chore/` for maintenance, `refactor/` for cleanup. It's not enforced by Git. It's a habit that makes the branch list scannable.
+
+Most modern teams use **trunk-based development**. That means there's one main branch (usually `main`), and engineers create short-lived branches off it — a day or two of work, then merge back. The branches stay small and stay close to main. The opposite is **long-lived feature branches**, where a team works on a "version 2" branch for weeks or months before integrating. That style is rare now because the integration pain at the end is brutal.
+
+What this means for you: when your team says they're working on a feature, it's usually living on a branch for a few days at most. If you hear someone say "this has been on a branch for three weeks," your antenna should go up. That's drift. Drift causes conflicts. Conflicts cause delays.
+
+When an engineer says "rebase your branch," they're asking you (or another engineer) to update a branch so it starts from the current `main` instead of an older version of `main`. The branch hasn't moved, but the world has — `main` has new commits — and they want your branch to catch up before merging. We'll get to the mechanics in the next section.
+
+---
+
+## Merge vs. rebase: the practical difference
+
+Here's the 30-second mental model: **merge preserves history, rebase rewrites it.**
+
+When you merge a branch, Git creates a new commit that joins the two histories together. The branch's commits stay where they are, in the order they happened, and there's a "merge commit" at the top that says "I combined these two histories." Your project history looks like a river with tributaries — branches that flowed in and joined the main current.
+
+When you rebase a branch, Git pretends the branch was created from the current tip of `main`. It takes your commits, sets them aside, fast-forwards your branch to match `main`, and then reapplies your commits one by one on top. The history looks like a single straight line. No tributaries.
+
+Both end with your changes integrated. They just leave different fingerprints in the history.
+
+**When you'd choose merge:**
+
+- Long-lived feature branches where the history of how the work evolved actually matters
+- Any branch that other people have based their own work on (rebasing it would force everyone else to redo their work)
+- When your team's convention is "merge commits only"
+
+**When you'd choose rebase:**
+
+- Cleaning up your local commits before sharing them — turning a messy "WIP", "fix typo", "actually fix it", "ugh" sequence into one or two clean commits
+- Catching up your branch to current `main` before opening a PR, so the diff is clean
+- When your team's convention is "linear history, no merge commits"
+
+**"We'll squash and merge"** is a hybrid. GitHub takes all the commits on your PR branch, smooshes them into one commit, and merges that single commit into `main`. The result: a clean linear history where each PR is one commit on `main`. Most teams I've worked with default to this. It's forgiving — engineers can commit messily on their branch, and the final history stays tidy.
+
+You don't need to choose between these in the abstract. Your team has a default. Ask what it is, and follow it.
+
+---
+
+## Resolving merge conflicts without panic
+
+A merge conflict happens when two people changed the same lines of the same file, and Git can't figure out which version to keep. Git is good at automatic merging — most of the time, two engineers working in different files (or different parts of the same file) merge without any human intervention. Conflicts are the exception, not the rule.
+
+When you hit one, your terminal will say something like:
+
+<CodeBlock language="bash">
+{`CONFLICT (content): Merge conflict in src/components/PricingTable.tsx
+Automatic merge failed; fix conflicts and then commit the result.`}
+</CodeBlock>
+
+Open the file. Git has marked the conflict region with these markers:
+
+<CodeBlock language="text">
+{`<<<<<<< HEAD
+Your version of the lines
+=======
+The other person's version of the lines
+>>>>>>> their-branch`}
+</CodeBlock>
+
+`HEAD` is your current branch's version. The chunk after `=======` is what's coming in from the other branch. Your job is to decide what the final version should be — usually some combination of both, sometimes one or the other, occasionally something new entirely. Delete the markers. Save the file.
+
+Then:
+
+<CodeBlock language="bash">
+{`git add src/components/PricingTable.tsx
+git commit`}
+</CodeBlock>
+
+Most conflicts are 1-2 lines of disagreement in a much larger file. That's the **shared lines rule** — if you and a teammate both touched the same component but worked on different parts, the conflict is probably one button label, one import statement, one prop name. It's almost never the whole file.
+
+If the conflict is in code logic you don't understand, this is the moment to grab the engineer who wrote one of the two versions. Don't guess. A wrong resolution silently ships a bug.
+
+<Callout type="warning" title="The 2-hour merge conflict that didn't have to happen">
+Early on I let a branch drift from `main` for three weeks while I worked on a marketing copy update. When I finally tried to merge, I had 14 conflicts across 9 files. It took two hours and a kind engineer to sort out. The work itself was 90 minutes. The lesson: when you're collaborating, pull `main` into your branch daily. Even if your work is tiny. Drift is the enemy.
+</Callout>
+
+The mechanics of staying current:
+
+<CodeBlock language="bash">
+{`git checkout main
+git pull
+git checkout your-branch
+git merge main`}
+</CodeBlock>
+
+Do that every morning. Conflicts surface one or two at a time, when they're small, instead of all at once at the end.
+
+---
+
+## The 5 Git phrases every PM should understand
+
+These show up in Slack threads and standups. Knowing what they mean keeps you in the conversation.
+
+**"We'll cherry-pick that fix."** Cherry-picking is taking one specific commit from a branch and applying it somewhere else. Common scenario: a bug fix went into `main`, but you also need it in a release branch that's already shipped. Instead of merging the whole branch, the engineer plucks out just that one commit. Surgical.
+
+**"Let me rebase that onto main."** They're moving their branch so it starts from the current tip of `main` instead of wherever it started before. This makes the eventual merge cleaner and surfaces conflicts now instead of later. You don't have to do anything — they're handling it.
+
+**"Can you squash your commits?"** They're asking you to collapse a series of commits into a single one before merging. If your branch has commits like "start feature", "WIP", "WIP 2", "fix lint", "actually working now," that's five commits of noise. Squashing turns them into one commit: "Add feature X." Cleaner history.
+
+**"I'll force push."** They're overwriting the remote branch's history with a new version. Common after a rebase — the rebase changed the commits, so the remote needs to be replaced, not added to. Force pushing is fine on your own personal branch. It's dangerous on shared branches and forbidden on `main`. If you hear "I'll force push to main," stop the conversation.
+
+**"Let me revert that."** They're creating a new commit that undoes a specific previous commit. The original commit stays in history — you can see what was done and that it was undone. This is the safe way to back out a change that's already shipped. Different from `reset`, which actually moves the branch pointer (and can lose work if you're not careful).
+
+---
+
+## Pitfalls I've hit and lessons learned
+
+**Force pushing main.** I did this once on a hobby project and lost an afternoon of a collaborator's work. On a real team, this is a fire drill. Most teams protect `main` so it can't be force pushed, but if your team hasn't set that up, treat `git push --force` near `main` like a loaded weapon.
+
+**Thinking merge = copy-paste.** Merge isn't "take their version and replace mine." Merge is "combine both histories into one." When you understand that, conflicts stop feeling random — they're the specific points where Git couldn't combine automatically and needs you to decide.
+
+**Letting a branch drift for weeks before integrating.** Already covered above, but worth repeating. The integration pain of a 3-week-old branch is exponential, not linear. Two weeks isn't twice as bad as one — it's four times. Pull `main` daily.
+
+---
+
+## Next: Git 103
+
+If Git 102 is about working with a team day-to-day, Git 103 is about what to do when something goes wrong. Reflog, bisect, interactive rebase, force push safety, and the recovery one-liners every PM should know. Git is more forgiving than it looks. You just need to know where to look.

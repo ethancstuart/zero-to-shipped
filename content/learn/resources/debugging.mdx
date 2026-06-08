@@ -1,132 +1,132 @@
 ---
-title: "Debugging with AI"
-slug: debugging
-pillar: learn
-type: resource
-format: written
-tools: [claude-code, cursor]
-toolVersions: {}
-difficulty: beginner
+title: "Debugging with AI: A Real Reference"
+slug: "debugging"
+pillar: "learn"
+type: "resource"
+format: "written"
+difficulty: "intermediate"
 estimatedMinutes: 15
-tags: [debugging, workflow, errors, troubleshooting]
+tools: ["claude-code", "cursor"]
+tags: ["debugging", "workflow", "ai-coding"]
 isPremium: false
 isFeatured: false
-status: published
-publishedAt: "2026-03-15"
+status: "published"
+publishedAt: "2026-06-09"
+description: "Mental models, common patterns, and the 'I am stuck' workflow. How to debug effectively when AI is doing the typing."
 ---
 
-Something broke. The AI gave you code that doesn't work. You're staring at a red error message that means nothing to you. Here's exactly what to do — step by step, no engineering background required.
+# Debugging with AI: A Real Reference
 
-## The 5-Step Debugging Loop
+## The mental model shift
 
-### Step 1: Read the error message. Actually read it.
+Debugging used to be a solo activity. You read the trace, you formed a hypothesis, you tested it, you iterated. The loop was tight and entirely inside your head.
 
-This sounds obvious. It isn't. Most beginners see a red wall of text and immediately ask Claude to fix it without reading a word. The error message almost always tells you what's wrong — often with a file name and line number. Before you do anything else: read the last 5–10 lines of the error. Find the sentence that starts with 'Error:' or the line that says 'Cannot find module' or 'TypeError: x is not a function.'
+Debugging with AI is a different shape. It's a conversation, with you as the senior engineer and the AI as a fast junior who can read code at superhuman speed but doesn't know your system. The skills that matter shifted accordingly. You used to need pattern recognition for stack traces. You still do. But the bigger lift now is framing the problem well enough that the AI can help you think — which is a different skill, closer to writing a good bug report than to reading a debugger.
 
-**Prompt to use:**
-```
-Explain this error message to me in plain English. What went wrong and where? Error: [paste the full error]
-```
+The mental shift I had to make: stop trying to be the one who finds the bug. Be the one who guides the search. The AI does the reading. You do the routing. When you stop trying to be the smart one in the room, debugging gets faster, not slower.
 
-**Tip:** The first 'Error:' in the stack trace is usually the real one. Everything after it is where it bubbled up through.
+## The 5 debugging patterns I use every week
 
----
+These are the prompts I reach for. Each has a specific job. Knowing which to reach for first saves you the most time.
 
-### Step 2: Give Claude the full error — not a description of it
+### Pattern 1: "Read the error to me"
 
-One of the most common debugging mistakes: telling Claude 'I'm getting a TypeScript error on the login page' instead of pasting the actual error. Claude needs the exact error text, the stack trace, and ideally the file it points to. The more specific you are, the faster you get unstuck.
+I paste the entire error — stack trace, message, any context lines — and ask the AI to explain what it means in plain language. Not "what's wrong with my code." Just "what is this error trying to tell me."
 
-**Prompt to use:**
-```
-Here is the full error I'm seeing: [paste error]
+This is the right starting move 60% of the time. A surprising number of bugs get solved at this step alone, because the error message says exactly what's wrong and I missed it. Even when it doesn't solve the bug, getting the AI to articulate the error in clean prose narrows the search space immediately.
 
-Here is the code it's pointing to: [paste relevant code]
+The prompt is exactly this:
 
-What's causing this and how do I fix it?
-```
+> "Read this error to me. Explain what it's actually saying, what category of bug this usually is, and what the most common causes are. Don't speculate about my specific code yet — just explain the error."
 
-**Tip:** Open your browser's developer console (F12 or Cmd+Option+I) and copy the full red error text. Don't screenshot it — paste it.
+The "don't speculate about my specific code yet" part matters. If you skip it, the AI tends to leap to a fix before you've understood the problem. The result is a fix that addresses a symptom and breaks something else.
 
----
+### Pattern 2: "Show me what changed"
 
-### Step 3: Add context: what changed right before this broke?
+When something broke and worked an hour ago, the bug is in the diff. I paste the diff (`git diff` or the staged changes) and ask the AI to walk through it line by line looking for the most likely cause.
 
-Bugs almost always appear right after something changes — you installed a package, edited a file, renamed a variable, or followed an AI suggestion. If you can tell Claude 'this was working, then I [did X], and now I'm seeing [error]' — you've given it 80% of what it needs. The most useful question in debugging: 'What changed?'
+> "Here's the diff between what worked and what broke. Walk through it line by line. For each change, ask: could this introduce the failure I'm seeing? Rank the top three suspect lines."
 
-**Prompt to use:**
-```
-My app was working fine. I then [describe what you changed or did]. Now I'm seeing this error: [paste error]. What's most likely causing this given what I changed?
-```
+This is a forcing function. The AI can't say "let me look at your whole repo" — it has to focus on the actual change. Most regressions come from a small number of lines that touched a thing they shouldn't have. This pattern finds them fast.
 
-**Tip:** If you used version control (git), run `git diff` to see exactly what changed. Paste that diff into Claude.
+### Pattern 3: "Build a minimal reproduction"
 
----
+When the bug is complex or intermittent, I stop debugging and start reducing. I ask the AI to help me build the smallest possible code that reproduces the issue.
 
-### Step 4: Ask Claude to explain before it fixes
+> "Help me build a minimal reproduction of this bug. Strip out anything that isn't needed to trigger the failure. The goal is the shortest code that consistently produces the error."
 
-If Claude just gives you code to copy-paste and you apply it without understanding, you'll hit the same class of bug again in 3 days. Ask it to explain what went wrong and why the fix works. This takes an extra 30 seconds and saves you hours over the next month. You don't need to become an expert — but understanding the shape of the bug stops you from reintroducing it.
+This sounds slow. It is fast. A minimal reproduction is the difference between hours of speculation and ten minutes of confirmation. It also turns "this bug is weird" into "this bug is reproducible," which is a different category of problem with a clear path to a fix.
 
-**Prompt to use:**
-```
-Before you fix it, explain: what exactly went wrong here, and why does your fix solve it? I want to understand this so I don't hit the same issue again.
-```
+### Pattern 4: "Walk through the code as if I'm a junior dev"
 
-**Tip:** If the explanation confuses you, say "explain that as if I'm not a developer." Keep going until you get it.
+When I think I understand the code but I'm wrong, this prompt surfaces the gap.
 
----
+> "Walk through this function as if you're explaining it to a junior dev. Don't skip steps. State what's in memory after each line. When you hit the part where you think the bug is, stop and tell me your hypothesis."
 
-### Step 5: Verify the fix didn't break something else
+The "don't skip steps" is the part that does the work. The AI's first instinct is to summarize. You don't want a summary. You want a trace. Forcing the slow walk catches the assumptions I made that turned out to be wrong.
 
-Patches cause regressions. Always test the thing you fixed — but also test the two or three things that are related. If you fixed the login flow, check that signup still works. If you fixed a database query, check that the UI that reads that data still renders correctly. Claude can help you write a quick verification checklist.
+### Pattern 5: "What would you check first?"
 
-**Prompt to use:**
-```
-I applied your fix for [describe the bug]. What should I test to make sure this fix didn't break anything else? Give me a 5-point checklist.
-```
+When I have no theory, I ask for one.
 
-**Tip:** If you have tests, run them now: `npm test` or `npx vitest`. A passing test suite after a fix is the fastest confidence check.
+> "Here's the bug. Here's the relevant code. I have no theory yet. Give me the top three things you'd check first, ranked by how cheap they are to verify versus how likely they are to be the cause."
 
----
+The "ranked by cheapness to verify" part is critical. Without it, the AI gives you the most theoretically likely cause. What you want is the cheapest thing to rule out first, then the second cheapest. Debugging is search, and search runs faster when you take cheap probes first.
 
-## When the 5-step loop isn't working
+## When to ask AI vs. read the trace yourself
 
-Sometimes you go through all 5 steps and you're still stuck. Here's what to do next:
+The wrong move is to paste every error into the AI and let it think for you. The right move is to read the trace yourself for ten seconds first, form a one-sentence hypothesis, and then bring the AI in to either confirm or kill it.
 
-1. **Start a fresh conversation** — Sometimes Claude gets confused by a long back-and-forth. Start fresh with a clean problem statement.
-2. **Reproduce it from scratch** — Create a minimal example of the broken thing — the fewest lines of code that show the problem. This often reveals the issue.
-3. **Ask Claude what it would need to solve it** — "What additional information would help you diagnose this?" — Claude will tell you what's missing.
-4. **Search the error message** — Paste the error into Google. Stack Overflow answers from real humans often catch edge cases Claude misses.
-5. **Roll back the change** — If you used git, `git stash` or `git revert` your last change and try a different approach.
+Ask AI first when:
+- The error message is unfamiliar to you
+- The stack involves a library you don't know well
+- You've already spent five minutes staring at the trace and aren't getting anywhere
+- The bug is intermittent and you need a structured plan to catch it
 
-## 5 Anti-Patterns That Keep You Stuck
+Read the trace yourself first when:
+- You wrote the code that's failing
+- The error is in a category you've seen before
+- The stack is short and the failing line is obvious
+- You suspect a typo or a missing import (you'll find these faster than the AI will)
 
-These are the habits that make debugging take 4 hours instead of 20 minutes.
+The judgment call: if you can articulate a specific hypothesis in one sentence, debug yourself first. If you can't, you're in search mode, and the AI is your partner.
 
-### Asking Claude to "just fix it"
+## The "I am stuck" workflow
 
-**Problem:** Claude may apply a fix that works for the error but breaks the underlying logic. Always ask for explanation.  
-**Instead:** Ask what the bug is before asking for the fix.
+This is the four-step escalation I use when nothing is working and I've been at a bug for more than 30 minutes.
 
-### Applying multiple fixes at once
+**Step 1: State the bug out loud.** Open a fresh chat. Write the bug in two sentences. What's happening, what I expected. The act of writing it forces clarity. About 20% of the time I solve the bug while writing the description, which is humbling and also fine.
 
-**Problem:** If Claude suggests 3 changes and you apply all 3 at once, and something breaks, you don't know which one caused it.  
-**Instead:** Apply one change at a time. Test after each one.
+**Step 2: List what I've tried.** Three to five bullet points. What I tested, what I ruled out, what I assumed. The list does two things: it surfaces what I haven't tried, and it tells the AI not to waste my time suggesting things I've already done.
 
-### Restarting the conversation when stuck
+**Step 3: Reset the context.** I close the AI session and start a new one. The accumulated back-and-forth from the failed debugging attempt has poisoned the context. The AI is now anchored on theories that didn't work. A fresh session with the description and what-I've-tried list gives a clean read.
 
-**Problem:** Starting a new chat loses all context. Claude doesn't know what you've already tried.  
-**Instead:** Stay in the same conversation. If really stuck, say "let's approach this differently" and redirect.
+**Step 4: Ask for the unexpected.** I prompt: "Given what I've tried, what's a less obvious cause I should consider? Specifically, what would a senior engineer who has seen this kind of bug before check that I probably haven't?"
 
-### Ignoring warnings
+That last prompt is the unlock. It pulls out the weird ones — race conditions, cache invalidation, environment variable shadowing, the test that passed because of a side effect from a different test. The categories of bug you don't think to check because they don't show up in the first place you look.
 
-**Problem:** Warnings aren't errors — they won't stop your app — but they predict future errors. Especially TypeScript warnings.  
-**Instead:** Fix warnings early. Run `npm run typecheck` or `npx tsc --noEmit` and resolve what you can.
+If step 4 doesn't get you there, walk away. Touch grass. Come back in an hour. About 30% of the bugs I've been stuck on for 90+ minutes were solved within 10 minutes of coming back from a walk. The reason isn't mystical — it's that the search space resets when you stop thinking about it, and you come back with fresh attention.
 
-### Asking Claude to fix code it hasn't seen
+## Anti-patterns
 
-**Problem:** "My button doesn't work" gives Claude nothing to work with. It will guess — and guess wrong.  
-**Instead:** Always paste the relevant code, the error, and what behavior you expected vs. what you got.
+Things I have done and learned not to do.
 
-## The debugging mindset shift
+**Dumping the whole codebase.** The temptation is to paste your entire `src/` directory into the prompt and let the AI figure it out. The result is universally worse than focused context. The AI gets confused by the noise. The relevant signal is buried. Be specific about which files matter. Two files with the right ones beats twenty with the wrong ones.
 
-Most non-engineers treat bugs as proof they shouldn't be building. That's backwards. Every engineer — senior, junior, 10 years in — hits bugs daily. The difference is speed: experienced builders have a loop and they run it. Now you have the loop. Run it.
+**Asking "what's wrong with this code" before describing the bug.** This produces a code review, not a debug session. The AI starts pointing out style issues and edge cases that have nothing to do with your actual failure. Always lead with the symptom: "When I do X, I get Y. I expected Z." Then bring the code in.
+
+**Letting the AI write a fix before you understand the bug.** This is the worst one. The AI is very willing to write a patch. The patch will often even work. But if you didn't understand why the original code failed, you'll introduce the same class of bug somewhere else next week. Always require yourself to articulate the root cause in one sentence before accepting a fix.
+
+**Asking the AI to "verify the fix works."** The AI cannot run your code. It will tell you the fix looks correct. You still have to run it. Treat AI verification of fixes as a sanity check, not a test. Run the actual test.
+
+**Long debugging sessions in a single chat.** Past a certain point, the conversation starts to drift. The AI has too much accumulated context, much of which was wrong. If you've been debugging in one chat for 45 minutes and the bug isn't fixed, start a new chat. The reset compounds — a fresh context plus everything you've learned is faster than continuing to fight the old context.
+
+## The debugging-as-conversation pattern
+
+The single biggest shift I made was thinking of debugging as a multi-turn conversation, not a single oracle query. The first prompt is rarely the one that finds the bug. It's the one that narrows the search.
+
+The pattern looks like this: I describe the bug. The AI responds with three hypotheses. I tell it which is most plausible and why, and which is wrong and why. The AI updates its model and offers a deeper read on the remaining hypothesis. I run an experiment based on its suggestion. I come back with the result. We iterate.
+
+This works dramatically better than dumping everything and asking for an answer. Each turn refines the search. Each of my responses gives the AI new information that wasn't in the original prompt — including information about what kinds of solutions are useful versus impractical given my system.
+
+Debugging is search. Search is iterative. The AI is a search partner, not a search engine. Treat it that way and the loop closes faster.

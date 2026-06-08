@@ -1,0 +1,78 @@
+---
+title: "Q2 2026: The AI Coding Landscape Moves Like the Models Do"
+slug: "2026-q2-ai-coding-landscape"
+pillar: "pulse"
+type: "brief"
+format: "written"
+difficulty: "beginner"
+estimatedMinutes: 7
+tools: ["claude-code", "codex", "cursor", "lovable", "v0"]
+tags: ["landscape", "thesis", "ai-coding", "q2-2026"]
+isPremium: false
+isFeatured: true
+status: "published"
+publishedAt: "2026-06-09"
+description: "The AI coding tools are moving as fast as the foundational models. What I'm reaching for this quarter, what I'm watching, and what stays stable when everything else changes."
+---
+
+# Q2 2026: The AI Coding Landscape Moves Like the Models Do
+
+The AI coding landscape moves at the same speed as the foundational models underneath it. A new Claude, a new GPT, a new Gemini, and within a week the tool layer on top has shifted to match. The thing I was reaching for in February is not the thing I am reaching for in June. That is not a complaint. It is the actual job now — staying close enough to the surface to notice what changed, and honest enough with myself to switch when something gets better.
+
+I started keeping a running note of which tool I opened first each morning. Back in February it was Claude Code, every day. By April that note had Codex in it twice a week. By the back half of May, Codex was leading. Claude Code's pace has accelerated meaningfully since Sonnet 4.5 — the harness improvements, the longer-running tasks, the skills system — but Codex put out a sequence of releases in late April and May that I cannot ignore. Cursor keeps shipping weekly. Lovable has carved out a real lane. So this is the brief I would have wanted to read at the start of the quarter: what I am actually using, what I am watching, and what does not change no matter which logo is on top of the leaderboard.
+
+## What I'm reaching for this quarter
+
+### Codex (currently leading)
+
+Codex is the tool I open first right now. The thing that won me over is the long-running task behavior — I can hand it something genuinely meaty, walk away, and come back to a working PR with a sensible commit history. The sandbox model is cleaner than what I had been working around in other tools. I still review every line, but the time between "I have an idea" and "I have a working draft to react to" has collapsed in a way I did not expect. For larger refactors and feature work where I would have previously had to babysit the loop, this is the one.
+
+### Claude Code (still my craft tool)
+
+When the work is delicate — a debugging session where I need a real collaborator, a piece of code I care about the shape of, anything where context discipline matters more than throughput — I open Claude Code. The CLAUDE.md persistence carries my project conventions across sessions without me restating them. The skills system has changed how I structure repeatable work. I trust it. That trust is the part I cannot transfer to another tool by reading a changelog.
+
+### Cursor (for the in-between days)
+
+Cursor is where I land when I want an IDE around me. Some days you need the full file tree, the inline diffs, the keyboard shortcuts you have built up over years. The weekly shipping cadence keeps it competitive on raw capability, and the tab-completion model is still the best I have used. I open it when I am editing across a lot of files and want my hands closer to the code.
+
+### Lovable (for visual prototypes)
+
+When someone on a call says "can you mock something up by tomorrow," I open Lovable. It is the fastest path from a sentence to a clickable, deployed-looking artifact. I do not ship production work out of it — that is not what it is for. I use it to align a stakeholder on a shape before I invest a week building the real thing. The non-engineers I work with can edit a Lovable project themselves, which closes a feedback loop that used to take three meetings. Different tool, different job.
+
+## What I'm watching in the next 90 days
+
+The model tier is where the real movement will come from. Claude 5 is the one I am most curious about — every Sonnet bump has materially changed what Claude Code can do in a single session, and a major version bump is going to ripple through the whole tool layer fast. GPT-5 lands and Codex inherits it the same day. Gemini 3 is the wildcard; if it closes the gap on coding tasks, Google's tooling story stops being an afterthought.
+
+At the feature layer, sandbox modes are the thing I am watching most closely. Every tool is converging on some version of "run my code in isolation and tell me what happened." Whoever nails the developer experience there — fast cold starts, real network access, clean teardown — owns the agent-driven workflows for the next two quarters.
+
+The wildcard category is the one I cannot name yet. Every quarter for the last two years, something has appeared that nobody on Twitter was talking about in March and everybody was using by September. Last year that was the harness-as-a-product category. I do not know what it is this quarter. That is the point of watching.
+
+## What's stable when everything else moves
+
+Here is the part nobody writes briefs about, because it is unglamorous. Almost every skill that compounds in this work has nothing to do with which tool is on top.
+
+Git does not change. The tools that wrap it change, but the mental model — branches, commits, history, recovery — has not shifted in twenty years. If you can use git from a terminal, every AI tool you touch is going to feel calmer.
+
+Terminal fluency does not change. The faster you can move through a shell, the less the tool around it matters.
+
+The ability to write a clear spec does not change. Every model on the market gets meaningfully better output from a well-scoped prompt. That skill compounds across every tool you will ever use.
+
+Taste does not change. Knowing what good looks like — good code, good interface, good copy — is the part the AI cannot give you. If you cannot tell whether the output is right, no tool will save you. If you can, every tool gets better in your hands.
+
+The ability to carry context across tools does not change. A CLAUDE.md file, a dotfiles repo, a personal prompt library, a system for how you start a project — these are portable. When you switch tools, you bring them with you. The people who feel whiplash every quarter are the people who tied their workflow to a single product. The people who feel calm tied their workflow to themselves.
+
+The meta-skill is the one that matters. It is not knowing Codex or Claude Code or Cursor. It is knowing how to work with an AI coding tool — any AI coding tool — and that skill is built by working with a lot of them.
+
+## How to keep up without burning out
+
+You do not need to try every tool. You need a small portfolio: one terminal-native tool, one IDE-based tool, one visual prototyping tool. Three is enough. Rotate which one is on top as the quarter changes. Do not feel guilty about uninstalling something that is no longer earning its place.
+
+Watch the Pulse for what shifts. The pipeline behind this section auto-generates briefs when a tool changes in a way that actually matters to the workflow. You do not need to read every release note. You need to know when something crossed a threshold worth a context switch.
+
+The most important rule: when you find a workflow that ships you something real, stop changing it for a month. Tool drift is the enemy. The build is the point. If Codex got you to a launched landing page on Monday, do not rip it out on Tuesday because a new Claude dropped. Ship the thing first. Re-evaluate after.
+
+## Closing
+
+The platform itself runs on this principle. The Pulse pillar is written by AI agents tracking the AI coding ecosystem. The tools I am writing about are the ones I used to build the thing you are reading the brief in. It is recursion all the way down, and it is the only honest way to cover this category — you have to be using the work to write about the work.
+
+Stay ahead. Try everything new. Find what works for how you build and what you are making. Then build the thing.
