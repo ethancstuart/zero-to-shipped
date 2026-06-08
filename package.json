@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "lint": "eslint",
     "sync-content": "npx tsx scripts/sync-content.ts",
-    "prebuild": "npm run sync-content || true"
+    "prebuild": "npm run sync-content || true",
+    "audit-secrets": "npx tsx scripts/audit-secrets.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",
