@@ -14,18 +14,63 @@ interface Props {
 
 export const revalidate = 300
 
+// Map tool category to pillar color for OG band
+function categoryToPillar(category: string | null): string {
+  switch (category) {
+    case 'ide':
+    case 'cli':
+      return 'pulse'
+    case 'platform':
+      return 'system'
+    case 'framework':
+      return 'build'
+    default:
+      return 'pulse'
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { product } = await params
+  const { company, product } = await params
   const supabase = await createClient()
   const { data: tool } = await supabase
     .from('tools')
-    .select('name, description')
+    .select('name, description, current_version, category, parent_company, company_slug')
     .eq('slug', product)
     .single()
   if (!tool) return { title: 'Not Found' }
+
+  const description =
+    tool.description || `Track ${tool.name} releases and capabilities`
+  // First sentence only for a clean OG tagline
+  const firstSentence = description.split(/(?<=[.!?])\s+/)[0] ?? description
+  const companyLabel = tool.parent_company || tool.company_slug || company
+  const pillar = categoryToPillar(tool.category)
+
+  const ogParams = new URLSearchParams({
+    tool: tool.name,
+    pillar,
+  })
+  if (tool.current_version) ogParams.set('version', tool.current_version)
+  if (companyLabel) ogParams.set('company', companyLabel)
+  if (firstSentence) ogParams.set('tagline', firstSentence)
+  if (tool.category) ogParams.set('type', tool.category)
+
+  const ogImage = `/api/og?${ogParams.toString()}`
+
   return {
     title: `${tool.name} — Prototype Studio`,
-    description: tool.description || `Track ${tool.name} releases and capabilities`,
+    description,
+    openGraph: {
+      title: `${tool.name} — Prototype Studio`,
+      description: firstSentence,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: tool.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tool.name} — Prototype Studio`,
+      description: firstSentence,
+      images: [ogImage],
+    },
   }
 }
 

@@ -229,12 +229,23 @@ function renderContent(
 
 /**
  * Template 2: Tool
- * White bg, blue accent band, tool name + version badge + category
+ * White bg, pillar color band, tool name + version badge + tagline + company
  */
 function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
   const tool = searchParams.get("tool") ?? "Tool";
   const version = searchParams.get("version");
   const category = searchParams.get("type");
+  const company = searchParams.get("company");
+  const tagline = searchParams.get("tagline");
+  const pillar = searchParams.get("pillar");
+  const bandColor = (pillar && PILLAR_COLORS[pillar]) ?? PILLAR_COLORS.pulse;
+
+  // Truncate tagline to a single readable line
+  const trimmedTagline = tagline
+    ? tagline.length > 140
+      ? `${tagline.slice(0, 137).trimEnd()}…`
+      : tagline
+    : null;
 
   return new ImageResponse(
     (
@@ -248,7 +259,7 @@ function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
           fontFamily: "DM Sans, sans-serif",
         }}
       >
-        {/* Left accent band — blue */}
+        {/* Left accent band — pillar color */}
         <div
           style={{
             position: "absolute",
@@ -256,9 +267,28 @@ function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
             top: 0,
             bottom: 0,
             width: 6,
-            backgroundColor: DEFAULT_COLOR,
+            backgroundColor: bandColor,
           }}
         />
+
+        {/* Company label top-left */}
+        {company && (
+          <div
+            style={{
+              position: "absolute",
+              top: 40,
+              left: 56,
+              display: "flex",
+              fontSize: 13,
+              fontFamily: "DM Sans, sans-serif",
+              color: "#737373",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+            }}
+          >
+            {company}
+          </div>
+        )}
 
         {/* Main content area */}
         <div
@@ -280,11 +310,11 @@ function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
           >
             <div
               style={{
-                fontSize: 48,
+                fontSize: 64,
                 fontWeight: 600,
                 fontFamily: "Space Grotesk, sans-serif",
                 color: "#0a0a0a",
-                lineHeight: 1.15,
+                lineHeight: 1.1,
               }}
             >
               {tool}
@@ -294,13 +324,13 @@ function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
               <div
                 style={{
                   display: "flex",
-                  fontSize: 14,
+                  fontSize: 16,
                   fontFamily: "monospace",
-                  color: "#737373",
-                  backgroundColor: "#f5f5f5",
-                  padding: "4px 10px",
-                  borderRadius: 4,
-                  border: "1px solid #e5e5e5",
+                  color: bandColor,
+                  backgroundColor: `${bandColor}14`,
+                  padding: "6px 12px",
+                  borderRadius: 999,
+                  border: `1px solid ${bandColor}33`,
                 }}
               >
                 v{version}
@@ -308,8 +338,29 @@ function renderTool(searchParams: URLSearchParams, fonts: FontConfig) {
             )}
           </div>
 
-          {/* Category */}
-          {category && (
+          {/* Tagline (one-line description) */}
+          {trimmedTagline && (
+            <div
+              style={{
+                fontSize: 24,
+                fontFamily: "DM Sans, sans-serif",
+                color: "#525252",
+                marginTop: 20,
+                maxWidth: 980,
+                lineHeight: 1.35,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {trimmedTagline}
+            </div>
+          )}
+
+          {/* Category fallback */}
+          {!trimmedTagline && category && (
             <div
               style={{
                 fontSize: 20,

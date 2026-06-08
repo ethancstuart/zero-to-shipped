@@ -6,7 +6,7 @@ import { StartHereRow } from '@/components/homepage/start-here-row'
 import { PinnedPillars } from '@/components/homepage/pinned-pillars'
 import type { PillarData } from '@/components/homepage/pinned-pillars'
 import { NumberTheater } from '@/components/homepage/number-theater'
-import { BentoGrid } from '@/components/homepage/bento-grid'
+import { BentoGrid, type SpotlightItem, type SpotlightType } from '@/components/homepage/bento-grid'
 import { GradientBreak } from '@/components/homepage/gradient-break'
 import { HorizontalShowcase } from '@/components/homepage/horizontal-showcase'
 import { SectionDivider } from '@/components/shared/section-divider'
@@ -85,6 +85,95 @@ async function getPlatformCost(): Promise<string> {
   }
 }
 
+function getWeekOfYear(d: Date): number {
+  const start = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  const diff =
+    (Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) -
+      start.getTime()) /
+    86_400_000
+  return Math.floor(diff / 7)
+}
+
+function getCurrentSpotlightType(): SpotlightType {
+  const types: SpotlightType[] = ['tool', 'brief', 'walkthrough']
+  return types[getWeekOfYear(new Date()) % 3]
+}
+
+async function getSpotlight(): Promise<SpotlightItem | null> {
+  try {
+    const supabase = await createClient()
+    const type = getCurrentSpotlightType()
+
+    if (type === 'tool') {
+      // Prefer 'codex' as a default top recommendation; fall back to first tool
+      const { data: tool } =
+        (await supabase
+          .from('tools')
+          .select('name, slug, description, current_version, company_slug, category')
+          .eq('slug', 'codex')
+          .maybeSingle()) ?? { data: null }
+
+      const resolved =
+        tool ??
+        (
+          await supabase
+            .from('tools')
+            .select('name, slug, description, current_version, company_slug, category')
+            .order('last_release_date', { ascending: false, nullsFirst: false })
+            .limit(1)
+            .maybeSingle()
+        ).data
+
+      if (!resolved) return null
+
+      const companyPath = resolved.company_slug || 'unknown'
+      return {
+        type: 'tool',
+        title: resolved.name,
+        subtitle: resolved.description ?? null,
+        href: `/tools/${companyPath}/${resolved.slug}`,
+        meta: resolved.current_version ? `v${resolved.current_version}` : null,
+        pillar: 'pulse',
+      }
+    }
+
+    const targetPillar = type === 'brief' ? 'pulse' : 'build'
+    const { data: featured } = await supabase
+      .from('content_index')
+      .select('slug, title, pillar, content_type, published_at')
+      .eq('pillar', targetPillar)
+      .eq('status', 'published')
+      .eq('is_featured', true)
+      .order('published_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    const { data: fallback } = featured
+      ? { data: featured }
+      : await supabase
+          .from('content_index')
+          .select('slug, title, pillar, content_type, published_at')
+          .eq('pillar', targetPillar)
+          .eq('status', 'published')
+          .order('published_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+
+    if (!fallback) return null
+
+    return {
+      type,
+      title: fallback.title,
+      subtitle: null,
+      href: `/${fallback.pillar}/${fallback.slug}`,
+      meta: fallback.content_type ?? null,
+      pillar: targetPillar as 'pulse' | 'build',
+    }
+  } catch {
+    return null
+  }
+}
+
 async function getRecentReleases() {
   try {
     const supabase = await createClient()
@@ -114,12 +203,14 @@ async function getRecentReleases() {
 }
 
 export default async function HomePage() {
-  const [{ counts, toolCount }, recentReleases, allItems, platformCost] = await Promise.all([
-    getPillarCounts(),
-    getRecentReleases(),
-    listAllContent(),
-    getPlatformCost(),
-  ])
+  const [{ counts, toolCount }, recentReleases, allItems, platformCost, spotlight] =
+    await Promise.all([
+      getPillarCounts(),
+      getRecentReleases(),
+      listAllContent(),
+      getPlatformCost(),
+      getSpotlight(),
+    ])
 
   // /api/v1 paths in docs/api/openapi.yaml: tools, tools/{slug}, tools/{slug}/releases,
   // compare, capabilities, capabilities/{capability}, pulse, pulse/weekly, showcase,
@@ -201,6 +292,7 @@ export default async function HomePage() {
             recentReleases={recentReleases}
             platformCost={platformCost}
             endpointCount={endpointCount}
+            spotlight={spotlight}
           />
         </ErrorBoundary>
       </div>

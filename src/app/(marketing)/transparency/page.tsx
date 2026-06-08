@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { CronFeed } from '@/components/transparency/cron-feed'
 import fs from 'fs/promises'
 import path from 'path'
 import type { Metadata } from 'next'
@@ -8,7 +9,8 @@ export const metadata: Metadata = {
   description: 'Build costs, platform stats, and pipeline metrics. Full transparency.',
 }
 
-export const revalidate = 3600
+// Refresh every 30s so the live stats feel real-time without a full rebuild
+export const revalidate = 30
 
 interface BuildStats {
   loc: number
@@ -18,6 +20,22 @@ interface BuildStats {
   routes: number
   commits: number
   generatedAt: string
+}
+
+function formatCost(cents: number): string {
+  if (cents <= 0) return '< $0.01'
+  return `$${(cents / 100).toFixed(2)}`
+}
+
+// Impure helpers isolated outside the render so the render itself stays pure
+// (matches the pattern used elsewhere in this codebase).
+function getSevenDaysAgoIso(): string {
+  return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+}
+
+function getStartOfMonthIso(): string {
+  const now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
 }
 
 export default async function TransparencyPage() {
@@ -32,33 +50,97 @@ export default async function TransparencyPage() {
     // File doesn't exist yet — that's fine
   }
 
-  // Platform costs
+  // Platform costs (manual ledger for itemized history)
   const { data: costs } = await supabase
     .from('platform_costs')
     .select('*')
     .order('month', { ascending: false })
 
-  const totalCostCents = (costs || []).reduce((sum, c) => sum + c.amount_cents, 0)
+  const ledgerCents = (costs || []).reduce((sum, c) => sum + (c.amount_cents || 0), 0)
 
-  // Pipeline metrics
-  const { data: pipelineRuns } = await supabase
-    .from('pipeline_runs')
-    .select('status, total_tokens, total_cost_cents')
+  // Live totals — run in parallel
+  const [
+    pipelineRunsRes,
+    cronWeekRes,
+    briefsMonthRes,
+    cronFeedRes,
+  ] = await Promise.all([
+    supabase
+      .from('pipeline_runs')
+      .select('status, total_tokens, total_cost_cents'),
+    supabase
+      .from('cron_runs')
+      .select('*', { count: 'exact', head: true })
+      .gte('started_at', getSevenDaysAgoIso()),
+    supabase
+      .from('content_index')
+      .select('*', { count: 'exact', head: true })
+      .eq('pillar', 'pulse')
+      .gte('published_at', getStartOfMonthIso()),
+    supabase
+      .from('cron_runs')
+      .select('id, cron_name, started_at, completed_at, status, duration_ms')
+      .order('started_at', { ascending: false })
+      .limit(20),
+  ])
 
-  const totalRuns = (pipelineRuns || []).length
-  const successfulRuns = (pipelineRuns || []).filter((r) => r.status === 'completed').length
-  const totalPipelineTokens = (pipelineRuns || []).reduce((sum, r) => sum + (r.total_tokens || 0), 0)
-  const totalPipelineCost = (pipelineRuns || []).reduce((sum, r) => sum + (r.total_cost_cents || 0), 0)
+  const pipelineRuns = pipelineRunsRes.data || []
+  const totalRuns = pipelineRuns.length
+  const successfulRuns = pipelineRuns.filter((r) => r.status === 'completed').length
+  const totalPipelineTokens = pipelineRuns.reduce(
+    (sum, r) => sum + (r.total_tokens || 0),
+    0,
+  )
+  const totalPipelineCostCents = pipelineRuns.reduce(
+    (sum, r) => sum + (r.total_cost_cents || 0),
+    0,
+  )
+  const cronRunsThisWeek = cronWeekRes.count ?? 0
+  const briefsThisMonth = briefsMonthRes.count ?? 0
+  const cronFeed = cronFeedRes.data || []
+  const totalInvestmentCents = ledgerCents + totalPipelineCostCents
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
       <div className="mb-12">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">Transparency</h1>
+        <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">
+          Transparency
+        </h1>
         <p className="max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
           Full transparency on what it costs to build and run this platform.
           Every dollar, every token, every line of code.
         </p>
+        <p className="mt-2 font-mono-data text-[10px] uppercase tracking-wider text-[hsl(var(--fg-faint))]">
+          Refreshes every 30s
+        </p>
       </div>
+
+      {/* Live totals — pulled directly from Postgres */}
+      <section className="mb-16">
+        <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Live Totals</h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">
+              {formatCost(totalPipelineCostCents)}
+            </div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Pipeline cost (all time)</div>
+          </div>
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">{cronRunsThisWeek}</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Pipeline runs (7d)</div>
+          </div>
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">{briefsThisMonth}</div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Briefs this month</div>
+          </div>
+          <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
+            <div className="text-2xl font-bold text-[hsl(var(--fg))]">
+              {formatCost(totalInvestmentCents)}
+            </div>
+            <div className="text-xs text-[hsl(var(--fg-muted))]">Total investment</div>
+          </div>
+        </div>
+      </section>
 
       {/* Build Stats */}
       {buildStats && (
@@ -121,19 +203,27 @@ export default async function TransparencyPage() {
           </div>
           <div className="rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-4 text-center">
             <div className="text-2xl font-bold text-[hsl(var(--fg))]">
-              ${(totalPipelineCost / 100).toFixed(2)}
+              {formatCost(totalPipelineCostCents)}
             </div>
             <div className="text-xs text-[hsl(var(--fg-muted))]">Pipeline Cost</div>
           </div>
         </div>
       </section>
 
-      {/* Platform Costs */}
+      {/* Recent Cron Runs */}
+      <section className="mb-16">
+        <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Recent Cron Runs</h2>
+        <CronFeed runs={cronFeed} />
+      </section>
+
+      {/* Platform Costs ledger */}
       <section className="mb-16">
         <h2 className="mb-6 text-2xl font-semibold text-[hsl(var(--fg))]">Platform Costs</h2>
         <div className="mb-4 rounded-lg border border-[hsl(var(--border-base))] bg-[hsl(var(--bg-subtle))] p-6">
-          <div className="text-3xl font-bold text-[hsl(var(--fg))]">${(totalCostCents / 100).toFixed(2)}</div>
-          <div className="text-sm text-[hsl(var(--fg-muted))]">Total investment to date</div>
+          <div className="text-3xl font-bold text-[hsl(var(--fg))]">
+            {formatCost(ledgerCents)}
+          </div>
+          <div className="text-sm text-[hsl(var(--fg-muted))]">Manually tracked spend</div>
         </div>
         {costs && costs.length > 0 ? (
           <div className="overflow-x-auto">
