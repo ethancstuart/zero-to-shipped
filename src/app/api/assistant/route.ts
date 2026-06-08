@@ -5,6 +5,7 @@ import { assistantLimiter } from '@/lib/rate-limit'
 import { getClientIdentifier } from '@/lib/api/response'
 import { createClient } from '@/lib/supabase/server'
 import { claudeBreaker } from '@/lib/circuit-breaker'
+import { log } from '@/lib/logger'
 
 const anthropic = new Anthropic()
 
@@ -16,6 +17,11 @@ type ClaudeResult =
   | { kind: 'error'; error: 'service_unavailable'; message: string }
 
 export async function POST(request: Request) {
+  const startTime = Date.now()
+  const requestId =
+    request.headers.get('x-request-id') || crypto.randomUUID()
+  const route = '/api/assistant'
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -36,6 +42,14 @@ export async function POST(request: Request) {
     const used = usage?.query_count ?? 0
 
     if (used >= AUTH_DAILY_LIMIT) {
+      log('info', 'Assistant query rate limited', {
+        requestId,
+        route,
+        userId: user.id,
+        authenticated: true,
+        status: 429,
+        duration_ms: Date.now() - startTime,
+      })
       return NextResponse.json(
         {
           error: 'daily_limit_reached',
@@ -50,6 +64,13 @@ export async function POST(request: Request) {
     const identifier = getClientIdentifier(request)
     const result = await assistantLimiter.limit(`anon:${identifier}:${today}`)
     if (!result.success) {
+      log('info', 'Assistant query rate limited', {
+        requestId,
+        route,
+        authenticated: false,
+        status: 429,
+        duration_ms: Date.now() - startTime,
+      })
       return NextResponse.json(
         {
           error: 'daily_limit_reached',
@@ -69,10 +90,28 @@ export async function POST(request: Request) {
   const { query } = await request.json()
 
   if (!query || typeof query !== 'string') {
+    log('info', 'Assistant query rejected', {
+      requestId,
+      route,
+      userId: user?.id,
+      authenticated: !!user,
+      status: 400,
+      duration_ms: Date.now() - startTime,
+      reason: 'missing_query',
+    })
     return NextResponse.json({ error: 'Query required' }, { status: 400 })
   }
 
   if (query.length > 2000) {
+    log('info', 'Assistant query rejected', {
+      requestId,
+      route,
+      userId: user?.id,
+      authenticated: !!user,
+      status: 400,
+      duration_ms: Date.now() - startTime,
+      reason: 'query_too_long',
+    })
     return NextResponse.json({ error: 'Query too long' }, { status: 400 })
   }
 
@@ -117,6 +156,14 @@ export async function POST(request: Request) {
     )
 
     if (claudeResult.kind === 'error') {
+      log('warn', 'Assistant unavailable (circuit breaker)', {
+        requestId,
+        route,
+        userId: user?.id,
+        authenticated: !!user,
+        status: 503,
+        duration_ms: Date.now() - startTime,
+      })
       return NextResponse.json(
         { error: claudeResult.error, message: claudeResult.message },
         { status: 503 },
@@ -137,6 +184,18 @@ export async function POST(request: Request) {
       )
     }
 
+    log('info', 'Assistant query processed', {
+      requestId,
+      route,
+      userId: user?.id,
+      authenticated: !!user,
+      status: 200,
+      duration_ms: Date.now() - startTime,
+      tokensUsed: claudeResult.tokensUsed,
+      remaining: Math.max(0, usageInfo.limit - usageInfo.used - 1),
+      cached: false,
+    })
+
     return NextResponse.json({
       answer: claudeResult.answer,
       sources: context.sources,
@@ -148,6 +207,15 @@ export async function POST(request: Request) {
       },
     })
   } catch (error) {
+    log('error', 'Assistant query failed', {
+      requestId,
+      route,
+      userId: user?.id,
+      authenticated: !!user,
+      status: 500,
+      duration_ms: Date.now() - startTime,
+      error: error instanceof Error ? error.message : String(error),
+    })
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Assistant error' },
       { status: 500 },

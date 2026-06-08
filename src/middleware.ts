@@ -23,6 +23,11 @@ function getCorsHeaders(origin: string | null): Record<string, string> {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const requestId = crypto.randomUUID();
+
+  // Propagate request ID via request headers so downstream route handlers
+  // can read it via request.headers.get('x-request-id').
+  request.headers.set("x-request-id", requestId);
 
   // Auth rate limiting for OAuth callback
   if (pathname.startsWith("/auth/callback")) {
@@ -30,7 +35,9 @@ export async function middleware(request: NextRequest) {
       request.headers.get("x-forwarded-for")?.split(",")[0] || "anon";
     const result = await authLimiter.limit(identifier);
     if (!result.success) {
-      return new NextResponse("Too many auth attempts", { status: 429 });
+      const res = new NextResponse("Too many auth attempts", { status: 429 });
+      res.headers.set("X-Request-Id", requestId);
+      return res;
     }
   }
 
@@ -38,16 +45,26 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/api/v1/")) {
     const corsHeaders = getCorsHeaders(request.headers.get("origin"));
     if (request.method === "OPTIONS") {
-      return new NextResponse(null, { status: 204, headers: corsHeaders });
+      const preflight = new NextResponse(null, {
+        status: 204,
+        headers: corsHeaders,
+      });
+      preflight.headers.set("X-Request-Id", requestId);
+      preflight.headers.set("X-API-Version", "1");
+      return preflight;
     }
     const response = await updateSession(request);
     Object.entries(corsHeaders).forEach(([key, value]) => {
       response.headers.set(key, value);
     });
+    response.headers.set("X-Request-Id", requestId);
+    response.headers.set("X-API-Version", "1");
     return response;
   }
 
-  return await updateSession(request);
+  const response = await updateSession(request);
+  response.headers.set("X-Request-Id", requestId);
+  return response;
 }
 
 export const config = {
