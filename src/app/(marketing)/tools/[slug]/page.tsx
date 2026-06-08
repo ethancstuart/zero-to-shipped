@@ -11,7 +11,7 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export const revalidate = 3600
+export const revalidate = 300
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -39,18 +39,22 @@ export default async function ToolDetailPage({ params }: Props) {
     .single()
   if (!tool) notFound()
 
-  const { data: releases } = await supabase
-    .from('tool_releases')
-    .select('*')
-    .eq('tool_id', tool.id)
-    .order('release_date', { ascending: false })
-    .limit(10)
-
-  const { data: capabilities } = await supabase
-    .from('ecosystem_status')
-    .select('*')
-    .eq('tool_id', tool.id)
-    .order('category')
+  // Parallelize releases + capabilities so the Capabilities tab is hydrated as
+  // fast as Overview. Previously these ran sequentially, doubling TTFB on a
+  // cache miss.
+  const [{ data: releases }, { data: capabilities }] = await Promise.all([
+    supabase
+      .from('tool_releases')
+      .select('id, version, release_date, summary, significance, source_url')
+      .eq('tool_id', tool.id)
+      .order('release_date', { ascending: false })
+      .limit(10),
+    supabase
+      .from('ecosystem_status')
+      .select('capability, category, supported, maturity, quality_score')
+      .eq('tool_id', tool.id)
+      .order('category'),
+  ])
 
   // Group capabilities by category
   const capsByCategory: Record<
@@ -71,7 +75,7 @@ export default async function ToolDetailPage({ params }: Props) {
   return (
     <>
       {/* Tool header */}
-      <section className="border-b border-[hsl(var(--border-base))] px-6 py-20 lg:px-12">
+      <section className="border-b border-[hsl(var(--border-base))] px-6 py-10 lg:px-12 lg:py-12">
         <div className="mx-auto max-w-[900px]">
           <ScrollReveal>
             <div className="mb-6 flex items-center gap-4">
@@ -125,7 +129,7 @@ export default async function ToolDetailPage({ params }: Props) {
       </section>
 
       {/* Tabbed content */}
-      <section className="mx-auto max-w-[900px] px-6 py-12 lg:px-12">
+      <section className="mx-auto max-w-[900px] px-6 py-6 lg:px-12 lg:py-8">
         <ErrorBoundary section="tool-detail-tabs">
           <ToolDetailTabs
             tool={tool}

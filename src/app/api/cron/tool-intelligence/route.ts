@@ -103,6 +103,13 @@ export async function GET(request: Request) {
               { onConflict: 'tool_id,version' },
             )
 
+            // IMPORTANT: This update is intentionally scoped to release-tracking
+            // fields only. The `description` column is EDITORIAL CONTENT written
+            // in Ethan's voice and must NEVER be overwritten by the scraper.
+            // Scraped vendor copy (marketing taglines, gallery captions, etc.)
+            // bleeds into the UI and breaks brand voice. If you need to refresh
+            // descriptions, do it manually via SQL or a one-off seed script.
+            // Allowed fields: current_version, last_release_date, updated_at.
             await supabase
               .from('tools')
               .update({

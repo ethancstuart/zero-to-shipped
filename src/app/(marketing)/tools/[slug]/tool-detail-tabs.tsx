@@ -1,7 +1,6 @@
 'use client'
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { ScrollReveal } from '@/components/motion/scroll-reveal'
 import { Pill } from '@/components/shared/pill'
 
 interface Release {
@@ -41,7 +40,7 @@ export function ToolDetailTabs({
 
   return (
     <Tabs defaultValue={0}>
-      <TabsList variant="line" className="mb-8 border-b border-[hsl(var(--border-base))] pb-px">
+      <TabsList variant="line" className="sticky top-0 z-20 mb-6 border-b border-[hsl(var(--border-base))] bg-[hsl(var(--bg))] pb-px">
         <TabsTrigger
           value={0}
           className="text-xs uppercase tracking-wider"
@@ -64,31 +63,29 @@ export function ToolDetailTabs({
 
       {/* Overview Tab */}
       <TabsContent value={0}>
-        <ScrollReveal>
-          <div className="space-y-6">
-            {tool.description && (
-              <div>
-                <h3 className="text-h3 mb-2">About</h3>
-                <p className="text-sm leading-relaxed text-[hsl(var(--fg-secondary))]">
-                  {tool.description}
-                </p>
-              </div>
-            )}
-            <div className="flex items-center gap-3">
-              <Pill>{tool.category}</Pill>
-              {tool.website && (
-                <a
-                  href={tool.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[hsl(var(--fg-muted))] underline underline-offset-2 transition-colors hover:text-[hsl(var(--fg-secondary))]"
-                >
-                  Visit website
-                </a>
-              )}
+        <div className="space-y-6">
+          {tool.description && (
+            <div>
+              <h3 className="text-h3 mb-2">About</h3>
+              <p className="text-sm leading-relaxed text-[hsl(var(--fg-secondary))]">
+                {tool.description}
+              </p>
             </div>
+          )}
+          <div className="flex items-center gap-3">
+            <Pill>{tool.category}</Pill>
+            {tool.website && (
+              <a
+                href={tool.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-[hsl(var(--fg-muted))] underline underline-offset-2 transition-colors hover:text-[hsl(var(--fg-secondary))]"
+              >
+                Visit website
+              </a>
+            )}
           </div>
-        </ScrollReveal>
+        </div>
       </TabsContent>
 
       {/* Releases Tab */}
@@ -98,8 +95,8 @@ export function ToolDetailTabs({
             {/* Vertical timeline line */}
             <div className="absolute left-[7px] top-2 bottom-2 w-px bg-[hsl(var(--border-base))]" />
 
-            {releases.map((release, i) => (
-              <ScrollReveal key={release.id} delay={i * 0.05}>
+            {releases.map((release) => (
+              <div key={release.id}>
                 <div className="relative flex gap-5 py-4">
                   {/* Timeline dot */}
                   <div className="relative z-10 mt-1.5 h-3.5 w-3.5 flex-shrink-0 rounded-full border-2 border-[hsl(var(--border-base))] bg-[hsl(var(--bg))]" />
@@ -146,7 +143,7 @@ export function ToolDetailTabs({
                     )}
                   </div>
                 </div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
         ) : (
@@ -163,7 +160,7 @@ export function ToolDetailTabs({
         {hasCaps ? (
           <div className="space-y-8">
             {Object.entries(capsByCategory).map(([category, caps]) => (
-              <ScrollReveal key={category}>
+              <div key={category}>
                 <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[2px] text-[hsl(var(--fg-muted))]">
                   {category}
                 </h3>
@@ -209,7 +206,7 @@ export function ToolDetailTabs({
                     </div>
                   ))}
                 </div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
         ) : (
