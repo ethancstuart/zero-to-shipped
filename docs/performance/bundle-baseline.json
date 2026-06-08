@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-06-08T19:18:31.000Z",
+  "totalJsBytes": 3181161,
+  "totalJsKB": 3106.6,
+  "totalJsMB": 3.03,
+  "fileCount": 61,
+  "top20LargestChunks": [
+    {
+      "name": "static/chunks/fb8135be8d1791ac.js",
+      "size": 1536478,
+      "sizeKB": 1500.47
+    },
+    {
+      "name": "static/chunks/067b6eac5e4ca03d.js",
+      "size": 224849,
+      "sizeKB": 219.58
+    },
+    {
+      "name": "static/chunks/d2f8a6789af0f64f.js",
+      "size": 184583,
+      "sizeKB": 180.26
+    },
+    {
+      "name": "static/chunks/286e6b7e53b47602.js",
+      "size": 123177,
+      "sizeKB": 120.29
+    },
+    {
+      "name": "static/chunks/9527da1d1df40559.js",
+      "size": 114550,
+      "sizeKB": 111.87
+    },
+    {
+      "name": "static/chunks/a6dad97d9634a72d.js",
+      "size": 112594,
+      "sizeKB": 109.96
+    },
+    {
+      "name": "static/chunks/4e63d3dd26079e9f.js",
+      "size": 84986,
+      "sizeKB": 82.99
+    },
+    {
+      "name": "static/chunks/82503e10d67fd033.js",
+      "size": 80638,
+      "sizeKB": 78.75
+    },
+    {
+      "name": "static/chunks/9995270c431e823b.js",
+      "size": 57320,
+      "sizeKB": 55.98
+    },
+    {
+      "name": "static/chunks/952ec22288f16fe7.js",
+      "size": 48497,
+      "sizeKB": 47.36
+    },
+    {
+      "name": "static/chunks/36e59bece70705f3.js",
+      "size": 45218,
+      "sizeKB": 44.16
+    },
+    {
+      "name": "static/chunks/cdc9e63034e79a2e.js",
+      "size": 45056,
+      "sizeKB": 44
+    },
+    {
+      "name": "static/chunks/f48ea90b26c5503b.js",
+      "size": 41900,
+      "sizeKB": 40.92
+    },
+    {
+      "name": "static/chunks/091b668aa9d8a6e8.js",
+      "size": 34791,
+      "sizeKB": 33.98
+    },
+    {
+      "name": "static/chunks/f16c94d7792a833b.js",
+      "size": 33704,
+      "sizeKB": 32.91
+    },
+    {
+      "name": "static/chunks/5803622b5e00c88b.js",
+      "size": 33014,
+      "sizeKB": 32.24
+    },
+    {
+      "name": "static/chunks/ec5ba5291790a938.js",
+      "size": 31107,
+      "sizeKB": 30.38
+    },
+    {
+      "name": "static/chunks/17a2c071ae478004.js",
+      "size": 30557,
+      "sizeKB": 29.84
+    },
+    {
+      "name": "static/chunks/b0fc7aec55712513.js",
+      "size": 29890,
+      "sizeKB": 29.19
+    },
+    {
+      "name": "static/chunks/4d0460a1bf79e696.js",
+      "size": 26900,
+      "sizeKB": 26.27
+    }
+  ]
+}
