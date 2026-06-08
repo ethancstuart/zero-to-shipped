@@ -2,6 +2,7 @@ import { MarketingNav } from "@/components/layout/marketing-nav";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/assistant/chat-widget";
 import { ReturnVisitTracker } from "@/components/analytics/return-visit-tracker";
+import { CookieConsent } from "@/components/privacy/cookie-consent";
 
 export default function MarketingLayout({
   children,
@@ -15,6 +16,7 @@ export default function MarketingLayout({
       <main className="min-h-screen">{children}</main>
       <Footer />
       <ChatWidget />
+      <CookieConsent />
     </>
   );
 }
