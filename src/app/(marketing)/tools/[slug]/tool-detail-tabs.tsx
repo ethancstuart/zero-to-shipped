@@ -1,7 +1,11 @@
 'use client'
 
+import { useRef } from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Pill } from '@/components/shared/pill'
+
+// Height of the fixed marketing nav (py-5 + ~24px text = ~64px)
+const NAV_HEIGHT = 64
 
 interface Release {
   id: string
@@ -37,24 +41,41 @@ export function ToolDetailTabs({
 }: ToolDetailTabsProps) {
   const hasReleases = releases.length > 0
   const hasCaps = Object.keys(capsByCategory).length > 0
+  const tabsRef = useRef<HTMLDivElement>(null)
+
+  function scrollTabsIntoView() {
+    if (!tabsRef.current) return
+    const rect = tabsRef.current.getBoundingClientRect()
+    // Only scroll if the tab bar is above or partially behind the nav
+    if (rect.top < NAV_HEIGHT + 4) {
+      window.scrollTo({
+        top: window.scrollY + rect.top - NAV_HEIGHT - 8,
+        behavior: 'smooth',
+      })
+    }
+  }
 
   return (
+    <div ref={tabsRef}>
     <Tabs defaultValue={0}>
-      <TabsList variant="line" className="sticky top-0 z-20 mb-6 border-b border-[hsl(var(--border-base))] bg-[hsl(var(--bg))] pb-px">
+      <TabsList variant="line" className="sticky top-[64px] z-20 mb-6 border-b border-[hsl(var(--border-base))] bg-[hsl(var(--bg))] pb-px">
         <TabsTrigger
           value={0}
+          onClick={scrollTabsIntoView}
           className="text-xs uppercase tracking-wider"
         >
           Overview
         </TabsTrigger>
         <TabsTrigger
           value={1}
+          onClick={scrollTabsIntoView}
           className="text-xs uppercase tracking-wider"
         >
           Releases
         </TabsTrigger>
         <TabsTrigger
           value={2}
+          onClick={scrollTabsIntoView}
           className="text-xs uppercase tracking-wider"
         >
           Capabilities
@@ -218,5 +239,6 @@ export function ToolDetailTabs({
         )}
       </TabsContent>
     </Tabs>
+    </div>
   )
 }
