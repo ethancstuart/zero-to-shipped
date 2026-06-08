@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { CapabilityMatrix } from '@/components/tools/capability-matrix'
 import type { Metadata } from 'next'
@@ -42,9 +43,19 @@ export default async function ComparePage({
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
       <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(var(--fg))]">Compare Tools</h1>
-      <p className="mb-8 max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
+      <p className="mb-6 max-w-2xl text-lg text-[hsl(var(--fg-secondary))]">
         Side-by-side capability comparison across AI coding tools.
       </p>
+
+      <Link
+        href="/which-tool"
+        className="mb-8 inline-flex items-center gap-2 rounded-full border border-[hsl(var(--pillar-system-border))] bg-[hsl(var(--pillar-system-surface))] px-4 py-2 text-sm text-[hsl(var(--fg-secondary))] transition-all hover:border-[hsl(var(--pillar-system))] hover:text-[hsl(var(--fg))]"
+      >
+        <span className="font-mono-data text-[10px] tracking-wider uppercase text-[hsl(var(--pillar-system))]">
+          Not sure which to compare?
+        </span>
+        <span>Take the wizard &rarr;</span>
+      </Link>
 
       {/* Tool selector */}
       <div className="mb-8 flex flex-wrap gap-2">

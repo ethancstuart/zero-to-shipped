@@ -10,10 +10,22 @@ interface RecentRelease {
   color: string
 }
 
+export type SpotlightType = 'tool' | 'brief' | 'walkthrough'
+
+export interface SpotlightItem {
+  type: SpotlightType
+  title: string
+  subtitle?: string | null
+  href: string
+  meta?: string | null
+  pillar: 'pulse' | 'build' | 'learn' | 'system'
+}
+
 interface BentoGridProps {
   recentReleases: RecentRelease[]
   platformCost: string
   endpointCount: number
+  spotlight: SpotlightItem | null
 }
 
 /* -----------------------------------------------------------------------
@@ -81,10 +93,12 @@ function ToolIntelligenceTile() {
   const activeCells = [2, 5, 7, 9, 11, 14, 17, 19, 22]
 
   return (
-    <Link
-      href="/compare"
-      className="group col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden flex flex-col transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
-    >
+    <div className="group relative col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 overflow-hidden flex flex-col transition-colors hover:border-[hsl(var(--border-strong))] focus-within:ring-2 focus-within:ring-[hsl(var(--fg))]">
+      <Link
+        href="/compare"
+        aria-label="Compare tools — capability heatmap"
+        className="absolute inset-0 z-[1] focus-visible:outline-none"
+      />
       <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase mb-3">
         Tool Intelligence
       </div>
@@ -106,10 +120,16 @@ function ToolIntelligenceTile() {
           )
         })}
       </div>
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex items-center justify-between">
+        <Link
+          href="/which-tool"
+          className="relative z-[2] font-mono-data text-[10px] tracking-wider uppercase text-[hsl(var(--fg-muted))] hover:text-[hsl(var(--fg))] transition-colors"
+        >
+          Take the 3-question quiz &rarr;
+        </Link>
         <ViewAffordance />
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -203,11 +223,72 @@ function LiveFeedTile({ releases }: { releases: RecentRelease[] }) {
   )
 }
 
+function SpotlightTile({ spotlight }: { spotlight: SpotlightItem }) {
+  const typeLabels: Record<SpotlightType, string> = {
+    tool: 'Tool of the week',
+    brief: 'Brief of the week',
+    walkthrough: 'Walkthrough of the week',
+  }
+  const accent = `hsl(var(--pillar-${spotlight.pillar}))`
+  return (
+    <Link
+      href={spotlight.href}
+      className="group relative col-span-1 sm:col-span-2 lg:col-span-2 rounded-2xl border border-[hsl(var(--border-base))] p-8 flex flex-col justify-between overflow-hidden transition-colors hover:border-[hsl(var(--border-strong))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--fg))]"
+    >
+      {/* Pillar accent corner */}
+      <div
+        aria-hidden
+        className="absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-20 blur-2xl"
+        style={{ backgroundColor: accent }}
+      />
+      <div className="relative">
+        <div className="flex items-center gap-2 mb-3">
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ backgroundColor: accent }}
+            aria-hidden
+          />
+          <div className="font-mono-data text-[10px] tracking-wider text-[hsl(var(--fg-faint))] uppercase">
+            Spotlight · {typeLabels[spotlight.type]}
+          </div>
+        </div>
+        <h3
+          className="text-h3 mb-2"
+          style={{ color: 'hsl(var(--fg))' }}
+        >
+          {spotlight.title}
+        </h3>
+        {spotlight.subtitle && (
+          <p className="text-sm text-[hsl(var(--fg-secondary))] line-clamp-2">
+            {spotlight.subtitle}
+          </p>
+        )}
+      </div>
+      <div className="relative mt-6 flex items-center justify-between">
+        {spotlight.meta && (
+          <span
+            className="font-mono-data text-[10px] tracking-wider uppercase"
+            style={{ color: accent }}
+          >
+            {spotlight.meta}
+          </span>
+        )}
+        <ViewAffordance />
+      </div>
+    </Link>
+  )
+}
+
 /* -----------------------------------------------------------------------
    BentoGrid
    ----------------------------------------------------------------------- */
 
-export function BentoGrid({ recentReleases, platformCost, endpointCount }: BentoGridProps) {
+export function BentoGrid({
+  recentReleases,
+  platformCost,
+  endpointCount,
+  spotlight,
+}: BentoGridProps) {
   return (
     <>
       <style jsx global>{`
@@ -230,6 +311,7 @@ export function BentoGrid({ recentReleases, platformCost, endpointCount }: Bento
         <TransparencyTile cost={platformCost} />
         <OpenApiTile endpointCount={endpointCount} />
         <LiveFeedTile releases={recentReleases} />
+        {spotlight && <SpotlightTile spotlight={spotlight} />}
       </StaggerGrid>
     </>
   )

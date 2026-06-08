@@ -10,6 +10,7 @@ const navItems = [
   { label: "Learn", href: "/learn" },
   { label: "System", href: "/system" },
   { label: "Tools", href: "/tools" },
+  { label: "Which tool?", href: "/which-tool" },
 ];
 
 export async function MarketingNav() {
