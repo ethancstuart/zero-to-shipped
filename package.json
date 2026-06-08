@@ -12,7 +12,10 @@
     "sync-content": "npx tsx scripts/sync-content.ts",
     "prebuild": "npm run sync-content || true",
     "audit-secrets": "npx tsx scripts/audit-secrets.ts",
-    "validate-content": "npx tsx scripts/validate-content.ts"
+    "validate-content": "npx tsx scripts/validate-content.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",
@@ -56,6 +59,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

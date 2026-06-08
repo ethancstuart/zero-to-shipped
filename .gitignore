@@ -45,3 +45,8 @@ next-env.d.ts
 content-source
 .superpowers/
 content/learn/lessons/test-lesson.mdx
+
+# Playwright
+/playwright-report/
+/test-results/
+/.playwright/
