@@ -50,3 +50,6 @@ content/learn/lessons/test-lesson.mdx
 /playwright-report/
 /test-results/
 /.playwright/
+
+# Load test results
+load-tests/results/
