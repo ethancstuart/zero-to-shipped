@@ -3,30 +3,41 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 2
     assignees:
       - ethancstuart
     labels:
       - dependencies
+    # Aggressive grouping: everything goes in 1 PR per type
     groups:
-      types:
-        patterns:
-          - "@types/*"
-      testing:
-        patterns:
-          - "vitest"
-          - "@testing-library/*"
-          - "@playwright/*"
-          - "playwright"
+      production-dependencies:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      development-dependencies:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+    # Ignore major version bumps — too risky for autonomous updates
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 1
     assignees:
       - ethancstuart
     labels:
       - dependencies
       - ci
+    groups:
+      github-actions:
+        patterns:
+          - "*"
