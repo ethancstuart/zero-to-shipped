@@ -1,14 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
-import { apiResponse, apiError } from '@/lib/api/response'
-import { checkRateLimit } from '@/lib/api/rate-limit'
+import { apiResponse, apiError, applyApiRateLimit } from '@/lib/api/response'
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-  const { allowed, remaining } = checkRateLimit(ip)
-  if (!allowed) return apiError('Rate limit exceeded', 429)
+  const rl = await applyApiRateLimit(request)
+  if (rl.response) return rl.response
+  const { remaining } = rl
 
   const { slug } = await params
   const { searchParams } = new URL(request.url)

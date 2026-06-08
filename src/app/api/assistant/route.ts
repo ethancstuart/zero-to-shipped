@@ -1,15 +1,26 @@
 import { NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { retrieveContext } from '@/lib/assistant/retrieval'
-import { checkRateLimit } from '@/lib/api/rate-limit'
+import { assistantLimiter } from '@/lib/rate-limit'
+import { getClientIdentifier } from '@/lib/api/response'
 
 const anthropic = new Anthropic()
 
 export async function POST(request: Request) {
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-  const { allowed } = checkRateLimit(`assistant:${ip}`, 50)
-  if (!allowed) {
-    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
+  const identifier = getClientIdentifier(request)
+  const result = await assistantLimiter.limit(identifier)
+  if (!result.success) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded' },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': String(result.limit),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': String(result.reset),
+        },
+      },
+    )
   }
 
   const { query } = await request.json()

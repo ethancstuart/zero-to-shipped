@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 /**
- * Tests for the public API response helpers and rate limiter.
+ * Tests for the public API response helpers.
  * These are the building blocks used by every v1 endpoint.
  */
 
 // ── apiResponse / apiError ────────────────────────────────────────────
-import { apiResponse, apiError } from '@/lib/api/response'
+import { apiResponse, apiError, getClientIdentifier } from '@/lib/api/response'
 
 describe('apiResponse', () => {
   it('wraps data in standard envelope', async () => {
@@ -66,63 +66,25 @@ describe('apiError', () => {
   })
 })
 
-// ── Rate limiter ──────────────────────────────────────────────────────
-import { checkRateLimit } from '@/lib/api/rate-limit'
+// ── getClientIdentifier ───────────────────────────────────────────────
 
-describe('checkRateLimit', () => {
-  // Use unique IPs per test to avoid cross-test contamination
-  let testIp = 0
-  function nextIp() {
-    testIp++
-    return `rate-limit-test-${testIp}`
-  }
-
-  it('allows the first request', () => {
-    const { allowed, remaining } = checkRateLimit(nextIp())
-    expect(allowed).toBe(true)
-    expect(remaining).toBe(99)
+describe('getClientIdentifier', () => {
+  it('uses the first x-forwarded-for value', () => {
+    const req = new Request('https://example.com', {
+      headers: { 'x-forwarded-for': '10.0.0.1, 10.0.0.2' },
+    })
+    expect(getClientIdentifier(req)).toBe('10.0.0.1')
   })
 
-  it('tracks remaining requests', () => {
-    const ip = nextIp()
-    checkRateLimit(ip, 10)
-    const { remaining } = checkRateLimit(ip, 10)
-    expect(remaining).toBe(8)
+  it('falls back to x-real-ip when x-forwarded-for is missing', () => {
+    const req = new Request('https://example.com', {
+      headers: { 'x-real-ip': '10.0.0.5' },
+    })
+    expect(getClientIdentifier(req)).toBe('10.0.0.5')
   })
 
-  it('blocks after limit is reached', () => {
-    const ip = nextIp()
-    const limit = 3
-    checkRateLimit(ip, limit) // 1
-    checkRateLimit(ip, limit) // 2
-    checkRateLimit(ip, limit) // 3 — at limit
-    const { allowed, remaining } = checkRateLimit(ip, limit) // 4 — over
-    expect(allowed).toBe(false)
-    expect(remaining).toBe(0)
-  })
-
-  it('uses default limit of 100', () => {
-    const ip = nextIp()
-    const { remaining } = checkRateLimit(ip)
-    expect(remaining).toBe(99)
-  })
-
-  it('treats different identifiers independently', () => {
-    const ip1 = nextIp()
-    const ip2 = nextIp()
-    checkRateLimit(ip1, 2)
-    checkRateLimit(ip1, 2)
-    const { allowed: ip1Allowed } = checkRateLimit(ip1, 2) // 3rd = over limit
-    const { allowed: ip2Allowed } = checkRateLimit(ip2, 2) // 1st = under limit
-    expect(ip1Allowed).toBe(false)
-    expect(ip2Allowed).toBe(true)
-  })
-
-  it('remaining never goes below 0', () => {
-    const ip = nextIp()
-    checkRateLimit(ip, 1)
-    checkRateLimit(ip, 1)
-    const { remaining } = checkRateLimit(ip, 1)
-    expect(remaining).toBe(0)
+  it('falls back to "anonymous" when no headers are present', () => {
+    const req = new Request('https://example.com')
+    expect(getClientIdentifier(req)).toBe('anonymous')
   })
 })

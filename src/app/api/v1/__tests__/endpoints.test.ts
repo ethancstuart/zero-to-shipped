@@ -46,8 +46,31 @@ vi.mock('@/lib/supabase/server', () => ({
 }))
 
 // ── Mock rate limiter to always allow ──────────────────────────────
-vi.mock('@/lib/api/rate-limit', () => ({
-  checkRateLimit: vi.fn(() => ({ allowed: true, remaining: 99 })),
+vi.mock('@/lib/rate-limit', () => ({
+  apiLimiter: {
+    limit: vi.fn(async () => ({
+      success: true,
+      remaining: 99,
+      limit: 100,
+      reset: Date.now() + 3_600_000,
+    })),
+  },
+  assistantLimiter: {
+    limit: vi.fn(async () => ({
+      success: true,
+      remaining: 49,
+      limit: 50,
+      reset: Date.now() + 3_600_000,
+    })),
+  },
+  authLimiter: {
+    limit: vi.fn(async () => ({
+      success: true,
+      remaining: 4,
+      limit: 5,
+      reset: Date.now() + 60_000,
+    })),
+  },
 }))
 
 beforeEach(() => {
