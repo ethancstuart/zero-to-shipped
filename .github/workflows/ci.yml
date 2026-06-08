@@ -6,43 +6,106 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
-    name: Lint, Type Check & Test
+    name: Lint, Type Check & Unit Tests
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+      - run: npm ci
+      - name: npm audit (high+ severity)
+        run: npm audit --audit-level=high
+        continue-on-error: true # Don't fail build, just inform
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npx vitest run --coverage
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 7
 
-      - name: Install dependencies
-        run: npm ci
+  e2e:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+      - name: Run Playwright tests
+        run: npx playwright test
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Type check
-        run: npx tsc --noEmit
-
-      - name: Run tests
-        run: npm test
-        env:
-          CRON_SECRET: ci-test-secret
-
-      - name: Build
+  performance:
+    name: Lighthouse & Bundle Size
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build production bundle
         run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
           SUPABASE_SERVICE_ROLE_KEY: placeholder
-          STRIPE_SECRET_KEY: sk_test_placeholder
-          STRIPE_WEBHOOK_SECRET: whsec_placeholder
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
-          STRIPE_PRICE_FULL_ACCESS: price_placeholder
-          STRIPE_COUPON_FOUNDING: coupon_placeholder
-          RESEND_API_KEY: re_placeholder
-          CRON_SECRET: ci-test-secret
+          ANTHROPIC_API_KEY: sk-ant-placeholder
+          GEMINI_API_KEY: placeholder
+          CRON_SECRET: placeholder
+      - name: Check bundle size
+        run: npm run check-bundle
+      - name: Audit build secrets
+        run: npm run audit-secrets
+      - name: Run Lighthouse CI
+        run: npx lhci autorun
+        continue-on-error: true # Don't fail on lighthouse issues yet, just inform
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci/
+          retention-days: 14
+
+  content:
+    name: Content Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Validate MDX frontmatter
+        run: npm run validate-content
