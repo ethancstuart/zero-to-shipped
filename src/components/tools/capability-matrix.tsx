@@ -2,6 +2,7 @@ interface Tool {
   id: string
   name: string
   slug: string
+  company_slug?: string | null
 }
 
 interface Capability {
@@ -52,7 +53,14 @@ export function CapabilityMatrix({ tools, capabilities }: CapabilityMatrixProps)
                 key={tool.id}
                 className="px-4 py-3 text-center text-sm font-medium text-[hsl(var(--fg))]"
               >
-                <a href={`/tools/${tool.slug}`} className="hover:underline">
+                <a
+                  href={
+                    tool.company_slug
+                      ? `/tools/${tool.company_slug}/${tool.slug}`
+                      : `/tools/${tool.slug}`
+                  }
+                  className="hover:underline"
+                >
                   {tool.name}
                 </a>
               </th>

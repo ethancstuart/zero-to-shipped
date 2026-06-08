@@ -9,11 +9,18 @@ interface ToolCardProps {
   description: string | null
   currentVersion: string | null
   logoUrl: string | null
+  /**
+   * Parent company slug for hierarchical /tools/[company]/[product] URLs.
+   * Falls back to the product slug (companies where company_slug == product slug)
+   * if not provided, which still resolves through the redirect chain.
+   */
+  companySlug?: string | null
 }
 
-export function ToolCard({ slug, name, category, description, currentVersion, logoUrl }: ToolCardProps) {
+export function ToolCard({ slug, name, category, description, currentVersion, logoUrl, companySlug }: ToolCardProps) {
+  const href = companySlug ? `/tools/${companySlug}/${slug}` : `/tools/${slug}`
   return (
-    <Link href={`/tools/${slug}`}
+    <Link href={href}
       className="block rounded-xl border border-[hsl(var(--border-base))] p-6 transition-all duration-300 hover:border-[hsl(var(--border-hover))] hover:-translate-y-0.5 hover:shadow-[var(--shadow-sm)]">
       <div className="flex items-center gap-3 mb-4">
         {logoUrl && <Image src={logoUrl} alt={name} width={32} height={32} className="rounded-lg" />}

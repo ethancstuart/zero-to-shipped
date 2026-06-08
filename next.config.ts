@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
       { source: "/agents", destination: "/system", permanent: true },
       { source: "/waitlist", destination: "/pricing", permanent: false },
       { source: "/resources", destination: "/learn", permanent: true },
+      // Tools restructure (May 2026): old flat /tools/[slug] → /tools/[company]/[product].
+      // Note: cursor, replit, lovable are intentionally omitted — for those tools the old
+      // product slug equals the new company slug, so /tools/cursor now resolves to the
+      // company landing page (which shows the single product card linking onward).
+      { source: "/tools/claude-code", destination: "/tools/anthropic/claude-code", permanent: true },
+      { source: "/tools/codex", destination: "/tools/openai/codex", permanent: true },
+      { source: "/tools/gemini-cli", destination: "/tools/google/gemini-cli", permanent: true },
+      { source: "/tools/v0", destination: "/tools/vercel/v0", permanent: true },
+      { source: "/tools/bolt", destination: "/tools/stackblitz/bolt", permanent: true },
+      { source: "/tools/windsurf", destination: "/tools/codeium/windsurf", permanent: true },
     ];
   },
   images: {

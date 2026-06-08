@@ -1,25 +1,26 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ToolDetailTabs } from './tool-detail-tabs'
 import { Pill } from '@/components/shared/pill'
 import { ScrollReveal } from '@/components/motion/scroll-reveal'
 import { ErrorBoundary } from '@/components/error-boundary'
+import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ company: string; product: string }>
 }
 
 export const revalidate = 300
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { product } = await params
   const supabase = await createClient()
   const { data: tool } = await supabase
     .from('tools')
     .select('name, description')
-    .eq('slug', slug)
+    .eq('slug', product)
     .single()
   if (!tool) return { title: 'Not Found' }
   return {
@@ -29,15 +30,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ToolDetailPage({ params }: Props) {
-  const { slug } = await params
+  const { company, product } = await params
   const supabase = await createClient()
 
   const { data: tool } = await supabase
     .from('tools')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', product)
     .single()
   if (!tool) notFound()
+
+  // Canonicalize: if the URL company segment doesn't match the tool's actual
+  // company_slug, redirect to the canonical URL so we don't fragment SEO.
+  if (tool.company_slug && tool.company_slug !== company) {
+    redirect(`/tools/${tool.company_slug}/${product}`)
+  }
 
   // Parallelize releases + capabilities so the Capabilities tab is hydrated as
   // fast as Overview. Previously these ran sequentially, doubling TTFB on a
@@ -72,12 +79,26 @@ export default async function ToolDetailPage({ params }: Props) {
     capsByCategory[cap.category].push(cap)
   }
 
+  const companyName = tool.parent_company || company
+
   return (
     <>
       {/* Tool header */}
       <section className="border-b border-[hsl(var(--border-base))] px-6 py-10 lg:px-12 lg:py-12">
         <div className="mx-auto max-w-[900px]">
           <ScrollReveal>
+            <div className="font-mono-data mb-4 flex items-center gap-2 text-[10px] uppercase tracking-wider text-[hsl(var(--fg-muted))]">
+              <Link href="/tools" className="hover:text-[hsl(var(--fg-secondary))]">
+                TOOLS
+              </Link>
+              <span aria-hidden>/</span>
+              <Link
+                href={`/tools/${tool.company_slug || company}`}
+                className="hover:text-[hsl(var(--fg-secondary))]"
+              >
+                {companyName.toUpperCase()}
+              </Link>
+            </div>
             <div className="mb-6 flex items-center gap-4">
               {tool.logo_url && (
                 <Image

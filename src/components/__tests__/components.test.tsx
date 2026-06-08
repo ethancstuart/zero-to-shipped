@@ -261,12 +261,29 @@ describe('ToolCard', () => {
     expect(container.textContent).toContain('A great tool')
   })
 
-  it('links to correct tool page', () => {
+  it('links to correct tool page (legacy flat URL when no company)', () => {
     const { container } = render(
       <ToolCard slug="claude-code" name="Claude Code" category="IDE" description={null} currentVersion={null} logoUrl={null} />,
     )
     const link = container.querySelector('a')
+    // Without companySlug the card falls back to the flat URL, which redirects.
     expect(link?.getAttribute('href')).toBe('/tools/claude-code')
+  })
+
+  it('links to hierarchical tool page when companySlug provided', () => {
+    const { container } = render(
+      <ToolCard
+        slug="claude-code"
+        name="Claude Code"
+        category="IDE"
+        description={null}
+        currentVersion={null}
+        logoUrl={null}
+        companySlug="anthropic"
+      />,
+    )
+    const link = container.querySelector('a')
+    expect(link?.getAttribute('href')).toBe('/tools/anthropic/claude-code')
   })
 })
 

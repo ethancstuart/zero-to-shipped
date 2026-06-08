@@ -27,7 +27,7 @@ export default async function ComparePage({
 
   const { data: selectedTools } = await supabase
     .from('tools')
-    .select('id, name, slug')
+    .select('id, name, slug, company_slug')
     .in('slug', selectedSlugs)
     .order('name')
 
