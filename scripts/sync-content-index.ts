@@ -41,14 +41,27 @@ async function sync() {
       continue
     }
 
+    // `description` in MDX frontmatter is the canonical short blurb. We
+    // populate both `summary` (used by /api/v1/pulse and listing UIs) and
+    // `description` so consumers that expect either column get a non-null
+    // value when a piece of content is missing one of them.
+    const summary = data.description ?? data.summary ?? null
+
     const { error } = await supabase.from('content_index').upsert(
       {
         slug: data.slug,
         pillar: data.pillar,
         content_type: data.type,
         title: data.title,
+        summary,
+        description: data.description ?? summary,
         tools: data.tools || [],
         tool_versions: data.toolVersions || {},
+        tags: data.tags || [],
+        format: data.format ?? null,
+        difficulty: data.difficulty ?? null,
+        estimated_minutes: data.estimatedMinutes ?? null,
+        external_url: data.externalUrl ?? null,
         status: data.status,
         is_premium: data.isPremium || false,
         is_featured: data.isFeatured || false,

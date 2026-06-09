@@ -23,6 +23,36 @@ export type DeepAnswers = QuickAnswers & {
   team: 'solo' | 'small-team' | 'with-engineers'
 }
 
+/**
+ * Parse wizard answers from a Next.js `searchParams` record.
+ *
+ * Lives here (not in the client wizard) so server components can call it
+ * without crossing the server/client boundary. Pure function — no client APIs.
+ */
+export function parseAnswersFromSearchParams(
+  raw: Record<string, string | string[] | undefined>,
+): Partial<DeepAnswers> {
+  const keys: (keyof DeepAnswers)[] = [
+    'building',
+    'comfort',
+    'preference',
+    'output',
+    'size',
+    'budget',
+    'team',
+  ]
+  const out: Partial<DeepAnswers> = {}
+  for (const k of keys) {
+    const v = raw[k]
+    if (typeof v === 'string') {
+      // Cast — the wizard will only render UI for valid values; invalid ones
+      // simply produce no recommendation and the user has to re-pick.
+      ;(out as Record<string, string>)[k] = v
+    }
+  }
+  return out
+}
+
 export type ToolSlug =
   | 'claude-code'
   | 'codex'

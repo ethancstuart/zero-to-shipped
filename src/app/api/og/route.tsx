@@ -3,15 +3,42 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
+// Satori (used by `next/og`) does NOT support WOFF2 — it only understands
+// TTF/OTF/WOFF. Loading a `.woff2` from fonts.gstatic.com throws
+// `Unsupported OpenType signature wOF2` and yields an empty 0-byte response.
+//
+// We fetch the Google Fonts CSS using a User-Agent that Google associates with
+// older browsers, which makes their CDN serve plain TTF font URLs instead of
+// WOFF2. We then extract the TTF URL and download the font bytes.
+async function loadGoogleFont(family: string, weight: number): Promise<ArrayBuffer> {
+  const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
+    family,
+  )}:wght@${weight}&display=swap`;
+  // The "Mozilla/5.0 ... Trident" UA is the simplest way to force Google's CSS
+  // endpoint to advertise TTF font files (it served IE11 with TTF). Modern UAs
+  // get WOFF2-only responses, which satori can't read.
+  const cssRes = await fetch(cssUrl, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
+    },
+  });
+  const css = await cssRes.text();
+  // Accept TTF, OTF, or WOFF (NOT WOFF2 — satori can't parse it). Modern
+  // Google Fonts responses to the IE11 UA above return WOFF, which works.
+  const match = css.match(/src:\s*url\((https:\/\/[^)]+\.(?:ttf|otf|woff))\)/);
+  if (!match) {
+    throw new Error(`Could not extract TTF/WOFF URL for ${family} ${weight}`);
+  }
+  const fontRes = await fetch(match[1]);
+  return fontRes.arrayBuffer();
+}
+
 // Load Space Grotesk 600 for titles
-const spaceGroteskPromise = fetch(
-  "https://fonts.gstatic.com/s/spacegrotesk/v16/V8mDoQDjQSkFtoMM3T6r8E7mPbF4C_k3HqUtEw.woff2"
-).then((res) => res.arrayBuffer());
+const spaceGroteskPromise = loadGoogleFont("Space Grotesk", 600);
 
 // Load DM Sans 400 for subtitles
-const dmSansPromise = fetch(
-  "https://fonts.gstatic.com/s/dmsans/v15/rP2Hp2ywxg089UriCZOIHTWEBlw.woff2"
-).then((res) => res.arrayBuffer());
+const dmSansPromise = loadGoogleFont("DM Sans", 400);
 
 // Pillar colors for the left accent band
 const PILLAR_COLORS: Record<string, string> = {
@@ -46,35 +73,46 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const [spaceGrotesk, dmSans] = await Promise.all([
-    spaceGroteskPromise,
-    dmSansPromise,
-  ]);
+  try {
+    const [spaceGrotesk, dmSans] = await Promise.all([
+      spaceGroteskPromise,
+      dmSansPromise,
+    ]);
 
-  const fonts = [
-    { name: "Space Grotesk", data: spaceGrotesk, weight: 600 as const },
-    { name: "DM Sans", data: dmSans, weight: 400 as const },
-  ];
+    const fonts = [
+      { name: "Space Grotesk", data: spaceGrotesk, weight: 600 as const },
+      { name: "DM Sans", data: dmSans, weight: 400 as const },
+    ];
 
-  const { searchParams } = request.nextUrl;
+    const { searchParams } = request.nextUrl;
 
-  // Determine which template to use
-  const tool = searchParams.get("tool");
-  const title =
-    searchParams.get("title") ??
-    searchParams.get("headline") ??
-    searchParams.get("name");
+    // Determine which template to use
+    const tool = searchParams.get("tool");
+    const title =
+      searchParams.get("title") ??
+      searchParams.get("headline") ??
+      searchParams.get("name");
 
-  if (tool) {
-    return renderTool(searchParams, fonts);
+    if (tool) {
+      return renderTool(searchParams, fonts);
+    }
+
+    if (title) {
+      return renderContent(searchParams, title, fonts);
+    }
+
+    // Default: homepage template
+    return renderHomepage(fonts);
+  } catch (err) {
+    // Never return a 0-byte image. If font loading or rendering fails, return
+    // a real JSON error so Sentry/observability catches it instead of social
+    // crawlers silently caching an empty image.
+    console.error("[og] failed to render image", err);
+    return NextResponse.json(
+      { error: "Failed to generate OG image" },
+      { status: 500 }
+    );
   }
-
-  if (title) {
-    return renderContent(searchParams, title, fonts);
-  }
-
-  // Default: homepage template
-  return renderHomepage(fonts);
 }
 
 type FontConfig = {

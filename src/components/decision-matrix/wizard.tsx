@@ -211,22 +211,6 @@ export function Wizard({ mode, initialAnswers }: WizardProps) {
   )
 }
 
-/* ------------------------------------------------------------------------- */
-/*  Helper: parse search params into answers (server-side friendly)           */
-/* ------------------------------------------------------------------------- */
-
-export function parseAnswersFromSearchParams(
-  raw: Record<string, string | string[] | undefined>,
-): Partial<DeepAnswers> {
-  const keys: AnswerKey[] = ['building', 'comfort', 'preference', 'output', 'size', 'budget', 'team']
-  const out: Partial<DeepAnswers> = {}
-  for (const k of keys) {
-    const v = raw[k]
-    if (typeof v === 'string') {
-      // Cast — the wizard will only render UI for valid values; bad ones
-      // simply produce no recommendation and the user has to re-pick.
-      ;(out as Record<string, string>)[k] = v
-    }
-  }
-  return out
-}
+// NOTE: `parseAnswersFromSearchParams` lives in `@/lib/decision-matrix` so
+// server components (the `/which-tool` pages) can import it without crossing
+// the server/client boundary. Do not re-export it from this client module.

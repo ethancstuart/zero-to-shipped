@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!result) return { title: 'Not Found' }
   return {
     title: `${result.frontmatter.title} — Prototype Studio`,
-    description: `${result.frontmatter.difficulty} · ${result.frontmatter.estimatedMinutes} min · ${result.frontmatter.tools.join(', ')}`,
+    description: `${result.frontmatter.difficulty} · ${result.frontmatter.estimatedMinutes} min · ${(result.frontmatter.tools ?? []).join(', ')}`,
   }
 }
 
@@ -59,11 +59,11 @@ export default async function LearnDetailPage({ params }: Props) {
 
         {/* Tools + bookmark */}
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          {frontmatter.tools.map((tool) => (
+          {(frontmatter.tools ?? []).map((tool) => (
             <ToolBadge
               key={tool}
               name={tool}
-              version={frontmatter.toolVersions[tool]}
+              version={frontmatter.toolVersions?.[tool]}
             />
           ))}
           <BookmarkButton slug={frontmatter.slug} />

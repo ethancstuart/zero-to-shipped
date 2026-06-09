@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Wizard, parseAnswersFromSearchParams } from '@/components/decision-matrix/wizard'
+import { Wizard } from '@/components/decision-matrix/wizard'
+import { parseAnswersFromSearchParams } from '@/lib/decision-matrix'
 
 export const metadata: Metadata = {
   title: 'Which AI coding tool? — Prototype Studio',
