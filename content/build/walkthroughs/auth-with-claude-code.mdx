@@ -112,7 +112,7 @@ You now have OAuth wired between Google and Supabase. Your app still doesn't kno
 
 Back to Claude Code:
 
-<CodeBlock language="text">
+```text
 Build a sign-in page at src/app/(auth)/sign-in/page.tsx.
 - Server component for the layout
 - A client component "SignInButton" that calls supabase.auth.signInWithOAuth({ provider: 'google' })
@@ -120,7 +120,7 @@ Build a sign-in page at src/app/(auth)/sign-in/page.tsx.
 - Style the button with Tailwind: full-width on mobile, max-width 320px on desktop, dark border, Google logo on the left, "Continue with Google" label
 - Add a heading and one-line subhead above the button
 - Keep the page minimal — just the card centered in the viewport
-</CodeBlock>
+```
 
 Then build the callback route:
 
@@ -161,7 +161,7 @@ You have two ways to get the current user. Use them deliberately.
 
 **On the server** (server components, server actions, route handlers):
 
-<CodeBlock language="typescript">
+```typescript
 import { createClient } from '@/lib/supabase/server'
 
 export default async function DashboardPage() {
@@ -175,11 +175,11 @@ export default async function DashboardPage() {
 
   return <div>Welcome, {user.email}</div>
 }
-</CodeBlock>
+```
 
 **On the client** (interactive components, forms, real-time UI):
 
-<CodeBlock language="typescript">
+```typescript
 'use client'
 import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
@@ -200,7 +200,7 @@ export function UserMenu() {
 
   return user ? <span>{user.email}</span> : null
 }
-</CodeBlock>
+```
 
 The rule I use: if the data influences what gets rendered on first paint, fetch it on the server. If it's interactive UI that responds to sign-in/sign-out events, fetch it on the client. Don't mix the two for the same value.
 

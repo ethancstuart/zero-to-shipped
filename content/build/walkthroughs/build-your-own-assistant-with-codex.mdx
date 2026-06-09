@@ -102,7 +102,7 @@ You need content to embed. For this walkthrough, drop a few markdown files into 
 
 Then have Codex write the embedding script:
 
-<CodeBlock language="text">
+```text
 Create scripts/generate-embeddings.ts.
 - Read all .md and .mdx files under ./content (recursive)
 - For each file, chunk the content into roughly 500-token pieces, splitting on paragraph boundaries when possible
@@ -111,7 +111,7 @@ Create scripts/generate-embeddings.ts.
 - Before inserting, delete existing rows for that source_path so re-runs don't duplicate
 - Log progress: "Embedded {n}/{total} chunks from {file}"
 - Add a "npm run embed" script to package.json that runs this with tsx
-</CodeBlock>
+```
 
 Run it:
 
@@ -131,7 +131,7 @@ The 500-token chunk size is a reasonable default. If your assistant gives answer
 
 Now the brain of the assistant. Codex:
 
-<CodeBlock language="text">
+```text
 Create the API route at src/app/api/ask/route.ts.
 - Accept POST with body { question: string }
 - Validate with zod: question must be 1-500 chars
@@ -145,15 +145,15 @@ Create the API route at src/app/api/ask/route.ts.
 - Use the Vercel AI SDK's streamText with gpt-4o-mini, system prompt, and the user's question
 - Return the streamed response
 - Use the server-side Supabase client (service role key is fine here since this is server-only)
-</CodeBlock>
+```
 
 Test with curl:
 
-<CodeBlock language="bash">
+```bash
 curl -X POST http://localhost:3000/api/ask \
   -H "Content-Type: application/json" \
   -d '{"question":"What is this content about?"}'
-</CodeBlock>
+```
 
 You should see a streamed response that quotes your own files. If it makes things up or refuses to answer, check two places: the similarity threshold (0.7 might be too high if your corpus is small) and the system prompt (make sure it's strict about the "only from context" rule).
 
