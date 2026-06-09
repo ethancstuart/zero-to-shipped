@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { CapabilityMatrix } from '@/components/tools/capability-matrix'
+import { ComparePlayground } from '@/components/tools/compare-playground'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -81,7 +81,7 @@ export default async function ComparePage({
         })}
       </div>
 
-      <CapabilityMatrix
+      <ComparePlayground
         tools={selectedTools || []}
         capabilities={capabilities || []}
       />
