@@ -3,7 +3,68 @@ import path from 'path'
 import matter from 'gray-matter'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
+import { visit } from 'unist-util-visit'
+import type { Element, Root } from 'hast'
 import type { ContentFrontmatter, ContentListItem, Pillar } from '@/types/content'
+
+/**
+ * Rehype plugin: ensure GFM task-list checkboxes are accessible.
+ *
+ * remark-gfm renders `- [ ]` lines as `<input type="checkbox" disabled>` with
+ * no label, which fails WCAG 4.1.2 (axe rule: `label`). We attach an
+ * `aria-label` derived from the list item's text content so screen readers
+ * announce the checkbox meaningfully. We also mark scrollable `<pre>` blocks
+ * as keyboard-focusable regions (WCAG 2.1.1).
+ */
+function rehypeAccessibility() {
+  return (tree: Root) => {
+    visit(tree, 'element', (node: Element, _index, parent) => {
+      // Task-list checkbox: <input type="checkbox" disabled> inside an <li>
+      if (
+        node.tagName === 'input' &&
+        node.properties?.type === 'checkbox' &&
+        parent &&
+        (parent as Element).tagName === 'li'
+      ) {
+        const li = parent as Element
+        const text = extractText(li).trim()
+        const isChecked = node.properties?.checked === true
+        node.properties = {
+          ...node.properties,
+          'aria-label': text
+            ? `${isChecked ? 'Completed' : 'Checklist item'}: ${text}`
+            : isChecked
+              ? 'Completed checklist item'
+              : 'Checklist item',
+        }
+      }
+
+      // Code blocks: <pre> elements need to be keyboard-focusable so
+      // sighted keyboard users can scroll overflowing code.
+      if (node.tagName === 'pre') {
+        node.properties = {
+          ...(node.properties ?? {}),
+          tabIndex: 0,
+          role: 'region',
+          'aria-label':
+            (node.properties?.['aria-label'] as string | undefined) ?? 'Code block',
+        }
+      }
+    })
+  }
+}
+
+function extractText(node: Element): string {
+  let out = ''
+  for (const child of node.children ?? []) {
+    if (child.type === 'text') {
+      out += child.value
+    } else if (child.type === 'element') {
+      out += extractText(child as Element)
+    }
+  }
+  return out
+}
 
 const CONTENT_DIR = path.join(process.cwd(), 'content')
 
@@ -62,6 +123,7 @@ export async function getContentBySlug(
     options: {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
+        rehypePlugins: [rehypeAccessibility],
       },
     },
   })

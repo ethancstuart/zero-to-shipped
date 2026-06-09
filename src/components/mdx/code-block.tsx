@@ -24,7 +24,10 @@ export async function CodeBlock({
         </div>
       )}
       <div
-        className="overflow-x-auto p-4 text-sm [&_pre]:!bg-transparent [&_code]:!bg-transparent"
+        role="region"
+        aria-label={filename ? `Code block: ${filename}` : 'Code block'}
+        tabIndex={0}
+        className="overflow-x-auto p-4 text-sm [&_pre]:!bg-transparent [&_code]:!bg-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--accent-hsl))]"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
