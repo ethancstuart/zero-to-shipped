@@ -109,9 +109,14 @@ export async function getContentBySlug(
     return basename === slug
   })
 
-  if (!filePath) return null
+  let raw: string | null = null
+  if (filePath) {
+    raw = await fs.readFile(filePath, 'utf-8')
+  } else {
+    raw = await loadMdxFromDb(pillar, slug)
+  }
+  if (!raw) return null
 
-  const raw = await fs.readFile(filePath, 'utf-8')
   const { content: mdxSource, data } = matter(raw)
   const frontmatter = data as ContentFrontmatter
 
@@ -129,6 +134,26 @@ export async function getContentBySlug(
   })
 
   return { frontmatter, content }
+}
+
+/**
+ * DB fallback for cron-generated briefs that don't live in the git repo.
+ * Returns the full MDX (frontmatter + body) reconstructed from content_index
+ * when `body_mdx` is populated, otherwise null.
+ */
+async function loadMdxFromDb(pillar: Pillar, slug: string): Promise<string | null> {
+  // Lazy import to keep this loader usable in environments without Supabase
+  // configured (e.g. some unit tests).
+  const { createClient } = await import('@/lib/supabase/server')
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('content_index')
+    .select('body_mdx')
+    .eq('pillar', pillar)
+    .eq('slug', slug)
+    .maybeSingle()
+  if (error || !data?.body_mdx) return null
+  return data.body_mdx
 }
 
 export async function listContentByPillar(
