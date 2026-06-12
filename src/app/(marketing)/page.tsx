@@ -7,6 +7,7 @@ import { PinnedPillars } from '@/components/homepage/pinned-pillars'
 import type { PillarData } from '@/components/homepage/pinned-pillars'
 import { NumberTheater } from '@/components/homepage/number-theater'
 import { BentoGrid, type SpotlightItem, type SpotlightType } from '@/components/homepage/bento-grid'
+import { RoleBand } from '@/components/homepage/role-band'
 import { GradientBreak } from '@/components/homepage/gradient-break'
 import { HorizontalShowcase } from '@/components/homepage/horizontal-showcase'
 import { SectionDivider } from '@/components/shared/section-divider'
@@ -285,6 +286,9 @@ export default async function HomePage() {
       <div className="max-w-[1300px] mx-auto px-6 lg:px-12">
         <ErrorBoundary section="number-theater">
           <NumberTheater />
+        </ErrorBoundary>
+        <ErrorBoundary section="role-band">
+          <RoleBand />
         </ErrorBoundary>
         <SectionDivider number="02" label="Features" />
         <ErrorBoundary section="bento-grid">

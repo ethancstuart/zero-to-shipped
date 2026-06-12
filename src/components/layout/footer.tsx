@@ -11,9 +11,19 @@ const columns = [
     ],
   },
   {
+    heading: "By role",
+    links: [
+      { label: "Product Managers", href: "/for/product-managers" },
+      { label: "Project Managers", href: "/for/project-managers" },
+      { label: "Business Analysts", href: "/for/business-analysts" },
+      { label: "BI Engineers", href: "/for/bi-engineers" },
+    ],
+  },
+  {
     heading: "Resources",
     links: [
       { label: "Tools", href: "/tools" },
+      { label: "Compare", href: "/compare" },
       { label: "Showcase", href: "/showcase" },
       { label: "API Docs", href: "/api/docs" },
     ],

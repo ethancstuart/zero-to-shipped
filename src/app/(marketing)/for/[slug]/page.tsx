@@ -8,6 +8,7 @@ import {
   Rocket,
   Sparkles,
   Target,
+  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/constants";
@@ -17,6 +18,7 @@ import {
   getRoleLandingConfig,
   type RoleLandingSlug,
 } from "@/lib/content/role-landing";
+import { getModuleByNumber } from "@/lib/content/modules";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -167,6 +169,94 @@ export default async function RoleLandingPage({ params }: Props) {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Recommended path */}
+      <section className="mx-auto mt-20 max-w-4xl px-4">
+        <div className="mb-8 text-center">
+          <h2 className="mb-2 text-2xl font-bold sm:text-3xl">
+            Your start-here path
+          </h2>
+          <p className="text-muted-foreground">
+            Five modules, in this order. Skip the rest until you&apos;ve shipped one.
+          </p>
+        </div>
+        <ol className="space-y-3">
+          {config.recommendedPath.map((moduleNumber, index) => {
+            const mod = getModuleByNumber(moduleNumber);
+            if (!mod) return null;
+            return (
+              <li key={moduleNumber}>
+                <Link
+                  href={`/learn/${mod.slug}`}
+                  className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary"
+                >
+                  <div className="font-mono-data shrink-0 text-xs tracking-wider text-muted-foreground">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border text-sm font-semibold text-foreground">
+                    {mod.number}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-foreground">
+                      {mod.title}
+                    </div>
+                    <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="size-3" />
+                      {mod.estimatedHours} hours
+                    </div>
+                  </div>
+                  <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                </Link>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      {/* Recommended tool stack */}
+      <section className="mx-auto mt-20 max-w-5xl px-4">
+        <div className="mb-8 text-center">
+          <h2 className="mb-2 text-2xl font-bold sm:text-3xl">
+            Your tool stack
+          </h2>
+          <p className="text-muted-foreground">
+            What I&apos;d reach for if I were a {config.roleSingular.toLowerCase()} starting today.
+          </p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {config.recommendedTools.map((tool, index) => (
+            <div
+              key={tool.slug}
+              className="flex flex-col rounded-xl border border-border bg-card p-6"
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <span className="font-mono-data text-[10px] tracking-wider uppercase text-muted-foreground">
+                  {index === 0 ? "Start here" : index === 1 ? "Or this" : "Also good"}
+                </span>
+              </div>
+              <h3 className="mb-2 text-lg font-semibold">
+                <Wrench className="mr-1.5 inline size-4 text-primary" />
+                {tool.name}
+              </h3>
+              <p className="flex-1 text-sm text-muted-foreground">
+                {tool.reasoning}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
+          <Link
+            href={`/which-tool${config.wizardPrefillQuery}`}
+            className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary"
+          >
+            Take the 3-question wizard
+            <ArrowRight className="size-4" />
+          </Link>
+          <span className="text-xs text-muted-foreground">
+            Pre-filled with the defaults most {config.rolePlural.toLowerCase()} pick.
+          </span>
         </div>
       </section>
 

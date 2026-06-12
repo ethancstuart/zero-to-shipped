@@ -65,6 +65,51 @@ describe("ROLE_LANDING_CONFIGS", () => {
       }
     }
   });
+
+  it("recommendedPath has 5 unique modules within 1-16", () => {
+    for (const slug of ROLE_LANDING_SLUGS) {
+      const path = ROLE_LANDING_CONFIGS[slug].recommendedPath;
+      expect(path.length).toBe(5);
+      expect(new Set(path).size).toBe(5);
+      for (const n of path) {
+        expect(n).toBeGreaterThanOrEqual(1);
+        expect(n).toBeLessThanOrEqual(16);
+      }
+    }
+  });
+
+  it("recommendedTools has 2-3 entries per role, all with reasoning", () => {
+    for (const slug of ROLE_LANDING_SLUGS) {
+      const tools = ROLE_LANDING_CONFIGS[slug].recommendedTools;
+      expect(tools.length).toBeGreaterThanOrEqual(2);
+      expect(tools.length).toBeLessThanOrEqual(3);
+      for (const t of tools) {
+        expect(t.slug).toBeTruthy();
+        expect(t.name).toBeTruthy();
+        expect(t.reasoning.length).toBeGreaterThan(40);
+      }
+    }
+  });
+
+  it("wizardPrefillQuery starts with ? and uses valid decision-matrix axes", () => {
+    const validAxes = new Set([
+      "building",
+      "comfort",
+      "preference",
+      "output",
+      "size",
+      "budget",
+      "team",
+    ]);
+    for (const slug of ROLE_LANDING_SLUGS) {
+      const q = ROLE_LANDING_CONFIGS[slug].wizardPrefillQuery;
+      expect(q.startsWith("?")).toBe(true);
+      const params = new URLSearchParams(q.slice(1));
+      for (const key of params.keys()) {
+        expect(validAxes.has(key)).toBe(true);
+      }
+    }
+  });
 });
 
 describe("getRoleLandingConfig", () => {

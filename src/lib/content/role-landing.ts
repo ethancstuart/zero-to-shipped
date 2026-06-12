@@ -56,6 +56,32 @@ export interface RoleLandingConfig {
 
   /** Search queries this page is optimized to rank for (for internal tracking) */
   targetQueries: string[];
+
+  /**
+   * Ordered start-here path — module numbers in the order this role should
+   * tackle them. Foundations first, then role-priority modules from
+   * ROLE_PRIORITIES. Surfaced as a numbered list on the landing page.
+   */
+  recommendedPath: number[];
+
+  /**
+   * Recommended tool stack for this role — encodes Ethan's POV from the
+   * decision matrix. Each entry includes a short reasoning blurb in the same
+   * first-person voice as the wizard.
+   */
+  recommendedTools: {
+    slug: string;
+    name: string;
+    reasoning: string;
+  }[];
+
+  /**
+   * Query string fragment that pre-fills /which-tool with role-appropriate
+   * defaults — lets users open the wizard from a role landing page and land
+   * on a sensible recommendation without re-answering questions.
+   * Format: `?comfort=can-install&preference=just-done` (no leading slash).
+   */
+  wizardPrefillQuery: string;
 }
 
 export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
@@ -149,6 +175,29 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         "claude code for pm",
         "vibe coding for product managers",
       ],
+      recommendedPath: [1, 2, 8, 7, 9],
+      recommendedTools: [
+        {
+          slug: "codex",
+          name: "Codex",
+          reasoning:
+            "Where I'd start. It's the strongest model for product-flavored asks right now — turns a tight spec into a working prototype faster than anything else.",
+        },
+        {
+          slug: "cursor",
+          name: "Cursor",
+          reasoning:
+            "If a code editor feels familiar from past dabbling, Cursor is the gentler ramp. You get an AI panel inside VS Code without ever touching a terminal.",
+        },
+        {
+          slug: "claude-code",
+          name: "Claude Code",
+          reasoning:
+            "Reach for this when you want the AI to truly own a multi-step build — it asks better follow-ups and leaves you with code you can actually read.",
+        },
+      ],
+      wizardPrefillQuery:
+        "?building=web-app&comfort=can-install&preference=just-done",
     },
 
     "project-managers": {
@@ -240,6 +289,23 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         "cursor for project managers",
         "pmp ai tools",
       ],
+      recommendedPath: [1, 2, 8, 9, 14],
+      recommendedTools: [
+        {
+          slug: "cursor",
+          name: "Cursor",
+          reasoning:
+            "Lowest-friction starting point. Looks like a normal editor, has the AI on the side, and you can ignore the terminal for a long time before you ever need it.",
+        },
+        {
+          slug: "codex",
+          name: "Codex",
+          reasoning:
+            "Once you're building real automations and dashboards, Codex pulls ahead — it handles 'wire these three systems together' tasks better than anything else right now.",
+        },
+      ],
+      wizardPrefillQuery:
+        "?building=internal-tool&comfort=can-install&preference=just-done",
     },
 
     "business-analysts": {
@@ -331,6 +397,29 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         "cursor for business analyst",
         "build prototype as ba",
       ],
+      recommendedPath: [1, 2, 7, 9, 10],
+      recommendedTools: [
+        {
+          slug: "codex",
+          name: "Codex",
+          reasoning:
+            "BAs already think in flows and edge cases — the exact shape Codex eats up. Give it a requirements doc and watch a working prototype come out the other side.",
+        },
+        {
+          slug: "claude-code",
+          name: "Claude Code",
+          reasoning:
+            "When you want the analysis to live as a real, repeatable script — not a one-off output — Claude Code is the one I reach for. It treats your project like a project, not a chat.",
+        },
+        {
+          slug: "cursor",
+          name: "Cursor",
+          reasoning:
+            "If you'd rather edit code in something that looks like Word than a terminal, Cursor is the gentler door. Switch over later when your needs grow.",
+        },
+      ],
+      wizardPrefillQuery:
+        "?building=prototype&comfort=can-install&preference=just-done",
     },
 
     "bi-engineers": {
@@ -422,6 +511,23 @@ export const ROLE_LANDING_CONFIGS: Record<RoleLandingSlug, RoleLandingConfig> =
         "bi engineer to full stack",
         "cursor for data analysts",
       ],
+      recommendedPath: [1, 2, 9, 12, 13],
+      recommendedTools: [
+        {
+          slug: "claude-code",
+          name: "Claude Code",
+          reasoning:
+            "You already live in a terminal. Claude Code lives there too — it'll read your dbt project, your warehouse client, and your existing SQL without flinching, and ship something maintainable.",
+        },
+        {
+          slug: "codex",
+          name: "Codex",
+          reasoning:
+            "When the frontend is the unknown — interactive charts, filters, a real app around your queries — Codex closes that gap fastest right now.",
+        },
+      ],
+      wizardPrefillQuery:
+        "?building=internal-tool&comfort=terminal-native&preference=learn-craft",
     },
   };
 
